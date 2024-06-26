@@ -5,8 +5,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class TestCont {
-	@GetMapping("/home")
+	@GetMapping("/")
 	public String hello() {
-		return "NewFile";
+		return "Main";
+	}
+	
+	@GetMapping("/tem")
+	public String tem() {
+		return "Template";
 	}
 }
