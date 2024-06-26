@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<!-- cart.xml -->
+
+<mapper namespace="join">
+
+    <insert id="insert" parameterType="kr.co.myshop.cart.CartDTO">
+    	
+    </insert>
+    
+
+	<select id="list" resultType="kr.co.myshop.cart.CartDTO" parameterType="String">
+        
+    </select>
+    
+    
+    <delete id="delete" parameterType="java.util.HashMap">
+    	
+    </delete>
+    
+    
+	<select id="list2" resultType="java.util.HashMap" parameterType="String">
+		
+    </select>
+
+        
+</mapper>
