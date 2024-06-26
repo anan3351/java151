@@ -7,8 +7,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/show")
 public class ShowCont {
-	@GetMapping("/")
-	public String show() {
-		return "Show";
+	@GetMapping("/musical")
+	public String musical() {
+		return "show/Musical";
+	}
+	
+	@GetMapping("/play")
+	public String play() {
+		return "show/Play";
 	}
 }

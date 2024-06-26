@@ -35,7 +35,6 @@ header {
     right: 20px;
     top: 50%;
     transform: translateY(-50%);
-    background: url('./images/search.svg') no-repeat;
   }
 
 
@@ -101,7 +100,10 @@ header {
   .slider1 {
     position: relative;
   }
-
+  
+  .slider2 {
+    position: relative;
+  }
 
   .swiper-container {
     width: 100%;
@@ -124,6 +126,10 @@ header {
     max-width: 100%;
     height: auto;
   }
+
+
+
+
 
 
   .navbar-nav {
