@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="kr">
 <head>
   <title>main</title>
   <meta charset="utf-8">
@@ -12,6 +12,11 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/css/swiper.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/js/swiper.min.js"></script>
   <link rel="stylesheet" href="/css/template.css">
+  <style>
+  	header .search-bar .btn-search {
+  		background: url('/images/search.svg') no-repeat;
+  	}
+  </style>
 </head>
 
 <body>
