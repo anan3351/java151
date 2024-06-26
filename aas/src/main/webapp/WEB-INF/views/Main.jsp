@@ -215,6 +215,7 @@
     </header>
     <nav>
       <ul>
+      	<li><a href="#">뮤지컬</a></li>
         <li><a href="#">연극</a></li>
         <li><a href="#">배우</a></li>
         <li><a href="#">공연장</a></li>
