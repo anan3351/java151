@@ -35,8 +35,8 @@ header {
     right: 20px;
     top: 50%;
     transform: translateY(-50%);
-    background: url('./images/search.svg') no-repeat;
-  }
+    background: url('/images/search.svg') no-repeat;
+   }
 
 
   header .user-options a {
