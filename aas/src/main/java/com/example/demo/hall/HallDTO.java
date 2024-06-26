@@ -66,7 +66,6 @@ public class HallDTO {
 	}
 	
 	
-	
 	@Override
 	public String toString() {
 		return "HallDTO [hall_id=" + hall_id + ", h_name=" + h_name + ", miniHall=" + miniHall + ", addr=" + addr
