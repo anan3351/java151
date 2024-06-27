@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class TestCont2 {
+public class cvtfcvfg {
 	@GetMapping("/")
 	public String hello() {
 		return "Main";
