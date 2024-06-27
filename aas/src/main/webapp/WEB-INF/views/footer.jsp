@@ -12,7 +12,7 @@
       (팀) All About Show <br>
       주소 서울특별시 강남구 테헤란로 124 4층 (역삼동, 삼원타워)<br>
       사업자번호 xxxxx-xxxxx
-      <br><br> 
+      <br><br>
       Copyright &copy; 2024 MyWeb
     </div>
     <div
