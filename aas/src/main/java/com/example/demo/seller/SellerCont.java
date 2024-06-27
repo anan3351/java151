@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class SellerCont {
 	@GetMapping("/seller")
 	public String mypage() {
-		return "show/showForm";
+		return "seller/showForm";
 	}
 }

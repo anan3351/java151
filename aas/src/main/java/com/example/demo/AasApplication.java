@@ -33,7 +33,6 @@ public class AasApplication {
 	
 	@Bean
 	public SqlSessionTemplate sqlSession(SqlSessionFactory factory) { // SqlSessionTemplate : MyBatis 쿼리문을 수행. 내부에 있는 SqlSessionFactory를 이용하여 SqlSession을 관리
-		System.out.println("-----sqlSession() 호출됨");
 		return new SqlSessionTemplate(factory);
 	} // sqlSession() end
 }
