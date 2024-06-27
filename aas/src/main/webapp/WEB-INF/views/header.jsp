@@ -20,9 +20,11 @@
     <div class="logo">
       <img src="/images/logo.png" alt="로고">
     </div>
+    <div>
     <div class="search-bar">
       <input type="text" placeholder="공연을 검색 하세요">
       <button type="button" class="btn-search" title="검색"></button>
+    </div>
     </div>
     <div class="user-options">
       <a href="#">로그인</a> | <a href="#">회원가입</a> | <a href="#">마이페이지</a>

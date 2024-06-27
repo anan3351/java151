@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+        
+<%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn"  uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>    
+
 <%@ include file="./../header.jsp" %>
 
 <!-- 본문 -->
@@ -8,31 +13,27 @@
 <table class="table table-hover">
 	<thead>
 		<tr>
-			<th>NO</th>
 			<th>공연장명</th>
-			<th>홈페이지</th>
-			<th>공연장수</th>
-			<th>객석수</th>
-			<th>시설특성</th>
-			<th>지역</th>
-			<th>지역(구,군)</th>
-			<th>개관연도</th>
-			<th>주요시설</th>
+			<th>공연관</th>
+			<th>주소</th>
+			<th>전화번호</th>
+			<th>URL</th>
+			<th>좌석수</th>
 		</tr>
 	</thead>
 	<tbody>
-		<td>1</td>
-		<td>2</td>
-		<td>3</td>
-		<td>4</td>
-		<td>5</td>
-		<td>6</td>
-		<td>7</td>
-		<td>8</td>
-		<td>9</td>
-		<td>10</td>
+	<tr>
+	<c:forEach items="${list}" var="hallDto" varStatus="vs">
+		<td>${hallDto.h_name}</td>
+		<td>miniHall</td>
+		<td>addr</td>
+		<td>h_call</td>
+		<td>url</td>
+		<td>seat</td>
+	</c:forEach>
+	</tr>
 		<tr>
-		<td colspan="10">1</td>
+		<td colspan="6">1</td>
 		</tr>
 	</tbody>
 
