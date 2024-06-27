@@ -13,7 +13,7 @@ public class SeatReviewDAO {
     private JdbcTemplate jdbcTemplate;
 
     public List<SeatReviewDTO> getAllReviews() {
-        String sql = "SELECT * FROM tb_seatreview";
+        String sql = "SELECT * FROM tb_seatreview ORDER BY seat_date DESC";
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
             SeatReviewDTO review = new SeatReviewDTO();
             review.setSeatviewId(rs.getInt("seatview_id"));

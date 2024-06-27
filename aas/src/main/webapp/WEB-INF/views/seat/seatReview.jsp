@@ -2,10 +2,9 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
 <%@ page import="com.example.demo.seat.SeatReviewDTO" %>
-<%@ include file="./header.jsp" %>
+<%@ include file="../header.jsp" %>
 
 <%
-    // 모델에서 데이터를 가져옵니다.
     List<SeatReviewDTO> reviews = (List<SeatReviewDTO>) request.getAttribute("reviews");
 %>
 
@@ -144,4 +143,4 @@
     </button>
 </div>
 
-<%@ include file="./footer.jsp" %>
+<%@ include file="../footer.jsp" %>

@@ -17,6 +17,6 @@ public class SeatReviewCont {
     public String getAllReviews(Model model) {
         List<SeatReviewDTO> reviews = seatReviewService.getAllReviews();
         model.addAttribute("reviews", reviews);
-        return "seatReview";
+        return "/seat/seatReview";
     }
 }

@@ -22,7 +22,7 @@
       <img src="./images/s3.png" alt="i" style="height: 35px; margin: 0 5px;">
       <img src="./images/s4.png" alt="t" style="height: 25px; margin: 0 5px;">
     </div>
-    <div
+    <div 
       style="font-size: medium; position: absolute; right: 50px; top: 10px; text-align: right; padding-right: 150px;">
       <div style="white-space: nowrap; text-align: right; opacity: 0.6;">
         <span style="display: inline-block; width: 150px; text-align: left;">3조</span><br>
