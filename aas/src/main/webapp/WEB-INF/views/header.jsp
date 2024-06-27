@@ -23,7 +23,9 @@
 
   <header>
     <div class="logo">
-      <img src="/images/logo.png" alt="로고">
+      <a href="${pageContext.request.contextPath}/">
+	    <img src="/images/logo.png" alt="로고">
+	  </a>
     </div>
     <div class="search-bar">
       <input type="text" placeholder="공연을 검색 하세요">
@@ -35,8 +37,8 @@
   </header>
   <nav>
     <ul>
-    	<li><a href="#">뮤지컬</a></li>
-      <li><a href="#">연극</a></li>
+      <li><a href="/musical">뮤지컬</a></li>
+      <li><a href="/play">연극</a></li>
       <li><a href="#">배우</a></li>
       <li><a href="#">공연장</a></li>
       <li><a href="#">공지사항</a></li>

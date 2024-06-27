@@ -6,12 +6,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class TestCont {
 	@GetMapping("/")
-	public String hello() {
-		return "Main";
+	public String main() {
+		return "main";
 	}
 	
 	@GetMapping("/tem")
 	public String tem() {
-		return "Template";
+		return "template";
 	}
 }
