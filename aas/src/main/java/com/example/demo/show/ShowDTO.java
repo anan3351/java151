@@ -25,3 +25,7 @@ public class ShowDTO {
 	private String detail_img;	  // 상세정보 이미지
 	private String poster;		  // 포스터
 }
+
+// 공지 content > contentDetail > img
+// 할인정보 content > contentDetail > img
+// 공연 상세/캐스팅일정 content description > p 각 한장씩
