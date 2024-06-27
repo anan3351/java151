@@ -1,8 +1,15 @@
 package com.example.demo.actor;
 
+import java.util.Collections;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/actor")
@@ -12,9 +19,62 @@ public class ActorCont {
 		System.out.println("-----ActorCont객체생성");
 	}
 	
-	@GetMapping("/list")	
-	public String actorlist() {
-		return "actor/list";
+	@Autowired
+	private ActorDAO actorDao;
+	
+	
+	@RequestMapping("/list")	
+	public ModelAndView actorlist(HttpServletRequest req) {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("actor/list");
+		mav.addObject("list", actorDao.list());
+
+		
+		//페이징
+        int totalRowCount=actorDao.totalRowCount(); //총 글갯수
+        
+        
+        int numPerPage	 = 5;  // 한 페이지당 레코드 갯수
+        int pagePerBlock = 10; // 페이지 리스트
+        
+        String pageNum = req.getParameter("pageNum");
+        if(pageNum==null) {
+        	 pageNum = "1";
+        }
+        
+        int currentPage = Integer.parseInt(pageNum);
+        int startRow	= (currentPage-1)*numPerPage+1;
+        int endRow		= currentPage*numPerPage;
+        
+        //페이지 수
+        double totcnt	= (double)totalRowCount/numPerPage;
+        int totalPage	= (int)Math.ceil(totcnt);
+        
+        double d_page	= (double)currentPage/pagePerBlock;
+        int Pages		= (int)Math.ceil(d_page)-1;
+        int startPage	= Pages*pagePerBlock;
+        int endPage		= startPage+pagePerBlock+1;
+        
+        List list =null;
+        if(totalRowCount>0) {
+        	list=actorDao.list(startRow, endRow);
+        }else {
+        	list=Collections.EMPTY_LIST;
+        	
+        }//if end
+        
+       mav.addObject("pageNum", currentPage);
+       mav.addObject("count", totalRowCount);
+       mav.addObject("totalPage", totalPage);
+       mav.addObject("startPage", startPage);
+       mav.addObject("endPage", endPage);
+       mav.addObject("list", list);
+      
+		
+		return mav;
 	}//actorlist end
+	
+
+		
 	
 }//class end

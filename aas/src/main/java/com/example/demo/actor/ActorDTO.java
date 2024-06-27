@@ -4,8 +4,8 @@ import java.util.Date;
 
 public class ActorDTO {
 	//맴버변수	
-	 private int actorId;
-	 private String name;
+	 private int actor_Id;
+	 private String a_name;
 	 private String photo;
 	 private String job;
 	 private Date birth;
@@ -14,20 +14,17 @@ public class ActorDTO {
 	 private String site;
 	//생성자
 	public ActorDTO() {}
-	
-	
-	//getter setter
-	public int getActorId() {
-		return actorId;
+	public int getActor_Id() {
+		return actor_Id;
 	}
-	public void setActorId(int actorId) {
-		this.actorId = actorId;
+	public void setActor_Id(int actor_Id) {
+		this.actor_Id = actor_Id;
 	}
-	public String getName() {
-		return name;
+	public String getA_name() {
+		return a_name;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setA_name(String a_name) {
+		this.a_name = a_name;
 	}
 	public String getPhoto() {
 		return photo;
@@ -65,13 +62,14 @@ public class ActorDTO {
 	public void setSite(String site) {
 		this.site = site;
 	}
-
-
+	
+	
 	@Override
 	public String toString() {
-		return "ActorDTO [actorId=" + actorId + ", name=" + name + ", photo=" + photo + ", job=" + job + ", birth="
-				+ birth + ", physical=" + physical + ", agency=" + agency + ", site=" + site + "]";
+		return "ActorDTO [actor_Id=" + actor_Id + ", a_name=" + a_name + ", photo=" + photo + ", job=" + job
+				+ ", birth=" + birth + ", physical=" + physical + ", agency=" + agency + ", site=" + site + "]";
 	}
+	
 	
 	
 	
