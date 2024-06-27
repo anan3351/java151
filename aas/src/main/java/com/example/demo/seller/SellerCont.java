@@ -9,4 +9,5 @@ public class SellerCont {
 	public String mypage() {
 		return "seller/showForm";
 	}
+
 }
