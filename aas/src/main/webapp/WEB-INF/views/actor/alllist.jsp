@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="../header.jsp" %>
 <div class="container">
     <style>
@@ -61,7 +61,7 @@
         .filter-button:hover {
             background: #0056b3;
         }
-        
+
         .filter-button1 {
             padding: 10px 20px;
             border: none;
@@ -70,7 +70,7 @@
             border-radius: 4px;
             cursor: pointer;
         }
-        
+
         .filter-button1:hover {
             background: #ff4d4d;
         }
@@ -128,26 +128,21 @@
                 </tr>
             </thead>
             <tbody>
-                <c:forEach var="actor" items="${list}" varStatus="status">
-    <c:if test="${status.index < 5}">
-        <div class="actor-card">
-            <img src="${actor.photo}" alt="${actor.a_name}" />
-            <p>${actor.a_name}</p>
-        </div>
-    </c:if>
-</c:forEach>
+                <c:forEach var="actor" items="${list}">
+                    <tr>
+                        <td><img src="${actor.photo}" alt="${actor.a_name}" style="width:50px; height:75px;"/><br>${actor.a_name}</td>
+                        <td>${actor.job}</td>
+                        <td><!-- 최근공연 정보를 여기에 추가 --></td>
+                    </tr>
+                </c:forEach>
             </tbody>
         </table>
     </div>
-     <div class="pagination">
+    <div class="pagination">
         <c:forEach var="i" begin="${startPage}" end="${endPage}">
-            <a href="/actor/list?pageNum=${i}">
+            <a href="${pageContext.request.contextPath}/actor/alllist?pageNum=${i}">
                 <button class="page-button">${i}</button>
             </a>
         </c:forEach>
     </div>
 </div>
-
-
-
-<%@ include file="../footer.jsp" %>
