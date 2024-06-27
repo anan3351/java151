@@ -19,15 +19,16 @@ public class AasApplication {
 		SpringApplication.run(AasApplication.class, args);
 	}
 
-	// MyBatis Framework 관련 환경 설정 	// Mapper 객체 생성
+	// MyBatis Framework 관련 환경 설정 // Mapper 객체 생성
 	@Bean
 	public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
-		System.out.println("-----sqlSessionFactory() 호출됨");
-		SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
-		bean.setDataSource(dataSource);
-		Resource[] res = new PathMatchingResourcePatternResolver().getResources("classpath:mappers/*.xml"); // mapper 저장된 폴더명
-		bean.setMapperLocations(res);
-		return bean.getObject();
+	    SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
+	    sessionFactory.setDataSource(dataSource);
+	    
+	    Resource[] res = new PathMatchingResourcePatternResolver().getResources("classpath:mappers/*.xml");
+	    sessionFactory.setMapperLocations(res);
+	    
+	    return sessionFactory.getObject();
 	} // sqlSessionFactory() end
 	
 	@Bean
