@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.seat.SeatReviewDAO">
+
+    <select id="getAllReviews" resultType="com.example.demo.seat.SeatReviewDTO">
+        SELECT seatview_id as seatviewId, user_id as userId, seat_date as date, detail, seat_rank as seatRank, seat_id as seatId 
+        FROM tb_seatreview ORDER BY seat_date DESC
+    </select>
+
+    <insert id="addReview">
+        INSERT INTO tb_seatreview (user_id, detail, seat_rank, seat_id)
+        VALUES (#{userId}, #{detail}, #{seatRank}, #{seatId})
+    </insert>
+
+</mapper>
