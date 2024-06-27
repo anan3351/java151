@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class SellerCont {
-	@GetMapping("/{user_id}")
+	@GetMapping("/seller")
 	public String mypage() {
-		return "show/showUpdate";
+		return "show/showForm";
 	}
 }
