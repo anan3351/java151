@@ -7,7 +7,7 @@
   <!-- content end -->
 
   <footer class="container-fluid bg-4 text-center"
-    style="position: fixed; bottom: 0; width: 100%; height: 100px; padding-bottom: 60px; overflow: hidden;">
+    style="position: relative; bottom: 0; width: 100%; height: 100px; padding-bottom: 60px; overflow: hidden;">
     <div style="font-size: medium; position: absolute; left: 50px; top: 10px; text-align: left; opacity: 0.7;">
       (팀) All About Show <br>
       주소 서울특별시 강남구 테헤란로 124 4층 (역삼동, 삼원타워)<br>
