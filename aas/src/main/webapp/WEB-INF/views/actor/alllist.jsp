@@ -2,9 +2,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="../header.jsp" %>
 <div class="container">
-    <div class="left-aligned-title">
-        <h3>인기배우 TOP5</h3>
-    </div>
     <style>
         .left-aligned-title {
             text-align: left;
@@ -64,7 +61,19 @@
         .filter-button:hover {
             background: #0056b3;
         }
-        
+
+        .filter-button1 {
+            padding: 10px 20px;
+            border: none;
+            background: #ff6666;
+            color: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .filter-button1:hover {
+            background: #ff4d4d;
+        }
 
         .actor-list table {
             width: 100%;
@@ -97,23 +106,14 @@
             background: #0056b3;
         }
     </style>
-    <div class="top-actors">
-        <c:forEach var="actor" items="${list}" varStatus="status">
-            <c:if test="${status.index < 5}">
-                <div class="actor-card">
-                    <img src="${actor.photo}" alt="${actor.a_name}" />
-                    <p>${actor.a_name}</p>
-                </div>
-            </c:if>
-        </c:forEach>
-    </div>
+
     <div class="filters">
         <div class="filters-left">
             <button class="filter-button">주간조회수</button>
             <button class="filter-button">누적조회수</button>
         </div>
         <div class="filters-right">
-            <button class="filter-button" onclick="location.href='${pageContext.request.contextPath}/actor/alllist'">전체</button>
+            <button class="filter-button1">전체</button>
             <button class="filter-button">국내</button>
             <button class="filter-button">해외</button>
         </div>
@@ -140,10 +140,9 @@
     </div>
     <div class="pagination">
         <c:forEach var="i" begin="${startPage}" end="${endPage}">
-            <a href="${pageContext.request.contextPath}/actor/list?pageNum=${i}">
+            <a href="${pageContext.request.contextPath}/actor/alllist?pageNum=${i}">
                 <button class="page-button">${i}</button>
             </a>
         </c:forEach>
     </div>
 </div>
-

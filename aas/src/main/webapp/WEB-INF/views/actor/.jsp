@@ -1,5 +1,5 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ include file="../header.jsp" %>
 <div class="container">
     <div class="left-aligned-title">
@@ -64,7 +64,6 @@
         .filter-button:hover {
             background: #0056b3;
         }
-        
 
         .actor-list table {
             width: 100%;
@@ -97,23 +96,14 @@
             background: #0056b3;
         }
     </style>
-    <div class="top-actors">
-        <c:forEach var="actor" items="${list}" varStatus="status">
-            <c:if test="${status.index < 5}">
-                <div class="actor-card">
-                    <img src="${actor.photo}" alt="${actor.a_name}" />
-                    <p>${actor.a_name}</p>
-                </div>
-            </c:if>
-        </c:forEach>
-    </div>
+
     <div class="filters">
         <div class="filters-left">
             <button class="filter-button">주간조회수</button>
             <button class="filter-button">누적조회수</button>
         </div>
         <div class="filters-right">
-            <button class="filter-button" onclick="location.href='${pageContext.request.contextPath}/actor/alllist'">전체</button>
+            <button class="filter-button">전체</button>
             <button class="filter-button">국내</button>
             <button class="filter-button">해외</button>
         </div>
@@ -138,12 +128,15 @@
             </tbody>
         </table>
     </div>
-    <div class="pagination">
+     <div class="pagination">
         <c:forEach var="i" begin="${startPage}" end="${endPage}">
-            <a href="${pageContext.request.contextPath}/actor/list?pageNum=${i}">
+            <a href="/actor/list?pageNum=${i}">
                 <button class="page-button">${i}</button>
             </a>
         </c:forEach>
     </div>
 </div>
 
+
+
+<%@ include file="../footer.jsp" %>
