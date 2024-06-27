@@ -134,15 +134,14 @@ nav ul li a:hover {
   }
 
   header .user-options {
-    flex-direction: column;
-    align-items: flex-start;
+    justify-content: center;
   }
 
   header .user-options a {
-    margin: 5px 0;
+    margin: 5px 10px;
   }
 }
-
+    
 @media (max-width: 480px) {
   header .search-bar input {
     width: 100%;
@@ -150,11 +149,11 @@ nav ul li a:hover {
   }
 
   header .user-options {
-    align-items: center;
+     justify-content: center;
   }
 
   header .user-options a {
-    margin: 5px;
+     margin: 5px; /* 여백 조정 */
   }
 }
 
