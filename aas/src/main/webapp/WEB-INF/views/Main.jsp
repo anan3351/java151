@@ -1,32 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <title>main</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/css/swiper.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/js/swiper.min.js"></script>
-  <link rel="stylesheet" href="/css/template.css">
-</head>
-
-<body>
-  <header>
-    <div class="logo">
-      <img src="./images/logo.png" alt="로고">
-    </div>
-    <div class="search-bar">
-      <input type="text" placeholder="공연을 검색 하세요">
-      <button type="button" class="btn-search" title="검색"></button>
-    </div>
-    <div class="user-options">
-      <a href="#">로그인</a> | <a href="#">회원가입</a> | <a href="#">마이페이지</a>
-    </div>
-  </header>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ include file="./header.jsp" %>
 
   <!-- content start -->
   <nav>
@@ -154,30 +128,7 @@
   </div>
   <!-- content end -->
 
-  <footer class="container-fluid bg-4 text-center"
-    style="position: relative; height: 100px; padding-bottom: 60px; overflow: hidden;">
-    <div style="font-size: medium; position: absolute; left: 50px; top: 10px; text-align: left; opacity: 0.7;">
-      (팀) All About Show <br>
-      주소 서울특별시 강남구 테헤란로 124 4층 (역삼동, 삼원타워)<br>
-      사업자번호 xxxxx-xxxxx
-      <br><br>
-      Copyright &copy; 2024 MyWeb
-    </div>
-    <div
-      style="display: flex; justify-content: center; align-items: center; position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);">
-      <img src="./images/s1.png" alt="k" style="height: 30px; margin: 0 5px;">
-      <img src="./images/s2.png" alt="f" style="height: 43px; margin: 0 5px;">
-      <img src="./images/s3.png" alt="i" style="height: 35px; margin: 0 5px;">
-      <img src="./images/s4.png" alt="t" style="height: 25px; margin: 0 5px;">
-    </div>
-    <div
-      style="font-size: medium; position: absolute; right: 50px; top: 10px; text-align: right; padding-right: 150px;">
-      <div style="white-space: nowrap; text-align: right; opacity: 0.6;">
-        <span style="display: inline-block; width: 150px; text-align: left;">3조</span><br>
-        <span style="display: inline-block; width: 150px; text-align: left;">김정현&nbsp;박지환&nbsp;이상엽&nbsp;정동승&nbsp;조태승</span>
-      </div>
-    </div>
-  </footer>
+  <%@ include file="./footer.jsp" %>
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
