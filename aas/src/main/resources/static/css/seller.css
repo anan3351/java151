@@ -1,0 +1,27 @@
+.input-group {
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.add-button {
+    float: right; /* 오른쪽으로 정렬 */
+    margin-left: 10px; /* 버튼 간 간격 조정 */
+}
+
+.table-container {
+	margin-top: 20px; /* 테이블과의 간격 조정 */
+}
+
+.btn-container {
+    display: flex;
+	align-items: center;
+}
+
+span {
+	color: red;
+	font-weight: bold;
+}
+
+tr {
+	text-align: left;
+}
