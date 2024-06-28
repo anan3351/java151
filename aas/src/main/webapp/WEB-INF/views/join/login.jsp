@@ -12,6 +12,11 @@
       <input type="text" placeholder="아이디" class="id-input">
       <input type="password" placeholder="비밀번호" class="pw-input">
     </div>
+    <div class="remember-me">
+    <input type="checkbox" id="remember-me" name="remember-me" value="true">
+    <label for="remember-me">로그인 상태 유지</label> 
+    </div>
+      <br>
     <button class="login-btn">로그인</button>
     <div class="social-login">
       <a href="#" class="social-btn kakao-btn">
@@ -67,7 +72,7 @@
 }
 
 .login-btn {
-  width: 100%;
+  width: 435px;
   padding: 12px 0;
   background-color: #0070c9;
   color: #fff;
