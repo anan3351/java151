@@ -29,7 +29,7 @@
             <input type="text" class="form-control" id="exampleInputEmail1">
         </div>
         <div class="bir_wrap">
-            <label class="form-label mt-4">생년월일</label>
+            <label class="form-label mt-4">생년월일1</label>
         </div>
         <div class="bir_yy">
             <span class="ps_box">
