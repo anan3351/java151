@@ -1,9 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<html lang="ko">
 
-<html lang="kr">
 <head>
+   
   <title>main</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,11 +19,110 @@
         background: url('/images/search.svg') no-repeat;
      }
   </style>
+
+    <style>
+        body {
+            font-family: 'Malgun Gothic', sans-serif;
+            
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 460px;
+            margin: 0 auto;
+            
+            padding: 40px;
+            
+        }
+        
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            color: #000;
+            margin-bottom: 5px;
+        }
+        input[type="text"],
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: 10px 0;
+            border: none;
+            border-bottom: 1px solid #ddd;
+            font-size: 16px;
+            box-sizing: border-box;
+            background-color: transparent;
+        }
+        input::placeholder,
+        select {
+            color: #999;
+        }
+        select {
+            appearance: none;
+            background: url('data:image/svg+xml;utf8,<svg fill="%23999" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 10px center;
+            background-size: 12px;
+        }
+        .phone-group {
+            display: flex;
+            align-items: center;
+        }
+        .phone-group input {
+            flex-grow: 1;
+            margin-right: 10px;
+        }
+        .phone-group button {
+            padding: 10px 15px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #333;
+            white-space: nowrap;
+        }
+        .checkbox-group {
+            margin-top: 20px;
+        }
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            color: #666;
+            font-weight: normal;
+        }
+        .checkbox-group input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: #4a90e2;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            color: white;
+            cursor: pointer;
+            margin-top: 30px;
+        }
+        .info-text {
+            font-size: 12px;
+            color: #888;
+            margin-top: 15px;
+            line-height: 1.4;
+        }
+        .right-align {
+            text-align: right;
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+    </style>
 </head>
-
 <body>
-
-  <header>
+<header>
     <div class="logo">
       <a href="${pageContext.request.contextPath}/">
        <img src="/images/logo.png" alt="로고">
@@ -36,147 +136,55 @@
       <a href="#">로그인</a> | <a href="#">회원가입</a> | <a href="#">마이페이지</a>
     </div>
   </header>
-  
-
-  <!-- content start -->
-  <div class="container">
-    <div class=" row content" style="text-align: center;">
-      <div>
-      
-      <body>
-    <div>
-        <div class="container">
-            <h2>회원가입을 위해<br>정보를 입력해주세요.</h2>
-
-            <!-- input도 inline요소중에 하나다. -->
-            <!-- inline이란 하나의 태그가 레코드(가로)방향을 모두 차지하는게 아니라, 자신이 속한 영역만 가지게 되는 것이다. -->
-            <label for="email">* 이메일<br>
-                <input type="text" id="email"><br><br>
-            </label>
-            <label for="name">* 이름<br>
-                <input type="text" id="name"><br><br>
-            </label>
-            <label for="password1">* 비밀번호<br>
-                <input class="pw" id="password1" type="password"><br><br>
-            </label>
-            <label for="password2">* 비밀번호 확인<br>
-                <input class="pw" id="password2" type="password"><br><br> </label>
-
-            <!-- 선택 영역 두번째 -->
-            <!-- name을 부여함으로 인하여 radio의 선택 가능한 것들을 하나의 그룹으로 묶어준다. -->
-            <form>
-                <input type="radio" class="radio" name="gender">&nbsp 여성
-                <input type="radio" class="radio" name="gender">&nbsp 남성
-            </form>
-            <br><br>
-            <form>
-                <input type="checkbox" class="agree">&nbsp 이용약관 개인정보 수집 및 정보이용에 동의합니다.
-            </form>
-            <hr>
-            <hr>
-            <button>가입하기</button>
-            <!-- 기능자체는 input의 타입을 button으로 하면 사용은 가능하지만, 굳이 button 태그를 사용하는 이유는 -->
-            <!-- 커스터마이징이 button 태그가 더 용이하기 때문이다. -->
-            <!-- <input type="button" value="가입하기"> -->
-        </div>
+    <div class="container">
+        
+        <form>
+            <div class="form-group">
+                <label for="id">아이디</label>
+                <input type="text" id="id" name="id" placeholder="6-20자 영문, 숫자">
+            </div>
+            <div class="form-group">
+                <label for="password">비밀번호</label>
+                <input type="password" id="password" name="password" placeholder="8-12자 영문, 숫자, 특수문자">
+                <div class="right-align">보기</div>
+            </div>
+            <div class="form-group">
+                <label for="password-confirm">비밀번호 확인</label>
+                <input type="password" id="password-confirm" name="password-confirm" placeholder="8-12자 영문, 숫자, 특수문자">
+                <div class="right-align">보기</div>
+            </div>
+            <div class="form-group">
+                <label for="name">이름</label>
+                <input type="text" id="name" name="name">
+            </div>
+            <div class="form-group">
+                <label for="email">이메일</label>
+                <select id="email" name="email">
+                    <option value="">직접입력</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="phone">휴대폰</label>
+                <div class="phone-group">
+                    <input type="text" id="phone" name="phone" placeholder="010 1234 5678">
+                    <button type="button">인증번호받기</button>
+                </div>
+            </div>
+            <div class="checkbox-group">
+                <label>
+                    <input type="checkbox" id="sms-agree" name="sms-agree">
+                    SMS, 이메일로 상품 및 이벤트 정보를 받겠습니다.(선택)
+                </label>
+            </div>
+            <div class="checkbox-group">
+                <label>
+                    <input type="checkbox" id="age-confirm" name="age-confirm">
+                    14세 이상입니다.
+                </label>
+            </div>
+            <p class="info-text">만 14세 미만 회원은 법정대리인(부모님) 동의를 받은 경우에만 회원가입이 가능합니다.</p>
+            <button type="submit" class="submit-btn">가입하기</button>
+        </form>
     </div>
-    </div>
-    </div>
-  </div>
 </body>
-
-<style>
-div {
-
-    /* 바로 상위 태그인 body를 기준으로 맞춰주게끔 */
-    /* position의 absolute라는것이, 설정하게 되면
-    바로 직계부모 태그의 영향아래 놓이게 된다는 말이다.
-    더불어서 네모를 영역으로 봤을때 왼쪽 상단 꼭지점을
-    기준으로 움직이게 된다. */
-    position: absolute;
-
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 670px;
-    height: 960px;
-    background: #FFFFFF;
-    border: 1px solid #AACDFF;
-    box-shadow: 7px 7px 39px rgba(0, 104, 255, 0.25);
-    border-radius: 20px;
-
-    /* 이것의 의미는 타겟팅된 영역에 대해 
-    지정된 만큼 움직여주는 거라고 한다. */
-    /* justify-content: space-evenly;
-    align-content: column; */
-
-    margin: 0px;
-    padding: 100px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-}
-
-h2 {
-    width: 466px;
-    height: 94px;
-    left: 725px;
-    top: 132px;
-
-    font-family: 'Noto Sans CJK KR';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 32px;
-    line-height: 47px;
-
-    color: #0068FF;
-    justify-content: space-evenly;
-
-
-}
-
-button {
-    width: 400px;
-    height: 50px;
-    left: 725px;
-    top: 875px;
-    background-color: #FFFFFF;
-    color: royalblue;
-    border-radius: 8px;
-    border: #0068FF solid 1px;
-}
-
-input {
-    padding: 0px;
-    border: none;
-    border-bottom: 1px solid #CFCFCF;
-    width: 466px;
-    height: 30px;
-}
-
-label {
-    color: lightgrey;
-}
-
-.radio {
-    align-items: center;
-    font-size: 20pt;
-    width: 15px;
-    height: 15px;
-}
-
-/* div.container {
-    justify-content: space-between;
-    flex-direction: row;
-    align-items: center;
-} */
-
-input.agree {
-    align-items: center;
-    font-size: 20pt;
-    width: 15px;
-    height: 15px;
-}
-</style>
-      
+</html>
