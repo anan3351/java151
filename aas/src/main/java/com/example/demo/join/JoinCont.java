@@ -18,6 +18,13 @@ public class JoinCont {
 	        ModelAndView mav=new ModelAndView();
 	        mav.setViewName("join/form");
 	        return mav;        
+	    }//joinform() end
+	
+	@RequestMapping("/login")
+	public ModelAndView loginform() {      
+	        ModelAndView mav=new ModelAndView();
+	        mav.setViewName("join/login");
+	        return mav;        
 	    }//list() end
 	
 	
