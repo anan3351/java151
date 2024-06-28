@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
+
+<html lang="kr">
 <head>
   <title>main</title>
   <meta charset="utf-8">
@@ -12,13 +13,20 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/css/swiper.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/js/swiper.min.js"></script>
   <link rel="stylesheet" href="/css/template.css">
+  <style>
+     header .search-bar .btn-search {
+        background: url('/images/search.svg') no-repeat;
+     }
+  </style>
 </head>
 
 <body>
 
   <header>
     <div class="logo">
-      <img src="/images/logo.png" alt="로고">
+      <a href="${pageContext.request.contextPath}/">
+       <img src="/images/logo.png" alt="로고">
+     </a>
     </div>
     <div class="search-bar">
       <input type="text" placeholder="공연을 검색 하세요">
@@ -30,9 +38,9 @@
   </header>
   <nav>
     <ul>
-    	<li><a href="#">뮤지컬1</a></li>
-      <li><a href="#">연극</a></li>
-      <li><a href="#">배우</a></li>
+      <li><a href="/musical">뮤지컬</a></li>
+      <li><a href="/play">연극</a></li>
+      <li><a href="/actor">배우</a></li>
       <li><a href="#">공연장</a></li>
       <li><a href="#">공지사항</a></li>
       <li><a href="#">Q&A</a></li>

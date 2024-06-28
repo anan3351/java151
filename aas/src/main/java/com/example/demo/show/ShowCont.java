@@ -5,10 +5,37 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/show")
 public class ShowCont {
+	
 	@GetMapping("/")
-	public String show() {
-		return "Show";
+	public String main() {
+		return "main";
+	}
+	
+	// 뮤지컬 목록
+	@GetMapping("/musical")
+	public String musical() {
+		return "show/musical";
+	}
+	
+	
+	// 뮤지컬 상세페이지
+	@GetMapping("/musical/detail")
+	public String musical_detail() {
+		return "";
+	}
+	
+	
+	
+	// 연극 목록
+	@GetMapping("/play")
+	public String play() {
+		return "show/play";
+	}
+		
+	// 연극 상세페이지
+	@GetMapping("/play/detail")
+	public String play_detail() {
+		return "";
 	}
 }
