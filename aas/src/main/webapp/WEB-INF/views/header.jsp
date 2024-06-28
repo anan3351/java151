@@ -3,7 +3,7 @@
 
 <html lang="en">
 
-  <divclass="header-wrap" >
+  <div class="header-wrap" >
       <header>
         <div class="logo">
           <a href="${pageContext.request.contextPath}/">
