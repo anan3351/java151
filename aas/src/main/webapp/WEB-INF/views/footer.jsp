@@ -1,13 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-      </div>
-    </div>
-  </div>
-  <!-- content end -->
 
   <footer class="container-fluid bg-4 text-center"
-    style="position: fixed; bottom: 0; width: 100%; height: 100px; padding-bottom: 60px; overflow: hidden;">
+    style=" position: relative; bottom: 0; width: 100%; height: 100px; padding-bottom: 60px; overflow: hidden;">
     <div style="font-size: medium; position: absolute; left: 50px; top: 10px; text-align: left; opacity: 0.7;">
       (팀) All About Show <br>
       주소 서울특별시 강남구 테헤란로 124 4층 (역삼동, 삼원타워)<br>
@@ -16,7 +12,7 @@
       Copyright &copy; 2024 MyWeb
     </div>
     <div
-      style="display: flex; justify-content: center; align-items: center; position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);">
+      style="display: fixed; justify-content: center; align-items: center; position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);">
       <img src="./images/s1.png" alt="k" style="height: 30px; margin: 0 5px;">
       <img src="./images/s2.png" alt="f" style="height: 43px; margin: 0 5px;">
       <img src="./images/s3.png" alt="i" style="height: 35px; margin: 0 5px;">
@@ -31,6 +27,3 @@
       </div>
     </div>
   </footer>
-
-</body>
-</html>
