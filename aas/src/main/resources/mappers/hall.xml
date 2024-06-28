@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<!-- hall.xml -->
+
+<mapper namespace="hall">
+
+		
+	<select id="list" resultType="java.util.Map">
+		SELECT  h_name, miniHall, addr, h_call, url, seat
+        FROM aas.tb_hall
+        ORDER BY h_name
+	</select>
+
+
+
+</mapper> 
