@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="./header.jsp" %>
-<script src="../js/show_style.js"></script>
+<script src="../js/show_swiper.js"></script>
 
   <div style="font-size: 30px; font-weight: bold; text-align: center;">
     인기 공연
