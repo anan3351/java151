@@ -97,7 +97,7 @@
             background: #0056b3;
         }
     </style>
-    <div class="top-actors">
+    <div class="top-actors"> <!-- 좋아요 기능 추가되면 그걸 기준으로 수정 -->
         <c:forEach var="actor" items="${list}" varStatus="status">
             <c:if test="${status.index < 5}">
                 <div class="actor-card">

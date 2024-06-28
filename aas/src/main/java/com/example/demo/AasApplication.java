@@ -6,11 +6,14 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+
+import com.example.demo.crawler.PlayDbCrawler;
 
 @SpringBootApplication
 public class AasApplication {
@@ -35,4 +38,11 @@ public class AasApplication {
 	public SqlSessionTemplate sqlSession(SqlSessionFactory factory) { // SqlSessionTemplate : MyBatis 쿼리문을 수행. 내부에 있는 SqlSessionFactory를 이용하여 SqlSession을 관리
 		return new SqlSessionTemplate(factory);
 	} // sqlSession() end
+
+	@Bean
+	public CommandLineRunner run() {
+	    return args -> {
+	        PlayDbCrawler.main(new String[]{});
+	    };
+	}
 }
