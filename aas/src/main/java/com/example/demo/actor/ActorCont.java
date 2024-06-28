@@ -10,7 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
-@RequestMapping("/actor")
+@RequestMapping("")
 public class ActorCont {
     public ActorCont() {
         System.out.println("-----ActorCont객체생성");
@@ -19,7 +19,7 @@ public class ActorCont {
     @Autowired
     private ActorDAO actorDao;
 
-    @RequestMapping("/list")
+    @RequestMapping("/actor")
     public ModelAndView actorlist(HttpServletRequest req) {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("actor/list");
@@ -70,7 +70,7 @@ public class ActorCont {
         return mav;
     }// list end
 
-    @RequestMapping("/alllist")
+    @RequestMapping("/actor/list")
     public ModelAndView alllist(HttpServletRequest req) {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("actor/alllist");

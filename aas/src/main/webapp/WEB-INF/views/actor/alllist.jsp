@@ -140,7 +140,7 @@
     </div>
     <div class="pagination">
         <c:forEach var="i" begin="${startPage}" end="${endPage}">
-            <a href="${pageContext.request.contextPath}/actor/alllist?pageNum=${i}">
+            <a href="${pageContext.request.contextPath}/actor/list?pageNum=${i}">
                 <button class="page-button">${i}</button>
             </a>
         </c:forEach>
