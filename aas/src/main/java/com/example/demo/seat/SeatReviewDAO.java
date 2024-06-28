@@ -7,4 +7,4 @@ import java.util.List;
 public interface SeatReviewDAO {
     List<SeatReviewDTO> getAllReviews();
     void addReview(SeatReviewDTO review);
-}
+}//end

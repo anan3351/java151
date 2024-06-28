@@ -10,19 +10,22 @@
 
 <link rel="stylesheet" type="text/css" href="css/seatReview.css">
 
-<div class="header-info">
-    <h3>공연제목(프랑켄슈타인)</h3>
-    <br>
-    <h3>좌석위치(1층1행1번)</h3>
+<div class="container">
+    <div class="header-info">
+        <h3>공연제목(프랑켄슈타인)</h3>
+        <br>
+        <h3>좌석위치(1층1행1번)</h3>
+    </div>
+    <div class="button-container">
+        <button onclick="history.back()">
+            <span class="icon">⬅️</span><span>뒤로가기</span>
+        </button>
+        <button onclick="location.href='comment'">
+            <span class="icon">✏️</span><span>댓글 작성</span>
+        </button>
+    </div>
 </div>
-<div class="button-container">
-    <button onclick="history.back()">
-        <span class="icon">⬅️</span><span>뒤로가기</span>
-    </button>
-    <button onclick="location.href='comment.jsp'">
-        <span class="icon">✏️</span><span>댓글 작성</span>
-    </button>
-</div>
+
 <div class="content">
     <% if (reviews != null) { %>
         <% for (SeatReviewDTO review : reviews) { %>

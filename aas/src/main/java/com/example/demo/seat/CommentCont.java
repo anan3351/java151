@@ -32,6 +32,6 @@ public class CommentCont {
         // 다른 필요한 필드들 설정
         seatReviewService.addReview(review);
 
-        return "redirect:/seatReviews";
+        return "redirect:/seatReview";
     }
-}
+}//end

@@ -16,4 +16,4 @@ public class SeatReviewDTO {
     private String detail;
     private int seatRank;
     private int seatId;
-}
+}//end

@@ -2,13 +2,14 @@
     pageEncoding="UTF-8"%>
 <%@ include file="../header.jsp" %>
 
-<div class="header-info">
-    <h3>공연제목(프랑켄슈타인)</h3>
-    <br>
-    <h3>좌석위치(1층1행1번)</h3>
-</div>
+<link rel="stylesheet" type="text/css" href="../css/comment.css">
 
 <div class="content">
+    <div class="header-info">
+        <h3>공연제목(프랑켄슈타인)</h3>
+        <br>
+        <h3>좌석위치(1층1행1번)</h3>
+    </div>
     <div class="rating">
         <label for="rating">평점:</label>
         <div class="stars">
@@ -41,7 +42,7 @@ function submitComment() {
             // 예: fetch API를 사용하여 서버에 데이터 전송
 
             // 임시로 seatReview.jsp로 이동
-            location.href = 'seatReview.jsp';
+            location.href = '/seatReview';
         }
     } else {
         alert("평점과 댓글을 모두 입력해주세요.");

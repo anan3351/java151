@@ -12,7 +12,7 @@ public class SeatReviewCont {
     @Autowired
     private SeatReviewServ seatReviewService;
 
-    @GetMapping("/seatReviews")
+    @GetMapping("/seatReview")
     public String getAllReviews(Model model) {
         List<SeatReviewDTO> reviews = seatReviewService.getAllReviews();
         model.addAttribute("reviews", reviews);
