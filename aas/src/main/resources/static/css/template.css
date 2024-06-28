@@ -53,6 +53,8 @@ header .search-bar .btn-search {
 	right: 20px;
 	top: 50%;
 	transform: translateY(-50%);
+    background: url(../images/search.svg);
+    background-repeat: no-repeat;
 }
 
 header .user-options a {
@@ -183,13 +185,63 @@ footer {
 	margin-right: auto;
 }
 
-/* On small screens, set height to 'auto' for sidenav and grid */
-@media screen and (max-width: 767px) {
-	.sidenav {
-		height: auto;
-		padding: 15px;
-	}
-	.row.content {
-		
-	}
+/* 반응형 스타일 */
+@media (max-width: 1200px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  header .search-bar {
+    width: 100%;
+    max-width: none;
+    margin: 10px 0;
+    
+   
+  }
+  
+
+  header .user-options {
+    width: 100%;
+    justify-content: flex-end;
+  }
 }
+
+@media (max-width: 768px) {
+  header {
+    padding: 10px;
+  }
+
+  header .search-bar input {
+    width: 100%;
+    padding: 5px 30px 5px 10px;
+   
+  }
+
+  header .user-options {
+    justify-content: center;
+  }
+
+  header .user-options a {
+    margin: 5px 10px;
+  }
+}
+    
+@media (max-width: 480px) {
+  header .search-bar input {
+    width: 95%;
+    padding: 5px 25px 5px 5px;
+    
+  }
+
+  header .user-options {
+     justify-content: center;
+  }
+
+  header .user-options a {
+     margin: 5px; /* 여백 조정 */
+  }
+}
+ 
+ 
+ 

@@ -3,7 +3,7 @@
 
 <html lang="en">
 
-  <div class="header-wrap">
+  <divclass="header-wrap" >
       <header>
         <div class="logo">
           <a href="${pageContext.request.contextPath}/">
@@ -29,5 +29,3 @@
         </ul>
       </nav>
     </div>
-
- 
