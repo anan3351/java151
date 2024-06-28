@@ -8,6 +8,7 @@
 
   <footer class="container-fluid bg-4 text-center"
     style="position: fixed; bottom: 0; width: 100%; height: 100px; padding-bottom: 60px; overflow: hidden;">
+
     <div style="font-size: medium; position: absolute; left: 50px; top: 10px; text-align: left; opacity: 0.7;">
       (팀) All About Show <br>
       주소 서울특별시 강남구 테헤란로 124 4층 (역삼동, 삼원타워)<br>
@@ -22,7 +23,7 @@
       <img src="./images/s3.png" alt="i" style="height: 35px; margin: 0 5px;">
       <img src="./images/s4.png" alt="t" style="height: 25px; margin: 0 5px;">
     </div>
-    <div
+    <div 
       style="font-size: medium; position: absolute; right: 50px; top: 10px; text-align: right; padding-right: 150px;">
       <div style="white-space: nowrap; text-align: right; opacity: 0.6;">
         <span style="display: inline-block; width: 150px; text-align: left;">3조</span><br>

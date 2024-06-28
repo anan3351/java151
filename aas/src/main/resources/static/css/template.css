@@ -115,12 +115,31 @@ nav ul li a:hover {
   }
 
   header .search-bar {
+
     width: 100%;
     max-width: none;
     margin: 10px 0;
     display: flex;
     justify-content: center; /* 변경: 검색창 가운데 정렬 */
-   
+    position: relative;
+  }
+
+  header .search-bar input {
+    border-radius: 25px;
+    width: 600px;
+    padding: 5px 20px;
+    height: 50px;
+    border: 1px solid #c5c5c5;
+  }
+
+  header .search-bar .btn-search {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: none;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
   }
   
 
@@ -170,7 +189,10 @@ nav ul li a:hover {
   .slider1 {
     position: relative;
   }
-
+  
+  .slider2 {
+    position: relative;
+  }
 
   .swiper-container {
     width: 100%;
@@ -193,6 +215,10 @@ nav ul li a:hover {
     max-width: 100%;
     height: auto;
   }
+
+
+
+
 
 
   .navbar-nav {
