@@ -19,7 +19,7 @@ public class ActorCont {
     @Autowired
     private ActorDAO actorDao;
 
-    @RequestMapping("/list")
+    @RequestMapping("")
     public ModelAndView actorlist(HttpServletRequest req) {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("actor/list");
@@ -70,7 +70,7 @@ public class ActorCont {
         return mav;
     }// list end
 
-    @RequestMapping("/alllist")
+    @RequestMapping("/list")
     public ModelAndView alllist(HttpServletRequest req) {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("actor/alllist");

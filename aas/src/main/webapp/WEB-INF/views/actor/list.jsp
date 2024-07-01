@@ -113,7 +113,7 @@
             <button class="filter-button">누적조회수</button>
         </div>
         <div class="filters-right">
-            <button class="filter-button" onclick="location.href='${pageContext.request.contextPath}/actor/alllist'">전체</button>
+            <button class="filter-button" onclick="location.href='${pageContext.request.contextPath}/actor/list'">전체</button>
             <button class="filter-button">국내</button>
             <button class="filter-button">해외</button>
         </div>
