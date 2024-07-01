@@ -7,46 +7,57 @@ body {
     background-color: #f4f4f4;
 }
 
-.container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 20px;
-}
-
 .header-info {
-    background-color: #333;
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 8px;
     text-align: center;
-    max-width: 300px;
+    margin-bottom: 10px;
 }
 
-.header-info h3 {
-    margin: 5px 0;
+.header-info .title {
+    margin: 0;
+    padding: 10px 0;
 }
 
-.button-container {
+.header-info hr {
+    border: 0;
+    height: 1px;
+    background-color: #ccc;
+    margin: 0;
+    padding: 0;
+}
+
+.seat-review-container.centered {
+    display: flex;
+    justify-content: center; /* 중앙 정렬 */
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    margin: 20px auto;
+}
+
+.seat-review-location {
+    font-size: 24px; /* 글씨 크기 두 단계 올림 */
+    margin-bottom: 10px;
+}
+
+.seat-review-button-container {
     display: flex;
     gap: 10px;
 }
 
-.button-container button {
-    background-color: #333;
-    color: #fff;
+.seat-review-transparent-button {
+    background-color: transparent; /* 배경색 투명 */
+    color: #333;
     padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
+    border: none; /* 테두리 제거 */
     cursor: pointer;
-    font-size: 16px;
+    font-size: 18px; /* 글씨 크기 한 단계 올림 */
 }
 
-.button-container button:hover {
-    background-color: #555;
+.seat-review-transparent-button:hover {
+    background-color: #f4f4f4;
 }
 
-.content {
+.seat-review-content {
     max-width: 800px;
     margin: 20px auto;
     padding: 20px;
@@ -55,36 +66,46 @@ body {
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-.review_container {
-    display: flex;
+.seat-review-review-container {
     margin-bottom: 20px;
+    padding: 20px;
+    border-bottom: 1px solid #ddd;
 }
 
-.left {
+.seat-review-review-header {
+    display: flex;
+    align-items: center;
+}
+
+.seat-review-left {
     margin-right: 20px;
 }
 
-.left img {
+.seat-review-left img {
     border-radius: 50%;
 }
 
-.right {
+.seat-review-right {
     flex-grow: 1;
 }
 
-.right_container {
+.seat-review-right_container {
     display: flex;
     justify-content: space-between;
 }
 
-.profile {
+.seat-review-profile {
     margin-bottom: 10px;
 }
 
-.star .stars {
+.seat-review-star .seat-review-stars {
     color: #ffcc00;
 }
 
-.detail {
+.seat-review-review-body {
+    margin-top: 10px;
+}
+
+.seat-review-detail {
     white-space: pre-wrap;
 }
