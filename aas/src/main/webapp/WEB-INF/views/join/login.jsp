@@ -18,6 +18,11 @@
     </div>
       <br>
     <button class="login-btn">로그인</button>
+    <br><br>
+    <div class="findlist">
+      <a href="#">아이디 찾기</a> | <a href="#">비밀번호 찾기</a> | <a href="./form">회원가입</a>
+    </div>
+    <br>
     <div class="social-login">
       <a href="#" class="social-btn kakao-btn">
         <img src="../images/s1.png" alt="Kakao Icon">
@@ -103,5 +108,17 @@
 .social-btn img {
   max-width: 24px;
 }
+
+.findlist {
+            text-align: center;
+        }
+        .findlist a {
+            margin: 0 10px; /* 좌우 여백을 추가하여 링크 간격 조정 */
+            text-decoration: none; /* 링크 밑줄 제거 */
+            color: #000; /* 텍스트 색상 설정 */
+        }
+        .findlist a:hover {
+            color: #007BFF; /* 마우스 오버 시 색상 변경 */
+        }
 
 </style>
