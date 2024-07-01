@@ -1,6 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
 <!DOCTYPE html>
+<head>
+<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/css/swiper.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/js/swiper.min.js"></script>
+  <link rel="stylesheet" href="/css/template.css">
+</head>
+<body>
+
 <div class="login-container">
   <div class="login-box">
     <div class="logo">
@@ -20,7 +32,7 @@
     <button class="login-btn">로그인</button>
     <br><br>
     <div class="findlist">
-      <a href="#">아이디 찾기</a> | <a href="#">비밀번호 찾기</a> | <a href="./form">회원가입</a>
+        <a href="#">아이디 찾기</a> | <a href="#">비밀번호 찾기</a> | <a href="./form">회원가입</a>
     </div>
     <br>
     <div class="social-login">
@@ -36,6 +48,7 @@
     </div>
   </div>
 </div>
+</body>
 <style>
 .login-container {
   display: flex;
@@ -77,7 +90,7 @@
 }
 
 .login-btn {
-  width: 435px;
+  width: 100%;
   padding: 12px 0;
   background-color: #0070c9;
   color: #fff;
