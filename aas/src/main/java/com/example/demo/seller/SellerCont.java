@@ -10,5 +10,9 @@ public class SellerCont {
 		return "seller/showForm";
 	}
 	
+	@GetMapping("/seller/discount")
+	public String mypage2() {
+		return "seller/discountForm";
+	}
 	
 }

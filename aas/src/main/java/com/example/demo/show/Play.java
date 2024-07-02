@@ -25,7 +25,7 @@ public class Play {
     	
         String defaultUrl = "http://www.kopis.or.kr/openApi/restful/pblprfr";
         String serviceKey = "f4acc9d51cc74c92871887e4f695cc85";
-        String stdate = "20240101";
+        String stdate = "20050101";
         String eddate = "20240630";
         String shcate = "AAAA"; // 연극 : AAAA, 뮤지컬 : GGGA
         String rows = "50";
@@ -78,24 +78,24 @@ public class Play {
 
 
             // 공연ID(mt20id)만 추출 후 리스트에 저장
-            List<String> mt20idList = new ArrayList<>();
+            List<String> showList = new ArrayList<>();
             NodeList nodeList = doc.getElementsByTagName("mt20id");
             for (int i = 0; i < nodeList.getLength(); i++) {
                 Node node = nodeList.item(i);
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
                     Element element = (Element) node;
-                    mt20idList.add(element.getTextContent());
+                    showList.add(element.getTextContent());
                 }
             }
 
             // 만약 mt20idList가 비어 있다면 루프 종료
-            if (mt20idList.isEmpty()) {
+            if (showList.isEmpty()) {
                 hasMoreData = false;
                 break;
             }
 
             // 공연ID를 이용해 공연 세부 정보 조회
-            for (String mt20id : mt20idList) {
+            for (String mt20id : showList) {
                 String detailUrl = defaultUrl + "/" + mt20id + "?service=" + serviceKey;
                 URL detailApiUrl = new URL(detailUrl);
                 HttpURLConnection detailConn = (HttpURLConnection) detailApiUrl.openConnection();

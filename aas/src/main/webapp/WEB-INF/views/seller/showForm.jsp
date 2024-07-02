@@ -2,13 +2,13 @@
 <%@ include file="../header.jsp" %>
 
 <link rel="stylesheet" href="/css/seller.css">
-<script src="../js/show_form.js"></script>
+<script src="../js/show.js"></script>
 
 <div style="font-size: 30px; font-weight: bold; text-align: center;">
   공연 등록
 </div><br>
   
-<form name="showfrm" id="showfrm" method="post" action="insert" enctype="multipart/form-data" onsubmit="return validateForm();">
+<form name="showfrm" id="showfrm" method="post" action="show_insert" enctype="multipart/form-data" onsubmit="return validateForm();">
   <div class="container" style="text-align: left; color: red; font-size:13px">* 은 필수 입력 항목입니다</div>
   <table class="table table-hover">
     <tbody style="text-align: left;">
@@ -76,25 +76,25 @@
 
   <div class="container">
     <div class="btn-container">
-      <button type="button" class="btn btn-success add-button" onclick="addInput()">+</button>
+      <button type="button" class="btn btn-success add-button" onclick="addSeat()">+</button>
     </div>
 
     <div class="table-container">
       <table class="table table-hover">
-        <tbody id="input-container">
+        <tbody id="input-container1">
           <tr>
-            <td><span>* </span>좌석 등급</td>
+            <td><span>* </span>좌석등급</td>
             <td><input type="text" name="seat_level_0" class="form-control"></td>
           </tr>
           <tr>
-            <td><span>* </span>좌석 금액</td>
+            <td><span>* </span>좌석금액</td>
             <td><input type="number" name="seat_price_0" class="form-control"></td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
-  <hr><br>
+  <hr><br><br>
 
   <input type="submit" value="공연 등록" class="btn btn-default" style="background-color: white; color: black;">
   <br><br><br><br><br>
