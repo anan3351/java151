@@ -4,11 +4,12 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="hall">
-
-    <select id="list" resultType="java.util.Map">
+    <select id="list" resultType="com.example.demo.actor.ActorDTO">
         SELECT h_name, miniHall , addr , h_call, url, seat
         FROM aas.tb_hall
         ORDER BY h_name
     </select>
+    
+   
     
 </mapper>
