@@ -22,7 +22,7 @@ public class ShowCont {
 	// 뮤지컬 상세페이지
 	@GetMapping("/musical/detail")
 	public String musical_detail() {
-		return "a";
+		return "";
 	}
 	
 	
