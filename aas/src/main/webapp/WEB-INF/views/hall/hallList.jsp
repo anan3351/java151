@@ -1,12 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-<%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
+    <%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn"  uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
 <!DOCTYPE html>
-<html lang="ko">
+<html>
 <head>
 <meta charset="UTF-8">
  <title>main</title>
@@ -21,45 +20,43 @@
 </head>
 <body>
 	<%@ include file="../header.jsp" %>
-	
-	<div class="main-container">
-		<!-- 본문시작 -->
-		<h4>공연장 목록</h4>
-		<table class="table table-hover">
-			<thead>
-				<tr>
-					<th>공연장명</th>
-					<th>공연관</th>
-					<th>주소</th>
-					<th>전화번호</th>
-					<th>홈페이지</th>
-					<th>좌석수</th>
-				</tr>
-			</thead>
-			
-			<tbody>
-			<c:forEach items="${list}" var="hallDto" varStatus="vs">
-			<tr>
-				<td>${hallDto.h_name}</td>
-				<td>miniHall</td>
-				<td>3</td>
-				<td>4</td>
-				<td>5</td>
-				<td>6</td>
-			</tr>
-			</c:forEach>
-				<tr>
-					<td colspan="7">1</td>
-				</tr>
-			</tbody>
-		
-		</table>
-
-
-
-
-		<!-- 본문 끝 -->
-	</div>
+			<div class="main-container">
+				<!-- 본문시작 -->
+				
+			      <h3>ddddd</h3>
+			      <p>1</p>
+			      <p>2</p>
+			      <p>3</p>
+			      <p>4</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+				
+				
+				<!-- 본문 끝 -->
+			</div>
 	<%@ include file="../footer.jsp" %>
 </body>
 </html>
