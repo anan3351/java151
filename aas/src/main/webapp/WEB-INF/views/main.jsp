@@ -23,7 +23,7 @@
           <%@ include file="./header.jsp" %>
             <div class="main-container">
               <!-- 본문시작 -->
-              <script src="../js/show_style.js"></script>
+              <script src="../js/show.js"></script>
 
               <div style="font-size: 30px; font-weight: bold; text-align: center;">
                 인기 공연
