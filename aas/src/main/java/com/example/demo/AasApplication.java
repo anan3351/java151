@@ -39,10 +39,12 @@ public class AasApplication {
 		return new SqlSessionTemplate(factory);
 	} // sqlSession() end
 
+	/* 크롤링할때 주석풀기
 	@Bean
 	public CommandLineRunner run() {
 	    return args -> {
 	        PlayDbCrawler.main(new String[]{});
 	    };
 	}
+	*/
 }

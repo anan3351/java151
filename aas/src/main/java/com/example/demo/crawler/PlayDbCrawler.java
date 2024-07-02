@@ -1,3 +1,4 @@
+
 package com.example.demo.crawler;
 
 import org.jsoup.Jsoup;
@@ -13,6 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+
 @Service
 public class PlayDbCrawler {
 
@@ -20,8 +22,10 @@ public class PlayDbCrawler {
     private static final String DB_USER = "team";
     private static final String DB_PASSWORD = "1234";
 
+    /*
     public static void main(String[] args) {
-        try {
+       
+    	try {
             String baseUrl = "http://www.playdb.co.kr/artistdb/detail.asp?ManNo=";
             int maxManNo = 54212;
 
@@ -41,6 +45,7 @@ public class PlayDbCrawler {
             e.printStackTrace();
         }
     }
+    */
 
     private static void crawlActor(String url) throws IOException {
         try {

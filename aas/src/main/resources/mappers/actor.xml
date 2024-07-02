@@ -22,4 +22,10 @@
         FROM aas.tb_actor
     </select>
     
+     <select id="getActorById" parameterType="int" resultType="com.example.demo.actor.ActorDTO">
+        SELECT actor_id, a_name, photo, job, birth, physical, agency, site
+        FROM aas.tb_actor
+        WHERE actor_id = #{actorId}
+    </select>
+    
 </mapper>

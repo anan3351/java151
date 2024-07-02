@@ -114,6 +114,10 @@
             background: #ddd;
             cursor: not-allowed;
         }
+        .page-button.active {
+    background-color: red;
+    color: white;
+}
     </style>
     <div class="top-actors">
         <c:forEach var="actor" items="${list}" varStatus="status">
@@ -148,7 +152,10 @@
             <tbody>
                 <c:forEach var="actor" items="${list}">
                     <tr>
-                        <td><img src="${actor.photo}" alt="${actor.a_name}" style="width:50px; height:75px;"/><br>${actor.a_name}</td>
+                        <td><img src="${actor.photo}" alt="${actor.a_name}" style="width:50px; height:75px;"/>
+                        <br>
+                            <span style="cursor:pointer; color:blue;" onclick="location.href='${pageContext.request.contextPath}/actordetail?id=${actor.actor_id}'">${actor.a_name}</span>
+                        </td>
                         <td>${actor.job}</td>
                         <td><!-- 최근공연 정보를 여기에 추가 --></td>
                     </tr>

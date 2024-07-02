@@ -109,23 +109,30 @@ public class ActorCont {
             list = Collections.emptyList();
         }
 
-        mav.addObject("pageNum", currentPage);
-        mav.addObject("count", totalRowCount);
-        mav.addObject("totalPage", totalPage);
+        mav.addObject("currentPage", currentPage);
+        mav.addObject("totalPages", totalPage);
         mav.addObject("startPage", startPage);
         mav.addObject("endPage", endPage);
         mav.addObject("list", list);
+        mav.addObject("pageNum", currentPage); // 추가
+        mav.addObject("count", totalRowCount); // 추가
+
 
         return mav;
     }
 
-    @RequestMapping("/actor/actordetail")
-    public ModelAndView actordetail() {
-    	ModelAndView mav = new ModelAndView();
-    	mav.setViewName("actor/actordetail");
-    	return mav;
-    	
-    };
+    @RequestMapping("/actordetail")
+    public ModelAndView actordetail(HttpServletRequest req) {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("actor/actordetail");
+      
+        int actorId = Integer.parseInt(req.getParameter("id"));
+        ActorDTO actor = actorDao.getActorById(actorId);
+        mav.addObject("actor", actor);
+        
+        return mav;
+    }//actordetail end
+    
     
     
 }//class end
