@@ -18,7 +18,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class Play {
+public class Musical {
     public static void main(String[] args) throws IOException {
         
     	ShowDAO showDao = new ShowDAO();
