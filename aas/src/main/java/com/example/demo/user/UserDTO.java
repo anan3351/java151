@@ -6,6 +6,7 @@ public class UserDTO {
 	 private String pwd;
 	 private String user_name;
 	 private String tel_num;
+	 private Integer post;
 	 private String addr1;
 	 private String addr2;
 	 private String email;
@@ -13,6 +14,7 @@ public class UserDTO {
 	 private String auth;
 	 private String level_name;
 	 private Integer point;
+	 
 	public String getUser_id() {
 		return user_id;
 	}
@@ -36,6 +38,13 @@ public class UserDTO {
 	}
 	public void setTel_num(String tel_num) {
 		this.tel_num = tel_num;
+	}
+	
+	public Integer getPost() {
+		return post;
+	}
+	public void setPost(Integer post) {
+		this.post = post;
 	}
 	public String getAddr1() {
 		return addr1;
@@ -82,9 +91,9 @@ public class UserDTO {
 	@Override
 	public String toString() {
 		return "UserDTO [user_id=" + user_id + ", pwd=" + pwd + ", user_name=" + user_name + ", tel_num=" + tel_num
-				+ ", addr1=" + addr1 + ", addr2=" + addr2 + ", email=" + email + ", snum=" + snum + ", auth=" + auth
-				+ ", level_name=" + level_name + ", point=" + point + "]";
+				+ ", post=" + post + ", addr1=" + addr1 + ", addr2=" + addr2 + ", email=" + email + ", snum=" + snum
+				+ ", auth=" + auth + ", level_name=" + level_name + ", point=" + point + "]";
 	}
-	 
+	
 	 
 }

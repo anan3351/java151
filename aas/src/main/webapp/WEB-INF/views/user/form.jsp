@@ -94,7 +94,7 @@
     input[type="text"],
     input[type="password"],
     select {
-      width: 100%;
+      width: 100px;
       padding: 10px 0;
       border: none;
       border-bottom: 1px solid #ddd;
@@ -294,13 +294,11 @@
 		        <span>@</span>
 		        <input type="text" id="email_domain" class="form_w200" placeholder="이메일 도메인" maxlength="18" />
 		        <select class="select" onchange="setEmailDomain(this.value);">
-		            <option value="">-선택-</option>
+		            <option value="">직접입력</option>
 		            <option value="naver.com">naver.com</option>
 		            <option value="gmail.com">gmail.com</option>
 		            <option value="hanmail.net">hanmail.net</option>
 		            <option value="hotmail.com">hotmail.com</option>
-		            <option value="korea.com">korea.com</option>
-		            <option value="nate.com">nate.com</option>
 		            <option value="yahoo.com">yahoo.com</option>
 		        </select>
 		    </div>
