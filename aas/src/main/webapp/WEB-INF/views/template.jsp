@@ -19,7 +19,7 @@
   <link rel="stylesheet" href="/css/template.css"> 
 </head>
 <body>
-	<%@ include file="../header.jsp" %>
+	<%@ include file="./header.jsp" %>
 			<div class="main-container">
 				<!-- 본문시작 -->
 				
@@ -28,6 +28,6 @@
 				
 				<!-- 본문 끝 -->
 			</div>
-	<%@ include file="../footer.jsp" %>
+	<%@ include file="./footer.jsp" %>
 </body>
 </html>
