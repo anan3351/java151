@@ -16,6 +16,16 @@
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   
+ 
+
+<script>
+    window.onload = function() {
+        <c:if test="${not empty focusField}">
+            document.getElementById('${focusField}').focus();
+        </c:if>
+    }
+</script>
+  
 <script>
     function sample6_execDaumPostcode() {
         new daum.Postcode({
@@ -57,7 +67,7 @@
                 }
 
                 // 우편번호와 주소 정보를 해당 필드에 넣는다.
-                document.getElementById('postcode').value = data.zonecode;
+                document.getElementById('post').value = data.zonecode;
                 document.getElementById("addr1").value = addr;
                 // 커서를 상세주소 필드로 이동한다.
                 document.getElementById("addr2").focus();
@@ -74,7 +84,7 @@
     }
 
     .container {
-      max-width: 460px;
+      max-width: 500px;
       margin: 0 auto;
       padding: 40px;
     }
@@ -94,7 +104,7 @@
     input[type="text"],
     input[type="password"],
     select {
-      width: 100px;
+      width: 100%;
       padding: 10px 0;
       border: none;
       border-bottom: 1px solid #ddd;
@@ -238,44 +248,169 @@
     function setEmailDomain(domain) {
       $("#email_domain").val(domain);
     }
+    
+    let isIdDuplicate = true; // 초기값을 true로 설정
+
+    function checkUserId() {
+        var userId = $("#user_id").val();
+        $.ajax({
+            url: "/user/checkUserId",
+            type: "GET",
+            data: { user_id: userId },
+            success: function(response) {
+                if (response === "duplicate") {
+                    alert("중복된 ID입니다.");
+                    isIdDuplicate = true;
+                } else if (response === "available") {
+                    alert("사용 가능한 ID입니다.");
+                    isIdDuplicate = false;
+                } else {
+                    alert("ID 중복 확인 중 오류가 발생했습니다.");
+                    isIdDuplicate = true;
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log("AJAX Error:", textStatus, errorThrown);
+                alert("ID 중복 확인 중 오류가 발생했습니다.");
+                isIdDuplicate = true;
+            }
+        });
+    }
+    
+    let isEmailDuplicate = true;
+    
+    function checkEmail() {
+        var emailId = $("#email_id").val();
+        var emailDomain = $("#email_domain").val();
+        var email = emailId + '@' + emailDomain;
+        $.ajax({
+            url: "/user/checkEmail",
+            type: "GET",
+            data: { email: email },
+            success: function(response) {
+                if (response === "duplicate") {
+                    alert("중복된 이메일입니다.");
+                    isEmailDuplicate = true;
+                } else if (response === "available") {
+                    alert("사용 가능한 이메일입니다.");
+                    isEmailDuplicate = false;
+                } else {
+                    alert("이메일 중복 확인 중 오류가 발생했습니다.");
+                    isEmailDuplicate = true;
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log("AJAX Error:", textStatus, errorThrown);
+                alert("이메일 중복 확인 중 오류가 발생했습니다.");
+                isEmailDuplicate = true;
+            }
+        });
+    }
+    
+    function isValidResidentNumber(snum1, snum2) {
+        var rrn = snum1 + snum2;
+        
+        // 주민등록번호 형식 검사 (6자리 - 7자리)
+        if (!/^\d{6}-?\d{7}$/.test(rrn)) {
+            return false;
+        }
+
+        // 생년월일 유효성 검사
+        var year = parseInt(rrn.substr(0, 2));
+        var month = parseInt(rrn.substr(2, 2));
+        var day = parseInt(rrn.substr(4, 2));
+        
+        if (month < 1 || month > 12) {
+            return false;
+        }
+        
+        var maxDaysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+        if (day < 1 || day > maxDaysInMonth[month - 1]) {
+            // 윤년 체크 (2월인 경우)
+            if (!(month === 2 && day === 29 && (year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0)))) {
+                return false;
+            }
+        }
+
+        // 뒷자리 첫 번째 숫자 검사
+        var genderCode = parseInt(rrn.charAt(6));
+        if (genderCode === 0 || genderCode > 4) {
+            return false;
+        }
+
+        // 체크섬 검사
+        var multipliers = [2,3,4,5,6,7,8,9,2,3,4,5];
+        var sum = 0;
+        for (var i = 0; i < 12; i++) {
+            sum += parseInt(rrn.charAt(i)) * multipliers[i];
+        }
+        var checksum = (11 - (sum % 11)) % 10;
+        if (checksum !== parseInt(rrn.charAt(12))) {
+            return false;
+        }
+
+        return true;
+    }
+    
+    //tel_num 자동 하이픈
+    function autoHyphen(target) {
+        target.value = target.value
+            .replace(/[^0-9]/g, '')
+            .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3")
+            .replace(/(\-{1,2})$/g, "");
+
+        // 11자리를 초과하는 숫자 입력 방지
+        if (target.value.replace(/-/g, '').length > 11) {
+            target.value = target.value.slice(0, 13); // 하이픈 포함 13자
+        }
+    }
+    
   </script>
   
 </head>
 
 <body>
+
+
+
+
   
   <div class="container">
-    <form>
+    <form name="joinfrm" id="joinfrm" method="post" action="insert" enctype="multipart/form-data">
       <div class="form-group">
         <label for="id">아이디</label>
-        <input type="text" id="id" name="id" placeholder="6-20자 영문, 숫자">
+        <div class="phone-group">
+        <input type="text" id="user_id" name="user_id" placeholder="6-20자 영문, 숫자">
+        <button type="button" onclick="checkUserId()">ID중복확인</button>
+        </div>
       </div>
       <div class="form-group">
         <label for="password">비밀번호</label>
-        <input type="password" id="password" name="password" placeholder="8-12자 영문, 숫자, 특수문자">
+        <input type="password" id="pwd" name="pwd" placeholder="8-12자 영문, 숫자, 특수문자" maxlength="12">
         <div class="right-align"><i class="fa fa-eye fa-lg"></i></div>
       </div>
       <div class="form-group">
         <label for="password-confirm">비밀번호 확인</label>
-        <input type="password" id="password-confirm" name="password-confirm" placeholder="8-12자 영문, 숫자, 특수문자">
+        <input type="password" id="pwd-confirm" name="pwd-confirm" placeholder="8-12자 영문, 숫자, 특수문자" maxlength="12">
         <div class="right-align"><i class="fa fa-eye fa-lg"></i></div>
       </div>
       <div class="form-group">
         <label for="name">이름</label>
-        <input type="text" id="name" name="name">
+        <input type="text" id="user_name" name="user_name">
       </div>
       <div class="form-group">
         <label for="ssn">주민등록번호</label>
         <div class="ssn-group">
-          <input type="text" id="ssn1" name="ssn1" maxlength="6" placeholder="앞자리">
+          <input type="text" id="snum1" name="snum1" maxlength="6" placeholder="앞자리">
           <span>-</span>
-          <input type="password" id="ssn2" name="ssn2" maxlength="7" placeholder="뒷자리">
+          <input type="password" id="snum2" name="snum2" maxlength="7" placeholder="뒷자리">
         </div>
+         <input type="hidden" id="snum" name="snum" />
       </div>
       <div class="form-group">
         <label for="postcode">우편번호</label>
         <div class="phone-group">
-	        <input type="text" id="postcode" name="postcode" readonly>
+	        <input type="text" id="post" name="post" readonly>
 	        <button type="button" onclick="sample6_execDaumPostcode()">우편번호찾기</button>
         </div>
       </div>
@@ -302,14 +437,19 @@
 		            <option value="yahoo.com">yahoo.com</option>
 		        </select>
 		    </div>
+		     <input type="hidden" id="email" name="email" />
+		    <br>
+		    <div class="phone-group">
+        <button type="button" onclick="checkEmail()">EMAIL중복확인</button>
+        </div>
 		</div>
       <div class="form-group">
-        <label for="phone">휴대폰</label>
-        <div class="phone-group">
-          <input type="text" id="phone" name="phone" placeholder="010 1234 5678">
-          <button type="button">인증번호받기</button>
-        </div>
-      </div>
+    <label for="phone">휴대폰</label>
+    <div class="phone-group">
+        <input type="text" id="tel_num" name="tel_num" maxlength="13" placeholder="휴대폰 번호" oninput="autoHyphen(this)">
+        <button type="button">인증번호받기</button>
+    </div>
+</div>
       <div class="checkbox-group">
         <label>
           <input type="checkbox" id="sms-agree" name="sms-agree">
@@ -326,6 +466,142 @@
       <button type="submit" class="submit-btn">가입하기</button>
     </form>
   </div>
+  
+  
+  
+  <script>
+  
+  document.querySelector('form').addEventListener('submit', function (event) {
+	    event.preventDefault(); // 항상 기본 제출을 방지
+
+	    if (isIdDuplicate) {
+	        alert("중복된 아이디는 사용하실 수 없습니다.");
+	        document.getElementById('user_id').focus();
+	        return; // 폼 제출을 중단
+	    }
+	    
+	    if (isEmailDuplicate) {
+	        alert("중복된 이메일은 사용하실 수 없습니다.");
+	        document.getElementById('email_id').focus();
+	        return;
+	    }
+	    
+	    var snum1 = document.getElementById('snum1').value;
+	    var snum2 = document.getElementById('snum2').value;
+	    if (!isValidResidentNumber(snum1, snum2)) {
+	        alert("유효하지 않은 주민등록번호입니다.");
+	        document.getElementById('snum1').focus();
+	        return;
+	    }
+	    
+	 // 전화번호 유효성 검사
+	    var telNum = document.getElementById('tel_num').value.replace(/-/g, '');
+	    if (telNum.length !== 11) {
+	        alert("유효한 전화번호를 입력해주세요.");
+	        document.getElementById('tel_num').focus();
+	        return;
+	    }
+
+	   
+
+	    
+
+	    // memberCheck() 함수 호출
+	    if (memberCheck()) {
+	        // 이메일 주소 결합
+	        var emailId = document.getElementById('email_id').value;
+	        var emailDomain = document.getElementById('email_domain').value;
+	        var email = emailId + '@' + emailDomain;
+	        document.getElementById('email').value = email;
+
+	        // 주민등록번호 결합
+	        var snum1 = document.getElementById('snum1').value;
+	        var snum2 = document.getElementById('snum2').value;
+	        var snum = snum1 + snum2;
+	        document.getElementById('snum').value = snum;
+
+	        // 폼 제출
+	        this.submit();
+	    }
+	});
+  
+//ID 입력 필드의 값이 변경될 때마다 isIdDuplicate를 true로 설정
+  document.getElementById('user_id').addEventListener('input', function() {
+      isIdDuplicate = true;
+  });
+  
+//이메일 입력 필드의 값이 변경될 때마다 isEmailDuplicate를 true로 설정
+  $("#email_id, #email_domain").on('input', function() {
+      isEmailDuplicate = true;
+  });
+  
+
+  function memberCheck() {
+      // 아이디 유효성 검사
+      let id = $("#user_id").val().trim();
+      if (id.length < 6 || id.length > 20) {
+          alert("아이디는 6~20글자로 작성해주세요!");
+          $("#user_id").focus();
+          return false;
+      }
+
+      // 비밀번호 유효성 검사
+      let passwd = $("#pwd").val().trim();
+      if (passwd.length < 8 || passwd.length > 12) {
+          alert("비밀번호는 8~12글자로 작성해주세요!");
+          $("#pwd").focus();
+          return false;
+      }
+
+      // 비밀번호 확인
+      let repasswd = $("#pwd-confirm").val().trim();
+      if (passwd != repasswd) {
+          alert("비밀번호와 비밀번호 확인이 일치하지 않습니다!");
+          $("#pwd-confirm").focus();
+          return false;
+      }
+
+      // 이름 유효성 검사
+      let mname = $("#user_name").val().trim();
+      if (mname.length < 2) {
+          alert("이름은 두 글자 이상 입력해주세요!");
+          $("#user_name").focus();
+          return false;
+      }
+      
+      //우편번호 유효성 검사
+      let post = $("#post").val().trim();
+      if (post.length < 1) {
+          alert("우편번호를 입력해주세요!");
+          $("#post").focus();
+          return false;
+      }
+      
+   
+      
+    //상세주소 유효성 검사
+      let addr2 = $("#addr2").val().trim();
+      if (addr2.length < 1) {
+          alert("상세주소를 입력해주세요!");
+          $("#addr2").focus();
+          return false;
+      }
+      
+   // 14세 이상 확인 체크박스 검사
+      let ageConfirm = $("#age-confirm").prop("checked");
+      if (!ageConfirm) {
+          alert("14세 이상임을 확인해주세요.");
+          $("#age-confirm").focus();
+          return false;
+      }
+      
+
+      // 모든 유효성 검사 통과시 true 반환
+      return true;
+  }
+  
+ 
+  </script>
 
 </body>
 

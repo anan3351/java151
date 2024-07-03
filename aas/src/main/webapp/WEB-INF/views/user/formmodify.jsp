@@ -74,7 +74,7 @@
     }
 
     .container {
-      max-width: 460px;
+      max-width: 500px;
       margin: 0 auto;
       padding: 40px;
     }
@@ -215,20 +215,20 @@
       align-items: center;
     }
 
-    .email-group input,
-    .email-group select {
+    .email-group input {
+      flex-basis: 40%; /* 이메일과 도메인 입력 필드의 기본 너비 */
+      flex-grow: 1; /* 이메일과 도메인 입력 필드의 증가 비율 */
       margin-right: 10px;
-      flex: 1;
+    }
+
+    .email-group select {
+      flex-basis: 20%; /* 셀렉트 박스의 기본 너비 */
+      flex-grow: 2; /* 셀렉트 박스의 증가 비율 */
+      margin-right: 10px;
     }
 
     .email-group span {
-      margin: 0 5px;
-      font-size: 18px;
-      color: #333;
-    }
-
-    .email-group select {
-      flex: 0.5;
+      flex-shrink: 0; /* '@'의 너비 고정 */
     }
   </style>
 

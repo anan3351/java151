@@ -13,7 +13,7 @@ public class UserDTO {
 	 private String snum;
 	 private String auth;
 	 private String level_name;
-	 private Integer point;
+	 private Integer u_point;
 	 
 	public String getUser_id() {
 		return user_id;
@@ -83,16 +83,16 @@ public class UserDTO {
 		this.level_name = level_name;
 	}
 	public Integer getPoint() {
-		return point;
+		return u_point;
 	}
 	public void setPoint(Integer point) {
-		this.point = point;
+		this.u_point = point;
 	}
 	@Override
 	public String toString() {
 		return "UserDTO [user_id=" + user_id + ", pwd=" + pwd + ", user_name=" + user_name + ", tel_num=" + tel_num
 				+ ", post=" + post + ", addr1=" + addr1 + ", addr2=" + addr2 + ", email=" + email + ", snum=" + snum
-				+ ", auth=" + auth + ", level_name=" + level_name + ", point=" + point + "]";
+				+ ", auth=" + auth + ", level_name=" + level_name + ", u_point=" + u_point + "]";
 	}
 	
 	 

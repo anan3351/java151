@@ -10,8 +10,17 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/css/swiper.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/js/swiper.min.js"></script>
   <link rel="stylesheet" href="/css/template.css">
+  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 </head>
 <body>
+
+<c:if test="${registrationSuccess}">
+    <script>
+        alert("회원가입이 완료되었습니다.\n로그인 페이지로 이동합니다.");
+        window.location.href = '/user/login';
+    </script>
+</c:if>
+
 
 <div class="login-container">
   <div class="login-box">
