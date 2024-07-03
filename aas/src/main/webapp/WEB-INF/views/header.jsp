@@ -15,7 +15,7 @@
           <button type="button" class="btn-search" title="검색"></button>
         </div>
         <div class="user-options">
-          <a href="#">로그인</a> | <a href="#">회원가입</a> | <a href="#">마이페이지</a>
+          <a href="./user/login">로그인</a> | <a href="./user/agreement">회원가입</a> | <a href="./user/mypage">마이페이지</a>
         </div>
       </header>
       <nav>
@@ -28,6 +28,6 @@
           <li><a href="#">Q&A</a></li>
         </ul>
       </nav>
-    </div>
- 
+
+
 
