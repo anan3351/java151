@@ -15,7 +15,7 @@ public class Ctest2 {
         System.setProperty("webdriver.chrome.driver", "src/main/resources/driver/chromedriver.exe");
         WebDriver driver = new ChromeDriver();
         try {
-            String url = "https://tickets.interpark.com/goods/24006851";
+            String url = "https://tickets.interpark.com/goods/21007693";
             driver.get(url);
 
             // 데이터 추출
@@ -23,7 +23,7 @@ public class Ctest2 {
             Map<String, String> contentImagesMap = new HashMap<>();
             String casting = "";
 
-            // content 별 이미지 URL 추출하여 "\n"과 함께 map에 저장
+            // content별 이미지 URL 추출하여 "\n"과 함께 map에 저장
             for (WebElement contentElement : contentElements) {
                 StringBuilder images = new StringBuilder();
                 String title = contentElement.findElement(By.tagName("h3")).getText();
@@ -31,44 +31,80 @@ public class Ctest2 {
 
                 // img 요소가 존재할 때만 map에 저장
                 if (!contentDetailImages.isEmpty()) {
-                	
-                	// 캐스팅 이미지 따로 저장
+
+                    // 캐스팅 이미지 따로 저장
                     if (title.equals("공연상세 / 캐스팅일정")) {
-                        for (int i = 0; i < contentDetailImages.size(); i++) {
-                            if (i == 1) {
-                                casting = contentDetailImages.get(i).getAttribute("src");
+                        int largestHeight = Integer.MIN_VALUE;
+                        int secondLargestHeight = Integer.MIN_VALUE;
+                        WebElement largestImage = null;
+                        WebElement secondLargestImage = null;
+
+                        // 캐스팅 이미지 추출
+                        for (WebElement imgElement : contentDetailImages) {
+                            int width = Integer.parseInt(imgElement.getAttribute("width"));
+                            int height = Integer.parseInt(imgElement.getAttribute("height"));
+                            
+                            // 두번째 이미지의 가로 길이가 세로 길이보다 긴지 체크
+                            if (height > largestHeight) {
+                                secondLargestHeight = largestHeight;
+                                largestHeight = height;
+                                secondLargestImage = largestImage;
+                                largestImage = imgElement;
+                            } else if (height > secondLargestHeight) {
+                                secondLargestHeight = height;
+                                secondLargestImage = imgElement;
+                            }
+                        }
+
+                        // 두 번째로 큰 이미지가 캐스팅 이미지로 선택됨
+                        if (secondLargestImage != null) {
+                            if (casting.equals("")) {
+                            	casting = secondLargestImage.getAttribute("src");
                             } else {
-                                images.append(contentDetailImages.get(i).getAttribute("src"));
+                            	if (casting.equals(secondLargestImage.getAttribute("src"))) {
+                            		break;
+                            	} else {
+                            		// 이전에 저장한 캐스팅 일정과 이번에 조회된 캐스팅 일정이 다르다면 값 누적
+                            		casting += "\n" + secondLargestImage.getAttribute("src");
+                            	}
+                            }
+                        }                      
+                        
+                        // 모든 이미지 URL을 저장 (캐스팅 이미지는 제외)
+                        for (WebElement imgElement : contentDetailImages) {
+                            if (imgElement != secondLargestImage) {
+                            	images.append(imgElement.getAttribute("src"));
                                 images.append("\n");
                             }
                         }
+
                     } else { // 일반 이미지 저장
                         for (WebElement imgElement : contentDetailImages) {
                             images.append(imgElement.getAttribute("src"));
                             images.append("\n");
                         }
                     }
-                    
 
                     String image = images.toString().trim();
+                    
+                    if (title.equals("공지사항")) {
+                    	title = "notice_img";
+                    } else if (title.equals("공연상세 / 캐스팅일정")) {
+                    	title = "detail_img";
+                    } else if (title.equals("할인정보")) {
+                    	title = "dis_img";
+                    }
+                    
                     contentImagesMap.put(title, image);
                 }
             }
+            
+            contentImagesMap.put("casting_img", casting);
 
             // 추출한 데이터 출력
             for (Map.Entry<String, String> entry : contentImagesMap.entrySet()) {
-                String title = entry.getKey();
-                String image = entry.getValue();
-
-                System.out.println("title : " + title);
-                System.out.println("url : ");
-                System.out.println(image);
-                System.out.println();
-            }
-
-            // 캐스팅 정보 출력
-            if (!casting.isEmpty()) {
-                System.out.println("캐스팅 일정 : " + casting);
+                System.out.println("title : " + entry.getKey());
+                System.out.println("url : \n" + entry.getValue());
                 System.out.println();
             }
 

@@ -27,7 +27,7 @@ public class Musical {
         String serviceKey = "f4acc9d51cc74c92871887e4f695cc85";
         String stdate = "20050101";
         String eddate = "20240630";
-        String shcate = "AAAA"; // 연극 : AAAA, 뮤지컬 : GGGA
+        String shcate = "GGGA"; // 연극 : AAAA, 뮤지컬 : GGGA
         String rows = "50";
         int cpage = 1;
 

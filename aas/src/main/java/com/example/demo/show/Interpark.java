@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Ctest {
+public class Interpark {
     public static void main(String[] args) {
         // WebDriver와 ChromDriver 설정
         System.setProperty("webdriver.chrome.driver", "src/main/resources/driver/chromedriver.exe");
