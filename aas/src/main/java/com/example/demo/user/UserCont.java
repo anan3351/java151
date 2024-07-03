@@ -122,6 +122,11 @@ public class UserCont {
 		    }
 		}
 		
+		@RequestMapping("/join")
+		public String join() {
+		        return "user/join";      
+		    }//join() end
+		
 		
 }//class end
 	
