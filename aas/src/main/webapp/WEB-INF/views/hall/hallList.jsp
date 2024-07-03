@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-<%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
+    <%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn"  uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
@@ -16,18 +16,47 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/css/swiper.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/js/swiper.min.js"></script>
-  <link rel="stylesheet" href="../view/template.css"> 
+  <link rel="stylesheet" href="/css/template.css"> 
 </head>
 <body>
-	<%@ include file="./header.jsp" %>
+	<%@ include file="../header.jsp" %>
 			<div class="main-container">
 				<!-- 본문시작 -->
 				
-				
+			      <h3>ddddd</h3>
+			      <p>1</p>
+			      <p>2</p>
+			      <p>3</p>
+			      <p>4</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
+			      <p>5</p>
 				
 				
 				<!-- 본문 끝 -->
 			</div>
-	<%@ include file="./footer.jsp" %>
+	<%@ include file="../footer.jsp" %>
 </body>
 </html>
