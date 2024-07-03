@@ -1,5 +1,5 @@
 
-package com.example.demo.crawler;
+package com.example.demo.actor;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -22,7 +22,7 @@ public class PlayDbCrawler {
     private static final String DB_USER = "team";
     private static final String DB_PASSWORD = "1234";
 
-    /*
+    /* 크롤링 사용할때 aasapplication에 주석 풀기
     public static void main(String[] args) {
        
     	try {

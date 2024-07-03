@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 @RequestMapping("")
 public class ActorCont {
     public ActorCont() {
-        System.out.println("-----ActorCont객체생성");
+        System.out.println("-----ActorCont 객체 생성");
     }
 
     @Autowired
