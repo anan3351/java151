@@ -57,6 +57,14 @@
 
 		<!-- 사용자 추가 라이브러리(의존성) 시작 -->
 
+		<!-- 셀레니움 -->
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>4.22.0</version>
+		</dependency>
+
+
 		<!-- https://mvnrepository.com/artifact/org.webjars.bower/jquery -->
 		<dependency>
 			<groupId>org.webjars.bower</groupId>
@@ -122,12 +130,6 @@
 			<groupId>commons-fileupload</groupId>
 			<artifactId>commons-fileupload</artifactId>
 			<version>1.5</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.seleniumhq.selenium</groupId>
-			<artifactId>selenium-java</artifactId>
-			<version>4.21.0</version>
 		</dependency>
 
 		<!-- 사용자 추가 라이브러리(의존성) 끝 -->
