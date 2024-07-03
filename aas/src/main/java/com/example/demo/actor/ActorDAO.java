@@ -39,5 +39,10 @@ public class ActorDAO {
     public int totalRowCount() {
         return sqlSession.selectOne("actor.totalRowCount");
     }
+    
+    public ActorDTO getActorById(int actorId) {
+        return sqlSession.selectOne("actor.getActorById", actorId);
+    }
+    
 
 }//class end
