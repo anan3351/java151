@@ -7,6 +7,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class ShowCont {
 	
+	@GetMapping("/")
+	public String main() {
+		return "main";
+	}
+	
 	// 뮤지컬 목록
 	@GetMapping("/musical")
 	public String musical() {

@@ -3,7 +3,6 @@ package com.example.demo.actor;
 import java.util.Date;
 
 public class ActorDTO {
-	
     private int actor_id; // 필드 이름을 데이터베이스 컬럼과 동일하게 수정
     private String a_name; // 필드 이름을 데이터베이스 컬럼과 동일하게 수정
     private String photo;

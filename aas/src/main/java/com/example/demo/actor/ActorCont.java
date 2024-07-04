@@ -1,9 +1,5 @@
 package com.example.demo.actor;
 
-
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.Collections;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
-@RequestMapping("/actor")
+@RequestMapping("")
 public class ActorCont {
     public ActorCont() {
         System.out.println("-----ActorCont객체생성");
@@ -23,7 +19,7 @@ public class ActorCont {
     @Autowired
     private ActorDAO actorDao;
 
-    @RequestMapping("/list")
+    @RequestMapping("/actor")
     public ModelAndView actorlist(HttpServletRequest req) {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("actor/list");
@@ -74,7 +70,7 @@ public class ActorCont {
         return mav;
     }// list end
 
-    @RequestMapping("/alllist")
+    @RequestMapping("/actor/list")
     public ModelAndView alllist(HttpServletRequest req) {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("actor/alllist");
@@ -127,4 +123,3 @@ public class ActorCont {
     
     
 }//class end
-

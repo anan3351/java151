@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.showcasting.ShowCastingMapper">
+
+    <resultMap id="ShowCastingResultMap" type="com.example.demo.showcasting.ShowCastingDTO">
+        <id property="castingId" column="casting_id"/>
+        <result property="showId" column="show_id"/>
+        <result property="actorId" column="actor_id"/>
+        <result property="casting" column="casting"/>
+    </resultMap>
+
+    <select id="getAllShowCastings" resultMap="ShowCastingResultMap">
+        SELECT * FROM tb_showcasting
+    </select>
+
+    <select id="getShowCastingById" parameterType="String" resultMap="ShowCastingResultMap">
+        SELECT * FROM tb_showcasting WHERE show_id = #{showId}
+    </select>
+
+    <insert id="addShowCasting" parameterType="com.example.demo.showcasting.ShowCastingDTO">
+        INSERT INTO tb_showcasting (show_id, actor_id, casting) VALUES (#{showId}, #{actorId}, #{casting})
+    </insert>
+
+    <update id="updateShowCasting" parameterType="com.example.demo.showcasting.ShowCastingDTO">
+        UPDATE tb_showcasting SET show_id = #{showId}, actor_id = #{actorId}, casting = #{casting} WHERE casting_id = #{castingId}
+    </update>
+
+    <delete id="deleteShowCasting" parameterType="String">
+        DELETE FROM tb_showcasting WHERE show_id = #{showId}
+    </delete>
+
+</mapper>
