@@ -72,6 +72,23 @@
         .menu-items a:hover {
             color: #0066cc;
         }
+        
+        .menu-title a {
+    color: #000; /* 검정색으로 변경 */
+    text-decoration: none;
+    display: block;
+    padding: 5px 0;
+    transition: color 0.3s ease;
+}
+
+.menu-title a:hover {
+    color: #333; /* 호버 시 약간 밝은 검정색으로 변경 */
+}
+
+.menu-title a::before {
+    margin-right: 5px;
+    color: #000; /* 불릿 포인트 색상도 검정색으로 변경 */
+}
 
         main {
     flex-grow: 1;
@@ -213,12 +230,16 @@
         </div>
         <div class="menu-section">
             <div class="menu-title">나의 후기</div>
+            <ul class="menu-items">
+                <li><a href="#">좌석 후기</a></li>
+                <li><a href="#">공연 후기</a></li>
+            </ul>
         </div>
         <div class="menu-section">
-            <div class="menu-title">멤버십</div>
+            <div class="menu-title"><a href="#">멤버십</a></div>
         </div>
         <div class="menu-section">
-            <div class="menu-title">보유쿠폰</div>
+            <div class="menu-title"><a href="#">보유쿠폰</a></div>
         </div>
         <div class="menu-section">
             <div class="menu-title">* 판매자 전용 *</div>
