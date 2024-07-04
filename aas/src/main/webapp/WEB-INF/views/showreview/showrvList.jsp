@@ -99,7 +99,7 @@
             <tbody>
                 <c:forEach var="review" items="${reviewList}">
                     <tr>
-                        <td><a href="${pageContext.request.contextPath}/showreview/showreviewdetail?rev_id=${review.rev_id}">${review.showTitle}</a></td>
+                        <td><a href="${pageContext.request.contextPath}/showreview/showreviewdetail?rev_id=${review.rev_id}">${review['title']}</a></td>
                         <td>${review.retitle}</td>
                         <td>${review.viewcnt}</td>
                         <td>${review.empcnt}</td>

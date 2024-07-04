@@ -7,8 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.demo.showreview.ShowreviewDAO;
+
 @Controller
-@RequestMapping("")
+@RequestMapping("/showreview")
 public class LikeCont {
 
 	public LikeCont() {
@@ -18,15 +20,19 @@ public class LikeCont {
 	@Autowired
 	private LikeDAO likeDao;
 	
-	@PostMapping("/like")
-	@ResponseBody
-    public String like(@RequestParam("user_Id") String user_Id, @RequestParam("rev_Id") int rev_Id) {
-        if (likeDao.checkIfLiked(user_Id, rev_Id)) {
+	@Autowired
+	private ShowreviewDAO showreviewDao;
+	
+    @PostMapping("/likeReview")
+    @ResponseBody
+    public String likeReview(@RequestParam("user_id") String user_id, @RequestParam("rev_id") int rev_id) {
+        if (likeDao.checkIfLiked(user_id, rev_id)) {
             return "already_liked";
         } else {
-            likeDao.insertLike(user_Id, rev_Id);
+            likeDao.insertLike(user_id, rev_id);
+            showreviewDao.incrementEmpcnt(rev_id);
             return "liked";
         }
-	}
+    }
 	
 }//class end

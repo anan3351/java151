@@ -3,6 +3,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -60,6 +61,18 @@ public class UserCont {
 		}
 		
 
+
+
+
+		@GetMapping("/mypage")
+	    public String mypage(HttpSession session, Model model) {
+	        UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+	        if (loggedInUser != null) {
+	            UserDTO userInfo = userDao.getUserById(loggedInUser.getUser_id());
+	            model.addAttribute("userInfo", userInfo);
+	        }
+	        return "user/mypage";
+	    }
 
 		
 		@RequestMapping("/formmodify")
@@ -141,7 +154,8 @@ public class UserCont {
 		            if ("on".equals(rememberMe)) {
 		                // 로그인 유지를 위한 쿠키 생성
 		                Cookie cookie = new Cookie("remember-me", user.getUser_id());
-		                cookie.setMaxAge(60); // 60초 동안 유효
+		                //cookie.setMaxAge(60); // 60초 동안 유효
+		                cookie.setMaxAge(1*24*60*60); // 1일 동안 유효
 		                //cookie.setMaxAge(7 * 24 * 60 * 60); // 7일 동안 유효
 		                cookie.setPath("/");
 		                response.addCookie(cookie);

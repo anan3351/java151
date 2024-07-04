@@ -82,7 +82,6 @@ public class UserDTO {
 	public void setLevel_name(String level_name) {
 		this.level_name = level_name;
 	}
-
 	public Integer getU_point() {
 		return u_point;
 	}
@@ -95,6 +94,7 @@ public class UserDTO {
 				+ ", post=" + post + ", addr1=" + addr1 + ", addr2=" + addr2 + ", email=" + email + ", snum=" + snum
 				+ ", auth=" + auth + ", level_name=" + level_name + ", u_point=" + u_point + "]";
 	}
+	
 	
 	 
 }

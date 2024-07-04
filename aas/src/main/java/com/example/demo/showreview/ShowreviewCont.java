@@ -2,6 +2,7 @@ package com.example.demo.showreview;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import javax.management.Query;
 
@@ -16,6 +17,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.like.LikeDAO;
 import com.example.demo.show.ShowDAO;
+import org.springframework.ui.Model;
+
 
 @Controller
 @RequestMapping("")
@@ -81,7 +84,7 @@ public class ShowreviewCont {
 	            endPage = totalPage;
 	        }
 
-	        List<ShowreviewDTO> list = null;
+	        List<Map<String, Object>> list = null;
 	        if (totalRowCount > 0) {
 	            list = showreviewDao.list(startRow, endRow);
 	        } else {
@@ -97,13 +100,14 @@ public class ShowreviewCont {
 		 return mav;
 	 }
 	 
-	    @GetMapping("/showreviewdetail")
+	    @GetMapping("/showreview/showreviewdetail")
 	    public ModelAndView showrvdetail(@RequestParam("rev_id") int rev_Id) {
 	        ModelAndView mav = new ModelAndView();
 	        ShowreviewDTO review = showreviewDao.getReviewById(rev_Id);
 	        List<ReplyDTO> replies = replyDao.getRepliesByReviewId(rev_Id);
 	        mav.addObject("review", review);
 	        mav.addObject("replies", replies);
+	        showreviewDao.incrementViewCount(rev_Id);
 	        mav.setViewName("showreview/showrvdetail");
 	        return mav;
 	    }
@@ -125,5 +129,24 @@ public class ShowreviewCont {
 	            return "liked";
 	        }
 	    }
+/*새로운 리스트
+	    @GetMapping("/list1")
+	    public String list1(Model model, @RequestParam(defaultValue = "1") int page) {
+	        int pageSize = 10; // 페이지당 항목 수
+	        int totalCount = showreviewDao.totalRowCount();
+	        int totalPages = (int) Math.ceil((double) totalCount / pageSize);
+	        
+	        int startRow = (page - 1) * pageSize + 1;
+	        int endRow = Math.min(page * pageSize, totalCount);
+
+	        List<ShowreviewDTO> list = showreviewDao.list1(startRow, endRow);
+	        
+	        model.addAttribute("list", list);
+	        model.addAttribute("currentPage", page);
+	        model.addAttribute("totalPages", totalPages);
+	        model.addAttribute("totalCount", totalCount);
+
+	        return "showreview/list1";
+	    }*/
 
 }//class end

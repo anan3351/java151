@@ -50,7 +50,10 @@
         <p>${review.content}</p>
     </div>
     <div class="review-actions">
-        <button onclick="likeReview('${sessionScope.user_Id}', ${review.rev_id})">공감하기</button> 공감수: ${review.empcnt}
+        <button onclick="likeReview('${sessionScope.loggedInUser.user_id}', ${review.rev_id != null ? review.rev_id : '0'})"
+        ${sessionScope.loggedInUser == null || review.rev_id == null ? 'disabled' : ''}>
+    		공감하기
+		</button>공감수: ${review.empcnt != null ? review.empcnt : '0'}
     </div>
     <div class="comments">
         <h3>댓글</h3>
@@ -68,18 +71,22 @@
     </div>
 </div>
 <script>
-    function likeReview(user_Id, rev_Id) {
-        fetch(`${pageContext.request.contextPath}/showreview/likeReview?user_Id=` + user_Id + `&rev_Id=` + rev_Id, {
-            method: 'POST'
-        }).then(response => response.text()).then(result => {
-            if (result === 'liked') {
-                alert('공감했습니다!');
-                location.reload();
-            } else if (result === 'already_liked') {
-                alert('이미 공감하셨습니다.');
-            }
-        });
+function likeReview(user_id, rev_id) {
+    if (!rev_id) {
+        alert('유효하지 않은 리뷰 ID입니다.');
+        return;
     }
+    fetch(`${pageContext.request.contextPath}/showreview/likeReview?user_id=${user_id}&rev_id=${rev_id}`, {
+        method: 'POST'
+    }).then(response => response.text()).then(result => {
+        if (result === 'liked') {
+            alert('공감했습니다!');
+            location.reload();
+        } else if (result === 'already_liked') {
+            alert('이미 공감하셨습니다.');
+        }
+    });
+}
 </script>
 </body>
 </html>
