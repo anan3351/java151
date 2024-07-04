@@ -173,34 +173,33 @@ public class CrawlingTest {
         	JSONObject jsonObject = new JSONObject(); // 반환된 링크 통해 크롤링 된 데이터를 저장
         	
         	// 한 공연코드에 예매처가 둘 이상이라면, 그중 예매처 검색
+        	/*
         	if (linklist.size()>1) {
-        		int j = 0;
-                Boolean b = true;
-                
-                while (b) {
-                    if (linklist.get(j).contains("interpark")) {
+        		for (int j=0; j<linklist.size(); j++) {
+        			if (linklist.get(j).contains("interpark")) {
                         link = linklist.get(j);
-                        showDao.interpart_data(link);
-                        b = false;
+                        //showDao.interpart_data(link);
+                        break;
                     } else if (linklist.get(j).contains("yes24")) {
                         link = linklist.get(j);
-                        showDao.yes24_data(link);
-                        b = false;
+                        //showDao.yes24_data(link);
+                        break;
                     } else if (linklist.get(j).contains("ticketlink")) {
                         link = linklist.get(j);
-                        showDao.ticketlink_data(link);
-                        b = false;
+                        //showDao.ticketlink_data(link);
+                        break;
                     } else {
                         link = linklist.get(j); // 인터파크, 예스24, 티켓링크 중 예매처가 없다면 그 외 예매처 반환
                     }
-                    j++;
-                }
+        		}
         	} else {
         		link = linklist.get(0);
-        	}
+        	}*/
         	
         	System.out.println(link);
         }
+        
+        
         
 
     }

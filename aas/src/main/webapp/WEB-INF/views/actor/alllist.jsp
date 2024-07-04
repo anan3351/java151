@@ -90,8 +90,8 @@
         .pagination {
             display: flex;
             justify-content: center;
+            align-items: center;
         }
-
         .page-button {
             margin: 0 5px;
             padding: 10px 20px;
@@ -101,10 +101,32 @@
             border-radius: 4px;
             cursor: pointer;
         }
+                .nav-button {
+            padding: 10px;
+            border: none;
+            background: #007bff;
+            color: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .nav-button:hover {
+            background: #0056b3;
+        }
+
+        .disabled {
+            background: #ddd;
+            cursor: not-allowed;
+        }
 
         .page-button:hover {
             background: #0056b3;
         }
+        
+         .page-button.active {
+    background-color: red;
+    color: white;
+}
     </style>
 
     <div class="filters">
@@ -130,7 +152,7 @@
             <tbody>
                 <c:forEach var="actor" items="${list}">
                     <tr>
-                        <td><img src="${actor.photo}" alt="${actor.a_name}" style="width:50px; height:75px;"/><br>${actor.a_name}</td>
+                        <td><img src="${actor.photo}" alt="${actor.a_name}" style="width:50px; height:75px;"/><br><span style="cursor:pointer; color:blue;" onclick="location.href='${pageContext.request.contextPath}/actordetail?id=${actor.actor_id}'">${actor.a_name}</span></td>
                         <td>${actor.job}</td>
                         <td><!-- 최근공연 정보를 여기에 추가 --></td>
                     </tr>
@@ -139,10 +161,20 @@
         </table>
     </div>
     <div class="pagination">
-        <c:forEach var="i" begin="${startPage}" end="${endPage}">
-            <a href="${pageContext.request.contextPath}/actor/list?pageNum=${i}">
-                <button class="page-button">${i}</button>
-            </a>
-        </c:forEach>
-    </div>
+    <c:if test="${currentPage > 1}">
+        <a href="${pageContext.request.contextPath}/actor/list?pageNum=${currentPage - 1}">
+            <button class="nav-button">&lt;</button>
+        </a>
+    </c:if>
+    <c:forEach var="i" begin="${startPage}" end="${endPage}">
+        <a href="${pageContext.request.contextPath}/actor/list?pageNum=${i}">
+            <button class="page-button ${currentPage == i ? 'active' : ''}">${i}</button>
+        </a>
+    </c:forEach>
+    <c:if test="${currentPage < totalPages}">
+        <a href="${pageContext.request.contextPath}/actor/list?pageNum=${currentPage + 1}">
+            <button class="nav-button">&gt;</button>
+        </a>
+    </c:if>
+</div>
 </div>
