@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 
 @Controller
@@ -126,6 +129,48 @@ public class UserCont {
 		public String join() {
 		        return "user/join";      
 		    }//join() end
+		
+		//로그인처리
+		@PostMapping("/login")
+		public String login(@RequestParam String user_id, @RequestParam String pwd, 
+                @RequestParam(required = false) String rememberMe,
+                HttpServletResponse response, HttpSession session,
+                RedirectAttributes redirectAttributes) {
+		    try {
+		        UserDTO user = userDao.login(user_id, pwd);
+		        if (user != null) {
+		            // 로그인 성공
+		            session.setAttribute("loggedInUser", user);//로그인정보를저장
+		            
+		            if ("on".equals(rememberMe)) {
+		                // 로그인 유지를 위한 쿠키 생성
+		                Cookie cookie = new Cookie("remember-me", user.getUser_id());
+		                cookie.setMaxAge(60); // 60초 동안 유효
+		                //cookie.setMaxAge(7 * 24 * 60 * 60); // 7일 동안 유효
+		                cookie.setPath("/");
+		                response.addCookie(cookie);
+		            }
+		            return "redirect:/";  // 메인 페이지로 리다이렉트
+		        } else {
+		            // 로그인 실패
+		            redirectAttributes.addFlashAttribute("loginError", "아이디와 비밀번호를 다시 확인해주세요");
+		            return "redirect:/user/login";
+		        }
+		    } catch (Exception e) {
+		        redirectAttributes.addFlashAttribute("loginError", "로그인 처리 중 오류가 발생했습니다");
+		        return "redirect:/user/login";
+		    }
+		}
+		
+		//로그아웃처리
+		@GetMapping("/logout")
+		public String logout(HttpSession session) {
+		    session.invalidate();
+		    return "redirect:/user/login";
+		}
+		
+	
+		
 		
 		
 }//class end

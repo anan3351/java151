@@ -17,5 +17,9 @@
 	<select id="isEmailDuplicate" parameterType="string" resultType="int">
     SELECT COUNT(*) FROM aas.tb_user WHERE email = #{email}
 	</select>
+	
+	<select id="login" parameterType="string" resultType="com.example.demo.user.UserDTO">
+    SELECT * FROM aas.tb_user WHERE user_id = #{user_id}
+	</select>
     
 </mapper>
