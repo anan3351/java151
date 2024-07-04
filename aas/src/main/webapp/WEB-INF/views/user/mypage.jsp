@@ -5,28 +5,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
     <title>My Page</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f0f0f0;
-            display: flex;
-            /* 전체 body에 패딩 추가하여 사이드바 왼쪽에 여백 생성 */
-    		padding-left: 40px;
-    		padding-top: 20px; 
-        }
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+    display: flex;
+    flex-direction: row; /* 기본적으로 가로 배치 */
+    padding: 20px;
+}
 
         .sidebar {
-		    width: 250px;
-		    background-color: white;
-		    padding: 20px;
-		    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-		    margin-right: 20px;
-		    /* 모서리를 둥글게 만듭니다. 10px는 예시 값이며 조절 가능합니다. */
-		    border-radius: 10px;
-		}
+    width: 250px;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    margin-right: 20px;
+    border-radius: 10px;
+    flex-shrink: 0; /* 사이드바 크기 고정 */
+}
 
         .profile {
             text-align: center;
@@ -93,10 +93,10 @@
         main {
     flex-grow: 1;
     padding: 20px;
-    max-width: 800px; /* 기존 최대 너비 유지 */
-    margin: 20px auto; /* 상하 마진 유지, 좌우 auto로 중앙 정렬 */
-    /* 왼쪽으로 약간 이동 */
-    transform: translateX(-200px);
+    max-width: 800px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
         header {
@@ -194,18 +194,33 @@
             border: 1px solid #ddd;
             border-radius: 5px;
         }
+        
+        @media (max-width: 768px) {
+    body {
+        flex-direction: column; /* 화면이 좁아지면 세로로 배치 */
+    }
+
+    .sidebar {
+        width: auto;
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+
+    main {
+        max-width: 100%;
+    }
+}
     </style>
 </head>
 <body>
     <div class="sidebar">
-        <div class="profile">
-            <div class="profile-image"></div>
-            <p>유저 이름</p>
-            <p>유저 등급</p>
-            <p>멤버십 등급</p>
-            <p class="points">내 포인트 - 1,000,000p</p>
-            <button>회원정보 수정</button>
-        </div>
+    <div class="profile">
+        <div class="profile-image"></div>
+        <p>${userInfo.user_id} 님</p>
+        <p>회원등급 - ${userInfo.auth}</p>
+        <p>${userInfo.level_name} Level</p>
+        <p class="points">내 포인트 - <fmt:formatNumber value="${userInfo.u_point}" pattern="#,###"/>p</p>
+    </div>
         <div class="menu-section">
             <div class="menu-title">예매 티켓</div>
             <ul class="menu-items">
@@ -231,8 +246,6 @@
         <div class="menu-section">
             <div class="menu-title">나의 후기</div>
             <ul class="menu-items">
-
-                <li><a href="${pageContext.request.contextPath}/showreview/showreviewForm?user_id=${user.user_id}">후기작성</a></li>
                 <li><a href="#">좌석 후기</a></li>
                 <li><a href="#">공연 후기</a></li>
             </ul>
@@ -251,7 +264,7 @@
     <main>
         <div class="welcome-box">
             <div class="heart-icon">❤</div>
-            <p>${user.user_id} 현재 WELCOME 등급입니다.</p>
+            <p>${userInfo.user_name}님은 현재 ${userInfo.level_name} Level입니다.</p>
             <button class="rank-btn">등급별 혜택보기</button>
         </div>
 
