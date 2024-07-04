@@ -151,27 +151,60 @@ input[type="password"], input[type="text"] {
             주기적인 <span class="highlight">비밀번호 변경</span>을 통해<br>
             개인정보를 안전하게 보호하세요.
         </p>
-        <form>
+        
+        <c:if test="${not empty error}">
+            <p class="error-message">${error}</p>
+        </c:if>
+        <c:if test="${not empty message}">
+            <p class="success-message">${message}</p>
+        </c:if>
+        
+        <form action= "${pageContext.request.contextPath}/user/pwmodify" method="post" onsubmit="return memberCheck()">
             <div class="form-group">
-            	<div class="password-input-container">
-                <input type="password" id="new-password" placeholder="새 비밀번호">
-                 <span class="password-toggle"><i class="fa fa-eye"></i></span>
+                <div class="password-input-container">
+                    <input type="password" id="pwd" name="pwd" placeholder="새 비밀번호" maxlength="12">
+                    <span class="password-toggle"><i class="fa fa-eye"></i></span>
                 </div>
             </div>
             <div class="form-group">
-            	<div class="password-input-container">
-                <input type="password" id="confirm-password" placeholder="새 비밀번호 확인">
-                 <span class="password-toggle"><i class="fa fa-eye"></i></span>
+                <div class="password-input-container">
+                    <input type="password" id="pwd-confirm" name="pwd-confirm" placeholder="새 비밀번호 확인" maxlength="12">
+                    <span class="password-toggle"><i class="fa fa-eye"></i></span>
                 </div>
             </div>
             <p class="password-rule">
                 ❗비밀번호는 8~12자 이내로 영문(대,소문자), 숫자, 특수문자 3가지 조합 중 2가지 이상을 조합하셔서 만드시면 됩니다.
             </p>
             <div class="button-group">
-                <button type="button" class="btn btn-cancel">취소</button>
+                <button type="button" class="btn btn-cancel" onclick="history.back()">취소</button>
                 <button type="submit" class="btn btn-confirm">변경</button>
             </div>
         </form>
     </div>
 </body>
+
+<script>
+function memberCheck() {
+
+    // 비밀번호 유효성 검사
+    let passwd = $("#pwd").val().trim();
+    if (passwd.length < 8 || passwd.length > 12) {
+        alert("비밀번호는 8~12글자로 작성해주세요!");
+        $("#pwd").focus();
+        return false;
+    }
+
+    // 비밀번호 확인
+    let repasswd = $("#pwd-confirm").val().trim();
+    if (passwd != repasswd) {
+        alert("비밀번호와 비밀번호 확인이 일치하지 않습니다!");
+        $("#pwd-confirm").focus();
+        return false;
+    }
+	 // 모든 유효성 검사 통과시 true 반환
+	    return true;
+}
+
+
+</script>
 </html>

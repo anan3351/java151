@@ -25,5 +25,31 @@
 	<select id="getUserById" parameterType="string" resultType="com.example.demo.user.UserDTO">
     SELECT user_id, user_name, auth, level_name, u_point FROM aas.tb_user WHERE user_id = #{user_id}
 	</select>
+	
+	<update id="updateUserInfo" parameterType="com.example.demo.user.UserDTO">
+    UPDATE aas.tb_user
+    <set>
+        <if test="name != null and name != ''">
+            name = #{name},
+        </if>
+        <if test="email != null and email != ''">
+            email = #{email},
+        </if>
+        <if test="tel_num != null and tel_num != ''">
+            tel_num = #{tel_num},
+        </if>
+    </set>
+    WHERE user_id = #{user_id}
+	</update>
+	
+	<select id="getUserInfo" parameterType="string" resultType="com.example.demo.user.UserDTO">
+        SELECT user_id, user_name, email, tel_num
+        FROM aas.tb_user
+        WHERE user_id = #{user_id}
+    </select>
+    
+    <update id="updatePassword" parameterType="map">
+    UPDATE aas.tb_user SET pwd = #{pwd} WHERE user_id = #{userId}
+	</update>
     
 </mapper>
