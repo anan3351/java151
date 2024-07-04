@@ -4,7 +4,6 @@
 <%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn"  uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<!DOCTYPE html>
 <html>
 <head>
     <title>공연 관람 후기</title>
@@ -69,8 +68,8 @@
     </div>
 </div>
 <script>
-    function likeReview(userId, revId) {
-        fetch(`${pageContext.request.contextPath}/showreview/likeReview?user_Id=` + userId + `&rev_Id=` + revId, {
+    function likeReview(user_Id, rev_Id) {
+        fetch(`${pageContext.request.contextPath}/showreview/likeReview?user_Id=` + user_Id + `&rev_Id=` + rev_Id, {
             method: 'POST'
         }).then(response => response.text()).then(result => {
             if (result === 'liked') {
