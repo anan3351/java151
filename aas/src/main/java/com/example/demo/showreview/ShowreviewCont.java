@@ -36,8 +36,9 @@ public class ShowreviewCont {
 	
 	
 	@RequestMapping("/showreview/showreviewForm")
-	public ModelAndView showrvForm () {
+	public ModelAndView showrvForm (@RequestParam("user_id") String user_Id) {
 		ModelAndView mav = new ModelAndView();
+		mav.addObject("user_id", user_Id);
 		mav.setViewName("showreview/showrvForm");	
 		return mav;
 	}

@@ -113,7 +113,6 @@
         <table id="searchResults" class="table-container">
             <thead>
                 <tr>
-                    <th>공연ID</th>
                     <th>공연명</th>
                     <th>장르</th>
                     <th>시작일</th>
@@ -129,29 +128,28 @@
 </div>
 
 <script>
-    function searchShow() {
-        var keyword = document.getElementById("searchInput").value;
-        if (keyword.length < 2) {
-            document.getElementById("searchResults").getElementsByTagName('tbody')[0].innerHTML = "";
-            return;
-        }
-        fetch(`${pageContext.request.contextPath}/searchShows?keyword=` + keyword)
-            .then(response => response.json())
-            .then(data => {
-                var tbody = document.getElementById("searchResults").getElementsByTagName('tbody')[0];
-                tbody.innerHTML = "";
-                data.forEach(show => {
-                    var row = tbody.insertRow();
-                    row.innerHTML = `
-                        <td>${show.show_id}</td>
-                        <td>${show.title}</td>
-                        <td>${show.genre}</td>
-                        <td>${show.start_day}</td>
-                        <td>${show.end_day}</td>
-                        <td><button type="button" class="button" onclick="selectShow('${show.show_id}', '${show.title}')">선택</button></td>
-                    `;
-                });
+function searchShow() {
+    var keyword = document.getElementById("searchInput").value;
+    if (keyword.length < 2) {
+        document.getElementById("searchResults").getElementsByTagName('tbody')[0].innerHTML = "";
+        return;
+    }
+    fetch('/searchShows?keyword=' + keyword)
+        .then(response => response.json())
+        .then(data => {
+            var tbody = document.getElementById("searchResults").getElementsByTagName('tbody')[0];
+            tbody.innerHTML = "";
+            data.forEach(show => {
+                var row = tbody.insertRow();
+                row.innerHTML = `
+                    <td>${show.title}</td>
+                    <td>${show.genre}</td>
+                    <td>${show.start_day}</td>
+                    <td>${show.end_day}</td>
+                    <td><button type="button" class="button" onclick="selectShow('${show.show_id}', '${show.title}')">선택</button></td>
+                `;
             });
+        });
     }
 
     function openModal() {
@@ -162,8 +160,8 @@
         document.getElementById("myModal").style.display = "none";
     }
 
-    function selectShow(showId, showTitle) {
-        document.getElementById("showId").value = showId;
+    function selectShow(show_Id, showTitle) {
+        document.getElementById("show_Id").value = show_Id;
         document.getElementById("showTitle").value = showTitle;
         closeModal();
     }
