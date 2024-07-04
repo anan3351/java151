@@ -32,5 +32,14 @@ public class ShowreviewDAO {
         params.put("endRow", endRow);
         return sqlSession.selectList("showreview.list", params);
     }
+    
+    //추가
+    public ShowreviewDTO getReviewById(int rev_Id) {
+        return sqlSession.selectOne("showreview.getReviewById", rev_Id);
+    }
+
+    public void incrementEmpcnt(int rev_Id) {
+        sqlSession.update("showreview.incrementEmpcnt", rev_Id);
+    }
 	
 }//class end

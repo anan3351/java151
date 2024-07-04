@@ -213,6 +213,9 @@
         </div>
         <div class="menu-section">
             <div class="menu-title">나의 후기</div>
+            <ul class="menu-items">
+                <li><a href="/showreview/showreviewForm">후기작성</a></li>
+            </ul>
         </div>
         <div class="menu-section">
             <div class="menu-title">멤버십</div>

@@ -23,4 +23,15 @@
         LIMIT #{startRow}, #{endRow}
     </select>
     
+     <select id="getReviewById" parameterType="int" resultType="com.example.demo.showreview.ShowreviewDTO">
+        SELECT rev_id, show_id, user_id, retitle, content, r_date, viewcnt, empcnt
+        FROM aas.tb_review
+        WHERE rev_id = #{rev_id}
+    </select>
+    
+    <update id="incrementEmpcnt" parameterType="int">
+        UPDATE aas.tb_review
+        SET empcnt = empcnt + 1
+        WHERE rev_id = #{rev_id}
+    </update>
 </mapper>

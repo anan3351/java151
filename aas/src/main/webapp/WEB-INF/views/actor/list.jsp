@@ -157,7 +157,7 @@
                             <span style="cursor:pointer; color:blue;" onclick="location.href='${pageContext.request.contextPath}/actordetail?id=${actor.actor_id}'">${actor.a_name}</span>
                         </td>
                         <td>${actor.job}</td>
-                        <td><!-- 최근공연 정보를 여기에 추가 --></td>
+                        <td>${actor.recent_work}</td>
                     </tr>
                 </c:forEach>
             </tbody>

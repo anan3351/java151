@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.example.demo.like.LikeDAO;
 import com.example.demo.show.ShowDAO;
 
 @Controller
@@ -25,6 +26,13 @@ public class ShowreviewCont {
 	
 	@Autowired
 	private ShowreviewDAO showreviewDao;
+	
+	@Autowired
+	private ReplyDAO replyDao;
+	
+	@Autowired
+	private LikeDAO likeDao;
+	
 	
 	
 	@RequestMapping("/showreview/showreviewForm")
@@ -87,7 +95,34 @@ public class ShowreviewCont {
 		 
 		 return mav;
 	 }
+	 
+	    @GetMapping("/showreviewdetail")
+	    public ModelAndView showrvdetail(@RequestParam("rev_id") int rev_Id) {
+	        ModelAndView mav = new ModelAndView();
+	        ShowreviewDTO review = showreviewDao.getReviewById(rev_Id);
+	        List<ReplyDTO> replies = replyDao.getRepliesByReviewId(rev_Id);
+	        mav.addObject("review", review);
+	        mav.addObject("replies", replies);
+	        mav.setViewName("showreview/showrvdetail");
+	        return mav;
+	    }
 	
+	    @PostMapping("/addReply")
+	    public String addReply(ReplyDTO replyDto) {
+	        replyDao.insert(replyDto);
+	        return "redirect:/showreview/showreviewdetail?rev_id=" + replyDto.getRev_Id();
+	    }
 	
+	    @PostMapping("/likeReview")
+	    @ResponseBody
+	    public String likeReview(@RequestParam("user_Id") String user_Id, @RequestParam("rev_Id") int rev_Id) {
+	        if (likeDao.checkIfLiked(user_Id, rev_Id)) {
+	            return "already_liked";
+	        } else {
+	            likeDao.insertLike(user_Id, rev_Id);
+	            showreviewDao.incrementEmpcnt(rev_Id);
+	            return "liked";
+	        }
+	    }
 
 }//class end
