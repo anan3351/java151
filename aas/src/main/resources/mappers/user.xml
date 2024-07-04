@@ -21,5 +21,9 @@
 	<select id="login" parameterType="string" resultType="com.example.demo.user.UserDTO">
     SELECT * FROM aas.tb_user WHERE user_id = #{user_id}
 	</select>
+	
+	<select id="getUserById" parameterType="string" resultType="com.example.demo.user.UserDTO">
+    SELECT user_id, user_name, auth, level_name, u_point FROM aas.tb_user WHERE user_id = #{user_id}
+	</select>
     
 </mapper>

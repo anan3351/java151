@@ -49,6 +49,10 @@ public class UserDAO {
         return inputPassword != null && inputPassword.equals(storedPassword);
     }
     
+    // 사용자 정보를 가져오는 메서드 추가
+    public UserDTO getUserById(String user_id) {
+        return sqlSession.selectOne("user.getUserById", user_id);
+    }
     
     
 }//class end
