@@ -86,7 +86,7 @@ public class ShowDAO {
     }
     
     
-    // 공연장 - 관 이름 찾는 필터
+    // 공연장 - 관 이름 찾는 필터(hall_id 이용)
     public List<String> theater_search(String theater) {
         List<String> theater_name = new ArrayList<>();
         
@@ -102,8 +102,8 @@ public class ShowDAO {
             rs = pstmt.executeQuery();
             
             while (rs.next()) {
-                String h_name = rs.getString("h_name");
-                String miniHall = rs.getString("miniHall");
+                String h_name = rs.getString("h_name"); // 공연장 이름
+                String miniHall = rs.getString("miniHall"); // 세부관 이름
                 
                 theater_name.add(h_name);
                 theater_name.add(miniHall);
@@ -144,6 +144,56 @@ public class ShowDAO {
             DBClose.close(con, pstmt, rs);
         }
         
+        return hall_id;
+    }
+
+    
+ // hall_id 검색 -> 값이 딱 두개 나온다면 "-"가 붙은걸로 저장
+    public String mini_search2(String theater) {
+        String hall_id = null;
+        int cnt = 0;
+
+        try {
+            con = dbopen.getConnection();
+            sql = new StringBuilder();
+
+            sql.append("SELECT count(hall_id) as cnt FROM tb_hall WHERE hall_id LIKE ? ");
+
+            pstmt = con.prepareStatement(sql.toString());
+            pstmt.setString(1, theater + "%");
+
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                cnt = rs.getInt("cnt");
+            }
+
+            if (cnt == 2) {
+                // 자원 정리
+                rs.close();
+                pstmt.close();
+
+                sql = new StringBuilder();
+                sql.append("SELECT hall_id FROM tb_hall WHERE hall_id LIKE ? ");
+
+                pstmt = con.prepareStatement(sql.toString());
+                pstmt.setString(1, theater + "-%");
+
+                rs = pstmt.executeQuery();
+
+                if (rs.next()) {
+                    hall_id = rs.getString("hall_id");
+                }
+            } else {
+                hall_id = null;
+            }
+
+        } catch (Exception e) {
+            System.out.println("세부 공연장 조회 실패 : " + e);
+        } finally {
+            DBClose.close(con, pstmt, rs);
+        }
+
         return hall_id;
     }
 
