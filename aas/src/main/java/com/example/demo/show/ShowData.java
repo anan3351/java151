@@ -23,9 +23,9 @@ public class ShowData {
 
 	    String defaultUrl = "http://www.kopis.or.kr/openApi/restful/pblprfr";
 	    String serviceKey = "f4acc9d51cc74c92871887e4f695cc85";
-	    String stdate = "20050101";
-	    String eddate = "20101231";
-	    String shcate = "GGGA"; // 연극 : AAAA, 뮤지컬 : GGGA
+	    String stdate = "20210101";
+	    String eddate = "20241231";
+	    String shcate = "AAAA"; // 연극 : AAAA, 뮤지컬 : GGGA
 	    String rows = "200";
 	    int cpage = 1;
 
@@ -118,32 +118,39 @@ public class ShowData {
 	                String theater2 = showDao.getTagValue("mt10id", detailDoc); // 공연장id
 	                List<String> theater_name = showDao.theater_search(theater2); // 공연장(부모) 이름 찾기
 	                String mini = null;
-	                
 	                int n = theater_name.get(0).length();
 	                
 	                // 세부관 이름 추출
 	                if (n < theater1.length()) {
-	                	mini = theater1.substring(n).trim();
-		                int start = mini.indexOf("(") + 1;
-		        	    int end = mini.lastIndexOf(")");
-		        	    mini = mini.substring(start, end); // 세부관 이름(miniHall)
-		        	    
-		        	    mini = showDao.mini_search(mini); // 세부관 ID(hall_id)
-		        	    
-		        	    if (mini == "" || mini == null) {
-		        	    	mini = showDao.mini_search2(theater2); // 세부관 ID(hall_id)
-		        	    	if (mini == null) {
+	                	if (theater_name.get(0).equals("정보없음")) {
+	                		mini = "FC0";
+	                	} else {
+	                		mini = theater1.substring(n).trim();
+			                int start = mini.indexOf("(") + 1;
+			        	    int end = mini.lastIndexOf(")");
+			        	    mini = mini.substring(start, end); // 세부관 이름(miniHall)
+			        	    
+			        	    mini = showDao.mini_search(mini); // 세부관 ID(hall_id)
+			        	    
+			        	    if (mini == "" || mini == null) {
+			        	    	mini = showDao.mini_search2(theater2); // 세부관 ID(hall_id)
+			        	    	if (mini == null) {
+			        	    		mini = theater2;
+			        	    	}
+			        	    }
+	                	}
+	                } else { // 길이가 같다면
+	                	if (theater_name.get(0).equals("정보없음")) {
+	                		mini = "FC0";
+	                	} else {
+	                		mini = showDao.mini_search2(theater2); // 세부관 ID(hall_id)
+		                	if (mini == null) {
 		        	    		mini = theater2;
 		        	    	}
-		        	    }
-	                } else { // 길이가 같다면 공연장 이름 반환
-	                	mini = showDao.mini_search2(theater2); // 세부관 ID(hall_id)
-	                	if (mini == null) {
-	        	    		mini = theater2;
-	        	    	}
+	                	}
 	                }
 	                
-	                //System.out.println(mini);
+	                // System.out.println(mini);
 
 	                
 	                // JSON 객체 생성

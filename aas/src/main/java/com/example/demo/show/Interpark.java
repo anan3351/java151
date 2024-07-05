@@ -29,10 +29,10 @@ public class Interpark {
                 String title = contentElement.findElement(By.tagName("h3")).getText();
                 
                 // 바리케이트 없을 때 사용하는 코드
-                // List<WebElement> contentDetailImages = contentElement.findElements(By.cssSelector(".contentDetail img"));
+                List<WebElement> contentDetailImages = contentElement.findElements(By.cssSelector(".contentDetail img"));
                 
                 
-                
+                /*
                 // 바리케이트 -> 속도 저하 문제 발생
                 List<WebElement> contentDetailImages = null;
                 
@@ -44,8 +44,7 @@ public class Interpark {
                         Thread.sleep(2000); // 2초 대기 후 다시 시도
                     }
                 }
-                //
-                
+                */
                 
 
                 // img 요소가 존재할 때만 map에 저장

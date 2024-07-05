@@ -101,12 +101,16 @@ public class ShowDAO {
             
             rs = pstmt.executeQuery();
             
-            while (rs.next()) {
+            if (rs.next()) {
                 String h_name = rs.getString("h_name"); // 공연장 이름
                 String miniHall = rs.getString("miniHall"); // 세부관 이름
                 
                 theater_name.add(h_name);
                 theater_name.add(miniHall);
+            } else {
+            	// 공연 상세정보에는 공연장ID가 있으나, 공연장에서 해당 아이디를 찾을 수 없는 경우
+                theater_name.add("정보없음");
+                theater_name.add("");
             }
 
         } catch (Exception e) {
@@ -117,6 +121,7 @@ public class ShowDAO {
         
         return theater_name;
     }
+
     
     
     // 관 ID 조회
@@ -148,7 +153,7 @@ public class ShowDAO {
     }
 
     
- // hall_id 검색 -> 값이 딱 두개 나온다면 "-"가 붙은걸로 저장
+    // hall_id 검색 -> 값이 딱 두개 나온다면 "-"가 붙은걸로 저장
     public String mini_search2(String theater) {
         String hall_id = null;
         int cnt = 0;
