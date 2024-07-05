@@ -17,14 +17,14 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-public class Musical {
+public class ShowData {
 	public static void main(String[] args) {
 	    ShowDAO showDao = new ShowDAO();
 
 	    String defaultUrl = "http://www.kopis.or.kr/openApi/restful/pblprfr";
 	    String serviceKey = "f4acc9d51cc74c92871887e4f695cc85";
-	    String stdate = "20240101";
-	    String eddate = "20241231";
+	    String stdate = "20050101";
+	    String eddate = "20101231";
 	    String shcate = "GGGA"; // 연극 : AAAA, 뮤지컬 : GGGA
 	    String rows = "200";
 	    int cpage = 1;
@@ -66,6 +66,7 @@ public class Musical {
 	            DocumentBuilder builder = factory.newDocumentBuilder();
 	            Document doc = builder.parse(new java.io.ByteArrayInputStream(response.toString().getBytes("UTF-8")));
 
+	            
 	            // 공연ID(mt20id)만 추출 후 리스트에 저장
 	            NodeList nodeList = doc.getElementsByTagName("mt20id");
 	            List<String> showList = new ArrayList<>();
@@ -99,6 +100,7 @@ public class Musical {
 	                    detailReader = new BufferedReader(new InputStreamReader(detailConn.getErrorStream()));
 	                }
 
+	                
 	                // 공연 세부 정보 detailSb에 저장
 	                StringBuilder detailSb = new StringBuilder();
 	                String detailLine;
@@ -108,28 +110,42 @@ public class Musical {
 	                detailReader.close();
 	                detailConn.disconnect();
 
+	                
 	                // XML 데이터 파싱
 	                Document detailDoc = builder.parse(new java.io.ByteArrayInputStream(detailSb.toString().getBytes("UTF-8")));
 
-	                String theater1 = showDao.getTagValue("fcltynm", detailDoc);
-	                String theater2 = showDao.getTagValue("mt10id", detailDoc);
-	                List<String> theater_name = showDao.theater_search(theater2);
+	                String theater1 = showDao.getTagValue("fcltynm", detailDoc); // 공연장 이름(세부관 포함)
+	                String theater2 = showDao.getTagValue("mt10id", detailDoc); // 공연장id
+	                List<String> theater_name = showDao.theater_search(theater2); // 공연장(부모) 이름 찾기
 	                String mini = null;
 	                
-
-	                if (theater1.contains(theater_name.get(0))) {
-	                	
-	                    // 세부 공연장 ID 추출
-	                    String refinedTheater = refineTheaterName(theater1);
-	                    mini = showDao.mini_search(refinedTheater);
-
-	                    if (mini == "" || mini == null) {
-	                        mini = showDao.getTagValue("mt10id", detailDoc);
-	                    }
-	                } else {
-	                    mini = showDao.getTagValue("mt10id", detailDoc);
+	                int n = theater_name.get(0).length();
+	                
+	                // 세부관 이름 추출
+	                if (n < theater1.length()) {
+	                	mini = theater1.substring(n).trim();
+		                int start = mini.indexOf("(") + 1;
+		        	    int end = mini.lastIndexOf(")");
+		        	    mini = mini.substring(start, end); // 세부관 이름(miniHall)
+		        	    
+		        	    mini = showDao.mini_search(mini); // 세부관 ID(hall_id)
+		        	    
+		        	    if (mini == "" || mini == null) {
+		        	    	mini = showDao.mini_search2(theater2); // 세부관 ID(hall_id)
+		        	    	if (mini == null) {
+		        	    		mini = theater2;
+		        	    	}
+		        	    }
+	                } else { // 길이가 같다면 공연장 이름 반환
+	                	mini = showDao.mini_search2(theater2); // 세부관 ID(hall_id)
+	                	if (mini == null) {
+	        	    		mini = theater2;
+	        	    	}
 	                }
+	                
+	                //System.out.println(mini);
 
+	                
 	                // JSON 객체 생성
 	                JSONObject jsonObject = new JSONObject();
 	                jsonObject.put("show_id", showDao.getTagValue("mt20id", detailDoc));
@@ -183,25 +199,4 @@ public class Musical {
 	        }
 	    }
 	}
-
-	// 세부 공연장 추출
-	private static String refineTheaterName(String theater) {
-	    String mini = null;
-	    int start = theater.indexOf("(") + 1;
-	    int end = theater.lastIndexOf(")");
-	    mini = theater.substring(start, end);
-
-	    // ")"가 "("보다 앞에 있다면 그렇지 않을때까지 값 수정
-	    while (true) {
-	        if (start < 0 || end < 0 || start > end) break;
-	        mini = theater.substring(start, end);
-	        
-	        if (!(mini.indexOf(")") < mini.indexOf("("))) break;
-	        start = theater.indexOf("(", start) + 1;
-	        end = theater.length()-1;
-	    }
-	    
-	    return mini;
-	}
-
 }
