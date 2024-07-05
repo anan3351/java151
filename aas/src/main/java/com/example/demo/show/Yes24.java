@@ -16,10 +16,10 @@ public class Yes24 {
     public static void main(String[] args) {
         System.setProperty("webdriver.chrome.driver", "src/main/resources/driver/chromedriver.exe");
         WebDriver driver = new ChromeDriver();
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10)); // 동적으로 로드되는 요소를 안정적으로 찾기 위해 10초간 대기
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10)); // 10초간 대기
 
         try {
-            String url = "http://ticket.yes24.com/Perf/49701";
+            String url = "http://ticket.yes24.com/Perf/49272?Gcode=009_400";
             driver.get(url);
             Map<String, String> sectionImages = new HashMap<>();
 
@@ -28,7 +28,7 @@ public class Yes24 {
                 String sectionSelector = String.format(".rn-080%d", i);
                 WebElement section = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(sectionSelector)));
 
-                // 키(타이틀) 추출
+                // 섹션 타이틀 추출
                 String sectionTitle = section.findElement(By.cssSelector("p.rn08-tit")).getText();
                 if (sectionTitle.equals("유의사항")) {
                     sectionTitle = "notice_img";
@@ -40,9 +40,10 @@ public class Yes24 {
                     sectionTitle = "casting_img";
                 }
 
+                
                 // 값(이미지) 추출
                 // 이미지 요소가 나타날 때까지 반복 시도(로딩 대기)
-                for (int attempt = 0; attempt < 3; attempt++) {
+                for (int attempt = 0; attempt < 2; attempt++) {
                     List<WebElement> imgElements = section.findElements(By.cssSelector("img"));
                     if (!imgElements.isEmpty()) { // 이미지 요소가 비었는지 확인
                         StringBuilder imgUrlsBuilder = new StringBuilder();
@@ -52,16 +53,32 @@ public class Yes24 {
                         String imgUrls = imgUrlsBuilder.toString().trim();
                         sectionImages.put(sectionTitle, imgUrls);
                         break;
-                    } else if (attempt < 2) { // 두번째 시도까지는 추가 대기시간 부여
+                    } else if (attempt < 1) { // 추가 대기시간 부여
                         Thread.sleep(2000); // 2초 대기 후 다시 시도
                     }
                 }
             }
+            
+            
+            // 배우 이름 추출
+            WebElement castSection = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".rn-product-area1 dt:nth-of-type(3) + dd"))); // 세번째 요소에서 추출
+            List<WebElement> cast = castSection.findElements(By.cssSelector("a"));
+            StringBuilder actors = new StringBuilder();
+
+            for (int i = 0; i < cast.size(); i++) {
+                String actorName = cast.get(i).getText();
+                
+                if (i != cast.size() - 1) actors.append(actorName).append(", ");
+                else actors.append(actorName);
+            }
+            
+            if (actors.length() >= 3) {
+            	sectionImages.put("cast", actors.toString());
+            }
 
             // 맵에 저장된 데이터 출력
             for (Map.Entry<String, String> entry : sectionImages.entrySet()) {
-                System.out.println("title : " + entry.getKey());
-                System.out.println("url :");
+                System.out.println(entry.getKey() + " : ");
                 System.out.println(entry.getValue());
                 System.out.println();
             }
