@@ -18,7 +18,7 @@ public class Ticketlink {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10)); // 10초간 대기 설정
 
         try {
-            String url = "https://www.ticketlink.co.kr/product/50420";
+            String url = "https://www.ticketlink.co.kr/product/50671";
             driver.get(url);
             String casting = "";
             Map<String, String> contentImagesMap = new HashMap<>();
@@ -95,11 +95,53 @@ public class Ticketlink {
                 contentImagesMap.put("detail_img", detailImageUrls.toString().trim());
                 contentImagesMap.put("casting_img", casting);
             }
+            
+
+            // 배우 정보 저장
+            Set<String> cast = new LinkedHashSet<>();
+
+            while (true) {
+                List<WebElement> castList = driver.findElements(By.cssSelector(".product_casting_name"));
+                if (castList.isEmpty()) break; // 출연진 정보가 없으면 종료
+
+                for (WebElement castElement : castList) {
+                    String actorName = castElement.getText().trim();
+                    if (!actorName.isEmpty()) {
+                        cast.add(actorName);
+                    }
+                }
+
+                // 다음 버튼 클릭 여부 확인
+                List<WebElement> nextButtons = driver.findElements(By.cssSelector(".casting-list-swiper-next"));
+                if (!nextButtons.isEmpty()) {
+                    WebElement nextButton = nextButtons.get(0);
+                    if (nextButton.isEnabled()) {
+                        nextButton.click();
+                        Thread.sleep(1000); // 클릭 후 잠시 대기
+                    } else {
+                        break; // 다음 버튼이 비활성화되면 반복 종료
+                    }
+                } else {
+                    break; // 다음 버튼이 없으면 반복 종료
+                }
+            }
+
+            // 출연진 정보 문자열로 변환하여 저장
+            StringBuilder actors = new StringBuilder();
+            for (String actor : cast) {
+                if (actors.length() > 0) {
+                    actors.append(", ");
+                }
+                actors.append(actor);
+            }
+            if (!actors.toString().isEmpty()) {
+            	contentImagesMap.put("cast", actors.toString());
+            }
 
             // 추출한 데이터 출력
             for (Map.Entry<String, String> entry : contentImagesMap.entrySet()) {
-                System.out.println("title : " + entry.getKey());
-                System.out.println("url : \n" + entry.getValue());
+                System.out.println(entry.getKey() + " : ");
+                System.out.println(entry.getValue());
                 System.out.println();
             }
 
