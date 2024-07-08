@@ -329,11 +329,11 @@
           <%@ include file="./header.jsp" %>
             <div class="main-container">
               <!-- 본문시작 -->
-<<<<<<< HEAD
+
               <script src="../js/show.js"></script>
-=======
+
               <script src="../js/show_swiper.js"></script>
->>>>>>> refs/heads/lsy
+
 
               <div class="slider-back">
                 <div class="slider-tit">
