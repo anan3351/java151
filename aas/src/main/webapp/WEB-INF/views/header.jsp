@@ -7,7 +7,7 @@
       <header>
         <div class="logo">
           <a href="${pageContext.request.contextPath}/">
-            <img src="/images/logo.png" alt="로고">
+            <img src="/images/allaboutshow.png" alt="로고">
           </a>
         </div>
         <div class="search-bar">

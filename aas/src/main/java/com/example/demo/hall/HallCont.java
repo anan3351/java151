@@ -70,9 +70,11 @@ public class HallCont {
         mav.setViewName("hall/hallListDetail"); //파일위치
         
         List<Map<String, Object>> list = hallDao.hallDetail(hall_id);
+        List<Map<String, Object>> list2 = hallDao.hallDetailMini(hall_id);
         
         mav.addObject("hall", list.isEmpty() ? null : list.get(0));
         mav.addObject("list", list);
+        mav.addObject("list2", list2);
         
         return mav;
     }//detail() end

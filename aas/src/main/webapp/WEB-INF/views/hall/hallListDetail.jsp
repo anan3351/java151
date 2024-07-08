@@ -16,8 +16,7 @@
           <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/css/swiper.min.css">
           <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/js/swiper.min.js"></script>
-          <link rel="stylesheet" href="/css/template.css">
-
+          <link rel="stylesheet" href="/css/hall.css">
           <style>
             body {
               font-family: 'Pretendard';
@@ -26,262 +25,14 @@
             .main-container {
               display: flex;
               justify-content: center;
-              margin-top : 177px;
+              margin-top: 177px;
             }
 
             .main-container li {
               list-style: none;
             }
 
-            .page-tit {
-              font-size: 32px;
-              font-weight: 700;
-            }
-
-            .detail-wrap {
-              height: calc(100vh - 406px);
-              display: flex;
-              width: 1600px;
-              margin-top: 40px;
-            }
-
-            .left-area {
-              display: flex;
-              width: calc(100% / 2 - 20px);
-              gap: 20px;
-              margin-right: 20px;
-            }
-
-            .left-area img {
-              width: 300px;
-              height: 400px;
-              background-color: #efefef;
-            }
-
-            .left-area .detail-info {}
-
-            .detail-info ul {
-              display: flex;
-              flex-direction: column;
-              gap: 10px
-            }
-
-            .detail-info .info-label {
-              font-size: 18px;
-            }
-
-            .detail-info .info-text {
-              font-size: 16px;
-            }
-
-            .right-area {
-              width: calc(100% / 2);
-              gap: 20px
-            }
-
-
-            .booking {
-              display: flex;
-              gap: 20px;
-            }
-
-            .booking .calendar {
-              width: calc(100% / 2 - 20px);
-              height: 320px;
-              background-color: #efefef;
-            }
-
-            .booking .option-area {}
-
-            .option-tit {
-              font-size: 20px;
-              font-weight: 600;
-              margin-bottom: 10px;
-            }
-
-            .option-list {
-              height: 290px;
-              overflow-y: auto;
-              padding: 5px;
-            }
-
-            .option-list ul {
-              padding-left: 0;
-              display: flex;
-              flex-direction: column;
-              gap: 10px
-            }
-
-            .option-list ul li {
-              font-size: 16px;
-              width: 100%;
-              height: 50px;
-              background-color: #efefef;
-              border-radius: 10px;
-              color: #1d1d1d;
-              font-weight: 500;
-              display: flex;
-              align-items: center;
-              padding: 10px;
-              cursor: pointer;
-            }
-
-            .option-list ul li:hover {
-              background-color: #8e43e7;
-              color: #fff;
-              font-weight: 700;
-            }
-
-            .option-area {
-              width: calc(100% / 2);
-              height: 320px;
-            }
-
-            .btn-area {
-              display: flex;
-              gap: 10px;
-              margin-top: 40px;
-              width: 100%;
-              justify-content: end;
-            }
-
-            .btn-area .btn {
-              height: 50px;
-              font-size: 16px;
-              font-weight: 600;
-            }
-
-            .btn-booking {
-              width: 50%;
-              background-color: #8e43e7 !important;
-              color: #fff;
-            }
-
-            .btn-booking:hover {
-              color: #fff !important;
-            }
-
-            .btn-bookmark {
-              width: 150px;
-              border: 1px solid #8e43e7 !important;
-              background-color: #fff !important;
-              color: #8e43e7;
-            }
-
-            .btn-bookmark:hover {
-              color: #8e43e7 !important;
-            }
-
-            .calendar-container {
-              background: #fff;
-              border-radius: 10px;
-              box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-              overflow: hidden;
-              width: 300px;
-              text-align: center;
-            }
-
-            .calendar-header {
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-              padding: 10px;
-              background-color: #8e43e7;
-              color: white;
-            }
-
-            #calendar {
-              display: grid;
-              grid-template-columns: repeat(7, 1fr);
-              gap: 1px;
-              background: #ddd;
-            }
-
-            #calendar div {
-              padding: 10px;
-              background: #fff;
-              text-align: center;
-            }
-
-            #calendar .day-cell {
-              cursor: pointer;
-            }
-
-            #calendar .day-cell:hover {
-              background-color: #e0e0e0;
-            }
-
-            #calendar .selected {
-              background-color: #eabff3;
-              color: white;
-            }
-
-            #select-date-btn {
-              width: 100%;
-              padding: 15px 0;
-              background-color: #8e43e7;
-              color: white;
-              border: none;
-              cursor: pointer;
-              font-size: 16px;
-            }
-
-            #select-date-btn:hover {
-              background-color: #c99fec;
-            }
-
-            #selected-date-display {
-              margin-top: 10px;
-              font-size: 16px;
-              color: #333;
-            }
-
-            #calendar .disabled {
-              color: #ccc;
-              cursor: not-allowed;
-            }
-
-            #prev-month {
-              background-color: #fff;
-              /* 원하는 배경색으로 변경 */
-              color: rgb(0, 0, 0);
-              /* 텍스트 색상 */
-              border: none;
-              /* 테두리 제거 */
-              padding: 10px 20px;
-              /* 여백 조정 */
-              cursor: pointer;
-              /* 커서 모양 변경 */
-              border-radius: 5px;
-              /* 모서리 둥글게 */
-            }
-
-            #prev-month:hover {
-              background-color: #eed6f5;
-              /* 호버 시 배경색 */
-            }
-
-            #next-month {
-              background-color: #fff;
-              /* 원하는 배경색으로 변경 */
-              color: #333;
-              /* 텍스트 색상 */
-              border: 1px;
-              /* 테두리 제거 */
-              padding: 10px 20px;
-              /* 여백 조정 */
-              cursor: pointer;
-              /* 커서 모양 변경 */
-              border-radius: 5px;
-              /* 모서리 둥글게 */
-            }
-
-            #next-month:hover {
-              background-color: #eed6f5;
-              /* 호버 시 배경색 */
-            }
-            
-            
+          
           </style>
         </head>
 
@@ -307,7 +58,7 @@
                         </li>
                         <li>
                           <strong class="info-label">전화번호</strong>
-                          <p class="info-text">${hall.tel}</p>
+                          <p class="info-text">${hall.h_call}</p>
                         </li>
                         <li>
                           <strong class="info-label">URL</strong>
@@ -336,15 +87,12 @@
                         <div class="option-tit">공연관 선택</div>
                         <div class="option-list">
                           <ul>
-                            <li>공연관 옵션</li>
-                            <li>공연관 옵션</li>
-                            <li>공연관 옵션</li>
-                            <li>공연관 옵션</li>
-                            <li>공연관 옵션</li>
-                            <li>공연관 옵션</li>
-                            <li>공연관 옵션</li>
-                            <li>공연관 옵션</li>
-                            <li>공연관 옵션</li>
+                            <c:forEach items="${list2}" var="mini" varStatus="status">
+                              <li>
+                                <c:out value="${mini.miniHall}" />
+                                / 좌석수 : ${mini.seat }
+                              </li>
+                            </c:forEach>
                           </ul>
                         </div>
                       </div>
@@ -357,156 +105,208 @@
                 </div>
               </div>
             </div>
+            <div class="booking-pay">
+            <table  class="table" style="white-space:nowrap">
+            <tr>
+              <th>하루</th>
+              <th>일주일</th>
+              <th>한달</th>
+              <th>3개월</th>
+              <th>6개월</th>
+              <th>1년</th>
+            </tr>
+            <tr>
+              <td >100,000</td>
+              <td>2%</td>
+              <td>3%</td>
+              <td>5%</td>
+              <td>7%</td>
+              <td>10%</td>
+            </tr>
+            <tr>
+              <td colspan="3">총 일수 30일</td>
+              <td colspan="3">총 대관료 60만원</td>
+            </tr>
+
+            </table>
+            </div>
             <script>
               document.addEventListener('DOMContentLoaded', function () {
-                  console.log("DOMContentLoaded event fired"); // 디버깅용 로그 메시지
-          
-                  const calendar = document.getElementById('calendar');
-                  const selectDateBtn = document.getElementById('select-date-btn');
-                  const selectedDateDisplay = document.getElementById('selected-date-display');
-                  const currentMonthYear = document.getElementById('current-month-year');
-                  const prevMonthBtn = document.getElementById('prev-month');
-                  const nextMonthBtn = document.getElementById('next-month');
-          
-                  console.log("Calendar Elements:", calendar, selectDateBtn, selectedDateDisplay, currentMonthYear, prevMonthBtn, nextMonthBtn); // 디버깅용 로그 메시지
-          
-                  let selectedStartDate = null;
-                  let selectedEndDate = null;
-                  let currentYear = new Date().getFullYear();
-                  let currentMonth = new Date().getMonth();
-                  const today = new Date();
-                  today.setHours(0, 0, 0, 0);
-          
-                  function renderCalendar(year, month) {
-                      console.log(`Rendering calendar for ${year}-${month + 1}`); // 디버깅용 로그 메시지
-                      const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
-                      calendar.innerHTML = '';
-                      currentMonthYear.textContent = `${year}년 ${month + 1}월`;
-          
-                      daysOfWeek.forEach(day => {
-                          const dayCell = document.createElement('div');
-                          dayCell.classList.add('day-of-week');
-                          dayCell.textContent = day;
-                          calendar.appendChild(dayCell);
+                console.log("DOMContentLoaded event fired");
+
+                const calendar = document.getElementById('calendar');
+                const selectDateBtn = document.getElementById('select-date-btn');
+                const selectedDateDisplay = document.getElementById('selected-date-display');
+                const currentMonthYear = document.getElementById('current-month-year');
+                const prevMonthBtn = document.getElementById('prev-month');
+                const nextMonthBtn = document.getElementById('next-month');
+
+                console.log("Calendar Elements:", calendar, selectDateBtn, selectedDateDisplay, currentMonthYear, prevMonthBtn, nextMonthBtn);
+
+                if (!calendar || !selectDateBtn || !selectedDateDisplay || !currentMonthYear || !prevMonthBtn || !nextMonthBtn) {
+                  console.error("One or more elements are missing!");
+                  return;
+                }
+
+                let selectedStartDate = null;
+                let selectedEndDate = null;
+                let currentYear = new Date().getFullYear();
+                let currentMonth = new Date().getMonth();
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+
+                console.log("Initializing the calendar with current year and month:", currentYear, currentMonth);
+
+                function renderCalendar(year, month) {
+                  console.log("Rendering calendar for " + year + "-" + (month + 1));
+                  const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
+                  calendar.innerHTML = '';
+                  currentMonthYear.textContent = year + "년 " + (month + 1) + "월";
+
+                  daysOfWeek.forEach(day => {
+                    const dayCell = document.createElement('div');
+                    dayCell.classList.add('day-of-week');
+                    dayCell.textContent = day;
+                    calendar.appendChild(dayCell);
+                  });
+
+                  const monthDays = new Date(year, month + 1, 0).getDate();
+                  const firstDay = new Date(year, month, 1).getDay();
+                  console.log("Month days: " + monthDays + ", First day: " + firstDay);
+
+                  for (let i = 0; i < firstDay; i++) {
+                    const emptyCell = document.createElement('div');
+                    emptyCell.classList.add('empty-cell');
+                    calendar.appendChild(emptyCell);
+                  }
+
+                  for (let day = 1; day <= monthDays; day++) {
+                    const dayCell = document.createElement('div');
+                    dayCell.classList.add('day-cell');
+                    dayCell.textContent = day;
+                    dayCell.setAttribute('data-month', month);
+                    dayCell.setAttribute('data-year', year);
+
+                    const cellDate = new Date(year, month, day);
+                    console.log("cellDate: " + cellDate + ", today: " + today);
+
+                    if (cellDate < today) {
+                      dayCell.classList.add('disabled');
+                    } else {
+                      if (selectedStartDate && selectedEndDate && cellDate >= selectedStartDate && cellDate <= selectedEndDate) {
+                        dayCell.classList.add('selected');
+                      }
+                      dayCell.addEventListener('click', function () {
+                        console.log("Date clicked: " + cellDate);
+                        if (!selectedStartDate || (selectedStartDate && selectedEndDate)) {
+                          selectedStartDate = new Date(year, month, day);
+                          console.log("selectedStartDate set to: " + selectedStartDate);
+                          selectedEndDate = null;
+                          document.querySelectorAll('.day-cell').forEach(cell => cell.classList.remove('selected'));
+                          dayCell.classList.add('selected');
+                        } else {
+                          selectedEndDate = new Date(year, month, day);
+                          console.log("selectedEndDate set to: " + selectedEndDate);
+                          if (selectedEndDate < selectedStartDate) {
+                            const temp = selectedStartDate;
+                            selectedStartDate = selectedEndDate;
+                            selectedEndDate = temp;
+                            console.log("Swapped dates: " + selectedStartDate + " - " + selectedEndDate);
+                          }
+                          highlightSelectedRange();
+                        }
+                        updateSelectedDateDisplay();
                       });
-          
-                      const monthDays = new Date(year, month + 1, 0).getDate();
-                      const firstDay = new Date(year, month, 1).getDay();
-          
-                      for (let i = 0; i < firstDay; i++) {
-                          const emptyCell = document.createElement('div');
-                          emptyCell.classList.add('empty-cell');
-                          calendar.appendChild(emptyCell);
-                      }
-          
-                      for (let day = 1; day <= monthDays; day++) {
-                          const dayCell = document.createElement('div');
-                          dayCell.classList.add('day-cell');
-                          dayCell.textContent = day;
-          
-                          const cellDate = new Date(year, month, day);
-          
-                          if (cellDate < today) {
-                              dayCell.classList.add('disabled');
-                          } else {
-                              dayCell.addEventListener('click', function () {
-                                  console.log(`Date clicked: ${cellDate}`); // 디버깅용 로그 메시지
-                                  if (!selectedStartDate || (selectedStartDate && selectedEndDate)) {
-                                      selectedStartDate = new Date(year, month, day);
-                                      selectedEndDate = null;
-                                      document.querySelectorAll('.day-cell').forEach(cell => cell.classList.remove('selected'));
-                                      dayCell.classList.add('selected');
-                                  } else {
-                                      selectedEndDate = new Date(year, month, day);
-                                      if (selectedEndDate < selectedStartDate) {
-                                          const temp = selectedStartDate;
-                                          selectedStartDate = selectedEndDate;
-                                          selectedEndDate = temp;
-                                      }
-                                      document.querySelectorAll('.day-cell').forEach(cell => cell.classList.remove('selected'));
-                                      highlightSelectedRange();
-                                  }
-                                  updateSelectedDateDisplay();
-                              });
-                          }
-          
-                          calendar.appendChild(dayCell);
-                      }
+                    }
+
+                    calendar.appendChild(dayCell);
                   }
-          
-                  function highlightSelectedRange() {
-                      if (!selectedStartDate || !selectedEndDate) return;
-          
-                      const start = selectedStartDate.getDate();
-                      const end = selectedEndDate.getDate();
-                      const startMonth = selectedStartDate.getMonth();
-                      const endMonth = selectedEndDate.getMonth();
-                      const dayCells = document.querySelectorAll('.day-cell');
-          
-                      if (startMonth === endMonth) {
-                          for (let day = start; day <= end; day++) {
-                              const dayCell = Array.from(dayCells).find(cell => parseInt(cell.textContent) === day);
-                              if (dayCell) {
-                                  dayCell.classList.add('selected');
-                              }
-                          }
-                      }
+
+                  highlightSelectedRange(); // Call this to ensure selected range is highlighted when switching months
+                }
+
+                function highlightSelectedRange() {
+                  if (!selectedStartDate || !selectedEndDate) return;
+
+                  const startYear = selectedStartDate.getFullYear();
+                  const startMonth = selectedStartDate.getMonth();
+                  const startDate = selectedStartDate.getDate();
+
+                  const endYear = selectedEndDate.getFullYear();
+                  const endMonth = selectedEndDate.getMonth();
+                  const endDate = selectedEndDate.getDate();
+
+                  document.querySelectorAll('.day-cell').forEach(cell => {
+                    const cellDay = parseInt(cell.textContent);
+                    const cellMonth = parseInt(cell.getAttribute('data-month'));
+                    const cellYear = parseInt(cell.getAttribute('data-year'));
+
+                    if (
+                      (cellYear > startYear || (cellYear === startYear && cellMonth > startMonth) || (cellYear === startYear && cellMonth === startMonth && cellDay >= startDate)) &&
+                      (cellYear < endYear || (cellYear === endYear && cellMonth < endMonth) || (cellYear === endYear && cellMonth === endMonth && cellDay <= endDate))
+                    ) {
+                      cell.classList.add('selected');
+                    } else {
+                      cell.classList.remove('selected');
+                    }
+                  });
+                }
+
+                function updateSelectedDateDisplay() {
+                  console.log("Updating selected date display");
+                  if (selectedStartDate && selectedEndDate) {
+                    const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
+                    const startDayOfWeek = daysOfWeek[selectedStartDate.getDay()];
+                    const endDayOfWeek = daysOfWeek[selectedEndDate.getDay()];
+                    const totalDays = Math.ceil((selectedEndDate - selectedStartDate) / (1000 * 60 * 60 * 24)) + 1;
+                    selectedDateDisplay.textContent = selectedStartDate.toLocaleDateString() + " (" + startDayOfWeek + ") ~ " + selectedEndDate.toLocaleDateString() + " (" + endDayOfWeek + ") 총 " + totalDays + "일";
+                  } else if (selectedStartDate) {
+                    selectedDateDisplay.textContent = "시작 날짜: " + selectedStartDate.toLocaleDateString();
+                  } else {
+                    selectedDateDisplay.textContent = '';
                   }
-          
-                  function updateSelectedDateDisplay() {
-                      console.log("Updating selected date display"); // 디버깅용 로그 메시지
-                      if (selectedStartDate && selectedEndDate) {
-                          const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
-                          const startDayOfWeek = daysOfWeek[selectedStartDate.getDay()];
-                          const endDayOfWeek = daysOfWeek[selectedEndDate.getDay()];
-                          const totalDays = Math.ceil((selectedEndDate - selectedStartDate) / (1000 * 60 * 60 * 24)) + 1;
-                          selectedDateDisplay.textContent = `${selectedStartDate.toLocaleDateString()} (${startDayOfWeek}) ~ ${selectedEndDate.toLocaleDateString()} (${endDayOfWeek}) 총 ${totalDays}일`;
-                      } else if (selectedStartDate) {
-                          selectedDateDisplay.textContent = `시작 날짜: ${selectedStartDate.toLocaleDateString()}`;
-                      } else {
-                          selectedDateDisplay.textContent = '';
-                      }
+                }
+
+                selectDateBtn.addEventListener('click', function () {
+                  if (selectedStartDate && selectedEndDate) {
+                    alert(selectedStartDate.toLocaleDateString() + " ~ " + selectedEndDate.toLocaleDateString() + " 총 " + (Math.ceil((selectedEndDate - selectedStartDate) / (1000 * 60 * 60 * 24)) + 1) + "일");
+                    // 여기서 선택된 기간을 서버로 전송하는 코드를 추가하면 됩니다.
+                  } else {
+                    alert('시작 날짜와 종료 날짜를 모두 선택해 주세요.');
                   }
-          
-                  selectDateBtn.addEventListener('click', function () {
-                      if (selectedStartDate && selectedEndDate) {
-                          alert(`${selectedStartDate.toLocaleDateString()} ~ ${selectedEndDate.toLocaleDateString()} 총 ${Math.ceil((selectedEndDate - selectedStartDate) / (1000 * 60 * 60 * 24)) + 1}일`);
-                          // 여기서 선택된 기간을 서버로 전송하는 코드를 추가하면 됩니다.
-                      } else {
-                          alert('시작 날짜와 종료 날짜를 모두 선택해 주세요.');
-                      }
-                  });
-          
-                  prevMonthBtn.addEventListener('click', function () {
-                      if (currentMonth === 0) {
-                          currentMonth = 11;
-                          currentYear--;
-                      } else {
-                          currentMonth--;
-                      }
-                      console.log(`Previous month button clicked: ${currentYear}-${currentMonth + 1}`); // 디버깅용 로그 메시지
-                      renderCalendar(currentYear, currentMonth);
-                  });
-          
-                  nextMonthBtn.addEventListener('click', function () {
-                      if (currentMonth === 11) {
-                          currentMonth = 0;
-                          currentYear++;
-                      } else {
-                          currentMonth++;
-                      }
-                      console.log(`Next month button clicked: ${currentYear}-${currentMonth + 1}`); // 디버깅용 로그 메시지
-                      renderCalendar(currentYear, currentMonth);
-                  });
-          
-                  // Initialize the calendar
-                  console.log("Initializing the calendar with current year and month:", currentYear, currentMonth); // 디버깅용 로그 메시지
+                });
+
+                prevMonthBtn.addEventListener('click', function () {
+                  if (currentMonth === 0) {
+                    currentMonth = 11;
+                    currentYear--;
+                  } else {
+                    currentMonth--;
+                  }
+                  console.log("Previous month button clicked: " + currentYear + "-" + currentMonth);
                   renderCalendar(currentYear, currentMonth);
+                });
+
+                nextMonthBtn.addEventListener('click', function () {
+                  if (currentMonth === 11) {
+                    currentMonth = 0;
+                    currentYear++;
+                  } else {
+                    currentMonth++;
+                  }
+                  console.log("Next month button clicked: " + currentYear + "-" + currentMonth);
+                  renderCalendar(currentYear, currentMonth);
+                });
+
+                // Initialize the calendar
+                console.log("Initializing the calendar with current year and month:", currentYear, currentMonth);
+                renderCalendar(currentYear, currentMonth);
               });
-          </script>
-          
-          
-          
+
+            </script>
+
+
+
 
             <!-- 본문 끝 -->
             <%@ include file="../footer.jsp" %>

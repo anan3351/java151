@@ -17,10 +17,17 @@
     </select>
     
   <select id="hallDetail" resultType="java.util.Map" parameterType="String">
-        SELECT hall_id, hname, miniHall, addr, h_call, url, seat 
+        SELECT hall_id, hname, miniHall, addr, h_call, url, seat
 	    FROM aas.tb_hall 
-	    WHERE hall_id LIKE CONCAT(#{hall_id}, '-%')
+	    WHERE hall_id LIKE CONCAT(#{hall_id}, '-%') OR hall_id = #{hall_id}
     </select> 
+	
+	<select id="hallDetailMini" parameterType="string" resultType="java.util.Map">
+    SELECT hall_id, hname, miniHall, addr, h_call, url, seat 
+    FROM aas.tb_hall 
+    WHERE hall_id LIKE CONCAT(#{hall_id}, '-%')
+</select>
+	
 	
    <!--<select id="selectBoard" resultType="java.utility.Map" parameterType="String">
    SELECT AA.* 

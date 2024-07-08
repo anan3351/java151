@@ -34,6 +34,7 @@ header {
 header .logo img {
 	display: inline-block;
 	background-color: #413f3f;
+  width: 250px;
 }
 
 header .search-bar {
