@@ -33,7 +33,8 @@ public class DBConn
 		{
 			try
 			{
-				String url = "jdbc:mariadb://192.168.14.14:3306/aas";
+				//String url = "jdbc:mariadb://localhost:3306/local";
+				String url = "jdbc:mariadb:////192.168.14.14:3306/aas";
 				//-- 『211.238.142.175』 는 오라클 서버 ip 주소를 기재하는 부분
 				//    원격지의 오라클이 아니라 로컬의 오라클 서버일 경우는
 				//   『localhost』 이나 『127.0.0.1』과 같이 loop back address 로 기재하는 것도 가능
