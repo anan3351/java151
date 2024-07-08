@@ -76,7 +76,7 @@
 </head>
 <body>
 <div class="container">
-    <h2>공연 관람 후기 목록</h2>
+    <h2>공연 리뷰 목록</h2>
     <div class="search-box">
         <input type="text" placeholder="공연명 검색">
         <button type="button">검색</button>
@@ -99,7 +99,7 @@
             <tbody>
                 <c:forEach var="review" items="${reviewList}">
                     <tr>
-                        <td>${review.showTitle}</td>
+                        <td><a href="${pageContext.request.contextPath}/showreview/showreviewdetail?rev_id=${review.rev_id}">${review['title']}</a></td>
                         <td>${review.retitle}</td>
                         <td>${review.viewcnt}</td>
                         <td>${review.empcnt}</td>

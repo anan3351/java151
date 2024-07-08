@@ -5,13 +5,13 @@
 
 <mapper namespace="actor">
     <select id="list" resultType="com.example.demo.actor.ActorDTO">
-        SELECT actor_id, a_name, photo, job, birth, physical, agency, site
+        SELECT actor_id, a_name, photo, job, birth, physical, agency, site, recent_work
         FROM aas.tb_actor
         ORDER BY a_name
     </select>
     
     <select id="list2" resultType="com.example.demo.actor.ActorDTO">
-        SELECT actor_id, a_name, photo, job, birth, physical, agency, site
+        SELECT actor_id, a_name, photo, job, birth, physical, agency, site, recent_work
         FROM aas.tb_actor
         ORDER BY a_name
         LIMIT #{startRow}, #{endRow}

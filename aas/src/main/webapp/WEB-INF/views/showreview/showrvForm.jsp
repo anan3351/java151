@@ -29,6 +29,38 @@
         .button:hover {
             background: #0056b3;
         }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            padding-top: 100px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -77,11 +109,49 @@
     <div class="modal-content">
         <span class="close" onclick="closeModal()">&times;</span>
         <h2>공연 검색</h2>
-        <!-- 검색 기능 제거 -->
+        <input type="text" id="searchInput" placeholder="공연 제목을 입력하세요" onkeyup="searchShow()">
+        <table id="searchResults" class="table-container">
+            <thead>
+                <tr>
+                    <th>공연명</th>
+                    <th>장르</th>
+                    <th>시작일</th>
+                    <th>종료일</th>
+                    <th>선택</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- 검색 결과가 여기 표시됨 -->
+            </tbody>
+        </table>
     </div>
 </div>
 
 <script>
+function searchShow() {
+    var keyword = document.getElementById("searchInput").value;
+    if (keyword.length < 2) {
+        document.getElementById("searchResults").getElementsByTagName('tbody')[0].innerHTML = "";
+        return;
+    }
+    fetch('/searchShows?keyword=' + keyword)
+        .then(response => response.json())
+        .then(data => {
+            var tbody = document.getElementById("searchResults").getElementsByTagName('tbody')[0];
+            tbody.innerHTML = "";
+            data.forEach(show => {
+                var row = tbody.insertRow();
+                row.innerHTML = `
+                    <td>${show.title}</td>
+                    <td>${show.genre}</td>
+                    <td>${show.start_day}</td>
+                    <td>${show.end_day}</td>
+                    <td><button type="button" class="button" onclick="selectShow('${show.show_id}', '${show.title}')">선택</button></td>
+                `;
+            });
+        });
+    }
+
     function openModal() {
         document.getElementById("myModal").style.display = "block";
     }
@@ -90,12 +160,11 @@
         document.getElementById("myModal").style.display = "none";
     }
 
-    function selectShow(showId, showTitle) {
-        document.getElementById("showId").value = showId;
+    function selectShow(show_Id, showTitle) {
+        document.getElementById("show_Id").value = show_Id;
         document.getElementById("showTitle").value = showTitle;
         closeModal();
     }
 </script>
 </body>
 </html>
-
