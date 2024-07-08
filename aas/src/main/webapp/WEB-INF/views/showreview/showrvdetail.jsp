@@ -42,18 +42,18 @@
 </head>
 <body>
 <div class="container">
-    <div class="review-header">
-        <h2 class="review-title">${review.retitle}</h2>
+    <div class="review-header">  
+        <h2 class="review-title">제목 : ${review.retitle}</h2>
         <p>작성자: ${review.user_id} | 작성일: ${review.r_date} | 조회수: ${review.viewcnt}</p>
     </div>
     <div class="review-content">
         <p>${review.content}</p>
     </div>
     <div class="review-actions">
-        <button onclick="likeReview('${sessionScope.loggedInUser.user_id}', ${review.rev_id != null ? review.rev_id : '0'})"
-        ${sessionScope.loggedInUser == null || review.rev_id == null ? 'disabled' : ''}>
-    		공감하기
-		</button>공감수: ${review.empcnt != null ? review.empcnt : '0'}
+	<button onclick="likeReview('${sessionScope.loggedInUser.user_id}', ${review.rev_id != null ? review.rev_id : '0'})"
+	    ${sessionScope.loggedInUser == null || review.rev_id == null ? 'disabled' : ''}>
+	    공감하기
+	</button>공감수: ${review.empcnt != null ? review.empcnt : '0'}
     </div>
     <div class="comments">
         <h3>댓글</h3>
@@ -63,30 +63,47 @@
                 <div class="comment-content">${reply.content}</div>
             </div>
         </c:forEach>
-        <form action="${pageContext.request.contextPath}/showreview/addReply" method="post">
-            <input type="hidden" name="rev_id" value="${review.rev_id}" />
-            <textarea name="content" rows="3" cols="50"></textarea><br>
-            <button type="submit">댓글달기</button>
-        </form>
+
+		<form id="replyForm" method="post" action="${pageContext.request.contextPath}/showreview/addReply">
+		    <input type="hidden" name="user_id" value="${sessionScope.loggedInUser.user_id}">
+		    <input type="hidden" name="rev_id" value="${review.rev_id}">
+		    <textarea name="content" placeholder="댓글을 입력하세요"></textarea>
+		    <button type="submit">댓글달기</button>
+		</form>
+</form>
     </div>
 </div>
 <script>
+
 function likeReview(user_id, rev_id) {
     if (!rev_id) {
         alert('유효하지 않은 리뷰 ID입니다.');
         return;
     }
-    fetch(`${pageContext.request.contextPath}/showreview/likeReview?user_id=${user_id}&rev_id=${rev_id}`, {
-        method: 'POST'
+    const params = new URLSearchParams();
+    params.append('user_id', user_id);
+    params.append('rev_id', rev_id);
+
+    fetch(`${pageContext.request.contextPath}/showreview/likeReview`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: params.toString()
     }).then(response => response.text()).then(result => {
         if (result === 'liked') {
             alert('공감했습니다!');
             location.reload();
         } else if (result === 'already_liked') {
             alert('이미 공감하셨습니다.');
+        } else if (result === 'invalid_rev_id') {
+            alert('유효하지 않은 리뷰 ID입니다.');
         }
     });
 }
+
+</script>
+
 </script>
 </body>
 </html>

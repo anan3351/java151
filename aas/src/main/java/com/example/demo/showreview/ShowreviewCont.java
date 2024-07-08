@@ -9,6 +9,7 @@ import javax.management.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -111,12 +112,22 @@ public class ShowreviewCont {
 	        mav.setViewName("showreview/showrvdetail");
 	        return mav;
 	    }
-	
-	    @PostMapping("/addReply")
-	    public String addReply(ReplyDTO replyDto) {
+	    /*
+	    @PostMapping("/showreview/addReply")
+	    public String addReply(@ModelAttribute ReplyDTO replyDto) {
 	        replyDao.insert(replyDto);
-	        return "redirect:/showreview/showreviewdetail?rev_id=" + replyDto.getRev_Id();
+	        return "redirect:/showreview/showreviewdetail?rev_id=" + replyDto.getRev_id();
+	    }*/
+	    @PostMapping("/showreview/addReply")
+	    public String addReply(@ModelAttribute ReplyDTO replyDto) {
+	        //System.out.println("Received user_id: " + replyDto.getUser_id());
+	        //System.out.println("Received rev_id: " + replyDto.getRev_id());
+	        //System.out.println("Received content: " + replyDto.getContent());
+
+	        replyDao.insert(replyDto);
+	        return "redirect:/showreview/showreviewdetail?rev_id=" + replyDto.getRev_id();
 	    }
+
 	
 	    @PostMapping("/likeReview")
 	    @ResponseBody

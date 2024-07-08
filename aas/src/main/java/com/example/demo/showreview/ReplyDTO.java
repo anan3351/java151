@@ -3,57 +3,60 @@ package com.example.demo.showreview;
 import java.sql.Timestamp;
 
 public class ReplyDTO {
-
-    private int reply_Id;
-    private String user_Id;
-    private int rev_Id;
+    private int reply_id;
+    private String user_id;
+    private int rev_id;
     private String content;
-    private Timestamp rDate;
-    
-    
-    
+    private Timestamp r_date;
+
     public ReplyDTO() {}
-    
-    //getter setter
-	public int getReply_Id() {
-		return reply_Id;
+
+	public int getReply_id() {
+		return reply_id;
 	}
-	public void setReply_Id(int reply_Id) {
-		this.reply_Id = reply_Id;
+
+	public void setReply_id(int reply_id) {
+		this.reply_id = reply_id;
 	}
-	public String getUser_Id() {
-		return user_Id;
+
+	public String getUser_id() {
+		return user_id;
 	}
-	public void setUser_Id(String user_Id) {
-		this.user_Id = user_Id;
+
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
 	}
-	public int getRev_Id() {
-		return rev_Id;
+
+	public int getRev_id() {
+		return rev_id;
 	}
-	public void setRev_Id(int rev_Id) {
-		this.rev_Id = rev_Id;
+
+	public void setRev_id(int rev_id) {
+		this.rev_id = rev_id;
 	}
+
 	public String getContent() {
 		return content;
 	}
+
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public Timestamp getrDate() {
-		return rDate;
+
+	public Timestamp getR_date() {
+		return r_date;
 	}
-	public void setrDate(Timestamp rDate) {
-		this.rDate = rDate;
+
+	public void setR_date(Timestamp r_date) {
+		this.r_date = r_date;
 	}
-	
-	
+
 	@Override
 	public String toString() {
-		return "ReplyDTO [reply_Id=" + reply_Id + ", user_Id=" + user_Id + ", rev_Id=" + rev_Id + ", content=" + content
-				+ ", rDate=" + rDate + "]";
+		return "ReplyDTO [reply_id=" + reply_id + ", user_id=" + user_id + ", rev_id=" + rev_id + ", content=" + content
+				+ ", r_date=" + r_date + "]";
 	}
-	
-	
     
-	
-}//class end
+    
+    
+}

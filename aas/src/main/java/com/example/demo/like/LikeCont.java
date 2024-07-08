@@ -23,16 +23,29 @@ public class LikeCont {
 	@Autowired
 	private ShowreviewDAO showreviewDao;
 	
-    @PostMapping("/likeReview")
-    @ResponseBody
-    public String likeReview(@RequestParam("user_id") String user_id, @RequestParam("rev_id") int rev_id) {
-        if (likeDao.checkIfLiked(user_id, rev_id)) {
-            return "already_liked";
-        } else {
-            likeDao.insertLike(user_id, rev_id);
-            showreviewDao.incrementEmpcnt(rev_id);
-            return "liked";
-        }
-    }
+
+	@PostMapping("/likeReview")
+	@ResponseBody
+	public String likeReview(@RequestParam("user_id") String user_id, @RequestParam(value = "rev_id", required = false, defaultValue = "0") String rev_idStr) {
+	    //System.out.println("Received user_id: " + user_id); // user_id 로그 추가
+	    //System.out.println("Received rev_idStr: " + rev_idStr); // rev_idStr 로그 추가
+	    try {
+	        int rev_id = Integer.parseInt(rev_idStr);
+	        if (rev_id == 0) {
+	            return "invalid_rev_id"; // 0은 유효하지 않은 리뷰 ID로 간주
+	        }
+	        if (likeDao.checkIfLiked(user_id, rev_id)) {
+	            return "already_liked";
+	        } else {
+	            likeDao.insertLike(user_id, rev_id);
+	            showreviewDao.incrementEmpcnt(rev_id);
+	            return "liked";
+	        }
+	    } catch (NumberFormatException e) {
+	        return "invalid_rev_id";
+	    }
+	}
+	
+	
 	
 }//class end

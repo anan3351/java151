@@ -5,16 +5,16 @@
 
 <mapper namespace="reply">
 
-    <insert id="insert" parameterType="com.example.demo.showreview.ReplyDTO">
-        INSERT INTO aas.tb_reply (user_id, rev_id, content, r_date)
-        VALUES (#{user_id}, #{rev_id}, #{content}, NOW())
-    </insert>
-    
-    <select id="getRepliesByReviewId" parameterType="int" resultType="com.example.demo.showreview.ReplyDTO">
-        SELECT reply_id, user_id, rev_id, content, r_date
-        FROM aas.tb_reply
-        WHERE rev_id = #{rev_id}
-        ORDER BY reply_id ASC
-    </select>
+<insert id="insert" parameterType="com.example.demo.showreview.ReplyDTO">
+    INSERT INTO aas.tb_reply (user_id, rev_id, content, r_date)
+    VALUES (#{user_id}, #{rev_id}, #{content}, NOW())
+</insert>
+
+<select id="getRepliesByReviewId" parameterType="int" resultType="com.example.demo.showreview.ReplyDTO">
+    SELECT reply_id, user_id, rev_id, content, r_date
+    FROM aas.tb_reply
+    WHERE rev_id = #{rev_id}
+    ORDER BY reply_id ASC
+</select>
     
 </mapper>
