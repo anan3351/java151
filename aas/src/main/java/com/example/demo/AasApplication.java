@@ -18,7 +18,7 @@ public class AasApplication {
 		SpringApplication.run(AasApplication.class, args);
 	}
 
-	// MyBatis Framework 관련 환경 설정 // Mapper 객체 생성
+	// MyBatis Framework 관련 환경 설정 // Mapper 객체 생성 
 	@Bean
 	public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
 	    SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
