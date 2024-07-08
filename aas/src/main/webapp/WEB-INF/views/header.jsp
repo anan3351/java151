@@ -2,14 +2,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 
-<<<<<<< HEAD
 <div class="header-wrap">
   <header>
     <div class="logo">
       <a href="${pageContext.request.contextPath}/">
         <img src="/images/logo.png" alt="로고">
       </a>
-=======
+
   <div class="header-wrap" >
       <header>
         <div class="logo">
@@ -35,9 +34,9 @@
           <li><a href="#">Q&A</a></li>
         </ul>
       </nav>
->>>>>>> refs/heads/lsy
+
     </div>
-<<<<<<< HEAD
+
     <div class="search-bar">
       <input type="text" placeholder="공연을 검색 하세요">
       <button type="button" class="btn-search" title="검색"></button>
@@ -55,10 +54,8 @@
         </c:otherwise>
       </c:choose>
     </div>
-=======
->>>>>>> refs/heads/lsy
   </header>
-<<<<<<< HEAD
+
   <nav>
     <ul>
       <li><a href="/musical">뮤지컬</a></li>
@@ -71,6 +68,3 @@
   </nav>
 </div>
 
-=======
-  
->>>>>>> refs/heads/lsy
