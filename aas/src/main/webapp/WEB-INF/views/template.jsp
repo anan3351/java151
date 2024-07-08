@@ -16,7 +16,12 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/css/swiper.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/js/swiper.min.js"></script>
+<<<<<<< HEAD
   <link rel="stylesheet" href="../view/template.css"> 
+=======
+  <link rel="stylesheet" href="/css/template.css">
+
+>>>>>>> refs/heads/lsy
 </head>
 <body>
 	<%@ include file="./header.jsp" %>
