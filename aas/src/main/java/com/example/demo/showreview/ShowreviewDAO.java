@@ -64,4 +64,12 @@ public class ShowreviewDAO {
         sqlSession.update("showreview.incrementViewCount", rev_Id);
     }
     
+    public void update(ShowreviewDTO showreviewDto) {
+        sqlSession.update("showreview.update", showreviewDto);
+    }
+
+    public void delete(int rev_id) {
+        sqlSession.delete("showreview.delete", rev_id);
+    }
+    
 }//class end

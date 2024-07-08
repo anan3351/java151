@@ -16,5 +16,16 @@
     WHERE rev_id = #{rev_id}
     ORDER BY reply_id ASC
 </select>
+
+<update id="update" parameterType="com.example.demo.showreview.ReplyDTO">
+	UPDATE aas.tb_reply
+    SET content = #{content}, r_date = NOW()
+    WHERE reply_id = #{reply_id}
+</update>
+    
+<delete id="delete" parameterType="int">
+	DELETE FROM aas.tb_reply
+    WHERE reply_id = #{reply_id}
+</delete>    
     
 </mapper>

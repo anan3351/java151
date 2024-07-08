@@ -18,6 +18,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.like.LikeDAO;
 import com.example.demo.show.ShowDAO;
+import com.example.demo.user.UserDTO;
+
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.ui.Model;
 
 
@@ -140,24 +144,39 @@ public class ShowreviewCont {
 	            return "liked";
 	        }
 	    }
-/*새로운 리스트
-	    @GetMapping("/list1")
-	    public String list1(Model model, @RequestParam(defaultValue = "1") int page) {
-	        int pageSize = 10; // 페이지당 항목 수
-	        int totalCount = showreviewDao.totalRowCount();
-	        int totalPages = (int) Math.ceil((double) totalCount / pageSize);
-	        
-	        int startRow = (page - 1) * pageSize + 1;
-	        int endRow = Math.min(page * pageSize, totalCount);
 
-	        List<ShowreviewDTO> list = showreviewDao.list1(startRow, endRow);
-	        
-	        model.addAttribute("list", list);
-	        model.addAttribute("currentPage", page);
-	        model.addAttribute("totalPages", totalPages);
-	        model.addAttribute("totalCount", totalCount);
 
-	        return "showreview/list1";
-	    }*/
+	    @PostMapping("/showreview/updateReply")
+	    public String updateReply(@ModelAttribute ReplyDTO replyDto) {
+	        replyDao.update(replyDto);
+	        return "redirect:/showreview/showreviewdetail?rev_id=" + replyDto.getRev_id();
+	    }
+
+	    @PostMapping("/showreview/deleteReply")
+	    public String deleteReply(@RequestParam("reply_id") int reply_id, @RequestParam("rev_id") int rev_id) {
+	        replyDao.delete(reply_id);
+	        return "redirect:/showreview/showreviewdetail?rev_id=" + rev_id;
+	    }
+	    
+	    @PostMapping("/showreview/updateReview")
+	    public String updateReview(@ModelAttribute ShowreviewDTO showreviewDto) {
+	        showreviewDao.update(showreviewDto);
+	        return "redirect:/showreview/showreviewdetail?rev_id=" + showreviewDto.getRev_id();
+	    }
+
+	    @PostMapping("/showreview/deleteReview")
+	    @ResponseBody
+	    public String deleteReview(@RequestParam("rev_id") int rev_id, HttpSession session) {
+	        UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser"); // 세션에서 로그인한 사용자 객체 가져오기
+	        ShowreviewDTO review = showreviewDao.getReviewById(rev_id);
+
+	        if (review != null && loggedInUser != null && review.getUser_id().equals(loggedInUser.getUser_id())) {
+	            showreviewDao.delete(rev_id);
+	            return "success";
+	        } else {
+	            return "unauthorized";
+	        }
+	    }
+	    
 
 }//class end

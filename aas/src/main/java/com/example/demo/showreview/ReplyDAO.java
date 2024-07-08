@@ -24,4 +24,12 @@ public class ReplyDAO {
 	        return sqlSession.selectList("reply.getRepliesByReviewId", rev_Id);
 	    }
 	
+	 public void update (ReplyDTO replyDto) {
+		 sqlSession.update("reply.update", replyDto);
+	 }
+	 
+	 public void delete (int replyDto) {
+		 sqlSession.delete("reply.delete", replyDto);
+	 }
+	 
 }//class end
