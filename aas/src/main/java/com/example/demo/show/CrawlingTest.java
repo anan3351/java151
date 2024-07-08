@@ -6,8 +6,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -31,8 +33,9 @@ public class CrawlingTest {
         String rows = "50";
         int cpage = 1;
 
-        // 예매처 링크를 저장하기 위한 리스트
+        // 공연별 (모든)예매처 링크를 저장하기 위한 리스트
         List<Map<String, String>> relateList = new ArrayList<>();
+        Map<String, String> linkMap = new HashMap<>();
         boolean hasMoreData = true;
 
         while (hasMoreData) {
@@ -126,7 +129,7 @@ public class CrawlingTest {
                         Node relateNode = relateNodeList.item(j);
                         if (relateNode.getNodeType() == Node.ELEMENT_NODE) {
                             Element relateElement = (Element) relateNode;
-                            String relatenm = showDao.getTagValue2("relatenm", relateElement);
+                            String relatenm = showDao.getTagValue2("relatenm", relateElement); // 예매처
                             String relateurl = showDao.getTagValue2("relateurl", relateElement);
 
                             // mt20id, relatenm, relateurl를 relateMap에 저장 -> relateList에 맵들을 저장
@@ -150,58 +153,63 @@ public class CrawlingTest {
         }
 
         // relates 출력 (테스트)
-        /*for (Map<String, String> relateMap : relateList) {
+        /* for (Map<String, String> relateMap : relateList) {
             System.out.println("mt20id : " + relateMap.get("mt20id"));
             System.out.println("relatenm : " + relateMap.get("relatenm"));
             System.out.println("relateurl : " + relateMap.get("relateurl"));
             System.out.println();
-        }*/
+        } */
         
         
         
-        // 공연코드 기준으로 예매처만 따로 저장 -> 예매처별 크롤링
+        // 공연코드 기준으로 예매처만 따로 저장 -> 예매처별 스크래핑
         for(int i=0; i<relateList.size(); i++) {
-        	List<String> linklist = new ArrayList<>();
+        	Map<String, String> linklist = new HashMap<>();
         	
-        	for(int j=0; j<relateList.size(); j++) {
-        		if (relateList.get(i).get("mt20id") == relateList.get(j).get("mt20id")) {
-        			linklist.add(relateList.get(j).get("relateurl"));
-        		}
-        	}
+        	for (int j = 0; j < relateList.size(); j++) {
+                if (relateList.get(i).get("mt20id").equals(relateList.get(j).get("mt20id"))) { // 중복 데이터 발생 -> 같은 아이디, 다른 예매처마다 검사됨
+                    linklist.put(relateList.get(j).get("relatenm"), relateList.get(j).get("relateurl")); // 공연ID, 예매처
+                }
+            }
         	
-        	String link = "";
-        	JSONObject jsonObject = new JSONObject(); // 반환된 링크 통해 크롤링 된 데이터를 저장
+        	JSONObject jsonObject = new JSONObject(); // 반환된 링크 통해 스크래핑 된 데이터를 저장
+        	
         	
         	// 한 공연코드에 예매처가 둘 이상이라면, 그중 예매처 검색
-        	/*
-        	if (linklist.size()>1) {
-        		for (int j=0; j<linklist.size(); j++) {
-        			if (linklist.get(j).contains("interpark")) {
-                        link = linklist.get(j);
-                        //showDao.interpart_data(link);
+            String selectedUrl = null;
+            if (linklist.size() > 1) {
+                for (Map.Entry<String, String> entry : linklist.entrySet()) {
+                    String relateurl = entry.getValue();
+                    if (relateurl.contains("interpark")) {
+                        selectedUrl = relateurl;
+                        linkMap.put(relateList.get(i).get("mt20id"), selectedUrl); // 중복되지 않게 저장
+                        showDao.interpart_data(selectedUrl);
                         break;
-                    } else if (linklist.get(j).contains("yes24")) {
-                        link = linklist.get(j);
-                        //showDao.yes24_data(link);
+                    } else if (relateurl.contains("yes24")) {
+                        selectedUrl = relateurl;
+                        linkMap.put(relateList.get(i).get("mt20id"), selectedUrl);
+                        // showDao.yes24_data(selectedUrl);
                         break;
-                    } else if (linklist.get(j).contains("ticketlink")) {
-                        link = linklist.get(j);
-                        //showDao.ticketlink_data(link);
+                    } else if (relateurl.contains("ticketlink")) {
+                        selectedUrl = relateurl;
+                        linkMap.put(relateList.get(i).get("mt20id"), selectedUrl);
+                     // showDao.ticketlink_data(selectedUrl);
                         break;
-                    } else {
-                        link = linklist.get(j); // 인터파크, 예스24, 티켓링크 중 예매처가 없다면 그 외 예매처 반환
                     }
-        		}
-        	} else {
-        		link = linklist.get(0);
-        	}*/
-        	
-        	System.out.println(link);
+                }
+                if (selectedUrl == null) {
+                    selectedUrl = linklist.values().iterator().next();
+                    linkMap.put(relateList.get(i).get("mt20id"), selectedUrl); 
+                }
+            } else {
+                selectedUrl = linklist.values().iterator().next();
+                linkMap.put(relateList.get(i).get("mt20id"), selectedUrl); 
+            }
         }
-        
-        
-        
 
+        /* // 반환된 예매처 확인(중복 없음)
+        for (Map.Entry<String, String> entry : linkMap.entrySet()) {
+            System.out.println("mt20id : " + entry.getKey() + ", URL : " + entry.getValue());
+        } */
     }
-    
 }
