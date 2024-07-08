@@ -235,6 +235,7 @@ public class ShowDAO {
     
     // 인터파크 크롤링 메소드
     public Map<String, String> interpart_data(String link){
+    	Map<String, String> sectionImages = new HashMap<>();
     	return null;
     }
     
