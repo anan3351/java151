@@ -17,6 +17,8 @@ public class HallEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "hall_id")
 	private String hallId;
+	
+	@Column(name = "h_name")
 	private String hname;
 	
 	
@@ -86,7 +88,7 @@ public class HallEntity {
 	}
 	@Override
 	public String toString() {
-		return "HallEntity [hall_id=" + hallId + ", hname=" + hname + ", miniHall=" + miniHall + ", addr=" + addr
+		return "HallEntity [hallId=" + hallId + ", hname=" + hname + ", miniHall=" + miniHall + ", addr=" + addr
 				+ ", h_call=" + h_call + ", url=" + url + ", seat=" + seat + ", user_id=" + user_id + ", h_code="
 				+ h_code + "]";
 	}
