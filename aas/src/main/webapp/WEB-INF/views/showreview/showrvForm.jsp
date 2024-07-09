@@ -66,12 +66,12 @@
 <body>
 <div class="container">
     <h2>공연 관람 후기 작성</h2>
-    <form action="${pageContext.request.contextPath}/insert" method="post">
+    <form id="reviewForm" action="${pageContext.request.contextPath}/showreview/insert" method="post" onsubmit="return validateForm()">
         <table class="table-container">
             <tr>
                 <th>공연명</th>
                 <td>
-                    <input type="hidden" id="showId" name="show_id" />
+                    <input type="hidden" id="show_id" name="show_id" />
                     <input type="text" id="showTitle" name="title" readonly value="공연 테이블 조인" />
                     <button type="button" class="button" onclick="openModal()">검색</button>
                 </td>
@@ -79,17 +79,17 @@
             <tr>
                 <th>관람일시</th>
                 <td>
-                    <input type="text" name="viewingDate" value="예매내역 테이블 조인" readonly />
+                    <input type="text" id="viewingDate" name="viewingDate" value="예매내역 테이블 조인" readonly />
                     <button type="button" class="button">검색</button>
                 </td>
             </tr>
             <tr>
                 <th>제목</th>
-                <td><input type="text" name="retitle" /></td>
+                <td><input type="text" id="retitle" name="retitle" /></td>
             </tr>
             <tr>
                 <th>내용</th>
-                <td><textarea name="content" rows="10" cols="50"></textarea></td>
+                <td><textarea name="content" id="content" rows="10" cols="50"></textarea></td>
             </tr>
         </table>
         <div>
@@ -161,10 +161,43 @@ function searchShow() {
     }
 
     function selectShow(show_Id, showTitle) {
-        document.getElementById("show_Id").value = show_Id;
+        document.getElementById("show_id").value = show_id;
         document.getElementById("showTitle").value = showTitle;
         closeModal();
     }
+    
+    function validateForm() {
+        var show_id = document.getElementById("show_id").value;
+        var viewingDate = document.getElementById("viewingDate").value;
+        var retitle = document.getElementById("retitle").value;
+        var content = document.getElementById("content").value;
+
+        if (!show_id) {
+            alert("공연명을 입력해주세요.");
+            return false;
+        }
+
+        if (!viewingDate) {
+            alert("관람일시를 입력해주세요.");
+            return false;
+        }
+
+        if (!retitle) {
+            alert("제목을 입력해주세요.");
+            return false;
+        }
+
+        if (!content) {
+            alert("내용을 입력해주세요.");
+            return false;
+        }
+
+
+        return true;
+    }
+    
+    
+    
 </script>
 </body>
 </html>

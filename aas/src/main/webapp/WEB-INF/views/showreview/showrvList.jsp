@@ -75,6 +75,11 @@
     </style>
 </head>
 <body>
+<%
+    // 세션에서 로그인된 사용자 정보를 가져옵니다.
+    com.example.demo.user.UserDTO loggedInUser = (com.example.demo.user.UserDTO) session.getAttribute("loggedInUser");
+    String userId = loggedInUser != null ? loggedInUser.getUser_id() : "";
+%>
 <div class="container">
     <h2>공연 리뷰 목록</h2>
     <div class="search-box">
@@ -82,7 +87,7 @@
         <button type="button">검색</button>
     </div>
     <div class="write-button">
-        <button type="button" onclick="location.href='${pageContext.request.contextPath}/showreview/showreviewForm'">글쓰기</button>
+         <button type="button" onclick="location.href='${pageContext.request.contextPath}/showreview/showreviewForm?user_id=<%= userId %>'">글쓰기</button>
     </div>
     <div class="review-list">
         <table>
