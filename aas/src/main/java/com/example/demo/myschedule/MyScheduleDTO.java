@@ -19,6 +19,8 @@ public class MyScheduleDTO {
 	
 	public MyScheduleDTO() {}
 	
+	
+	
 }//class end
 
 

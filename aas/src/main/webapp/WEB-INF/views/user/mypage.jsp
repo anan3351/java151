@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     <title>My Page</title>
     <style>
         body {
@@ -258,9 +259,11 @@
         <div class="menu-section">
             <div class="menu-title"><a href="#">보유쿠폰</a></div>
         </div>
-        <div class="menu-section">
-            <div class="menu-title">* 판매자 전용 *</div>
-        </div>
+        <c:if test="${userInfo.auth == 'S'}">
+		    <div class="menu-section">
+		        <div class="menu-title"><a href="./sellerpage">* 판매자 전용 *</a></div>
+		    </div>
+		</c:if>
     </div>
 
     <main>

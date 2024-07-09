@@ -49,7 +49,7 @@ public class HallCodeInsert
 		urlBuilder.append(
 				"?" + URLEncoder.encode("service", "UTF-8") + "=47cd4dbaba4843bcb340c5a752cf68c0"); /* Service Key */
 		urlBuilder.append("&" + URLEncoder.encode("cpage", "UTF-8") + "=1"); /* 시작페이지 */
-		urlBuilder.append("&" + URLEncoder.encode("rows", "UTF-8") + "=3"); /* 총 행 */
+		urlBuilder.append("&" + URLEncoder.encode("rows", "UTF-8") + "=3200"); /* 총 행 */
 		urlBuilder.append("&" + URLEncoder.encode("mt10id", "UTF-8")); /* 공연장코드 */
 		
 		URL url = new URL(urlBuilder.toString());
