@@ -4,21 +4,23 @@
 <link rel="stylesheet" href="/css/template.css">
 <div class="container">
     <style>
-            .header {
-        margin-bottom: 0; /* 기존 margin-bottom 값을 0으로 설정 */
-        position: fixed; /* 헤더를 고정 위치로 설정 */
-        top: -10; /* 상단에 고정 */
-        width: 100%; /* 전체 너비를 사용 */
-        z-index: 1000; /* 다른 요소보다 위에 위치 */
-    }
+       .header {
+	        margin-bottom: 0; /* 기존 margin-bottom 값을 0으로 설정 */
+	        position: fixed; /* 헤더를 고정 위치로 설정 */
+	        top: -10; /* 상단에 고정 */
+	        width: 100%; /* 전체 너비를 사용 */
+	        z-index: 1000; /* 다른 요소보다 위에 위치 */
+	    }
 
-    body {
-        padding-top: 200px; /* 헤더 높이만큼 상단 패딩을 추가 */
-    }
+	    body {
+	        padding-top: 200px; /* 헤더 높이만큼 상단 패딩을 추가 */
+	    }
         .left-aligned-title {
             text-align: left;
             margin-bottom: 20px;
         }
+        
+        
 
         h1, h3 {
             margin-bottom: 20px;
@@ -136,9 +138,9 @@
         }
         
          .page-button.active {
-    background-color: red;
-    color: white;
-}
+		    background-color: red;
+		    color: white;
+		}
     </style>
 
     <div class="filters">
@@ -148,10 +150,13 @@
         </div>
         <div class="filters-right">
             <button class="filter-button1">전체</button>
-            <button class="filter-button">국내</button>
-            <button class="filter-button">해외</button>
         </div>
     </div>
+    <!-- 검색 폼 추가 -->
+    <form action="${pageContext.request.contextPath}/actor/search" method="get">
+        <input type="text" name="search" placeholder="배우 이름 검색">
+        <button type="submit" class="filter-button">검색</button>
+    </form>
     <div class="actor-list">
         <table>
             <thead>
