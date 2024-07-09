@@ -7,13 +7,19 @@ public class HallDTO {
 	}
 	
 	private String hall_id;
-	private String h_name;
+	private String hname;
 	private String miniHall;
 	private String addr;
 	private String h_call;
 	private String url;
 	private String seat;
 	private String user_id;
+	private String prfplcnm;
+	private String mt13id;
+    private String seatscale;
+    private String h_code;
+    
+
 	
 	
 	public String getHall_id() {
@@ -22,11 +28,11 @@ public class HallDTO {
 	public void setHall_id(String hall_id) {
 		this.hall_id = hall_id;
 	}
-	public String getH_name() {
-		return h_name;
+	public String getHname() {
+		return hname;
 	}
-	public void setH_name(String h_name) {
-		this.h_name = h_name;
+	public void setHname(String hname) {
+		this.hname = hname;
 	}
 	public String getMiniHall() {
 		return miniHall;
@@ -64,12 +70,43 @@ public class HallDTO {
 	public void setUser_id(String user_id) {
 		this.user_id = user_id;
 	}
-	@Override
+	public String getPrfplcnm() {
+		return prfplcnm;
+	}
+	public void setPrfplcnm(String prfplcnm) {
+		this.prfplcnm = prfplcnm;
+	}
+	public String getMt13id() {
+		return mt13id;
+	}
+	public void setMt13id(String mt13id) {
+		this.mt13id = mt13id;
+	}
+	public String getSeatscale() {
+		return seatscale;
+	}
+	public void setSeatscale(String seatscale) {
+		this.seatscale = seatscale;
+	}
+	public String getH_code() {
+		return h_code;
+	}
+	public void setH_code(String h_code) {
+		this.h_code = h_code;
+	}
+
+	
 	public String toString() {
-		return "HallDTO [hall_id=" + hall_id + ", h_name=" + h_name + ", miniHall=" + miniHall + ", addr=" + addr
-				+ ", h_call=" + h_call + ", url=" + url + ", seat=" + seat + ", user_id=" + user_id + "]";
+		return "HallDTO [hall_id=" + hall_id + ", hname=" + hname + ", miniHall=" + miniHall + ", addr=" + addr
+				+ ", h_call=" + h_call + ", url=" + url + ", seat=" + seat + ", user_id=" + user_id + ", prfplcnm="
+				+ prfplcnm + ", mt13id=" + mt13id + ", seatscale=" + seatscale + ", h_code=" + h_code + "]";
 	}
 	
+    
+    
+  
 	
-
+	
+	
+	
 }//END hallDTO
