@@ -1,4 +1,3 @@
-
 package com.example.demo.actor;
 
 import org.jsoup.Jsoup;
@@ -14,7 +13,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
 @Service
 public class PlayDbCrawler {
 
@@ -22,7 +20,7 @@ public class PlayDbCrawler {
     private static final String DB_USER = "team";
     private static final String DB_PASSWORD = "1234";
 
-    /* 크롤링 사용할때 aasapplication에 주석 풀기
+    /* 크롤링 사용할때 aasapplication에 주석 풀기 
     public static void main(String[] args) {
        
     	try {
@@ -45,8 +43,8 @@ public class PlayDbCrawler {
             e.printStackTrace();
         }
     }
-    */
-
+   
+*/
     private static void crawlActor(String url) throws IOException {
         try {
             Document doc = Jsoup.connect(url).get();
@@ -65,10 +63,11 @@ public class PlayDbCrawler {
             String physical = getValue(doc.select("dt:contains(신체조건) + dd"));
             String agency = getValue(doc.select("dt:contains(소속사) + dd"));
             String site = getSites(doc.select("dd.pssite"));
+            String recentWork = getRecentWorks(doc.select(".detail_contentsbox .ptitle a"));
 
             // 뮤지컬 배우 또는 연극 배우만 저장
             if (job != null && (job.contains("뮤지컬배우") || job.contains("연극배우"))) {
-                saveActorToDatabase(name, photo, job, birth, physical, agency, site);
+                saveActorToDatabase(name, photo, job, birth, physical, agency, site, recentWork);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -94,7 +93,21 @@ public class PlayDbCrawler {
         return sites.toString().trim().isEmpty() ? null : sites.toString().trim();
     }
 
-    private static void saveActorToDatabase(String name, String photo, String job, String birth, String physical, String agency, String site) {
+    private static String getRecentWorks(Elements elements) {
+        StringBuilder recentWorks = new StringBuilder();
+        int count = 0;
+        for (Element element : elements) {
+            if (count >= 3) break;
+            recentWorks.append(element.text()).append(", ");
+            count++;
+        }
+        if (recentWorks.length() > 0) {
+            recentWorks.setLength(recentWorks.length() - 2); // 마지막 쉼표 제거
+        }
+        return recentWorks.toString();
+    }
+
+    private static void saveActorToDatabase(String name, String photo, String job, String birth, String physical, String agency, String site, String recentWork) {
         try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
             // 중복 체크
             if (isActorExists(connection, name, birth, photo)) {
@@ -102,7 +115,7 @@ public class PlayDbCrawler {
                 return;
             }
 
-            String sql = "INSERT INTO tb_actor (a_name, photo, job, birth, physical, agency, site) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO tb_actor (a_name, photo, job, birth, physical, agency, site, recent_work) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
                 pstmt.setString(1, name);
                 pstmt.setString(2, photo);
@@ -111,6 +124,7 @@ public class PlayDbCrawler {
                 pstmt.setString(5, physical);
                 pstmt.setString(6, agency);
                 pstmt.setString(7, site);
+                pstmt.setString(8, recentWork);
                 pstmt.executeUpdate();
             }
         } catch (SQLException e) {

@@ -5,11 +5,13 @@
 
 <mapper namespace="like">
     <insert id="insertLike">
-        INSERT INTO aas.tb_like (user_id, rev_id, emp) VALUES (#{user_Id}, #{rev_Id}, 'Y')
+        INSERT INTO tb_like (user_id, rev_id, emp) 
+        VALUES (#{user_id}, #{rev_id}, 'Y')
     </insert>
     
     <select id="checkIfLiked" resultType="int">
-        SELECT COUNT(*) FROM aas.tb_like WHERE user_id = #{user_Id} AND rev_id = #{rev_Id}
+        SELECT COUNT(*) FROM tb_like 
+        WHERE user_id = #{user_id} AND rev_id = #{rev_id}
     </select>
     
 </mapper>

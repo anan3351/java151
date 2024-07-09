@@ -111,7 +111,7 @@ public class HallInsert
                    {     
                 	   hallDto.setHall_id(code);
 
-						hallDto.setH_name(getTagValue("fcltynm", eElement)); //공연 시설 명
+						hallDto.setHname(getTagValue("fcltynm", eElement)); //공연 시설 명
 						hallDto.setMiniHall(getTagValue("mt13cnt ", eElement)); //공연장수
 						hallDto.setAddr(getTagValue("adres", eElement)); // 지역
 						hallDto.setH_call(getTagValue("telno", eElement)); //전화번호

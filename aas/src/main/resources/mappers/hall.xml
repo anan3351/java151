@@ -4,12 +4,39 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="hall">
-    <select id="list" resultType="com.example.demo.actor.ActorDTO">
-        SELECT h_name, miniHall , addr , h_call, url, seat
+   <select id="list" resultType="java.util.Map">
+		SELECT  hall_id, hname, miniHall, addr, url, seat
         FROM aas.tb_hall
         ORDER BY h_name
+	</select>
+	
+	 <select id="detail" resultType="java.util.Map"  parameterType="string">
+        SELECT  hall_id, hname, miniHall, addr, url, seat
+        FROM aas.tb_hall
+        WHERE hall_id = #{hall_id}    
     </select>
     
+  <select id="hallDetail" resultType="java.util.Map" parameterType="String">
+        SELECT hall_id, hname, miniHall, addr, h_call, url, seat
+	    FROM aas.tb_hall 
+	    WHERE hall_id LIKE CONCAT(#{hall_id}, '-%') OR hall_id = #{hall_id}
+    </select> 
+	
+	<select id="hallDetailMini" parameterType="string" resultType="java.util.Map">
+    SELECT hall_id, hname, miniHall, addr, h_call, url, seat 
+    FROM aas.tb_hall 
+    WHERE hall_id LIKE CONCAT(#{hall_id}, '-%')
+</select>
+	
+	
+   <!--<select id="selectBoard" resultType="java.utility.Map" parameterType="String">
+   SELECT AA.* 
+	FROM (  SELECT @RNO := @RNO + 1 AS r, CC.*  FROM 
+				( SELECT hall_id, h_name, addr, url, seat  FROM local.tb_hall ) CC, 
+				( SELECT @RNO := 0 ) BB 
+	ORDER BY hall_id  ) AA 
+	WHERE r  BETWEEN #{start} AND #{end}
    
+   </select>-->
     
 </mapper>

@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn"  uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -16,55 +19,6 @@
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   
-<script>
-    function sample6_execDaumPostcode() {
-        new daum.Postcode({
-            oncomplete: function(data) {
-                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
-
-                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
-                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
-                var addr = ''; // 주소 변수
-                var extraAddr = ''; // 참고항목 변수
-
-                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
-                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
-                    addr = data.roadAddress;
-                } else { // 사용자가 지번 주소를 선택했을 경우(J)
-                    addr = data.jibunAddress;
-                }
-
-                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
-                if(data.userSelectedType === 'R'){
-                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
-                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
-                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
-                        extraAddr += data.bname;
-                    }
-                    // 건물명이 있고, 공동주택일 경우 추가한다.
-                    if(data.buildingName !== '' && data.apartment === 'Y'){
-                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-                    }
-                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
-                    if(extraAddr !== ''){
-                        extraAddr = ' (' + extraAddr + ')';
-                    }
-                    // 조합된 참고항목을 해당 필드에 넣는다.
-                    document.getElementById("addr2").value = extraAddr;
-                
-                } else {
-                    document.getElementById("addr2").value = '';
-                }
-
-                // 우편번호와 주소 정보를 해당 필드에 넣는다.
-                document.getElementById('postcode').value = data.zonecode;
-                document.getElementById("addr1").value = addr;
-                // 커서를 상세주소 필드로 이동한다.
-                document.getElementById("addr2").focus();
-            }
-        }).open();
-    }
-</script>
 
   <style>
     body {
@@ -215,36 +169,25 @@
       align-items: center;
     }
 
-    .email-group input {
-      flex-basis: 40%; /* 이메일과 도메인 입력 필드의 기본 너비 */
-      flex-grow: 1; /* 이메일과 도메인 입력 필드의 증가 비율 */
-      margin-right: 10px;
-    }
-
+    .email-group input,
     .email-group select {
-      flex-basis: 20%; /* 셀렉트 박스의 기본 너비 */
-      flex-grow: 2; /* 셀렉트 박스의 증가 비율 */
       margin-right: 10px;
+      flex: 1;
     }
 
     .email-group span {
-      flex-shrink: 0; /* '@'의 너비 고정 */
+      margin: 0 5px;
+      font-size: 18px;
+      color: #333;
+    }
+
+    .email-group select {
+      flex: 0.5;
     }
   </style>
 
   <script>
-    $(document).ready(function () {
-      $('.right-align i').on('click', function () {
-        var input = $(this).closest('.form-group').find('input');
-        if (input.attr('type') === 'password') {
-          input.attr('type', 'text');
-          $(this).attr('class', 'fa fa-eye-slash fa-lg');
-        } else {
-          input.attr('type', 'password');
-          $(this).attr('class', 'fa fa-eye fa-lg');
-        }
-      });
-    });
+    
 
     function setEmailDomain(domain) {
       $("#email_domain").val(domain);
@@ -254,95 +197,157 @@
 </head>
 
 <body>
-  
+<%@ include file="../header.jsp" %>
+			<div class="main-container">
+
   <div class="container">
-    <form>
+    <form action="/user/updateUser" method="post">
       <div class="form-group">
         <label for="id">아이디</label>
-        <input type="text" id="id" name="id" placeholder="6-20자 영문, 숫자">
-      </div>
-      <div class="form-group">
-        <label for="password">비밀번호</label>
-        <input type="password" id="password" name="password" placeholder="8-12자 영문, 숫자, 특수문자">
-        <div class="right-align"><i class="fa fa-eye fa-lg"></i></div>
-      </div>
-      <div class="form-group">
-        <label for="password-confirm">비밀번호 확인</label>
-        <input type="password" id="password-confirm" name="password-confirm" placeholder="8-12자 영문, 숫자, 특수문자">
-        <div class="right-align"><i class="fa fa-eye fa-lg"></i></div>
+        <input type="text" id="id" name="user_id" value="${userInfo.user_id}" readonly>
       </div>
       <div class="form-group">
         <label for="name">이름</label>
-        <input type="text" id="name" name="name">
+        <input type="text" id="name" name="name" value="${userInfo.user_name}">
       </div>
-      <div class="form-group">
-        <label for="ssn">주민등록번호</label>
-        <div class="ssn-group">
-          <input type="text" id="ssn1" name="ssn1" maxlength="6" placeholder="앞자리">
-          <span>-</span>
-          <input type="password" id="ssn2" name="ssn2" maxlength="7" placeholder="뒷자리">
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="postcode">우편번호</label>
-        <div class="phone-group">
-	        <input type="text" id="postcode" name="postcode" readonly>
-	        <button type="button" onclick="sample6_execDaumPostcode()">우편번호찾기</button>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="addr1">주소</label>
-        <input type="text" id="addr1" name="addr1" readonly>
-      </div>
-      <div class="form-group">
-        <label for="addr2">상세주소</label>
-        <input type="text" id="addr2" name="addr2">
-      </div>
-      <div class="form-group">
+     
+     <div class="form-group">
 	    <label for="email">이메일</label>
 		    <div class="email-group">
-		        <input type="text" id="email_id" class="form_w200" placeholder="이메일" maxlength="18" />
+		    <c:set var="emailParts" value="${userInfo.email.split('@')}" />
+		        <input type="text" id="email_id" name="email_id" value="${emailParts[0]}" class="form_w200" placeholder="이메일" maxlength="18" />
 		        <span>@</span>
-		        <input type="text" id="email_domain" class="form_w200" placeholder="이메일 도메인" maxlength="18" />
+		        <input type="text" id="email_domain" name="email_domain" value="${emailParts[1]}" class="form_w200" placeholder="이메일 도메인" maxlength="18" />
 		        <select class="select" onchange="setEmailDomain(this.value);">
-		            <option value="">-선택-</option>
+		            <option value="">직접입력</option>
 		            <option value="naver.com">naver.com</option>
 		            <option value="gmail.com">gmail.com</option>
 		            <option value="hanmail.net">hanmail.net</option>
 		            <option value="hotmail.com">hotmail.com</option>
-		            <option value="korea.com">korea.com</option>
-		            <option value="nate.com">nate.com</option>
 		            <option value="yahoo.com">yahoo.com</option>
 		        </select>
 		    </div>
+		     <input type="hidden" id="email" name="email" />
+		    <br>
+		    <div class="phone-group">
+        <button type="button" onclick="checkEmail()">EMAIL중복확인</button>
+        </div>
 		</div>
+		   
       <div class="form-group">
         <label for="phone">휴대폰</label>
         <div class="phone-group">
-          <input type="text" id="phone" name="phone" placeholder="010 1234 5678">
+          <input type="text" id="tel_num" name="tel_num" value="${userInfo.tel_num}" maxlength="13" placeholder="휴대폰 번호" oninput="autoHyphen(this)">
           <button type="button">인증번호받기</button>
         </div>
       </div>
-      <div class="checkbox-group">
-        <label>
-          <input type="checkbox" id="sms-agree" name="sms-agree">
-          SMS, 이메일로 상품 및 이벤트 정보를 받겠습니다.(선택)
-        </label>
+      <div class="form-group">
+        <label>정보 수신 동의</label>
+        <div class="checkbox-group">
+          <label>
+            <input type="checkbox" id="all_agree" name="all_agree">
+            이벤트, 쇼핑레터 수신동의
+          </label>
+        </div>
+        <div class="checkbox-group">
+          <label>
+            <input type="checkbox" id="sms_agree" name="sms_agree">
+            SMS 수신 (변동일 : 2021-10-15 23:12:14)
+          </label>
+        </div>
+        <div class="checkbox-group">
+          <label>
+            <input type="checkbox" id="email_agree" name="email_agree">
+            이메일 수신 (변동일 : 2021-10-15 23:12:14)
+          </label>
+        </div>
+        <p class="info-text">
+          회원정보 중 필요한 정보만 공개됨을 알려드립니다. 수신동의 여부와 관계없이 발송됩니다.
+        </p>
       </div>
-      <div class="checkbox-group">
-        <label>
-          <input type="checkbox" id="age-confirm" name="age-confirm">
-          14세 이상입니다.
-        </label>
-      </div>
-      <p class="info-text">만 14세 미만 회원은 법정대리인(부모님) 동의를 받은 경우에만 회원가입이 가능합니다.</p>
+      
       <div class="button-group">
-		  <button type="button" class="cancel-btn">취소하기</button>
-		  <button type="submit" class="submit-btn">수정하기</button>
-	  </div>
+        <button type="button" class="cancel-btn" onclick="history.back()">취소하기</button>
+        <button type="submit" class="submit-btn">수정하기</button>
+      </div>
     </form>
   </div>
-
+</div>
+  <%@ include file="../footer.jsp" %>
 </body>
+<script>
+let isEmailDuplicate = true;
+    
+    function checkEmail() {
+        var emailId = $("#email_id").val();
+        var emailDomain = $("#email_domain").val();
+        var email = emailId + '@' + emailDomain;
+        $.ajax({
+            url: "/user/checkEmail",
+            type: "GET",
+            data: { email: email },
+            success: function(response) {
+                if (response === "duplicate") {
+                    alert("중복된 이메일입니다.");
+                    isEmailDuplicate = true;
+                } else if (response === "available") {
+                    alert("사용 가능한 이메일입니다.");
+                    isEmailDuplicate = false;
+                } else {
+                    alert("이메일 중복 확인 중 오류가 발생했습니다.");
+                    isEmailDuplicate = true;
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log("AJAX Error:", textStatus, errorThrown);
+                alert("이메일 중복 확인 중 오류가 발생했습니다.");
+                isEmailDuplicate = true;
+            }
+        });
+    }
+    
+  //이메일 입력 필드의 값이 변경될 때마다 isEmailDuplicate를 true로 설정
+    $("#email_id, #email_domain").on('input', function() {
+        isEmailDuplicate = true;
+    });
+  
+  
+  //tel_num 자동 하이픈
+    function autoHyphen(target) {
+        target.value = target.value
+            .replace(/[^0-9]/g, '')
+            .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3")
+            .replace(/(\-{1,2})$/g, "");
 
+        // 11자리를 초과하는 숫자 입력 방지
+        if (target.value.replace(/-/g, '').length > 11) {
+            target.value = target.value.slice(0, 13); // 하이픈 포함 13자
+        }
+    }
+ 
+
+    // 이메일 도메인 선택 시 자동 입력
+    function setEmailDomain(domain) {
+      $("#email_domain").val(domain);
+    }
+
+    // 폼 제출 전 이메일 조합
+    $('form').submit(function() {
+      var emailId = $('#email_id').val();
+      var emailDomain = $('#email_domain').val();
+      $('#email').val(emailId + '@' + emailDomain);
+    });
+
+    // 페이지 로드 시 이메일 도메인 선택
+    $(document).ready(function() {
+      var emailDomain = "${emailParts[1]}";
+      $("select.select option").each(function() {
+        if ($(this).val() == emailDomain) {
+          $(this).prop("selected", true);
+        }
+      });
+    });
+  </script>
+  
+	
 </html>

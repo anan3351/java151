@@ -1,11 +1,25 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="../header.jsp" %>
+<link rel="stylesheet" href="/css/template.css">
 <div class="container">
     <div class="left-aligned-title">
         <h3>인기배우 TOP5</h3>
     </div>
     <style>
+        .header {
+        margin-bottom: 0; /* 기존 margin-bottom 값을 0으로 설정 */
+        position: fixed; /* 헤더를 고정 위치로 설정 */
+        top: -10; /* 상단에 고정 */
+        width: 100%; /* 전체 너비를 사용 */
+        z-index: 1000; /* 다른 요소보다 위에 위치 */
+    }
+
+    body {
+        padding-top: 200px; /* 헤더 높이만큼 상단 패딩을 추가 */
+    }
+    
+    
         .left-aligned-title {
             text-align: left;
             margin-bottom: 20px;
@@ -136,8 +150,6 @@
         </div>
         <div class="filters-right">
             <button class="filter-button" onclick="location.href='${pageContext.request.contextPath}/actor/list'">전체</button>
-            <button class="filter-button">국내</button>
-            <button class="filter-button">해외</button>
         </div>
     </div>
     <div class="actor-list">
@@ -157,7 +169,7 @@
                             <span style="cursor:pointer; color:blue;" onclick="location.href='${pageContext.request.contextPath}/actordetail?id=${actor.actor_id}'">${actor.a_name}</span>
                         </td>
                         <td>${actor.job}</td>
-                        <td><!-- 최근공연 정보를 여기에 추가 --></td>
+                        <td>${actor.recent_work}</td>
                     </tr>
                 </c:forEach>
             </tbody>

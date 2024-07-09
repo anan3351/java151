@@ -2,19 +2,28 @@ package com.example.demo.showreview;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import javax.management.Query;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.example.demo.like.LikeDAO;
 import com.example.demo.show.ShowDAO;
+import com.example.demo.user.UserDTO;
+
+import jakarta.servlet.http.HttpSession;
+
+import org.springframework.ui.Model;
+
 
 @Controller
 @RequestMapping("")
@@ -26,21 +35,47 @@ public class ShowreviewCont {
 	@Autowired
 	private ShowreviewDAO showreviewDao;
 	
+	@Autowired
+	private ReplyDAO replyDao;
+	
+	@Autowired
+	private LikeDAO likeDao;
+	
+	
 	
 	@RequestMapping("/showreview/showreviewForm")
-	public ModelAndView showrvForm () {
+	public ModelAndView showrvForm (@RequestParam("user_id") String user_Id) {
 		ModelAndView mav = new ModelAndView();
+		mav.addObject("user_id", user_Id);
 		mav.setViewName("showreview/showrvForm");	
 		return mav;
 	}
 	
-	
+	/*
 	 @PostMapping("/showreview/insert")
-	 public ModelAndView insert(ShowreviewDTO showreviewDto) {
+	 public ModelAndView insert(ShowreviewDTO showreviewDto, @RequestParam("user_id") String userId) {
 	      ModelAndView mav = new ModelAndView();
+	      showreviewDto.setUser_id(userId);
 	      showreviewDao.insert(showreviewDto);
-	      mav.setViewName("redirect:/showrvList");
+	      mav.setViewName("redirect:/showreview");
 	      return mav;
+	}*/
+	
+	@PostMapping("/showreview/insert")
+	public ModelAndView insert(@ModelAttribute ShowreviewDTO showreviewDto) {
+	    ModelAndView mav = new ModelAndView();
+
+	    // showreviewDto에 필요한 데이터가 모두 있는지 확인합니다.
+	    if (showreviewDto.getUser_id() == null || showreviewDto.getShow_id() == null) {
+	        // 필요한 데이터가 없는 경우, 다시 입력 폼으로 리디렉션
+	        mav.setViewName("redirect:/showreview/showreviewForm");
+	        return mav;
+	    }
+
+	    // 데이터가 모두 있는 경우, 데이터베이스에 삽입
+	    showreviewDao.insert(showreviewDto);
+	    mav.setViewName("redirect:/showreview");
+	    return mav;
 	}
 	 
 	 @GetMapping("/showreview")
@@ -72,7 +107,7 @@ public class ShowreviewCont {
 	            endPage = totalPage;
 	        }
 
-	        List<ShowreviewDTO> list = null;
+	        List<Map<String, Object>> list = null;
 	        if (totalRowCount > 0) {
 	            list = showreviewDao.list(startRow, endRow);
 	        } else {
@@ -87,7 +122,74 @@ public class ShowreviewCont {
 		 
 		 return mav;
 	 }
+	 
+	    @GetMapping("/showreview/showreviewdetail")
+	    public ModelAndView showrvdetail(@RequestParam("rev_id") int rev_Id) {
+	        ModelAndView mav = new ModelAndView();
+	        ShowreviewDTO review = showreviewDao.getReviewById(rev_Id);
+	        List<ReplyDTO> replies = replyDao.getRepliesByReviewId(rev_Id);
+	        mav.addObject("review", review);
+	        mav.addObject("replies", replies);
+	        showreviewDao.incrementViewCount(rev_Id);
+	        mav.setViewName("showreview/showrvdetail");
+	        return mav;
+	    }
+
+	    @PostMapping("/showreview/addReply")
+	    public String addReply(@ModelAttribute ReplyDTO replyDto) {
+	        //System.out.println("Received user_id: " + replyDto.getUser_id());
+	        //System.out.println("Received rev_id: " + replyDto.getRev_id());
+	        //System.out.println("Received content: " + replyDto.getContent());
+
+	        replyDao.insert(replyDto);
+	        return "redirect:/showreview/showreviewdetail?rev_id=" + replyDto.getRev_id();
+	    }
+
 	
-	
+	    @PostMapping("/likeReview")
+	    @ResponseBody
+	    public String likeReview(@RequestParam("user_Id") String user_Id, @RequestParam("rev_Id") int rev_Id) {
+	        if (likeDao.checkIfLiked(user_Id, rev_Id)) {
+	            return "already_liked";
+	        } else {
+	            likeDao.insertLike(user_Id, rev_Id);
+	            showreviewDao.incrementEmpcnt(rev_Id);
+	            return "liked";
+	        }
+	    }
+
+
+	    @PostMapping("/showreview/updateReply")
+	    public String updateReply(@ModelAttribute ReplyDTO replyDto) {
+	        replyDao.update(replyDto);
+	        return "redirect:/showreview/showreviewdetail?rev_id=" + replyDto.getRev_id();
+	    }
+
+	    @PostMapping("/showreview/deleteReply")
+	    public String deleteReply(@RequestParam("reply_id") int reply_id, @RequestParam("rev_id") int rev_id) {
+	        replyDao.delete(reply_id);
+	        return "redirect:/showreview/showreviewdetail?rev_id=" + rev_id;
+	    }
+	    
+	    @PostMapping("/showreview/updateReview")
+	    public String updateReview(@ModelAttribute ShowreviewDTO showreviewDto) {
+	        showreviewDao.update(showreviewDto);
+	        return "redirect:/showreview/showreviewdetail?rev_id=" + showreviewDto.getRev_id();
+	    }
+
+	    @PostMapping("/showreview/deleteReview")
+	    @ResponseBody
+	    public String deleteReview(@RequestParam("rev_id") int rev_id, HttpSession session) {
+	        UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser"); // 세션에서 로그인한 사용자 객체 가져오기
+	        ShowreviewDTO review = showreviewDao.getReviewById(rev_id);
+
+	        if (review != null && loggedInUser != null && review.getUser_id().equals(loggedInUser.getUser_id())) {
+	            showreviewDao.delete(rev_id);
+	            return "success";
+	        } else {
+	            return "unauthorized";
+	        }
+	    }
+	    
 
 }//class end
