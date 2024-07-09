@@ -4,8 +4,11 @@ import java.util.Collections;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.ui.Model;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -132,6 +135,13 @@ public class ActorCont {
         
         return mav;
     }//actordetail end
+    
+    @GetMapping("/actor/search")
+    public String search(@RequestParam("search") String search, Model model) {
+        List<ActorDTO> list = actorDao.searchActors(search);
+        model.addAttribute("list", list);
+        return "actor/alllist";
+    }
     
     
     
