@@ -3,7 +3,8 @@
     <link rel="stylesheet" href="/css/template.css">
 <%@ include file="../header.jsp" %>
 <head>
-    <title>공연 관람 후기 작성</title>
+    <title>공연 관람 후기 작성 </title>
+    
     <meta charset="UTF-8">
     <style>
      .header {
@@ -73,6 +74,21 @@
             text-decoration: none;
             cursor: pointer;
         }
+    .centered-link {
+        text-align: center;
+        margin: 20px 0; /* 적절한 간격을 위해 마진 추가 */
+    }
+    .centered-link a {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border-radius: 4px;
+        text-decoration: none;
+    }
+    .centered-link a:hover {
+        background-color: #0056b3;
+    }
     </style>
 </head>
 <body>
@@ -84,14 +100,14 @@
                 <th>공연명</th>
                 <td>
                     <input type="hidden" id="show_id" name="show_id" />
-                    <input type="text" id="showTitle" name="title" readonly value="공연 테이블 조인" />
+                    <input type="text" id="showTitle" name="title" readonly />
                     <button type="button" class="button" onclick="openModal()">검색</button>
                 </td>
             </tr>
             <tr>
                 <th>관람일시</th>
                 <td>
-                    <input type="text" id="viewingDate" name="viewingDate" value="예매내역 테이블 조인" readonly />
+                    <input type="text" id="viewingDate" name="viewingDate" readonly />
                     <button type="button" class="button">검색</button>
                 </td>
             </tr>
@@ -138,7 +154,11 @@
         </table>
     </div>
 </div>
-
+<div>
+<div class="centered-link">
+    <a href="/showreview">공연 목록</a>
+</div>
+</div>
 <script>
 function searchShow() {
     var keyword = document.getElementById("searchInput").value;
@@ -172,9 +192,9 @@ function searchShow() {
         document.getElementById("myModal").style.display = "none";
     }
 
-    function selectShow(show_Id, showTitle) {
+    function selectShow(show_id, title) {
         document.getElementById("show_id").value = show_id;
-        document.getElementById("showTitle").value = showTitle;
+        document.getElementById("showTitle").value = title;
         closeModal();
     }
     
