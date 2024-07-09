@@ -58,7 +58,7 @@ public class UserDAO {
     }
 
     
-<<<<<<< HEAD
+
     
     //회원정보수정을 위해 가져오는 것들
     public UserDTO getUserInfo(String user_id) {
@@ -76,8 +76,6 @@ public class UserDAO {
         sqlSession.update("user.updatePassword", params);
     }
     
-=======
 
->>>>>>> refs/heads/main
 }//class end
 
