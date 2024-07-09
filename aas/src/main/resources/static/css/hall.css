@@ -202,15 +202,23 @@ footer {
 }
 
 .booking-pay {
-  width: 28%;
-  height: 150px;
-  position: relative;
+  height: 190px;
   border: bold 1px;
-  left: 55%;
-  margin-bottom: 25px;
-  margin-top: 0px;
+  margin-bottom: 100px;
+  margin-top: -30px;
   border-radius: 10px;
   font-size: 17px;
+  white-space: nowrap;
+  margin-left: auto;
+  float: right;
+  width: 37%;
+  display: flex;
+  position: relative;
+  right: 200px;
+}
+
+.amount-table{
+  margin-left: 20px;
 }
 
 
@@ -279,8 +287,12 @@ footer {
 }
 
 .page-tit {
-  font-size: 32px;
+  font-size: 40px;
   font-weight: 700;
+  height: 75px;
+  left: 50%;
+  text-align: center;
+
 }
 
 .detail-wrap {
@@ -308,20 +320,33 @@ footer {
 .detail-info ul {
   display: flex;
   flex-direction: column;
-  gap: 10px
+  gap: 25px
+}
+
+.detail-info li {
+  gap: 15px;
+  display: flex;
+  flex-direction: column;
 }
 
 .detail-info .info-label {
-  font-size: 18px;
+  font-size: 23px;
 }
 
+.detail-info .info-label2 {
+  font-size: 32px;
+}
+
+
 .detail-info .info-text {
-  font-size: 16px;
+  font-size: 17px;
 }
 
 .right-area {
   width: calc(100% / 2);
-  gap: 20px
+  gap: 20px;
+
+
 }
 
 
@@ -377,6 +402,18 @@ footer {
   color: #fff;
   font-weight: 700;
 }
+
+.option-list .clickable {
+  cursor: pointer;
+}
+
+.option-list .clickable.selected {
+  background-color: #8e43e7;
+  /* 선택된 요소의 배경색 */
+  color: #00fc86;
+  /* 선택된 요소의 글자색 */
+}
+
 
 .option-area {
   width: calc(100% / 2);
@@ -469,13 +506,9 @@ footer {
   background-color: #8e43e7;
   color: white;
   border: none;
-  cursor: pointer;
   font-size: 16px;
 }
 
-#select-date-btn:hover {
-  background-color: #c99fec;
-}
 
 #selected-date-display {
   margin-top: 10px;

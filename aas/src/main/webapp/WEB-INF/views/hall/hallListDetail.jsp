@@ -25,14 +25,12 @@
             .main-container {
               display: flex;
               justify-content: center;
-              margin-top: 177px;
+              margin-top: 150px;
             }
 
             .main-container li {
               list-style: none;
             }
-
-          
           </style>
         </head>
 
@@ -41,9 +39,8 @@
             <div class="main-container">
               <!-- 본문시작 -->
               <div class="page-wrap">
-                <button type="button" class="btn btn-outline-secondary">목록으로</button>
-                <h3 class="page-tit">${hall.hname}
-                </h3>
+                <button type="button" class="btn btn-info"
+                  style="background-color: #be9ed8; border-color: #be9ed8;">목록으로</button>
 
                 <div class="detail-wrap">
                   <div class="left-area">
@@ -52,6 +49,9 @@
                     </div>
                     <div class="detail-info">
                       <ul>
+                        <li>
+                          <strong class="info-label2">${hall.h_name}</strong>
+                        </li>
                         <li>
                           <strong class="info-label">주소</strong>
                           <p class="info-text">${hall.addr}</p>
@@ -81,21 +81,23 @@
                         </div>
                         <div id="calendar"></div>
                         <button id="select-date-btn">날짜 선택</button>
-                        <div id="selected-date-display"></div>
+                        <!-- <div id="selected-date-display"></div> -->
                       </div>
                       <div class="option-area">
                         <div class="option-tit">공연관 선택</div>
                         <div class="option-list">
                           <ul>
                             <c:forEach items="${list2}" var="mini" varStatus="status">
-                              <li>
-                                <c:out value="${mini.miniHall}" />
-                                / 좌석수 : ${mini.seat }
+                              <li class="clickable" data-mini-hall="${mini.miniHall}" data-seat="${mini.seat}"
+                                data-h-day="${mini.h_day}">
+                                ${mini.miniHall} &nbsp;/ 좌석수: ${mini.seat } / 1DAY :
+                                <fmt:formatNumber value="${mini.h_day}" type="number" groupingUsed="true" />원
                               </li>
                             </c:forEach>
                           </ul>
                         </div>
                       </div>
+
                     </div>
                     <div class="btn-area">
                       <button type="button" class="btn btn-booking">예약하기</button>
@@ -105,57 +107,77 @@
                 </div>
               </div>
             </div>
-            <div class="booking-pay">
-            <table  class="table" style="white-space:nowrap">
-            <tr>
-              <th>하루</th>
-              <th>일주일</th>
-              <th>한달</th>
-              <th>3개월</th>
-              <th>6개월</th>
-              <th>1년</th>
-            </tr>
-            <tr>
-              <td >100,000</td>
-              <td>2%</td>
-              <td>3%</td>
-              <td>5%</td>
-              <td>7%</td>
-              <td>10%</td>
-            </tr>
-            <tr>
-              <td colspan="3">총 일수 30일</td>
-              <td colspan="3">총 대관료 60만원</td>
-            </tr>
 
-            </table>
+            <div class="booking-pay">
+              <table class="table dicount-table">
+                <tr>
+                  <th style="width: 12%; height: 5%;"></th>
+                  <th style="width: 12%;">일주일</th>
+                  <th style="width: 12%;">한달</th>
+                  <th style="width: 12%;">3개월</th>
+                  <th style="width: 12%;">6개월</th>
+                  <th style="width: 12%;">1년</th>
+                </tr>
+                <tr>
+                  <th style="width: 12%;">할인율</th>
+                  <td>2%</td>
+                  <td>3%</td>
+                  <td>5%</td>
+                  <td>7%</td>
+                  <td>10%</td>
+                </tr>
+              </table>
+              <table class="table amount-table">
+                <tr>
+                  <th>선택 날짜</th>
+                  <td colspan="2" id="selected-date-display"></td>
+                </tr>
+                <tr>
+                  <th>공연관</th>
+                  <td id="selected-hall" colspan="2"></td>
+                </tr>
+                <tr>
+                  <th>총 대관일</th>
+                  <td id="selected-date-display2" style="font-size: 18px; color: #ff0000;"></td>
+                  <td>일</td>
+                </tr>
+                <tr>
+                  <th>결제금액</th>
+                  <td id="price-per-day" style="font-size: 18px; color: #ff0000;"></td>
+                  <td>원</td>
+                </tr>
+
+              </table>
+
             </div>
             <script>
               document.addEventListener('DOMContentLoaded', function () {
                 console.log("DOMContentLoaded event fired");
 
                 const calendar = document.getElementById('calendar');
-                const selectDateBtn = document.getElementById('select-date-btn');
+                //const selectDateBtn = document.getElementById('select-date-btn');
                 const selectedDateDisplay = document.getElementById('selected-date-display');
+                const selectedDateDisplay2 = document.getElementById('selected-date-display2');
                 const currentMonthYear = document.getElementById('current-month-year');
                 const prevMonthBtn = document.getElementById('prev-month');
                 const nextMonthBtn = document.getElementById('next-month');
 
-                console.log("Calendar Elements:", calendar, selectDateBtn, selectedDateDisplay, currentMonthYear, prevMonthBtn, nextMonthBtn);
+                //console.log("Calendar Elements:", calendar, selectDateBtn, selectedDateDisplay, currentMonthYear, prevMonthBtn, nextMonthBtn);
 
-                if (!calendar || !selectDateBtn || !selectedDateDisplay || !currentMonthYear || !prevMonthBtn || !nextMonthBtn) {
-                  console.error("One or more elements are missing!");
-                  return;
-                }
+                //if (!calendar || !selectDateBtn || !selectedDateDisplay || !currentMonthYear || !prevMonthBtn || !nextMonthBtn) {
+                //console.error("One or more elements are missing!");
+                //  return;
+                //}
 
                 let selectedStartDate = null;
                 let selectedEndDate = null;
                 let currentYear = new Date().getFullYear();
                 let currentMonth = new Date().getMonth();
+                let totalDays = 0;
                 const today = new Date();
                 today.setHours(0, 0, 0, 0);
 
-                console.log("Initializing the calendar with current year and month:", currentYear, currentMonth);
+                //console.log("Initializing the calendar with current year and month:", currentYear, currentMonth);
 
                 function renderCalendar(year, month) {
                   console.log("Rendering calendar for " + year + "-" + (month + 1));
@@ -172,7 +194,7 @@
 
                   const monthDays = new Date(year, month + 1, 0).getDate();
                   const firstDay = new Date(year, month, 1).getDay();
-                  console.log("Month days: " + monthDays + ", First day: " + firstDay);
+                  //console.log("Month days: " + monthDays + ", First day: " + firstDay);
 
                   for (let i = 0; i < firstDay; i++) {
                     const emptyCell = document.createElement('div');
@@ -188,7 +210,7 @@
                     dayCell.setAttribute('data-year', year);
 
                     const cellDate = new Date(year, month, day);
-                    console.log("cellDate: " + cellDate + ", today: " + today);
+                    //console.log("cellDate: " + cellDate + ", today: " + today);
 
                     if (cellDate < today) {
                       dayCell.classList.add('disabled');
@@ -197,7 +219,7 @@
                         dayCell.classList.add('selected');
                       }
                       dayCell.addEventListener('click', function () {
-                        console.log("Date clicked: " + cellDate);
+                        //console.log("Date clicked: " + cellDate);
                         if (!selectedStartDate || (selectedStartDate && selectedEndDate)) {
                           selectedStartDate = new Date(year, month, day);
                           console.log("selectedStartDate set to: " + selectedStartDate);
@@ -206,12 +228,12 @@
                           dayCell.classList.add('selected');
                         } else {
                           selectedEndDate = new Date(year, month, day);
-                          console.log("selectedEndDate set to: " + selectedEndDate);
+                          //console.log("selectedEndDate set to: " + selectedEndDate);
                           if (selectedEndDate < selectedStartDate) {
                             const temp = selectedStartDate;
                             selectedStartDate = selectedEndDate;
                             selectedEndDate = temp;
-                            console.log("Swapped dates: " + selectedStartDate + " - " + selectedEndDate);
+                            //console.log("Swapped dates: " + selectedStartDate + " - " + selectedEndDate);
                           }
                           highlightSelectedRange();
                         }
@@ -222,7 +244,7 @@
                     calendar.appendChild(dayCell);
                   }
 
-                  highlightSelectedRange(); // Call this to ensure selected range is highlighted when switching months
+                  highlightSelectedRange();
                 }
 
                 function highlightSelectedRange() {
@@ -252,29 +274,31 @@
                   });
                 }
 
+
+
                 function updateSelectedDateDisplay() {
-                  console.log("Updating selected date display");
+                  //console.log("Updating selected date display");
                   if (selectedStartDate && selectedEndDate) {
                     const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
                     const startDayOfWeek = daysOfWeek[selectedStartDate.getDay()];
                     const endDayOfWeek = daysOfWeek[selectedEndDate.getDay()];
-                    const totalDays = Math.ceil((selectedEndDate - selectedStartDate) / (1000 * 60 * 60 * 24)) + 1;
-                    selectedDateDisplay.textContent = selectedStartDate.toLocaleDateString() + " (" + startDayOfWeek + ") ~ " + selectedEndDate.toLocaleDateString() + " (" + endDayOfWeek + ") 총 " + totalDays + "일";
+                    totalDays = Math.ceil((selectedEndDate - selectedStartDate) / (1000 * 60 * 60 * 24)) + 1;
+                    selectedDateDisplay.textContent = selectedStartDate.toLocaleDateString() + " (" + startDayOfWeek + ") ~ " + selectedEndDate.toLocaleDateString() + "(" + endDayOfWeek + ")";
+                    selectedDateDisplay2.textContent = totalDays;
+                    if (totalDays >= 30 * 3) {
+
+                    }
+
                   } else if (selectedStartDate) {
                     selectedDateDisplay.textContent = "시작 날짜: " + selectedStartDate.toLocaleDateString();
+                    selectedDateDisplay2.textContent = "1";
                   } else {
                     selectedDateDisplay.textContent = '';
+                    selectedDateDisplay2.textContent = '';
                   }
                 }
 
-                selectDateBtn.addEventListener('click', function () {
-                  if (selectedStartDate && selectedEndDate) {
-                    alert(selectedStartDate.toLocaleDateString() + " ~ " + selectedEndDate.toLocaleDateString() + " 총 " + (Math.ceil((selectedEndDate - selectedStartDate) / (1000 * 60 * 60 * 24)) + 1) + "일");
-                    // 여기서 선택된 기간을 서버로 전송하는 코드를 추가하면 됩니다.
-                  } else {
-                    alert('시작 날짜와 종료 날짜를 모두 선택해 주세요.');
-                  }
-                });
+
 
                 prevMonthBtn.addEventListener('click', function () {
                   if (currentMonth === 0) {
@@ -283,7 +307,7 @@
                   } else {
                     currentMonth--;
                   }
-                  console.log("Previous month button clicked: " + currentYear + "-" + currentMonth);
+                  //console.log("Previous month button clicked: " + currentYear + "-" + currentMonth);
                   renderCalendar(currentYear, currentMonth);
                 });
 
@@ -294,14 +318,76 @@
                   } else {
                     currentMonth++;
                   }
-                  console.log("Next month button clicked: " + currentYear + "-" + currentMonth);
+                  //console.log("Next month button clicked: " + currentYear + "-" + currentMonth);
                   renderCalendar(currentYear, currentMonth);
                 });
 
-                // Initialize the calendar
-                console.log("Initializing the calendar with current year and month:", currentYear, currentMonth);
+
+
+                document.querySelectorAll('.clickable').forEach(function (item) {
+                  item.addEventListener('click', function () {
+                    const miniHall = this.getAttribute('data-mini-hall');
+                    const hDay = this.getAttribute('data-h-day');
+
+                    updateSelectedDateDisplay(); // Update the selected dates before calculating discount
+
+                    const discountedPrice = calculateDiscountedPrice(hDay, totalDays);
+                    const formattedPrice = discountedPrice.toLocaleString('ko-KR');
+
+                    // 숫자를 쉼표로 포맷팅
+                    const formattedHDay = parseInt(hDay).toLocaleString();
+
+
+                    document.getElementById('price-per-day').textContent = formattedPrice;
+                    document.getElementById('selected-hall').textContent = miniHall;
+
+                  });
+                });
+
+
+                function calculateDiscountedPrice(hDay, totalDays) {
+                  let discountRate = 0;
+
+                  if (totalDays >= 30 * 12) { // 년 이상
+                    discountRate = 10;
+                  } else if (totalDays >= 30 * 6) { // 1개월 이상
+                    discountRate = 7;
+                  } else if (totalDays >= 30 * 3) { // 7일 이상
+                    discountRate = 5;
+                  } else if (totalDays >= 30) {
+                    discountRate = 3;
+                  } else if (totalDays >= 7) {
+                    discountRate = 2;
+                  }
+                  return hDay * (1 - discountRate / 100) * totalDays;
+                }
+
+
+
+                var clickableItems = document.querySelectorAll('.clickable');
+                clickableItems.forEach(function (item) {
+                  item.addEventListener('click', function () {
+                    // 이미 선택된 요소가 있다면 클래스 제거
+                    var selectedItem = document.querySelector('.clickable.selected');
+                    if (selectedItem) {
+                      selectedItem.classList.remove('selected');
+                    }
+
+                    // 클릭된 요소가 이미 선택된 상태라면 클래스 제거, 아니면 추가
+                    if (this === selectedItem) {
+                      this.classList.remove('selected');
+                    } else {
+                      this.classList.add('selected');
+                    }
+                  });
+                }); //END 공연관선택컬러
+
+
                 renderCalendar(currentYear, currentMonth);
-              });
+
+              });// END addEventListener
+
+
 
             </script>
 

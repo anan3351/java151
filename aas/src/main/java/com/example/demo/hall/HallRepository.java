@@ -15,16 +15,16 @@ public interface HallRepository extends JpaRepository<HallEntity, String>{
 	Page<HallEntity> findByHnameContaining(String hname, Pageable pageable);
     Page<HallEntity> findByAddrContaining(String addr, Pageable pageable);
 
-    @Query(value = "SELECT * FROM tb_hall WHERE hall_id NOT LIKE '%-%' ORDER BY hall_id DESC LIMIT :limit OFFSET :offset", nativeQuery = true)
+    @Query(value = "SELECT * FROM tb_hall WHERE hall_id NOT LIKE '%-%' ORDER BY seat DESC LIMIT :limit OFFSET :offset", nativeQuery = true)
     List<HallEntity> findByHallIdWithoutDash(@Param("limit") int limit, @Param("offset") int offset);
     
     @Query(value = "SELECT COUNT(*) FROM tb_hall WHERE hall_id NOT LIKE '%-%'", nativeQuery = true)
     int countByHallIdWithoutDash();
 
-    @Query(value = "SELECT * FROM tb_hall WHERE hall_id NOT LIKE '%-%' AND hname LIKE %:word% ORDER BY hall_id DESC LIMIT :limit OFFSET :offset", nativeQuery = true)
+    @Query(value = "SELECT * FROM tb_hall WHERE hall_id NOT LIKE '%-%' AND h_name LIKE %:word% ORDER BY seat LIMIT :limit OFFSET :offset", nativeQuery = true)
     List<HallEntity> findByHnameContainingWithoutDash(@Param("word") String word, @Param("limit") int limit, @Param("offset") int offset);
 
-    @Query(value = "SELECT COUNT(*) FROM tb_hall WHERE hall_id NOT LIKE '%-%' AND hname LIKE %:word%", nativeQuery = true)
+    @Query(value = "SELECT COUNT(*) FROM tb_hall WHERE hall_id NOT LIKE '%-%' AND h_name LIKE %:word%", nativeQuery = true)
     int countByHnameContainingWithoutDash(@Param("word") String word);
 
     @Query(value = "SELECT * FROM tb_hall WHERE hall_id NOT LIKE '%-%' AND addr LIKE %:word% ORDER BY hall_id DESC LIMIT :limit OFFSET :offset", nativeQuery = true)
