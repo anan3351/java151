@@ -15,7 +15,7 @@
     }
 
     body {
-        padding-top: 150px; /* 헤더 높이만큼 상단 패딩을 추가 */
+        padding-top: 200px; /* 헤더 높이만큼 상단 패딩을 추가 */
     }   
         .container {
             width: 80%;
@@ -45,7 +45,7 @@
             display: none;
             position: fixed;
             z-index: 1;
-            padding-top: 100px;
+            padding-top: 200px;
             left: 0;
             top: 0;
             width: 100%;

@@ -22,17 +22,31 @@
 
   <link rel="stylesheet" href="/css/template.css">
 
+  <style>
+   .header {
+        margin-bottom: 0; /* 기존 margin-bottom 값을 0으로 설정 */
+        position: fixed; /* 헤더를 고정 위치로 설정 */
+        top: 0; /* 상단에 고정 */
+        width: 100%; /* 전체 너비를 사용 */
+        z-index: 1000; /* 다른 요소보다 위에 위치 */
+    }
+
+    body {
+        padding-top: 60px; /* 헤더 높이만큼 상단 패딩을 추가 */
+    }  
+  
+  </style>
 </head>
 <body>
-	<%@ include file="./header.jsp" %>
+	<%@ include file="../header.jsp" %>
 			<div class="main-container">
 				<!-- 본문시작 -->
-				
-				
+				<h1>내 스케줄</h1> 
+				  
 				
 				
 				<!-- 본문 끝 -->
 			</div>
-	<%@ include file="./footer.jsp" %>
+	<%@ include file="../footer.jsp" %>
 </body>
 </html>

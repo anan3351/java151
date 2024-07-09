@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="myschedule">
+    <select id="getAllSchedules" parameterType="string" resultType="com.example.demo.myschedule.MyScheduleDTO">
+        SELECT mysch_id, user_id, order_id, title, showdate, showtime, seat, fair, poster, sale
+        FROM tb_myschedule
+        WHERE user_id = #{user_id}
+    </select>
+
+
+    
+</mapper>
