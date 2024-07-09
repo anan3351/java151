@@ -51,13 +51,31 @@ public class ShowreviewCont {
 		return mav;
 	}
 	
-	
+	/*
 	 @PostMapping("/showreview/insert")
-	 public ModelAndView insert(ShowreviewDTO showreviewDto) {
+	 public ModelAndView insert(ShowreviewDTO showreviewDto, @RequestParam("user_id") String userId) {
 	      ModelAndView mav = new ModelAndView();
+	      showreviewDto.setUser_id(userId);
 	      showreviewDao.insert(showreviewDto);
-	      mav.setViewName("redirect:/showrvList");
+	      mav.setViewName("redirect:/showreview");
 	      return mav;
+	}*/
+	
+	@PostMapping("/showreview/insert")
+	public ModelAndView insert(@ModelAttribute ShowreviewDTO showreviewDto) {
+	    ModelAndView mav = new ModelAndView();
+
+	    // showreviewDto에 필요한 데이터가 모두 있는지 확인합니다.
+	    if (showreviewDto.getUser_id() == null || showreviewDto.getShow_id() == null) {
+	        // 필요한 데이터가 없는 경우, 다시 입력 폼으로 리디렉션
+	        mav.setViewName("redirect:/showreview/showreviewForm");
+	        return mav;
+	    }
+
+	    // 데이터가 모두 있는 경우, 데이터베이스에 삽입
+	    showreviewDao.insert(showreviewDto);
+	    mav.setViewName("redirect:/showreview");
+	    return mav;
 	}
 	 
 	 @GetMapping("/showreview")
@@ -116,12 +134,7 @@ public class ShowreviewCont {
 	        mav.setViewName("showreview/showrvdetail");
 	        return mav;
 	    }
-	    /*
-	    @PostMapping("/showreview/addReply")
-	    public String addReply(@ModelAttribute ReplyDTO replyDto) {
-	        replyDao.insert(replyDto);
-	        return "redirect:/showreview/showreviewdetail?rev_id=" + replyDto.getRev_id();
-	    }*/
+
 	    @PostMapping("/showreview/addReply")
 	    public String addReply(@ModelAttribute ReplyDTO replyDto) {
 	        //System.out.println("Received user_id: " + replyDto.getUser_id());

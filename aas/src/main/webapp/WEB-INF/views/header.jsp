@@ -33,7 +33,7 @@
         <ul>
           <li><a href="/musical">뮤지컬</a></li>
           <li><a href="/play">연극</a></li>
-          <li><a href="/actor/list">배우</a></li>
+          <li><a href="/actor">배우</a></li>
           <li><a href="/hall/list">공연장</a></li>
           <li><a href="#">공지사항</a></li>
           <li><a href="#">Q&A</a></li>
@@ -46,6 +46,5 @@
     
   </header>
 
-  
 </div>
 
