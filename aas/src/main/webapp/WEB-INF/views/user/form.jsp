@@ -15,7 +15,11 @@
   <link rel="stylesheet" href="/css/template.css">
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  
+
+  <link rel="stylesheet" href="/css/template.css">
+  <%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn"  uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
  
 
 <script>
@@ -77,17 +81,44 @@
 </script>
 
   <style>
+  
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.page-wrapper {
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+    padding-top: 130px; /* 헤더 높이에 따라 조정 */
+}
+
+footer {
+    flex-shrink: 0;
+    background-color: #413f3f;
+    color: white;
+    padding: 15px;
+    width: 100%;
+    margin-top: auto;
+}
     body {
-      font-family: 'Malgun Gothic', sans-serif;
-      margin: 0;
-      padding: 20px;
-    }
+    font-family: 'Malgun Gothic', sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
 
     .container {
-      max-width: 500px;
-      margin: 0 auto;
-      padding: 40px;
-    }
+    max-width: 500px;
+    margin: 20px auto; /* 상단 여백 추가 */
+    padding: 40px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
 
     .form-group {
       margin-bottom: 20px;
@@ -251,37 +282,51 @@
     
     let isIdDuplicate = true; // 초기값을 true로 설정
 
-    function checkUserId() {
-        var userId = $("#user_id").val();
-        $.ajax({
-            url: "/user/checkUserId",
-            type: "GET",
-            data: { user_id: userId },
-            success: function(response) {
-                if (response === "duplicate") {
-                    alert("중복된 ID입니다.");
-                    isIdDuplicate = true;
-                } else if (response === "available") {
-                    alert("사용 가능한 ID입니다.");
-                    isIdDuplicate = false;
-                } else {
-                    alert("ID 중복 확인 중 오류가 발생했습니다.");
-                    isIdDuplicate = true;
-                }
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.log("AJAX Error:", textStatus, errorThrown);
-                alert("ID 중복 확인 중 오류가 발생했습니다.");
-                isIdDuplicate = true;
-            }
-        });
-    }
+   function checkUserId() {
+    	    var userId = $("#user_id").val();
+    	    
+    	    // ID 길이 검사
+    	    if (userId.length < 6 || userId.length > 20) {
+    	        alert("ID는 6~20자 이어야 합니다.");
+    	        return; // 함수 실행 중단
+    	    }
+    	    
+    	    $.ajax({
+    	        url: "/user/checkUserId",
+    	        type: "GET",
+    	        data: { user_id: userId },
+    	        success: function(response) {
+    	            if (response === "duplicate") {
+    	                alert("중복된 ID입니다.");
+    	                isIdDuplicate = true;
+    	            } else if (response === "available") {
+    	                alert("사용 가능한 ID입니다.");
+    	                isIdDuplicate = false;
+    	            } else {
+    	                alert("ID 중복 확인 중 오류가 발생했습니다.");
+    	                isIdDuplicate = true;
+    	            }
+    	        },
+    	        error: function(jqXHR, textStatus, errorThrown) {
+    	            console.log("AJAX Error:", textStatus, errorThrown);
+    	            alert("ID 중복 확인 중 오류가 발생했습니다.");
+    	            isIdDuplicate = true;
+    	        }
+    	    });
+    	}
     
     let isEmailDuplicate = true;
     
     function checkEmail() {
-        var emailId = $("#email_id").val();
-        var emailDomain = $("#email_domain").val();
+        var emailId = $("#email_id").val().trim();
+        var emailDomain = $("#email_domain").val().trim();
+        
+        // email 또는 email 도메인이 비어있는지 검사
+        if (emailId === "" || emailDomain === "") {
+            alert("email 주소를 정확히 적어주세요");
+            return; // 함수 실행 중단
+        }
+        
         var email = emailId + '@' + emailDomain;
         $.ajax({
             url: "/user/checkEmail",
@@ -371,9 +416,10 @@
 
 <body>
 
+<%@ include file="../header.jsp" %>
 
 
-
+<div class="page-wrapper">
   
   <div class="container">
     <form name="joinfrm" id="joinfrm" method="post" action="insert" enctype="multipart/form-data">
@@ -602,7 +648,8 @@
   
  
   </script>
-
+  </div>
+<%@ include file="../footer.jsp" %>
 </body>
 
 </html>

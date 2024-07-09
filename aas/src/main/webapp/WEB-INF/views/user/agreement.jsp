@@ -1,77 +1,204 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    
+<%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn"  uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
-<html lang="ko">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+ <title>main</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/css/swiper.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/js/swiper.min.js"></script>
+
+  <link rel="stylesheet" href="../view/template.css"> 
+
+  <link rel="stylesheet" href="/css/template.css">
     <title>회원 약관</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <style>
-        body {
-            font-family: 'Malgun Gothic', sans-serif;
-            background-color: #f8f9fa;
-            padding: 20px;
-        }
-        .container {
-		    max-width: 800px;
-		    margin: 0 auto;
-		    background-color: #fff;
-		    padding: 30px;
-		    border-radius: 5px;
-		    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-		}
-        h2 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 30px;
-        }
-        .agreement-text {
-            height: 300px;
-            overflow-y: auto;
-            border: 1px solid #ddd;
-            padding: 15px;
-            margin-bottom: 20px;
-            background-color: #f9f9f9;
-        }
-        .checkbox-group {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .btn-group {
-		    display: flex;
-		    justify-content: flex-end;
-		    margin-top: 30px;
-		}
-		
-		 .btn-group {
-        display: flex !important;
-        justify-content: flex-end !important;
-        margin-top: 30px !important;
+    html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.page-wrapper {
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+    padding-top: 130px; /* 헤더 높이만큼 상단 패딩 */
+}
+
+.main-container {
+    flex: 1 0 auto;
+    padding: 20px;
+}
+body {
+    font-family: 'Pretendard', 'Malgun Gothic', sans-serif;
+    background-color: #f8f9fa;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+.page-wrapper {
+    flex: 1 0 auto;
+    padding-top: 130px;
+}
+
+.main-container {
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.agreement-text {
+    height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+}
+
+.checkbox-group {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.btn-group {
+    display: flex !important;
+    justify-content: flex-end !important;
+    margin-top: 30px !important;
+}
+
+.btn {
+    padding: 10px 20px !important;
+    font-size: 16px !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+}
+
+.btn-primary {
+    background-color: #0070c9 !important;
+    border: none !important;
+    color: white !important;
+    margin-right: 15px !important;
+}
+
+.btn-default {
+    background-color: #f0f0f0 !important;
+    border: 1px solid #ddd !important;
+    color: #333 !important;
+}
+
+.header-wrap {
+    width: 100%;
+    position: fixed;
+    z-index: 999;
+    background-color: #fff;
+    top: 0;
+}
+
+header {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1600px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #fff;
+    transition: all 0.3s;
+}
+
+footer {
+    flex-shrink: 0;
+    background-color: #413f3f;
+    color: white;
+    padding: 15px;
+    width: 100%;
+    margin-top: auto; /* 이 줄이 추가됨 */
+}
+
+@media (max-width: 1200px) {
+    header {
+        align-items: center;
+        flex-direction: column;
     }
 
-    .btn {
-        padding: 10px 20px !important;
-        font-size: 16px !important;
-        border-radius: 4px !important;
-        cursor: pointer !important;
+    header .search-bar {
+        max-width: none;
+        margin: 10px 0;
     }
 
-    .btn-primary {
-        background-color: #0070c9 !important;
-        border: none !important;
-        color: white !important;
-        margin-right: 15px !important; /* 오른쪽 마진 추가 */
+    header .user-options {
+        justify-content: flex-end;
+    }
+}
+
+@media (max-width: 768px) {
+    header {
+        padding: 10px;
     }
 
-    .btn-default {
-        background-color: #f0f0f0 !important;
-        border: 1px solid #ddd !important;
-        color: #333 !important;
+    header .search-bar input {
+        width: 100%;
+        padding: 5px 30px 5px 10px;
     }
-    </style>
+
+    header .user-options {
+        justify-content: center;
+    }
+
+    header .user-options a {
+        margin: 5px 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    header .search-bar input {
+        width: 95%;
+        padding: 5px 25px 5px 5px;
+    }
+
+    header .user-options {
+        justify-content: center;
+    }
+
+    header .user-options a {
+        margin: 5px;
+    }
+}
+</style>
     
 </head>
 <body>
+<%@ include file="../header.jsp" %>
+			<div class="main-container">
+
     <div class="container">
         <h2>회원 약관</h2>
         <form action="./form" method="post" onsubmit="return validateAgreement()">
@@ -278,6 +405,8 @@
         return true; // 폼 제출 진행
     }
         </script>
-    </script>
+    
+    </div>
+    <%@ include file="../footer.jsp" %>
 </body>
 </html>

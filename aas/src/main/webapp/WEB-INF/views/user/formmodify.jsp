@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn"  uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -15,7 +18,6 @@
   <link rel="stylesheet" href="/css/template.css">
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
   
 
   <style>
@@ -195,6 +197,9 @@
 </head>
 
 <body>
+<%@ include file="../header.jsp" %>
+			<div class="main-container">
+
   <div class="container">
     <form action="/user/updateUser" method="post">
       <div class="form-group">
@@ -267,8 +272,8 @@
       </div>
     </form>
   </div>
-
-  
+</div>
+  <%@ include file="../footer.jsp" %>
 </body>
 <script>
 let isEmailDuplicate = true;
@@ -343,4 +348,6 @@ let isEmailDuplicate = true;
       });
     });
   </script>
+  
+	
 </html>
