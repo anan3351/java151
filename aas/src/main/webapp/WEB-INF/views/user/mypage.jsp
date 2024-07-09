@@ -248,7 +248,9 @@
             <div class="menu-title">나의 후기</div>
             <ul class="menu-items">
                 <li><a href="#">좌석 후기</a></li>
-                <li><a href="#">공연 후기</a></li>
+                <c:when test="${not empty sessionScope.loggedInUser}">
+                <li><a href="${pageContext.request.contextPath}/showreview/showreviewForm?user_id=${sessionScope.loggedInUser.user_id}">공연 후기</a></li>
+            </c:when>
             </ul>
         </div>
         <div class="menu-section">

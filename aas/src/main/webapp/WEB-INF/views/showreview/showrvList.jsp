@@ -1,11 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <link rel="stylesheet" href="/css/template.css">
 <%@ include file="../header.jsp" %>
 <html>
 <head>
     <title>공연 관람 후기 목록</title>
     <meta charset="UTF-8">
     <style>
+    .header {
+        margin-bottom: 0; /* 기존 margin-bottom 값을 0으로 설정 */
+        position: fixed; /* 헤더를 고정 위치로 설정 */
+        top: -10; /* 상단에 고정 */
+        width: 100%; /* 전체 너비를 사용 */
+        z-index: 1000; /* 다른 요소보다 위에 위치 */
+    }
+
+    body {
+        padding-top: 150px; /* 헤더 높이만큼 상단 패딩을 추가 */
+    }
         .container {
             width: 90%;
             margin: 0 auto;
@@ -75,6 +87,11 @@
     </style>
 </head>
 <body>
+<%
+    // 세션에서 로그인된 사용자 정보를 가져옵니다.
+    com.example.demo.user.UserDTO loggedInUser = (com.example.demo.user.UserDTO) session.getAttribute("loggedInUser");
+    String userId = loggedInUser != null ? loggedInUser.getUser_id() : "";
+%>
 <div class="container">
     <h2>공연 리뷰 목록</h2>
     <div class="search-box">
@@ -82,7 +99,7 @@
         <button type="button">검색</button>
     </div>
     <div class="write-button">
-        <button type="button" onclick="location.href='${pageContext.request.contextPath}/showreview/showreviewForm'">글쓰기</button>
+         <button type="button" onclick="location.href='${pageContext.request.contextPath}/showreview/showreviewForm?user_id=<%= userId %>'">글쓰기</button>
     </div>
     <div class="review-list">
         <table>
