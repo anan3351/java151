@@ -17,20 +17,20 @@ public class LikeDAO {
 			System.out.println("-----LikeDAO 객체 생성");
 		}
 	
-    public void insertLike(String user_Id, int rev_Id) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("user_Id", user_Id);
-        params.put("rev_Id", rev_Id);
-        sqlSession.insert("like.insertLike", params);
-    }
+	    public void insertLike(String user_id, int rev_id) {
+	        Map<String, Object> params = new HashMap<>();
+	        params.put("user_id", user_id);
+	        params.put("rev_id", rev_id);
+	        sqlSession.insert("like.insertLike", params);
+	    }
 
-    public boolean checkIfLiked(String user_Id, int rev_Id) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("user_Id", user_Id);
-        params.put("rev_Id", rev_Id);
-        Integer count = sqlSession.selectOne("like.checkIfLiked", params);
-        return count != null && count > 0;
-    }	
+	    public boolean checkIfLiked(String user_id, int rev_id) {
+	        Map<String, Object> params = new HashMap<>();
+	        params.put("user_id", user_id);
+	        params.put("rev_id", rev_id);
+	        Integer count = sqlSession.selectOne("like.checkIfLiked", params);
+	        return count != null && count > 0;
+	    }
 	
 	
 }//class end

@@ -11,7 +11,7 @@ public class ActorDTO {
     private String physical;
     private String agency;
     private String site;
-    
+    private String recent_work;
     // Getters and Setters
     
     
@@ -63,14 +63,19 @@ public class ActorDTO {
 	public void setSite(String site) {
 		this.site = site;
 	}
-	
-	
+	public String getRecent_work() {
+		return recent_work;
+	}
+	public void setRecent_work(String recent_work) {
+		this.recent_work = recent_work;
+	}
 	@Override
 	public String toString() {
 		return "ActorDTO [actor_id=" + actor_id + ", a_name=" + a_name + ", photo=" + photo + ", job=" + job
-				+ ", birth=" + birth + ", physical=" + physical + ", agency=" + agency + ", site=" + site + "]";
+				+ ", birth=" + birth + ", physical=" + physical + ", agency=" + agency + ", site=" + site
+				+ ", recent_work=" + recent_work + "]";
 	}
-
- 
+	
+	
     
 }

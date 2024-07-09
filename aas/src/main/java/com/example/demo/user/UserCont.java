@@ -61,6 +61,10 @@ public class UserCont {
 		    return "user/login";
 		}
 		
+
+
+
+
 		@GetMapping("/mypage")
 	    public String mypage(HttpSession session, Model model) {
 	        UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
@@ -70,6 +74,7 @@ public class UserCont {
 	        }
 	        return "user/mypage";
 	    }
+
 		
 		
 		
@@ -162,6 +167,8 @@ public class UserCont {
 		        return "redirect:/user/login";
 		    }
 		}
+		
+
 		
 		//로그아웃처리
 		@GetMapping("/logout")

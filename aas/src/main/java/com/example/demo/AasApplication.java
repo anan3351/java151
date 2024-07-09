@@ -48,8 +48,7 @@ public class AasApplication {
 	    return args -> {
 	        PlayDbCrawler.main(new String[]{});
 	    };
-	}
+	} 
 	*/
 
-  
 }
