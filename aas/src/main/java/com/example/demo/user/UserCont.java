@@ -237,6 +237,19 @@ public class UserCont {
 	            return "redirect:/user/pwmodify";
 	        }
 	    }
+	    
+	    @GetMapping("/sellerpage")
+	    public String sellerPage(HttpSession session, Model model) {
+	        UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+	        if (loggedInUser != null) {
+	            // 로그인한 사용자의 정보를 모델에 추가
+	            model.addAttribute("userInfo", loggedInUser);
+	            return "user/sellerpage";  // sellerpage.jsp 뷰를 반환
+	        } else {
+	            // 로그인하지 않은 경우 로그인 페이지로 리다이렉트
+	            return "redirect:/user/login";
+	        }
+	    }//sellerPage() end
 		
 		
 		

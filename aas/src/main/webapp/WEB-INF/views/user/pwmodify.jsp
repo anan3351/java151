@@ -159,16 +159,16 @@ input[type="password"], input[type="text"] {
             <p class="success-message">${message}</p>
         </c:if>
         
-        <form action= "${pageContext.request.contextPath}/user/pwmodify" method="post" onsubmit="return memberCheck()">
+        <form action= "${pageContext.request.contextPath}/user/pwmodify" method="post">
             <div class="form-group">
                 <div class="password-input-container">
-                    <input type="password" id="pwd" name="pwd" placeholder="새 비밀번호" maxlength="12">
+                    <input type="password" id="pwd" name="newPassword" placeholder="새 비밀번호" maxlength="12">
                     <span class="password-toggle"><i class="fa fa-eye"></i></span>
                 </div>
             </div>
             <div class="form-group">
                 <div class="password-input-container">
-                    <input type="password" id="pwd-confirm" name="pwd-confirm" placeholder="새 비밀번호 확인" maxlength="12">
+                    <input type="password" id="pwd-confirm" name="confirmPassword" placeholder="새 비밀번호 확인" maxlength="12">
                     <span class="password-toggle"><i class="fa fa-eye"></i></span>
                 </div>
             </div>

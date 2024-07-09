@@ -67,10 +67,10 @@ public class UserDAO {
         return sqlSession.update("user.updateUserInfo", userDto);
     }
     
-    public void updatePassword(String userId, String pwd) {
+    public void updatePassword(String userId, String newPassword) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("userId", userId);
-        params.put("pwd", pwd);
+        params.put("pwd", newPassword);
         sqlSession.update("user.updatePassword", params);
     }
     
