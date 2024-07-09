@@ -13,4 +13,8 @@ public class SeatService {
     public List<SeatDTO> getAllSeats() {
         return seatMapper.findAll();
     }
+
+    public SeatDTO getSeatById(int seat_id) {
+        return seatMapper.findById(seat_id);
+    }
 }

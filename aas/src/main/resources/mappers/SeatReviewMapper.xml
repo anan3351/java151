@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
@@ -6,13 +6,18 @@
 <mapper namespace="com.example.demo.seat.SeatReviewDAO">
 
     <select id="getAllReviews" resultType="com.example.demo.seat.SeatReviewDTO">
-        SELECT seatview_id as seatviewId, user_id as userId, seat_date as date, detail, seat_rank as seatRank, seat_id as seatId 
+        SELECT seatview_id as seatview_id, user_id as user_id, seat_date as date, detail, seat_rank as seat_rank, seat_id as seat_id 
         FROM tb_seatreview ORDER BY seat_date DESC
+    </select>
+
+    <select id="findBySeatId" parameterType="int" resultType="com.example.demo.seat.SeatReviewDTO">
+        SELECT seatview_id as seatview_id, user_id as user_id, seat_date as date, detail, seat_rank as seat_rank, seat_id as seat_id 
+        FROM tb_seatreview WHERE seat_id = #{seat_id} ORDER BY seat_date DESC
     </select>
 
     <insert id="addReview">
         INSERT INTO tb_seatreview (user_id, detail, seat_rank, seat_id)
-        VALUES (#{userId}, #{detail}, #{seatRank}, #{seatId})
+        VALUES (#{user_id}, #{detail}, #{seat_rank}, #{seat_id})
     </insert>
 
 </mapper>

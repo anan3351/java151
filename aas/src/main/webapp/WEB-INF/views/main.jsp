@@ -23,7 +23,7 @@
           <%@ include file="./header.jsp" %>
             <div class="main-container">
               <!-- 본문시작 -->
-              <script src="../js/show_style.js"></script>
+              <script src="../js/show.js"></script>
 
               <div style="font-size: 30px; font-weight: bold; text-align: center;">
                 인기 공연
@@ -121,13 +121,13 @@
                       </tbody>
                     </table>
                     <button>
-                      << /button>
+                      </button>
                         <button class="btn btn-default">1</button>
                         <button class="btn btn-default">2</button>
                         <button class="btn btn-default">3</button>
                         <button class="btn btn-default">4</button>
                         <button class="btn btn-default">5</button>
-                        <button>></button><br><br><br>
+                        <button></button><br><br><br>
                   </div>
                 </div>
               </div>

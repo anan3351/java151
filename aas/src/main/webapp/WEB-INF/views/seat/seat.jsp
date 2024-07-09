@@ -17,17 +17,45 @@
   <style>
     .seat-container {
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: column;
+      align-items: center;
+    }
+    .stage {
+      width: 100%;
+      text-align: center;
+      margin: 20px 0;
+      font-weight: bold;
+    }
+    .floor {
+      width: 80%;
+      margin-bottom: 30px;
+    }
+    .section {
+      display: flex;
       justify-content: center;
+      flex-direction: column;
+    }
+    .seats-row {
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+      margin-bottom: 10px;
     }
     .seat {
       width: 30px;
       height: 30px;
-      margin: 5px;
-      text-align: center;
-      line-height: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       border-radius: 5px;
       color: white;
+      cursor: pointer;
+    }
+    .seat-info {
+      display: none;
+    }
+    .seat-number {
+      display: inline;
     }
     .vip {
       background-color: gold;
@@ -41,36 +69,75 @@
     .a {
       background-color: blue;
     }
-    .stage {
-      width: 100%;
+    .wheelchair {
+      background-color: purple;
+    }
+    .aisle {
+      background-color: orange;
+    }
+    .section-label {
       text-align: center;
-      margin: 20px 0;
       font-weight: bold;
-    }
-    .seat-row {
-      display: contents;
-    }
-    .seat-row-label {
-      grid-column: 1 / span 20;
-      text-align: left;
-      padding-left: 5px;
-      font-weight: bold;
+      margin: 10px 0;
     }
   </style>
+  <script>
+    function goToReviews(seat_id, seat_floor) {
+      location.href = 'seatReview?seat_id=' + seat_id + '&seat_floor=' + seat_floor;
+    }
+  </script>
 </head>
 <body>
   <%@ include file="../header.jsp" %>
-  <div class="main-container">
+  <div class="seat-container">
     <h1>좌석 배치도</h1>
     <div class="stage">STAGE</div>
-    <div class="seat-container">
-      <c:forEach var="seat" items="${seats}">
-        <div class="seat ${seat.seatLevel.toLowerCase()}">
-          ${seat.s_section} ${seat.s_row} ${seat.s_number}
-        </div>
-      </c:forEach>
+
+    <div class="floor">
+      <div class="section-label">객석 1층</div>
+      <div class="section">
+        <c:set var="previousRow" value="" />
+        <c:forEach var="seat" items="${seats}">
+          <c:if test="${seat.s_floor == 1 && seat.s_row != previousRow}">
+            <div class="seats-row">
+              <c:forEach var="rowSeat" items="${seats}">
+                <c:if test="${rowSeat.s_floor == 1 && rowSeat.s_row == seat.s_row}">
+                  <div class="seat ${rowSeat.seat_level.toLowerCase()}" onclick="goToReviews(${rowSeat.seat_id}, ${rowSeat.s_floor})">
+                    <span class="seat-info">${rowSeat.s_floor}층 ${rowSeat.s_section}구역 ${rowSeat.s_row}열 ${rowSeat.s_number}</span>
+                    <span class="seat-number">${rowSeat.s_number}</span>
+                  </div>
+                </c:if>
+              </c:forEach>
+            </div>
+            <c:set var="previousRow" value="${seat.s_row}" />
+          </c:if>
+        </c:forEach>
+      </div>
+    </div>
+
+    <div class="floor">
+      <div class="section-label">객석 2층</div>
+      <div class="section">
+        <c:set var="previousRow" value="" />
+        <c:forEach var="seat" items="${seats}">
+          <c:if test="${seat.s_floor == 2 && seat.s_row != previousRow}">
+            <div class="seats-row">
+              <c:forEach var="rowSeat" items="${seats}">
+                <c:if test="${rowSeat.s_floor == 2 && rowSeat.s_row == seat.s_row}">
+                  <div class="seat ${rowSeat.seat_level.toLowerCase()}" onclick="goToReviews(${rowSeat.seat_id}, ${rowSeat.s_floor})">
+                    <span class="seat-info">${rowSeat.s_floor}층 ${rowSeat.s_section}구역 ${rowSeat.s_row}열 ${rowSeat.s_number}</span>
+                    <span class="seat-number">${rowSeat.s_number}</span>
+                  </div>
+                </c:if>
+              </c:forEach>
+            </div>
+            <c:set var="previousRow" value="${seat.s_row}" />
+          </c:if>
+        </c:forEach>
+      </div>
     </div>
   </div>
+
   <%@ include file="../footer.jsp" %>
 </body>
 </html>

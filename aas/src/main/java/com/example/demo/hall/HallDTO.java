@@ -6,7 +6,7 @@ public class HallDTO {
 		System.out.println("-----------HallDTO 객채 생성");
 	}
 	
-	private int hall_id;
+	private String hall_id;
 	private String h_name;
 	private String miniHall;
 	private String addr;
@@ -16,10 +16,10 @@ public class HallDTO {
 	private String user_id;
 	
 	
-	public int getHall_id() {
+	public String getHall_id() {
 		return hall_id;
 	}
-	public void setHall_id(int hall_id) {
+	public void setHall_id(String hall_id) {
 		this.hall_id = hall_id;
 	}
 	public String getH_name() {

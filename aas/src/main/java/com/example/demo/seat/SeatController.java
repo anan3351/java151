@@ -14,7 +14,7 @@ public class SeatController {
     @Autowired
     private SeatService seatService;
 
-    @GetMapping("/seats")
+    @GetMapping("/seat")
     public String getSeats(Model model) {
         List<SeatDTO> seats = seatService.getAllSeats();
         model.addAttribute("seats", seats);

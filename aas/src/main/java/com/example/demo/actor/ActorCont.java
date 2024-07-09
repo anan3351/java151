@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 @RequestMapping("")
 public class ActorCont {
     public ActorCont() {
-        System.out.println("-----ActorCont객체생성");
+        System.out.println("-----ActorCont 객체 생성");
     }
 
     @Autowired
@@ -57,18 +57,18 @@ public class ActorCont {
         } else {
             list = Collections.emptyList();
         }
-        
-      
 
-        mav.addObject("pageNum", currentPage);
-        mav.addObject("count", totalRowCount);
-        mav.addObject("totalPage", totalPage);
+        mav.addObject("currentPage", currentPage);
+        mav.addObject("totalPages", totalPage);
         mav.addObject("startPage", startPage);
         mav.addObject("endPage", endPage);
         mav.addObject("list", list);
+        mav.addObject("pageNum", currentPage); // 추가
+        mav.addObject("count", totalRowCount); // 추가
 
         return mav;
     }// list end
+
 
     @RequestMapping("/actor/list")
     public ModelAndView alllist(HttpServletRequest req) {
@@ -109,16 +109,29 @@ public class ActorCont {
             list = Collections.emptyList();
         }
 
-        mav.addObject("pageNum", currentPage);
-        mav.addObject("count", totalRowCount);
-        mav.addObject("totalPage", totalPage);
+        mav.addObject("currentPage", currentPage);
+        mav.addObject("totalPages", totalPage);
         mav.addObject("startPage", startPage);
         mav.addObject("endPage", endPage);
         mav.addObject("list", list);
+        mav.addObject("pageNum", currentPage); // 추가
+        mav.addObject("count", totalRowCount); // 추가
+
 
         return mav;
     }
 
+    @RequestMapping("/actordetail")
+    public ModelAndView actordetail(HttpServletRequest req) {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("actor/actordetail");
+      
+        int actorId = Integer.parseInt(req.getParameter("id"));
+        ActorDTO actor = actorDao.getActorById(actorId);
+        mav.addObject("actor", actor);
+        
+        return mav;
+    }//actordetail end
     
     
     

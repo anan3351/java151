@@ -10,10 +10,10 @@ import lombok.ToString;
 @Setter
 @ToString
 public class SeatReviewDTO {
-    private int seatviewId;
-    private String userId;
+    private int seatview_id;
+    private String user_id;
     private Timestamp date;
     private String detail;
-    private int seatRank;
-    private int seatId;
+    private int seat_rank;
+    private int seat_id;
 }//end

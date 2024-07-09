@@ -1,5 +1,6 @@
 <%@page import="java.util.List"%>
 <%@page import="com.example.demo.seat.SeatReviewDTO"%>
+<%@page import="com.example.demo.seat.SeatDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
@@ -26,6 +27,7 @@
 		<!-- 본문시작 -->
 		<%
             List<SeatReviewDTO> reviews = (List<SeatReviewDTO>) request.getAttribute("reviews");
+            SeatDTO seat = (SeatDTO) request.getAttribute("seat");
         %>
         
         <link rel="stylesheet" type="text/css" href="css/seatReview.css">
@@ -37,13 +39,13 @@
         
         <div class="seat-review-container centered">
             <div class="seat-review-location">
-                <h3>좌석위치(1층1행1번)</h3>
+                <h3>좌석위치: ${seat.s_floor}층 ${seat.s_section}구역 ${seat.s_row}열 ${seat.s_number}</h3>
             </div>
             <div class="seat-review-button-container">
                 <button class="seat-review-transparent-button" onclick="history.back()">
                     <span class="icon">⬅️</span><span>뒤로가기</span>
                 </button>
-                <button class="seat-review-transparent-button" onclick="location.href='comment'">
+                <button class="seat-review-transparent-button" onclick="location.href='comment?seat_id=<%= seat.getSeat_id() %>'">
                     <span class="icon">✏️</span><span>댓글 작성</span>
                 </button>
             </div>
@@ -59,11 +61,11 @@
                             </div>
                             <div class="seat-review-right">
                                 <div class="seat-review-profile">
-                                    <p><%= review.getUserId() %></p>
+                                    <p><%= review.getUser_id() %></p>
                                     <p>(<%= review.getDate() %>)</p>
                                 </div>
                                 <div class="seat-review-star">
-                                    <span>평점: </span><span class="seat-review-stars"><%= "★".repeat(review.getSeatRank()) %></span>
+                                    <span>평점: </span><span class="seat-review-stars"><%= "★".repeat(review.getSeat_rank()) %></span>
                                 </div>
                             </div>
                         </div>

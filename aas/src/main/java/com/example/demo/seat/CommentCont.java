@@ -27,11 +27,11 @@ public class CommentCont {
             Model model) {
         // 리뷰 추가 로직
         SeatReviewDTO review = new SeatReviewDTO();
-        review.setSeatRank(rating);
+        review.setSeat_rank(rating);
         review.setDetail(comment);
         // 다른 필요한 필드들 설정
         seatReviewService.addReview(review);
 
         return "redirect:/seatReview";
     }
-}//end
+}
