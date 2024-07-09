@@ -1,5 +1,8 @@
 package com.example.demo.user;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -54,6 +57,24 @@ public class UserDAO {
         return sqlSession.selectOne("user.getUserById", user_id);
     }
 
+    
+
+    
+    //회원정보수정을 위해 가져오는 것들
+    public UserDTO getUserInfo(String user_id) {
+        return sqlSession.selectOne("user.getUserInfo", user_id);
+    }
+
+    public int updateUserInfo(UserDTO userDto) {
+        return sqlSession.update("user.updateUserInfo", userDto);
+    }
+    
+    public void updatePassword(String userId, String newPassword) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("userId", userId);
+        params.put("pwd", newPassword);
+        sqlSession.update("user.updatePassword", params);
+    }
     
 
 }//class end
