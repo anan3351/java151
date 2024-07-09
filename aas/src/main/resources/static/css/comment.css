@@ -1,0 +1,92 @@
+/* comment.css */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.header-info {
+    background-color: transparent; /* 배경색 투명하게 설정 */
+    color: #333;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.header-info h3 {
+    margin: 5px 0;
+}
+
+.content {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.rating {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.rating label {
+    margin-right: 10px;
+}
+
+.stars {
+    display: flex;
+    direction: rtl; /* 오른쪽에서 왼쪽으로 */
+}
+
+.stars input {
+    display: none;
+}
+
+.stars label {
+    font-size: 30px;
+    color: #ddd;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.stars input:checked ~ label,
+.stars label:hover,
+.stars label:hover ~ label,
+.stars input:checked ~ label ~ label {
+    color: #ffcc00;
+}
+
+.textarea-container {
+    margin-bottom: 20px;
+}
+
+textarea {
+    width: 100%;
+    resize: none;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.button-container {
+    text-align: center;
+}
+
+button {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #555;
+}
