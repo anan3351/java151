@@ -42,10 +42,7 @@
 
     </div>
 
-    <div class="search-bar">
-      <input type="text" placeholder="공연을 검색 하세요">
-      <button type="button" class="btn-search" title="검색"></button>
-    </div>
+    
     
   </header>
 

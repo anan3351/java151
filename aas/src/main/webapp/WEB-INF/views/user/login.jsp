@@ -1,22 +1,31 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    
+<%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn"  uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
+<html>
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
+ <title>main</title>
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/css/swiper.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/js/swiper.min.js"></script>
+
   <link rel="stylesheet" href="/css/template.css">
-  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 </head>
 <body>
-
+	<%@ include file="../header.jsp" %>
+			<div class="main-container">
 <c:if test="${registrationSuccess}">
     <script>
-        alert("È¸¿ø°¡ÀÔÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù.\n·Î±×ÀÎ ÆäÀÌÁö·Î ÀÌµ¿ÇÕ´Ï´Ù.");
+        alert("íšŒì›ê°€ì…ì´ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤.\në¡œê·¸ì¸ í˜ì´ì§€ë¡œ ì´ë™í•©ë‹ˆë‹¤.");
         window.location.href = '/user/login';
     </script>
 </c:if>
@@ -32,45 +41,49 @@
   <div class="login-box">
     <div class="logo">
       <a href="${pageContext.request.contextPath}/">
-       <img src="../images/xx11.png" alt="·Î°í">
+       <img src="../images/xx11.png" alt="ë¡œê³ ">
      </a>
     </div>
     <form action="/user/login" method="post">
     <div class="input-fields">
-      <input type="text" placeholder="¾ÆÀÌµğ" class="id-input" name="user_id">
-      <input type="password" placeholder="ºñ¹Ğ¹øÈ£" class="pw-input" name="pwd">
+      <input type="text" placeholder="ì•„ì´ë””" class="id-input" name="user_id">
+      <input type="password" placeholder="ë¹„ë°€ë²ˆí˜¸" class="pw-input" name="pwd">
     </div>
     <div class="remember-me">
     <input type="checkbox" id="remember-me" name="remember-me">
-    <label for="remember-me">·Î±×ÀÎ »óÅÂ À¯Áö</label> 
+    <label for="remember-me">ë¡œê·¸ì¸ ìƒíƒœ ìœ ì§€</label> 
     </div>
       <br>
-    <button type="submit" class="login-btn">·Î±×ÀÎ</button>
+    <button type="submit" class="login-btn">ë¡œê·¸ì¸</button>
     </form>
     <br><br>
     <div class="findlist">
-        <a href="./findid">¾ÆÀÌµğ Ã£±â</a> | <a href="findpw">ºñ¹Ğ¹øÈ£ Ã£±â</a> | <a href="./join">È¸¿ø°¡ÀÔ</a>
+        <a href="./findid">ì•„ì´ë”” ì°¾ê¸°</a> | <a href="findpw">ë¹„ë°€ë²ˆí˜¸ ì°¾ê¸°</a> | <a href="./join">íšŒì›ê°€ì…</a>
     </div>
     <br>
     <a href="" class="btn-link">
-    <button class="btn btn-naver">³×ÀÌ¹öID·Î ·Î±×ÀÎ</button>
+    <button class="btn btn-naver">ë„¤ì´ë²„IDë¡œ ë¡œê·¸ì¸</button>
     </a>
     <a href="" class="btn-link">
-    <button class="btn btn-kakao">Ä«Ä«¿ÀID·Î ·Î±×ÀÎ</button>
+    <button class="btn btn-kakao">ì¹´ì¹´ì˜¤IDë¡œ ë¡œê·¸ì¸</button>
     </a>
     <a href="" class="btn-link">
-    <button class="btn btn-apple">¾ÖÇÃID·Î ·Î±×ÀÎ</button>
+    <button class="btn btn-apple">ì• í”ŒIDë¡œ ë¡œê·¸ì¸</button>
     </a>
   </div>
 </div>
+</div>
+<%@ include file="../footer.jsp" %>
 </body>
 <style>
+
+
 .login-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  margin-top: -50px; /* 50px À§·Î ¿Ã¸³´Ï´Ù */
+  margin-top: -50px;
 }
 
 .login-box {
@@ -79,12 +92,12 @@
   
 }
 
-.logo {
+.login-box .logo {
   text-align: center;
   margin-bottom: 30px;
 }
 
-.logo img {
+.login-box .logo img {
   max-width: 150px;
 }
 
@@ -121,12 +134,12 @@
             text-align: center;
         }
         .findlist a {
-            margin: 0 10px; /* ÁÂ¿ì ¿©¹éÀ» Ãß°¡ÇÏ¿© ¸µÅ© °£°İ Á¶Á¤ */
-            text-decoration: none; /* ¸µÅ© ¹ØÁÙ Á¦°Å */
-            color: #000; /* ÅØ½ºÆ® »ö»ó ¼³Á¤ */
+            margin: 0 10px; /* ì¢Œìš° ì—¬ë°±ì„ ì¶”ê°€í•˜ì—¬ ë§í¬ ê°„ê²© ì¡°ì • */
+            text-decoration: none; /* ë§í¬ ë°‘ì¤„ ì œê±° */
+            color: #000; /* í…ìŠ¤íŠ¸ ìƒ‰ìƒ ì„¤ì • */
         }
         .findlist a:hover {
-            color: #007BFF; /* ¸¶¿ì½º ¿À¹ö ½Ã »ö»ó º¯°æ */
+            color: #007BFF; /* ë§ˆìš°ìŠ¤ ì˜¤ë²„ ì‹œ ìƒ‰ìƒ ë³€ê²½ */
         }
         
         .btn {
