@@ -39,6 +39,17 @@
           <li><a href="#">Q&A</a></li>
         </ul>
       </nav>
+<<<<<<< HEAD
+=======
+
+    </div>
+
+    
+    
+  </header>
+
+</div>
+>>>>>>> refs/heads/main
 
     </div>
 
