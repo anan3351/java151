@@ -53,6 +53,6 @@ public class ShowCont {
     @ResponseBody
     public List<ShowDTO> searchShows(@RequestParam("keyword") String keyword) {
         return showDAO.searchShows(keyword);
-    }
+    } 
 }
 
