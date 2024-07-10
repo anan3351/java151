@@ -47,7 +47,7 @@
                         <td><input type="radio" name="check_0" class="form-control" value="YN">YN</td>
                       </tr>
                       <tr>
-                        <td><span>* </span>할인정보</td>
+                        <td><span>* </span>할인정보</td> 
                         <td><textarea name="dis_info_0" rows="4" cols="50"></textarea></td>
                       </tr>
                       <tr>

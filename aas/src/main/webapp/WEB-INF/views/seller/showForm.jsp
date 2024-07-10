@@ -87,7 +87,7 @@
                       </tr>
                     </tbody>
                   </table>
-                  <hr><br><br>
+                  <hr><br><br> 
 
                   <div style="font-size: 30px; font-weight: bold; text-align: center;">
                     좌석 금액
