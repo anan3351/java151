@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.like.LikeDAO;
+import com.example.demo.show.ShowDAO;
+import com.example.demo.show.ShowDTO;
 import com.example.demo.user.UserDTO;
 
 import jakarta.servlet.http.HttpSession;
@@ -40,7 +42,14 @@ public class ShowreviewCont {
 	@Autowired
 	private LikeDAO likeDao;
 	
-	
+	@Autowired
+	ShowDAO showDAO;
+    @GetMapping("/searchShows")
+    @ResponseBody
+    public List<ShowDTO> searchShows(@RequestParam("keyword") String keyword) {
+        return showDAO.searchShows(keyword);
+    } 
+    
 	
 	@RequestMapping("/showreview/showreviewForm")
 	public ModelAndView showrvForm (@RequestParam("user_id") String user_Id) {
@@ -189,6 +198,8 @@ public class ShowreviewCont {
 	            return "unauthorized";
 	        }
 	    }
+	    
+
 	    
 
 }//class end
