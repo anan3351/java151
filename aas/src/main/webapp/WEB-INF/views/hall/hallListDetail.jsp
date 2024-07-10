@@ -40,7 +40,7 @@
               <!-- 본문시작 -->
               <div class="page-wrap">
                 <button type="button" class="btn btn-info"
-                  style="background-color: #be9ed8; border-color: #be9ed8;">목록으로</button>
+                  style="background-color: #be9ed8; border-color: #be9ed8;" onclick="location.href='<c:url value="/hall/list"/>'">목록으로</button>
 
                 <div class="detail-wrap">
                   <div class="left-area">
