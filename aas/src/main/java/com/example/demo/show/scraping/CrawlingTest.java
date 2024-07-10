@@ -1,4 +1,4 @@
-package com.example.demo.show;
+package com.example.demo.show.scraping;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -17,6 +17,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.example.demo.show.ShowDAO;
+
 public class CrawlingTest {
     public static void main(String[] args) throws Exception {
 
@@ -24,8 +26,10 @@ public class CrawlingTest {
 
         String defaultUrl = "http://www.kopis.or.kr/openApi/restful/pblprfr";
         String serviceKey = "f4acc9d51cc74c92871887e4f695cc85";
-        String stdate = "20170101";
-        String eddate = "20181231";
+        String stdate = "20190101";
+        String eddate = "20190630";
+//        String stdate = "20190701";
+//        String eddate = "20191231";
         String shcate = "GGGA"; // 연극 : AAAA, 뮤지컬 : GGGA
         String rows = "50";
         int cpage = 1;

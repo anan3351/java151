@@ -127,7 +127,7 @@ function removeSeat(button) {
 
 
 // 공연정보 입력 검증
-function validateForm() {
+function validateShow() {
   const form = document.forms['showfrm'];
   const requiredFields = ['title', 'hall_id', 'start_day', 'end_day', 'runningtime', 'viewing_age'];
   for (let field of requiredFields) {
@@ -158,7 +158,11 @@ function validateForm() {
     form['end_day'].focus();
     return false;
   }
+  return true;
+}
 
+
+function validatePrice() {
   // 좌석 등급과 금액 검증
   for (let i = 0; i <= seatIndex; i++) {
     const seatLevel = form[`seat_level_${i}`];

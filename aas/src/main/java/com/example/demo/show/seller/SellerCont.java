@@ -1,4 +1,4 @@
-package com.example.demo.seller;
+package com.example.demo.show.seller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,10 +9,10 @@ public class SellerCont {
 	public String mypage() {
 		return "seller/showForm";
 	}
-	
+
 	@GetMapping("/user/sellerpage/discount")
 	public String mypage2() {
 		return "seller/discountForm";
 	}
-	
+
 }

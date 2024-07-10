@@ -17,7 +17,7 @@
         <link rel="stylesheet" href="../view/template.css">
         <link rel="stylesheet" href="/css/template.css">
         <link rel="stylesheet" href="/css/seller.css">
-        <script src="../js/show.js"></script>
+        <script src="/js/show.js"></script>
     </head>
     <body>
         <%@ include file="../header.jsp" %>
@@ -27,7 +27,7 @@
                   공연 등록
                 </div><br>
 
-                <form name="showfrm" id="showfrm" method="post" action="show_insert" enctype="multipart/form-data" onsubmit="return validateForm();">
+                <form name="showfrm" id="showfrm" method="post" action="show_insert" enctype="multipart/form-data" onsubmit="return validateShow();">
                   <div class="container" style="text-align: left; color: red; font-size:13px">* 은 필수 입력 항목입니다</div>
                   <table class="table table-hover">
                     <tbody style="text-align: left;">
@@ -87,29 +87,7 @@
                       </tr>
                     </tbody>
                   </table>
-                  <hr><br><br> 
-
-                  <div style="font-size: 30px; font-weight: bold; text-align: center;">
-                    좌석 금액
-                  </div>
-                <div class="btn-container">
-                  <button type="button" class="btn btn-success add-button" onclick="addSeat()">+</button>
-                </div>
-
-                <div class="table-container">
-                  <table class="table table-hover">
-                    <tbody id="input-container1">
-                      <tr>
-                        <td><span>* </span>좌석등급</td>
-                        <td><input type="text" name="seat_level_0" class="form-control"></td>
-                      </tr>
-                      <tr>
-                        <td><span>* </span>좌석금액</td>
-                        <td><input type="number" name="seat_price_0" class="form-control"></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div><hr><br><br>
+                  <hr><br>
                 <input type="submit" value="공연 등록" class="btn btn-default" style="background-color: white; color: black;">
               </div>
               <br><br><br><br><br>
