@@ -166,23 +166,61 @@ function searchShow() {
         document.getElementById("searchResults").getElementsByTagName('tbody')[0].innerHTML = "";
         return;
     }
-    fetch('/searchShows?keyword=' + keyword)
+    var url = '${pageContext.request.contextPath}/searchShows?keyword=' + encodeURIComponent(keyword);
+    console.log("Fetching URL:", url);  // URL을 콘솔에 출력
+
+    fetch(url)
         .then(response => response.json())
         .then(data => {
+            console.log("Response Data:", data);  // 응답 데이터를 콘솔에 출력
             var tbody = document.getElementById("searchResults").getElementsByTagName('tbody')[0];
-            tbody.innerHTML = "";
+            tbody.innerHTML = "";  // 기존 내용을 모두 지움
+            if (data.length === 0) {
+                console.log("No results found");
+            }
             data.forEach(show => {
-                var row = tbody.insertRow();
-                row.innerHTML = `
-                    <td>${show.title}</td>
-                    <td>${show.genre}</td>
-                    <td>${show.start_day}</td>
-                    <td>${show.end_day}</td>
-                    <td><button type="button" class="button" onclick="selectShow('${show.show_id}', '${show.title}')">선택</button></td>
-                `;
+                console.log("Show Data:", show);  // 각각의 쇼 데이터를 출력
+                var row = document.createElement('tr');
+
+                var titleCell = document.createElement('td');
+                titleCell.textContent = show.title;
+                row.appendChild(titleCell);
+
+                var genreCell = document.createElement('td');
+                genreCell.textContent = show.genre;
+                row.appendChild(genreCell);
+
+                var startDayCell = document.createElement('td');
+                startDayCell.textContent = show.start_day;
+                row.appendChild(startDayCell);
+
+                var endDayCell = document.createElement('td');
+                endDayCell.textContent = show.end_day;
+                row.appendChild(endDayCell);
+
+                var buttonCell = document.createElement('td');
+                var button = document.createElement('button');
+                button.className = 'button';
+                button.textContent = '선택';
+                button.onclick = function() {
+                    selectShow(show.show_id, show.title);
+                };
+                buttonCell.appendChild(button);
+                row.appendChild(buttonCell);
+
+                tbody.appendChild(row);
             });
+        })
+        .catch(error => {
+            console.error('Error:', error);
         });
-    }
+}
+function selectShow(show_id, showTitle) {
+    document.getElementById("show_id").value = show_id;
+    document.getElementById("showTitle").value = showTitle;
+    closeModal();
+}
+
 
     function openModal() {
         document.getElementById("myModal").style.display = "block";
@@ -192,12 +230,6 @@ function searchShow() {
         document.getElementById("myModal").style.display = "none";
     }
 
-    function selectShow(show_id, title) {
-        document.getElementById("show_id").value = show_id;
-        document.getElementById("showTitle").value = title;
-        closeModal();
-    }
-    
     function validateForm() {
         var show_id = document.getElementById("show_id").value;
         var viewingDate = document.getElementById("viewingDate").value;

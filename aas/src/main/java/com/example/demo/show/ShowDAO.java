@@ -12,8 +12,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.springframework.stereotype.Repository;
 import org.w3c.dom.*;
 
+@Repository
 public class ShowDAO {
 	
 	private DBOpen dbopen = null;
@@ -250,6 +252,30 @@ public class ShowDAO {
     }
     
     
-    
+    // 공연 제목으로 검색하는 메서드 추가
+    public List<ShowDTO> searchShows(String keyword) {
+        List<ShowDTO> shows = new ArrayList<>();
+        try {
+            Connection con = dbopen.getConnection();
+            String sql = "SELECT show_id, title, genre, start_day, end_day FROM tb_show WHERE title LIKE ?";
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, "%" + keyword + "%");
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                ShowDTO show = new ShowDTO();
+                show.setShow_id(rs.getString("show_id"));
+                show.setTitle(rs.getString("title"));
+                show.setGenre(rs.getString("genre"));
+                show.setStart_day(rs.getString("start_day"));
+                show.setEnd_day(rs.getString("end_day"));
+                shows.add(show);
+            }
+            DBClose.close(con, pstmt, rs);
+        } catch (Exception e) {
+            System.out.println("공연 검색 실패: " + e.getMessage());
+        }
+        return shows;
+    }
+
     
 }
