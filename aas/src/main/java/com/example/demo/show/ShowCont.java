@@ -48,7 +48,7 @@ public class ShowCont {
 	}
 
 	
-	
+	 
     @GetMapping("/searchShows")
     @ResponseBody
     public List<ShowDTO> searchShows(@RequestParam("keyword") String keyword) {

@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="/css/template.css">
 <h1>배우 상세 정보</h1>
     <style>
-                .header {
+    .header {
         margin-bottom: 0; /* 기존 margin-bottom 값을 0으로 설정 */
         position: fixed; /* 헤더를 고정 위치로 설정 */
         top: -10; /* 상단에 고정 */
