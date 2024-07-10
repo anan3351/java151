@@ -17,11 +17,11 @@ public class Yes24 {
         System.setProperty("webdriver.chrome.driver", "src/main/resources/driver/chromedriver.exe");
         WebDriver driver = new ChromeDriver();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10)); // 10초간 대기
-
+        Map<String, String> sectionImages = new HashMap<>();
+        
         try {
             String url = "http://ticket.yes24.com/Perf/49272?Gcode=009_400";
             driver.get(url);
-            Map<String, String> sectionImages = new HashMap<>();
 
             // 클래스 순회
             for (int i = 1; i <= 4; i++) {

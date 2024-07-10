@@ -16,8 +16,10 @@ public class Interpark {
         // WebDriver와 ChromDriver 설정
         System.setProperty("webdriver.chrome.driver", "src/main/resources/driver/chromedriver.exe");
         WebDriver driver = new ChromeDriver();
+        Map<String, String> contentImagesMap = new HashMap<>();
+        
         try {
-            String url = "https://tickets.interpark.com/goods/P0003831";
+            String url = "https://tickets.interpark.com/goods/17018084";
             driver.get(url);
             
             // 팝업 닫기
@@ -33,7 +35,6 @@ public class Interpark {
             
             // 데이터 추출
             List<WebElement> contentElements = driver.findElements(By.cssSelector(".prdContents.detail .content"));
-            Map<String, String> contentImagesMap = new HashMap<>();
             String casting = "";
 
             // content별 이미지 URL 추출하여 "\n"과 함께 map에 저장
@@ -125,9 +126,10 @@ public class Interpark {
             }
             
             // 캐스팅 일정 이미지
-            contentImagesMap.put("casting_img", casting);
-            
-            
+            if (!casting.trim().isEmpty()) {
+                contentImagesMap.put("casting_img", casting);
+            }
+
             // 전체 캐스트 확인하기 위해 '더보기' 버튼 클릭
             try {
                 List<WebElement> moreButton = driver.findElements(By.cssSelector("a.contentToggleBtn"));
@@ -142,15 +144,17 @@ public class Interpark {
             StringBuilder actors = new StringBuilder();
 
             for (int i=0; i<cast.size(); i++) {
-                String actorName = cast.get(i).getText();
+                String actorName = cast.get(i).getText().trim();
                 
                 if(i!=cast.size()-1) actors.append(actorName + ", ");
                 else actors.append(actorName);
             }
-            
-            contentImagesMap.put("cast", actors.toString());
 
-            
+            String act = actors.toString();
+            if (!act.isEmpty()){
+                contentImagesMap.put("cast", act);
+            }
+
             // 데이터 확인
             for (Map.Entry<String, String> entry : contentImagesMap.entrySet()) {
                 System.out.println(entry.getKey() + " : ");
