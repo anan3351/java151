@@ -45,13 +45,4 @@ public class ShowCont {
 	}
 
 
-	
-	@Autowired
-	ShowDAO showDAO;
-    @GetMapping("/searchShows")
-    @ResponseBody
-    public List<ShowDTO> searchShows(@RequestParam("keyword") String keyword) {
-        return showDAO.searchShows(keyword);
-    } 
-
 }
