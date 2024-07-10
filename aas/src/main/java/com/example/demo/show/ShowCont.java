@@ -47,9 +47,10 @@ public class ShowCont {
 	}
 
 	
-	
+
 	@Autowired
-	ShowDAO showDAO; 
+	ShowDAO showDAO;
+
     @GetMapping("/searchShows")
     @ResponseBody
     public List<ShowDTO> searchShows(@RequestParam("keyword") String keyword) {
