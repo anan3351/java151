@@ -332,8 +332,6 @@
 
               <script src="../js/show.js"></script>
 
-              <script src="../js/show_swiper.js"></script>
-
 
               <div class="slider-back">
                 <div class="slider-tit">

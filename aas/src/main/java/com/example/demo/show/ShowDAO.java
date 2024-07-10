@@ -562,7 +562,7 @@ public class ShowDAO {
 
                 // 값(이미지) 추출
                 // 이미지 요소가 나타날 때까지 반복 시도(로딩 대기)
-                for (int attempt = 0; attempt < 2; attempt++) {
+                for (int attempt = 0; attempt < 3; attempt++) {
                     List<WebElement> imgElements = section.findElements(By.cssSelector("img"));
                     if (!imgElements.isEmpty()) { // 이미지 요소가 비었는지 확인
                         StringBuilder imgUrlsBuilder = new StringBuilder();
@@ -572,7 +572,7 @@ public class ShowDAO {
                         String imgUrls = imgUrlsBuilder.toString().trim();
                         sectionImages.put(sectionTitle, imgUrls);
                         break;
-                    } else if (attempt < 1) { // 추가 대기시간 부여
+                    } else if (attempt < 2) { // 추가 대기시간 부여
                         Thread.sleep(2000); // 2초 대기 후 다시 시도
                     }
                 }
