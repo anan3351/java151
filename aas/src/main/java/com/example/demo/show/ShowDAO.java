@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class ShowDAO {
-	@Autowired
+	@Autowired 
 	SqlSession sqlSession;
 	
 	public void show_insert(Map<String, Object> map) {
