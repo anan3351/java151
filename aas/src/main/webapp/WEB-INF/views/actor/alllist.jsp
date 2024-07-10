@@ -1,12 +1,26 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="../header.jsp" %>
+<link rel="stylesheet" href="/css/template.css">
 <div class="container">
     <style>
+       .header {
+	        margin-bottom: 0; /* 기존 margin-bottom 값을 0으로 설정 */
+	        position: fixed; /* 헤더를 고정 위치로 설정 */
+	        top: -10; /* 상단에 고정 */
+	        width: 100%; /* 전체 너비를 사용 */
+	        z-index: 1000; /* 다른 요소보다 위에 위치 */
+	    }
+
+	    body {
+	        padding-top: 200px; /* 헤더 높이만큼 상단 패딩을 추가 */
+	    }
         .left-aligned-title {
             text-align: left;
             margin-bottom: 20px;
         }
+        
+        
 
         h1, h3 {
             margin-bottom: 20px;
@@ -90,8 +104,8 @@
         .pagination {
             display: flex;
             justify-content: center;
+            align-items: center;
         }
-
         .page-button {
             margin: 0 5px;
             padding: 10px 20px;
@@ -101,10 +115,32 @@
             border-radius: 4px;
             cursor: pointer;
         }
+                .nav-button {
+            padding: 10px;
+            border: none;
+            background: #007bff;
+            color: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .nav-button:hover {
+            background: #0056b3;
+        }
+
+        .disabled {
+            background: #ddd;
+            cursor: not-allowed;
+        }
 
         .page-button:hover {
             background: #0056b3;
         }
+        
+         .page-button.active {
+		    background-color: red;
+		    color: white;
+		}
     </style>
 
     <div class="filters">
@@ -114,10 +150,13 @@
         </div>
         <div class="filters-right">
             <button class="filter-button1">전체</button>
-            <button class="filter-button">국내</button>
-            <button class="filter-button">해외</button>
         </div>
     </div>
+    <!-- 검색 폼 추가 -->
+    <form action="${pageContext.request.contextPath}/actor/search" method="get">
+        <input type="text" name="search" placeholder="배우 이름 검색">
+        <button type="submit" class="filter-button">검색</button>
+    </form>
     <div class="actor-list">
         <table>
             <thead>
@@ -130,19 +169,29 @@
             <tbody>
                 <c:forEach var="actor" items="${list}">
                     <tr>
-                        <td><img src="${actor.photo}" alt="${actor.a_name}" style="width:50px; height:75px;"/><br>${actor.a_name}</td>
+                        <td><img src="${actor.photo}" alt="${actor.a_name}" style="width:50px; height:75px;"/><br><span style="cursor:pointer; color:blue;" onclick="location.href='${pageContext.request.contextPath}/actordetail?id=${actor.actor_id}'">${actor.a_name}</span></td>
                         <td>${actor.job}</td>
-                        <td><!-- 최근공연 정보를 여기에 추가 --></td>
+                        <td>${actor.recent_work}</td>
                     </tr>
                 </c:forEach>
             </tbody>
         </table>
     </div>
     <div class="pagination">
-        <c:forEach var="i" begin="${startPage}" end="${endPage}">
-            <a href="${pageContext.request.contextPath}/actor/list?pageNum=${i}">
-                <button class="page-button">${i}</button>
-            </a>
-        </c:forEach>
-    </div>
+    <c:if test="${currentPage > 1}">
+        <a href="${pageContext.request.contextPath}/actor/list?pageNum=${currentPage - 1}">
+            <button class="nav-button">&lt;</button>
+        </a>
+    </c:if>
+    <c:forEach var="i" begin="${startPage}" end="${endPage}">
+        <a href="${pageContext.request.contextPath}/actor/list?pageNum=${i}">
+            <button class="page-button ${currentPage == i ? 'active' : ''}">${i}</button>
+        </a>
+    </c:forEach>
+    <c:if test="${currentPage < totalPages}">
+        <a href="${pageContext.request.contextPath}/actor/list?pageNum=${currentPage + 1}">
+            <button class="nav-button">&gt;</button>
+        </a>
+    </c:if>
 </div>
+</div> 

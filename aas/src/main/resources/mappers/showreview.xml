@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="showreview">
+
+    <insert id="insert" parameterType="com.example.demo.showreview.ShowreviewDTO">
+        INSERT INTO aas.tb_review (show_id, user_id, retitle, content, r_date, viewcnt, empcnt)
+        VALUES (#{show_id}, #{user_id}, #{retitle}, #{content}, NOW(), 0, 0)
+    </insert>
+    
+    <select id="totalRowCount" resultType="int">
+        SELECT COUNT(*) FROM aas.tb_review
+    </select>
+    
+  <select id="list" parameterType="map" resultType="map">
+        SELECT r.rev_id, r.show_id, s.title AS title, r.retitle, r.viewcnt, r.empcnt, r.user_id, r.r_date
+        FROM tb_review r
+        JOIN tb_show s ON r.show_id = s.show_id
+        ORDER BY r.rev_id DESC
+        LIMIT #{startRow}, #{endRow}
+    </select>
+    
+
+    
+    <update id="incrementEmpcnt" parameterType="int">
+        UPDATE aas.tb_review
+        SET empcnt = empcnt + 1
+        WHERE rev_id = #{rev_id}
+    </update>
+    
+    <!-- 조회수 증가 쿼리 -->
+    <update id="incrementViewCount" parameterType="int">
+        UPDATE tb_review SET viewcnt = viewcnt + 1 WHERE rev_id = #{rev_id}
+    </update>
+	
+	<!-- ShowreviewDTO를 위한 새로운 list1 쿼리 -->
+    <select id="list1" parameterType="map" resultType="com.example.demo.showreview.ShowreviewDTO">
+        SELECT r.rev_id, r.show_id, s.title AS show_title, r.retitle, r.content, r.viewcnt, r.empcnt, r.user_id, r.r_date
+        FROM tb_review r
+        JOIN tb_show s ON r.show_id = s.show_id
+        ORDER BY r.rev_id DESC
+        LIMIT #{startRow}, #{endRow}
+    </select> 
+    
+    
+	<select id="getReviewById" parameterType="int" resultType="com.example.demo.showreview.ShowreviewDTO">
+        SELECT r.rev_id, r.show_id, s.title AS show_title, r.retitle, r.content, r.viewcnt, r.empcnt, r.user_id, r.r_date
+        FROM tb_review r
+        JOIN tb_show s ON r.show_id = s.show_id
+        WHERE r.rev_id = #{rev_id}
+    </select>
+    
+    <update id="update" parameterType="com.example.demo.showreview.ShowreviewDTO">
+   		 UPDATE aas.tb_review
+   		 SET retitle = #{retitle}, content = #{content}, r_date = NOW()
+    	WHERE rev_id = #{rev_id}
+	</update>
+
+	<delete id="delete" parameterType="int">
+  		  DELETE FROM aas.tb_review WHERE rev_id = #{rev_id}
+	</delete>
+    
+	
+</mapper>

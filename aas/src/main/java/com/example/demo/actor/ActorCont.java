@@ -4,8 +4,11 @@ import java.util.Collections;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.ui.Model;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -13,7 +16,7 @@ import jakarta.servlet.http.HttpServletRequest;
 @RequestMapping("")
 public class ActorCont {
     public ActorCont() {
-        System.out.println("-----ActorCont객체생성");
+        System.out.println("-----ActorCont 객체 생성");
     }
 
     @Autowired
@@ -57,18 +60,18 @@ public class ActorCont {
         } else {
             list = Collections.emptyList();
         }
-        
-      
 
-        mav.addObject("pageNum", currentPage);
-        mav.addObject("count", totalRowCount);
-        mav.addObject("totalPage", totalPage);
+        mav.addObject("currentPage", currentPage);
+        mav.addObject("totalPages", totalPage);
         mav.addObject("startPage", startPage);
         mav.addObject("endPage", endPage);
         mav.addObject("list", list);
+        mav.addObject("pageNum", currentPage); // 추가
+        mav.addObject("count", totalRowCount); // 추가
 
         return mav;
     }// list end
+
 
     @RequestMapping("/actor/list")
     public ModelAndView alllist(HttpServletRequest req) {
@@ -109,16 +112,36 @@ public class ActorCont {
             list = Collections.emptyList();
         }
 
-        mav.addObject("pageNum", currentPage);
-        mav.addObject("count", totalRowCount);
-        mav.addObject("totalPage", totalPage);
+        mav.addObject("currentPage", currentPage);
+        mav.addObject("totalPages", totalPage);
         mav.addObject("startPage", startPage);
         mav.addObject("endPage", endPage);
         mav.addObject("list", list);
+        mav.addObject("pageNum", currentPage); // 추가
+        mav.addObject("count", totalRowCount); // 추가
+
 
         return mav;
     }
 
+    @RequestMapping("/actordetail")
+    public ModelAndView actordetail(HttpServletRequest req) {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("actor/actordetail");
+      
+        int actorId = Integer.parseInt(req.getParameter("id"));
+        ActorDTO actor = actorDao.getActorById(actorId);
+        mav.addObject("actor", actor);
+        
+        return mav;
+    }//actordetail end
+    
+    @GetMapping("/actor/search")
+    public String search(@RequestParam("search") String search, Model model) {
+        List<ActorDTO> list = actorDao.searchActors(search);
+        model.addAttribute("list", list);
+        return "actor/alllist";
+    }
     
     
     

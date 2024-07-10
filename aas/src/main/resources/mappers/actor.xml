@@ -5,13 +5,13 @@
 
 <mapper namespace="actor">
     <select id="list" resultType="com.example.demo.actor.ActorDTO">
-        SELECT actor_id, a_name, photo, job, birth, physical, agency, site
+        SELECT actor_id, a_name, photo, job, birth, physical, agency, site, recent_work
         FROM aas.tb_actor
         ORDER BY a_name
     </select>
     
     <select id="list2" resultType="com.example.demo.actor.ActorDTO">
-        SELECT actor_id, a_name, photo, job, birth, physical, agency, site
+        SELECT actor_id, a_name, photo, job, birth, physical, agency, site, recent_work
         FROM aas.tb_actor
         ORDER BY a_name
         LIMIT #{startRow}, #{endRow}
@@ -20,6 +20,18 @@
     <select id="totalRowCount" resultType="int">
         SELECT COUNT(*)
         FROM aas.tb_actor
+    </select>
+    
+     <select id="getActorById" parameterType="int" resultType="com.example.demo.actor.ActorDTO">
+        SELECT actor_id, a_name, photo, job, birth, physical, agency, site
+        FROM aas.tb_actor
+        WHERE actor_id = #{actorId}
+    </select>
+    
+    <select id="searchActors" parameterType="string" resultType="com.example.demo.actor.ActorDTO">
+        SELECT actor_id, a_name, photo, job, birth, physical, agency, site, recent_work
+        FROM aas.tb_actor
+        WHERE a_name LIKE CONCAT('%', #{search}, '%')
     </select>
     
 </mapper>

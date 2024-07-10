@@ -13,10 +13,10 @@
     </div>
     <div
       style="display: fixed; justify-content: center; align-items: center; position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);">
-      <img src="./images/s1.png" alt="k" style="height: 30px; margin: 0 5px;">
-      <img src="./images/s2.png" alt="f" style="height: 43px; margin: 0 5px;">
-      <img src="./images/s3.png" alt="i" style="height: 35px; margin: 0 5px;">
-      <img src="./images/s4.png" alt="t" style="height: 25px; margin: 0 5px;">
+      <img src="/images/s1.png" alt="k" style="height: 30px; margin: 0 5px;">
+      <img src="/images/s2.png" alt="f" style="height: 43px; margin: 0 5px;">
+      <img src="/images/s3.png" alt="i" style="height: 35px; margin: 0 5px;">
+      <img src="/images/s4.png" alt="t" style="height: 25px; margin: 0 5px;">
     </div>
     <div
       style="font-size: medium; position: absolute; right: 50px; top: 10px; text-align: right; padding-right: 150px;">

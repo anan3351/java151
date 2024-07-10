@@ -1,11 +1,25 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="../header.jsp" %>
+<link rel="stylesheet" href="/css/template.css">
 <div class="container">
     <div class="left-aligned-title">
         <h3>인기배우 TOP5</h3>
     </div>
     <style>
+        .header {
+        margin-bottom: 0; /* 기존 margin-bottom 값을 0으로 설정 */
+        position: fixed; /* 헤더를 고정 위치로 설정 */
+        top: -10; /* 상단에 고정 */
+        width: 100%; /* 전체 너비를 사용 */
+        z-index: 1000; /* 다른 요소보다 위에 위치 */
+    }
+
+    body {
+        padding-top: 200px; /* 헤더 높이만큼 상단 패딩을 추가 */
+    }
+    
+    
         .left-aligned-title {
             text-align: left;
             margin-bottom: 20px;
@@ -23,10 +37,10 @@
 
         .actor-card {
             width: 100px;
-            height: 200px; /* Adjust height to accommodate both image and text */
+            height: 200px;
             background: #e0e0e0;
             display: flex;
-            flex-direction: column; /* Change flex direction to column */
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             border-radius: 4px;
@@ -34,11 +48,11 @@
 
         .actor-card img {
             max-width: 100%;
-            max-height: 150px; /* Limit image height */
+            max-height: 150px;
         }
 
         .actor-card p {
-            margin: 5px 0 0; /* Add margin to separate text from image */
+            margin: 5px 0 0;
         }
 
         .filters {
@@ -64,7 +78,6 @@
         .filter-button:hover {
             background: #0056b3;
         }
-        
 
         .actor-list table {
             width: 100%;
@@ -81,6 +94,7 @@
         .pagination {
             display: flex;
             justify-content: center;
+            align-items: center;
         }
 
         .page-button {
@@ -96,6 +110,28 @@
         .page-button:hover {
             background: #0056b3;
         }
+
+        .nav-button {
+            padding: 10px;
+            border: none;
+            background: #007bff;
+            color: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .nav-button:hover {
+            background: #0056b3;
+        }
+
+        .disabled {
+            background: #ddd;
+            cursor: not-allowed;
+        }
+        .page-button.active {
+    background-color: red;
+    color: white;
+}
     </style>
     <div class="top-actors">
         <c:forEach var="actor" items="${list}" varStatus="status">
@@ -114,8 +150,6 @@
         </div>
         <div class="filters-right">
             <button class="filter-button" onclick="location.href='${pageContext.request.contextPath}/actor/list'">전체</button>
-            <button class="filter-button">국내</button>
-            <button class="filter-button">해외</button>
         </div>
     </div>
     <div class="actor-list">
@@ -130,20 +164,35 @@
             <tbody>
                 <c:forEach var="actor" items="${list}">
                     <tr>
-                        <td><img src="${actor.photo}" alt="${actor.a_name}" style="width:50px; height:75px;"/><br>${actor.a_name}</td>
+                        <td><img src="${actor.photo}" alt="${actor.a_name}" style="width:50px; height:75px;"/>
+                        <br>
+                            <span style="cursor:pointer; color:blue;" onclick="location.href='${pageContext.request.contextPath}/actordetail?id=${actor.actor_id}'">${actor.a_name}</span>
+                        </td>
                         <td>${actor.job}</td>
-                        <td><!-- 최근공연 정보를 여기에 추가 --></td>
+                        <td>${actor.recent_work}</td>
                     </tr>
                 </c:forEach>
             </tbody>
         </table>
     </div>
     <div class="pagination">
+        <c:if test="${currentPage > 1}">
+            <a href="${pageContext.request.contextPath}/actor?pageNum=${currentPage - 1}">
+                <button class="nav-button">&lt;</button>
+            </a>
+        </c:if>
         <c:forEach var="i" begin="${startPage}" end="${endPage}">
             <a href="${pageContext.request.contextPath}/actor?pageNum=${i}">
-                <button class="page-button">${i}</button>
+                <button class="page-button ${currentPage == i ? 'active' : ''}">${i}</button>
             </a>
         </c:forEach>
+        <c:if test="${currentPage < totalPages}">
+            <a href="${pageContext.request.contextPath}/actor?pageNum=${currentPage + 1}">
+                <button class="nav-button">&gt;</button>
+            </a>
+        </c:if>
     </div>
 </div>
-
+	<%@ include file="../footer.jsp" %>
+</body>
+</html>
