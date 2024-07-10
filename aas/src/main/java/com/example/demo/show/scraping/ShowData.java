@@ -1,4 +1,4 @@
-package com.example.demo.show;
+package com.example.demo.show.scraping;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -16,6 +16,8 @@ import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
+import com.example.demo.show.ShowDAO;
 
 public class ShowData {
 	public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package com.example.demo.show;
+package com.example.demo.show.scraping;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -20,7 +20,7 @@ public class Yes24 {
         Map<String, String> sectionImages = new HashMap<>();
         
         try {
-            String url = "http://ticket.yes24.com/Perf/49272?Gcode=009_400";
+            String url = "http://ticket.yes24.com/Perf/39388";
             driver.get(url);
 
             // 클래스 순회
