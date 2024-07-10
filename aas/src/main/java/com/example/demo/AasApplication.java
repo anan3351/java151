@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import java.util.Properties;
+
 import javax.sql.DataSource;
 
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -14,6 +16,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import com.example.demo.actor.PlayDbCrawler;
 
@@ -50,5 +54,22 @@ public class AasApplication {
        };
    } 
    */
+   
+   @Bean
+   public JavaMailSender javaMailSender() {
+       JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+       mailSender.setHost("smtp.gmail.com");
+       mailSender.setPort(587);
+       mailSender.setUsername("your-email@gmail.com");
+       mailSender.setPassword("your-app-password");
+
+       Properties props = mailSender.getJavaMailProperties();
+       props.put("mail.transport.protocol", "smtp");
+       props.put("mail.smtp.auth", "true");
+       props.put("mail.smtp.starttls.enable", "true");
+       props.put("mail.debug", "true");
+
+       return mailSender;
+   }
 
 }
