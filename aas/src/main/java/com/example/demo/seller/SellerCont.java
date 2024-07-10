@@ -5,12 +5,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class SellerCont {
-	@GetMapping("/seller/create")
+	@GetMapping("/user/sellerpage/create")
 	public String mypage() {
 		return "seller/showForm";
 	}
 	
-	@GetMapping("/seller/discount")
+	@GetMapping("/user/sellerpage/discount")
 	public String mypage2() {
 		return "seller/discountForm";
 	}

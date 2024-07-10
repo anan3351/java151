@@ -24,7 +24,7 @@ public class CrawlingTest {
 
         String defaultUrl = "http://www.kopis.or.kr/openApi/restful/pblprfr";
         String serviceKey = "f4acc9d51cc74c92871887e4f695cc85";
-        String stdate = "20150101";
+        String stdate = "20170101";
         String eddate = "20181231";
         String shcate = "GGGA"; // 연극 : AAAA, 뮤지컬 : GGGA
         String rows = "50";
