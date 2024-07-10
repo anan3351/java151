@@ -24,6 +24,9 @@ public class ShowDAO {
     private ResultSet rs = null;
     private StringBuilder sql = null;
 
+
+
+
     public ShowDAO(){ // DAO 생성시에 DB도 함께 연결
         dbopen = new DBOpen();
     }
@@ -279,3 +282,4 @@ public class ShowDAO {
 
     
 }
+

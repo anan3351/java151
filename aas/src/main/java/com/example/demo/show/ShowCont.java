@@ -46,6 +46,7 @@ public class ShowCont {
 	public String play_detail() {
 		return "";
 	}
+<<<<<<< HEAD
 	
 	
     @GetMapping("/searchShows")
@@ -54,3 +55,6 @@ public class ShowCont {
         return showDAO.searchShows(keyword);
     }
 }
+=======
+}
+>>>>>>> refs/heads/main
