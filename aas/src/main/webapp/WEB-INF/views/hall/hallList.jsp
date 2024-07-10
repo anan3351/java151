@@ -70,7 +70,7 @@
                   <a href="detail/${hall.hall_id}"> ${hall.hname} </a>
                   </td>
                   <td>${hall.addr}</td>
-                  <td>${hall.url}</td>
+                  <td><a href="${hall.url}" target="_blank">${hall.url}</a></td>
                   <td>${hall.seat}</td>
                   <td>${hall.h_call}</td>
                   <td>${hall.h_code}</td>
