@@ -3,67 +3,124 @@
 <%@ include file="../header.jsp" %>
 <link rel="stylesheet" href="/css/template.css">
 <h1>배우 상세 정보</h1>
-    <style>
+<style>
     .header {
-        margin-bottom: 0; /* 기존 margin-bottom 값을 0으로 설정 */
-        position: fixed; /* 헤더를 고정 위치로 설정 */
-        top: -10; /* 상단에 고정 */
-        width: 100%; /* 전체 너비를 사용 */
-        z-index: 1000; /* 다른 요소보다 위에 위치 */
+        margin-bottom: 0;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1000;
+        background: #333;
+        color: #fff;
+        padding: 10px 0;
     }
 
     body {
-        padding-top: 200px; /* 헤더 높이만큼 상단 패딩을 추가 */
+        padding-top: 80px;
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+        color: #333;
     }
-        .container {
-            display: flex;
-            padding: 20px;
-        }
-        .actor_photo img {
-            width: 150px;
-            height: auto;
-            margin-right: 20px;
-        }
-        .actor_info {
-            display: flex;
-            flex-direction: column;
-        }
-        .actor_info .title {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        .actor_detail {
-            margin-bottom: 20px;
-        }
-        .actor_detail dl {
-            display: flex;
-            flex-wrap: wrap;
-            width: 400px;
-        }
-        .actor_detail dt, .actor_detail dd {
-            width: 50%;
-            margin: 0;
-            padding: 5px 0;
-        }
-        .actor_detail dt {
-            font-weight: bold;
-        }
-        .detail_contentbox {
-            margin-top: 20px;
-        }
-        .detail_contentbox h4 {
-            margin-bottom: 10px;
-        }
-        .showtitle {
-            font-weight: bold;
-        }
-        .time, .hall {
-            color: #777;
-        }
-        
-        
-    </style>
+
+    .container {
+        display: flex;
+        padding: 20px;
+        background: #fff;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        border-radius: 8px;
+        margin: 20px auto;
+        max-width: 800px;
+    }
+
+    .actor_photo img {
+        width: 150px;
+        height: auto;
+        border-radius: 8px;
+        margin-right: 20px;
+    }
+
+    .actor_info {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .actor_info .title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .actor_detail {
+        margin-bottom: 20px;
+    }
+
+    .actor_detail dl {
+        display: flex;
+        flex-wrap: wrap;
+        width: 400px;
+    }
+
+    .actor_detail dt, .actor_detail dd {
+        width: 50%;
+        margin: 0;
+        padding: 5px 0;
+    }
+
+    .actor_detail dt {
+        font-weight: bold;
+        color: #555;
+    }
+
+    .actor_detail dd {
+        color: #777;
+    }
+
+    .detail_contentbox {
+        margin-top: 20px;
+    }
+
+    .detail_contentbox h4 {
+        margin-bottom: 10px;
+    }
+
+    .showtitle {
+        font-weight: bold;
+    }
+
+    .time, .hall {
+        color: #777;
+    }
+
+    .social-icons {
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    .social-icons a {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        margin-right: 10px;
+        background-size: cover;
+    }
+
+    .social-icons .star {
+        background-image: url('/images/star.png');
+    }
+
+    .social-icons .facebook {
+        background-image: url('/images/facebook.png');
+    }
+
+    .social-icons .twitter {
+        background-image: url('/images/twitter.png');
+    }
+
+    .social-icons .follower-count {
+        color: #555;
+    }
+</style>
 
 <div class="container">
     <div class="actor_photo">
@@ -72,35 +129,34 @@
     <div class="actor_info">
         <!-- 배우 이름 -->
         <div class="actor_name">
-            <table border="0" cellspacing="0" cellpadding="0">
-                <tbody>
-                <tr>
-                    <td>
-                        <span class="title">${actor.a_name}</span>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+            <span class="title">${actor.a_name}</span>
         </div>
         <!-- //배우 이름 -->
-         <!-- 배우 세부 정보 -->
+        <!-- 배우 세부 정보 -->
         <div class="actor_detail">
             <dl>
-                <dt><strong>직업</strong></dt>
+                <dt>직업</dt>
                 <dd>${actor.job}</dd>
-                <dt><strong>생년월일</strong></dt>
+                <dt>생년월일</dt>
                 <dd>${actor.birth}</dd>
-                <dt><strong>신체조건</strong></dt>
+                <dt>신체조건</dt>
                 <dd>${actor.physical}</dd>
-                <dt><strong>소속사</strong></dt>
+                <dt>소속사</dt>
                 <dd>${actor.agency}</dd>
-                <dt><strong>사이트</strong></dt>
+                <dt>사이트</dt>
                 <dd>${actor.site}</dd>
             </dl>
- 		</div>
-       </div>
-   </div>
-   
-   
-   <h1>공연 정보 추가 예정</h1>
-   
+        </div>
+        <!-- //배우 세부 정보 -->
+        <!-- 소셜 아이콘 -->
+        <div class="social-icons">
+            <a href="#" class="star"></a>
+            <a href="#" class="facebook"></a>
+            <a href="#" class="twitter"></a>
+            
+        </div>
+        <!-- //소셜 아이콘 -->
+    </div>
+</div>
+
+<h1>공연 정보 추가 예정</h1>
