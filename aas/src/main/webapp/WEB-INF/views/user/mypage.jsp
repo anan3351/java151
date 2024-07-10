@@ -551,9 +551,11 @@ footer {
             <div class="menu-title">나의 후기</div>
             <ul class="menu-items">
                 <li><a href="#">좌석 후기</a></li>
-                <c:when test="${not empty sessionScope.loggedInUser}">
+                <c:choose>
+            <c:when test="${not empty sessionScope.loggedInUser}">
                 <li><a href="${pageContext.request.contextPath}/showreview/showreviewForm?user_id=${sessionScope.loggedInUser.user_id}">공연 후기</a></li>
             </c:when>
+            </c:choose>
             </ul>
         </div>
         <div class="menu-section">
@@ -587,7 +589,7 @@ footer {
                 <p>비밀번호변경</p>
                 <small>주기적인 변경으로 내정보를 보호하세요.</small>
             </button>
-            <button class="menu-item">
+            <button class="menu-item" onclick="window.location.href='./quit'">
                 <div class="icon">🔚</div>
                 <p>회원탈퇴</p>
             </button>
