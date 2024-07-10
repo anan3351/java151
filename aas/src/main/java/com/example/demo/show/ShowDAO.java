@@ -11,21 +11,17 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.stereotype.Repository;
 import org.w3c.dom.*;
 
-import com.example.demo.show.scraping.DBClose;
-import com.example.demo.show.scraping.DBOpen;
-
+@Repository
 public class ShowDAO {
-
-    // api, 스크래핑 데이터 - DB직접 연결 저장
 
     private DBOpen dbopen = null;
     private Connection con = null;
@@ -49,6 +45,9 @@ public class ShowDAO {
         }
         return "";
     }
+
+
+
 
     public String getTagValue2(String tag, Element element) {
         NodeList nodeList = element.getElementsByTagName(tag);
@@ -95,6 +94,7 @@ public class ShowDAO {
 
         return cnt;
     }
+
 
 
     // 캐스트 확인
@@ -394,17 +394,15 @@ public class ShowDAO {
 
     // 인터파크 크롤링 메소드
     public Map<String, String> interpart_data(String link) {
-        // WebDriver와 ChromDriver 설정
         System.setProperty("webdriver.chrome.driver", "src/main/resources/driver/chromedriver.exe");
         WebDriver driver = new ChromeDriver();
         Map<String, String> contentImagesMap = new HashMap<>();
-        
+
         try {
             String url = link;
             driver.get(url);
-            
+
             // 팝업 닫기
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
             try {
                 List<WebElement> closeButtons = driver.findElements(By.cssSelector(".popupCloseBtn.is-bottomBtn"));
                 if (!closeButtons.isEmpty()) {
@@ -413,7 +411,7 @@ public class ShowDAO {
                 }
             } catch (Exception e) { System.out.println("error : " + e); }
 
-            
+
             // 데이터 추출
             List<WebElement> contentElements = driver.findElements(By.cssSelector(".prdContents.detail .content"));
             String casting = "";
@@ -422,25 +420,7 @@ public class ShowDAO {
             for (WebElement contentElement : contentElements) {
                 StringBuilder images = new StringBuilder();
                 String title = contentElement.findElement(By.tagName("h3")).getText();
-                
-                // 바리케이트 없을 때 사용하는 코드
                 List<WebElement> contentDetailImages = contentElement.findElements(By.cssSelector(".contentDetail img"));
-                
-                
-                /*
-                // 바리케이트 -> 속도 저하 문제 발생
-                List<WebElement> contentDetailImages = null;
-                
-                for (int attempt = 0; attempt < 3; attempt++) {
-                    contentDetailImages = contentElement.findElements(By.cssSelector(".contentDetail img"));
-                    if (!contentDetailImages.isEmpty()) {
-                        break;
-                    } else if (attempt < 2) {
-                        Thread.sleep(2000); // 2초 대기 후 다시 시도
-                    }
-                }
-                */
-                
 
                 // img 요소가 존재할 때만 map에 저장
                 if (!contentDetailImages.isEmpty()) {
@@ -455,7 +435,7 @@ public class ShowDAO {
                         // 캐스팅 이미지 추출
                         for (WebElement imgElement : contentDetailImages) {
                             int height = Integer.parseInt(imgElement.getAttribute("height"));
-                            
+
                             // 이미지 길이 비교 -> 두번째로 긴 이미지 추출
                             if (height > largestHeight) {
                                 secondLargestHeight = largestHeight;
@@ -472,15 +452,15 @@ public class ShowDAO {
                         if (secondLargestImage != null) {
                             if (casting.equals("")) casting = secondLargestImage.getAttribute("src");
                             else {
-                            	if (casting.equals(secondLargestImage.getAttribute("src"))) break;
-                            	else casting += "\n" + secondLargestImage.getAttribute("src"); // 이전에 저장한 캐스팅 일정과 이번에 조회된 캐스팅 일정이 다르다면 값 누적
+                                if (casting.equals(secondLargestImage.getAttribute("src"))) break;
+                                else casting += "\n" + secondLargestImage.getAttribute("src"); // 이전에 저장한 캐스팅 일정과 이번에 조회된 캐스팅 일정이 다르다면 값 누적
                             }
                         }
-                        
+
                         // 모든 이미지 URL을 저장 (캐스팅 이미지는 제외)
                         for (WebElement imgElement : contentDetailImages) {
                             if (imgElement != secondLargestImage) {
-                            	images.append(imgElement.getAttribute("src"));
+                                images.append(imgElement.getAttribute("src"));
                                 images.append("\n");
                             }
                         }
@@ -493,19 +473,19 @@ public class ShowDAO {
                     }
 
                     String image = images.toString().trim();
-                    
+
                     if (title.equals("공지사항")) {
-                    	title = "notice_img";
+                        title = "notice_img";
                     } else if (title.equals("공연상세 / 캐스팅일정")) {
-                    	title = "detail_img";
+                        title = "detail_img";
                     } else if (title.equals("할인정보")) {
-                    	title = "dis_img";
+                        title = "dis_img";
                     }
-                    
+
                     contentImagesMap.put(title, image);
                 }
             }
-            
+
             // 캐스팅 일정 이미지
             if (!casting.trim().isEmpty()) {
                 contentImagesMap.put("casting_img", casting);
@@ -526,15 +506,14 @@ public class ShowDAO {
 
             for (int i=0; i<cast.size(); i++) {
                 String actorName = cast.get(i).getText().trim();
-                
+
                 if(i!=cast.size()-1) actors.append(actorName + ", ");
                 else actors.append(actorName);
             }
 
             String act = actors.toString();
-            if (!act.isEmpty()){
-                contentImagesMap.put("cast", act);
-            }
+            contentImagesMap.put("cast", act);
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -771,4 +750,33 @@ public class ShowDAO {
 
         return contentImagesMap;
     }
+
+
+    // 공연 제목으로 검색하는 메서드 추가
+    public List<ShowDTO> searchShows(String keyword) {
+        List<ShowDTO> shows = new ArrayList<>();
+        try {
+            Connection con = dbopen.getConnection();
+            String sql = "SELECT show_id, title, genre, start_day, end_day FROM tb_show WHERE title LIKE ?";
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, "%" + keyword + "%");
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                ShowDTO show = new ShowDTO();
+                show.setShow_id(rs.getString("show_id"));
+                show.setTitle(rs.getString("title"));
+                show.setGenre(rs.getString("genre"));
+                show.setStart_day(rs.getString("start_day"));
+                show.setEnd_day(rs.getString("end_day"));
+                shows.add(show);
+            }
+            DBClose.close(con, pstmt, rs);
+        } catch (Exception e) {
+            System.out.println("공연 검색 실패: " + e.getMessage());
+        }
+        return shows;
+    }
+
+
+
 }
