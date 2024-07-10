@@ -23,7 +23,7 @@ public class AasApplication {
    public static void main(String[] args) {
       SpringApplication.run(AasApplication.class, args);
    }
-
+ 
 
 	// MyBatis Framework 관련 환경 설정 // Mapper 객체 생성
 	@Bean
