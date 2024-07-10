@@ -47,7 +47,6 @@ public class ShowCont {
 	}
 
 
-	
 	@Autowired
 	ShowDAO showDAO; 
     @GetMapping("/searchShows")
