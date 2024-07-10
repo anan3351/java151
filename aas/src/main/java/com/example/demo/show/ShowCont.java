@@ -24,7 +24,7 @@ public class ShowCont {
 	@GetMapping("/musical")
 	public String musical() {
 		return "show/musical";
-	}
+	} 
 	
 	
 	// 뮤지컬 상세페이지
