@@ -528,9 +528,9 @@ footer {
             <div class="menu-section">
                 <div class="menu-title">공연</div>
                 <ul class="menu-items">
-                    <li><a href="#">공연 등록</a></li>
-                    <li><a href="#">공연 수정</a></li>
-                    <li><a href="#">공연할인율 관리</a></li>
+                    <li><a href="/user/sellerpage/create">공연 등록</a></li>
+                    <li><a href="/user/sellerpage/update">공연 수정</a></li>
+                    <li><a href="/user/sellerpage/discount">공연할인 관리</a></li>
                 </ul>
             </div>
             <div class="menu-section">
