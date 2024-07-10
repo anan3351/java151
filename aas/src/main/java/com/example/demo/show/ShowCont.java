@@ -38,4 +38,14 @@ public class ShowCont {
 	public String play_detail() {
 		return "";
 	}
+
+
+	
+	
+    @GetMapping("/searchShows")
+    @ResponseBody
+    public List<ShowDTO> searchShows(@RequestParam("keyword") String keyword) {
+        return showDAO.searchShows(keyword);
+    } 
+
 }
