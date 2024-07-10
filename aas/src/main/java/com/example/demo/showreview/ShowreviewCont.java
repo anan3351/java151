@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.like.LikeDAO;
-import com.example.demo.show.ShowDAO;
 import com.example.demo.user.UserDTO;
 
 import jakarta.servlet.http.HttpSession;

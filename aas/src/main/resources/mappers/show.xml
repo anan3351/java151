@@ -4,5 +4,8 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="show">
-    
+    <insert id="show_insert" parameterType="java.util.Map">
+ 		insert into tb_show(user_id, hall_id, title, s_cast, genre, start_day, end_day, runningtime, viewing_age)
+ 		values(#{user_id}, #{hall_id}, #{title}, #{s_cast}, #{genre}, #{start_day}, #{end_day}, #{runningtime}, #{viewing_age})
+ 	</insert>
 </mapper>

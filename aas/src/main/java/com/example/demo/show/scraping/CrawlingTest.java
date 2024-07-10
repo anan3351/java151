@@ -17,12 +17,12 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.example.demo.show.ShowDAO;
+import com.example.demo.show.DataDAO;
 
 public class CrawlingTest {
     public static void main(String[] args) throws Exception {
 
-        ShowDAO showDao = new ShowDAO();
+        DataDAO dataDao = new DataDAO();
 
         String defaultUrl = "http://www.kopis.or.kr/openApi/restful/pblprfr";
         String serviceKey = "f4acc9d51cc74c92871887e4f695cc85";
@@ -84,7 +84,7 @@ public class CrawlingTest {
                 if (itemNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element itemElement = (Element) itemNode;
                     // mt20id 태그를 찾아서 저장
-                    String mt20id = showDao.getTagValue2("mt20id", itemElement);
+                    String mt20id = dataDao.getTagValue2("mt20id", itemElement);
 
                     // mt20id를 이용해 공연 세부 정보 조회
                     String detailUrl = defaultUrl + "/" + mt20id + "?service=" + serviceKey + "&newsql=Y";
@@ -131,8 +131,8 @@ public class CrawlingTest {
                         Node relateNode = relateNodeList.item(j);
                         if (relateNode.getNodeType() == Node.ELEMENT_NODE) {
                             Element relateElement = (Element) relateNode;
-                            String relatenm = showDao.getTagValue2("relatenm", relateElement); // 예매처
-                            String relateurl = showDao.getTagValue2("relateurl", relateElement);
+                            String relatenm = dataDao.getTagValue2("relatenm", relateElement); // 예매처
+                            String relateurl = dataDao.getTagValue2("relateurl", relateElement);
 
                             // mt20id, relatenm, relateurl를 relateMap에 저장 -> relateList에 맵들을 저장
                             Map<String, String> relateMap = new HashMap<>();
@@ -206,9 +206,9 @@ public class CrawlingTest {
             String value = entry.getValue();
 
             if(value.contains("interpark")) {
-                contentImagesMap = showDao.interpart_data(value);
+                contentImagesMap = dataDao.interpart_data(value);
                 contentImagesMap.put("showID", key);
-                showDao.update(contentImagesMap, key, value);
+                dataDao.update(contentImagesMap, key, value);
 
                 System.out.println(key + ", " + value);
                 for (Map.Entry<String, String> entry1 : contentImagesMap.entrySet()) {
@@ -218,9 +218,9 @@ public class CrawlingTest {
                 System.out.println("--------------------------------\n");
 
             } else if(value.contains("yes24")) {
-                contentImagesMap = showDao.yes24_data(value);
+                contentImagesMap = dataDao.yes24_data(value);
                 contentImagesMap.put("showID", key);
-                showDao.update(contentImagesMap, key, value);
+                dataDao.update(contentImagesMap, key, value);
 
                 System.out.println(key + ", " + value);
                 for (Map.Entry<String, String> entry1 : contentImagesMap.entrySet()) {
@@ -230,9 +230,9 @@ public class CrawlingTest {
                 System.out.println("--------------------------------\n");
 
             } else if(value.contains("ticketlink")) {
-                contentImagesMap = showDao.ticketlink_data(value);
+                contentImagesMap = dataDao.ticketlink_data(value);
                 contentImagesMap.put("showID", key);
-                showDao.update(contentImagesMap, key, value);
+                dataDao.update(contentImagesMap, key, value);
 
                 System.out.println(key + ", " + value);
                 for (Map.Entry<String, String> entry1 : contentImagesMap.entrySet()) {
@@ -242,7 +242,7 @@ public class CrawlingTest {
                 System.out.println("--------------------------------\n");
 
             } else {
-                showDao.update(key, value);
+            	dataDao.update(key, value);
                 System.out.println(key + ", " + value);
                 System.out.println("3사 미포함");
                 System.out.println("--------------------------------\n");
