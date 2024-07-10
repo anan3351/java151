@@ -564,11 +564,7 @@ footer {
         <div class="menu-section">
             <div class="menu-title"><a href="#">보유쿠폰</a></div>
         </div>
-        <c:if test="${userInfo.auth == 'S'}">
-		    <div class="menu-section">
-		        <div class="menu-title"><a href="./sellerpage">* 판매자 전용 *</a></div>
-		    </div>
-		</c:if>
+        
     </div>
 
     <main>
