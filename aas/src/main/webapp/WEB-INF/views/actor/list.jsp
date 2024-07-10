@@ -150,8 +150,6 @@
         </div>
         <div class="filters-right">
             <button class="filter-button" onclick="location.href='${pageContext.request.contextPath}/actor/list'">전체</button>
-            <button class="filter-button">국내</button>
-            <button class="filter-button">해외</button>
         </div>
     </div>
     <div class="actor-list">
@@ -195,3 +193,6 @@
         </c:if>
     </div>
 </div>
+	<%@ include file="../footer.jsp" %>
+</body>
+</html>

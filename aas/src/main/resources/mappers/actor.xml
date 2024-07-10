@@ -28,4 +28,10 @@
         WHERE actor_id = #{actorId}
     </select>
     
+    <select id="searchActors" parameterType="string" resultType="com.example.demo.actor.ActorDTO">
+        SELECT actor_id, a_name, photo, job, birth, physical, agency, site, recent_work
+        FROM aas.tb_actor
+        WHERE a_name LIKE CONCAT('%', #{search}, '%')
+    </select>
+    
 </mapper>

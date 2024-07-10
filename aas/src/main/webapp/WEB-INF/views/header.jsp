@@ -37,11 +37,6 @@
 </ul>
 </nav>
 
-</div>
-
-    
-    
-  </header>
 
 </div>
 
