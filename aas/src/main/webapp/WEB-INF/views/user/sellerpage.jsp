@@ -567,7 +567,7 @@ footer {
                     <p>비밀번호변경</p>
                     <small>주기적인 변경으로 내정보를 보호하세요.</small>
                 </button>
-                <button class="menu-item">
+                <button class="menu-item" onclick="window.location.href='./quit'">
                     <div class="icon">🔚</div>
                     <p>회원탈퇴</p>
                 </button>

@@ -58,7 +58,7 @@
     </form>
     <br><br>
     <div class="findlist">
-        <a href="./findid">아이디 찾기</a> | <a href="findpw">비밀번호 찾기</a> | <a href="./join">회원가입</a>
+        <a href="./findid">아이디 찾기</a> | <a href="./findpw">비밀번호 찾기</a> | <a href="./join">회원가입</a>
     </div>
     <br>
     <a href="" class="btn-link">
@@ -68,7 +68,7 @@
     <button class="btn btn-kakao">카카오ID로 로그인</button>
     </a>
     <a href="" class="btn-link">
-    <button class="btn btn-apple">애플ID로 로그인</button>
+    <button class="btn btn-apple">구글ID로 로그인</button>
     </a>
   </div>
 </div>

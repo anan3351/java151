@@ -4,23 +4,28 @@
 <link rel="stylesheet" href="/css/template.css">
 <div class="container">
     <style>
-       .header {
-	        margin-bottom: 0; /* 기존 margin-bottom 값을 0으로 설정 */
-	        position: fixed; /* 헤더를 고정 위치로 설정 */
-	        top: -10; /* 상단에 고정 */
-	        width: 100%; /* 전체 너비를 사용 */
-	        z-index: 1000; /* 다른 요소보다 위에 위치 */
-	    }
+        .header {
+            margin-bottom: 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: #333;
+            color: #fff;
+            padding: 10px 0;
+        }
 
-	    body {
-	        padding-top: 200px; /* 헤더 높이만큼 상단 패딩을 추가 */
-	    }
+        body {
+            padding-top: 80px;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
         .left-aligned-title {
             text-align: left;
             margin-bottom: 20px;
         }
-        
-        
 
         h1, h3 {
             margin-bottom: 20px;
@@ -33,23 +38,27 @@
         }
 
         .actor-card {
-            width: 100px;
-            height: 200px; /* Adjust height to accommodate both image and text */
-            background: #e0e0e0;
+            width: 120px;
+            height: 220px;
+            background: #fff;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             display: flex;
-            flex-direction: column; /* Change flex direction to column */
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            border-radius: 4px;
+            border-radius: 8px;
+            padding: 10px;
         }
 
         .actor-card img {
             max-width: 100%;
-            max-height: 150px; /* Limit image height */
+            max-height: 150px;
+            border-radius: 4px;
         }
 
         .actor-card p {
-            margin: 5px 0 0; /* Add margin to separate text from image */
+            margin: 10px 0 0;
+            font-weight: bold;
         }
 
         .filters {
@@ -70,6 +79,7 @@
             color: #fff;
             border-radius: 4px;
             cursor: pointer;
+            transition: background 0.3s;
         }
 
         .filter-button:hover {
@@ -93,6 +103,8 @@
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
+            background: #fff;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
 
         .actor-list th, .actor-list td {
@@ -101,12 +113,18 @@
             text-align: center;
         }
 
+        .actor-list th {
+            background: #f4f4f4;
+        }
+
         .pagination {
             display: flex;
             justify-content: center;
             align-items: center;
+            margin-top: 20px;
         }
-        .page-button {
+
+        .page-button, .nav-button {
             margin: 0 5px;
             padding: 10px 20px;
             border: none;
@@ -114,17 +132,10 @@
             color: #fff;
             border-radius: 4px;
             cursor: pointer;
-        }
-                .nav-button {
-            padding: 10px;
-            border: none;
-            background: #007bff;
-            color: #fff;
-            border-radius: 4px;
-            cursor: pointer;
+            transition: background 0.3s;
         }
 
-        .nav-button:hover {
+        .page-button:hover, .nav-button:hover {
             background: #0056b3;
         }
 
@@ -133,14 +144,10 @@
             cursor: not-allowed;
         }
 
-        .page-button:hover {
-            background: #0056b3;
+        .page-button.active {
+            background-color: red;
+            color: white;
         }
-        
-         .page-button.active {
-		    background-color: red;
-		    color: white;
-		}
     </style>
 
     <div class="filters">
@@ -169,7 +176,7 @@
             <tbody>
                 <c:forEach var="actor" items="${list}">
                     <tr>
-                        <td><img src="${actor.photo}" alt="${actor.a_name}" style="width:50px; height:75px;"/><br><span style="cursor:pointer; color:blue;" onclick="location.href='${pageContext.request.contextPath}/actordetail?id=${actor.actor_id}'">${actor.a_name}</span></td>
+                        <td><img src="${actor.photo}" alt="${actor.a_name}" style="width:50px; height:75px; border-radius: 4px;"/><br><span style="cursor:pointer; color:blue;" onclick="location.href='${pageContext.request.contextPath}/actordetail?id=${actor.actor_id}'">${actor.a_name}</span></td>
                         <td>${actor.job}</td>
                         <td>${actor.recent_work}</td>
                     </tr>
@@ -178,20 +185,23 @@
         </table>
     </div>
     <div class="pagination">
-    <c:if test="${currentPage > 1}">
-        <a href="${pageContext.request.contextPath}/actor/list?pageNum=${currentPage - 1}">
-            <button class="nav-button">&lt;</button>
-        </a>
-    </c:if>
-    <c:forEach var="i" begin="${startPage}" end="${endPage}">
-        <a href="${pageContext.request.contextPath}/actor/list?pageNum=${i}">
-            <button class="page-button ${currentPage == i ? 'active' : ''}">${i}</button>
-        </a>
-    </c:forEach>
-    <c:if test="${currentPage < totalPages}">
-        <a href="${pageContext.request.contextPath}/actor/list?pageNum=${currentPage + 1}">
-            <button class="nav-button">&gt;</button>
-        </a>
-    </c:if>
+        <c:if test="${currentPage > 1}">
+            <a href="${pageContext.request.contextPath}/actor/list?pageNum=${currentPage - 1}">
+                <button class="nav-button">&lt;</button>
+            </a>
+        </c:if>
+        <c:forEach var="i" begin="${startPage}" end="${endPage}">
+            <a href="${pageContext.request.contextPath}/actor/list?pageNum=${i}">
+                <button class="page-button ${currentPage == i ? 'active' : ''}">${i}</button>
+            </a>
+        </c:forEach>
+        <c:if test="${currentPage < totalPages}">
+            <a href="${pageContext.request.contextPath}/actor/list?pageNum=${currentPage + 1}">
+                <button class="nav-button">&gt;</button>
+            </a>
+        </c:if>
+    </div>
 </div>
-</div> 
+<%@ include file="../footer.jsp" %>
+</body>
+</html>

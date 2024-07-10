@@ -1,34 +1,63 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+<%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn"  uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
-<html lang="ko">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+ <title>main</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/css/swiper.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/js/swiper.min.js"></script>
+
+  <link rel="stylesheet" href="/css/template.css">
     <title>탈퇴</title>
-    <link rel="stylesheet" href="styles.css">
+    <script>
+        window.onload = function() {
+            var urlParams = new URLSearchParams(window.location.search);
+            var success = urlParams.get('success');
+            if (success === 'true') {
+                alert("탈퇴가 완료되었습니다.");
+                window.location.href = '/'; 
+            }
+        }
+    </script>
     
     <style>
     body {
-        font-family: Arial, sans-serif;
-        background-color: #f0f0f0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-    }
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+.main-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* 상단 정렬 유지 */
+    padding: 120px 0 80px; /* 상단 패딩을 80px로 증가 */
+}
     
     .container {
-        background-color: white;
-        padding: 30px;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        width: 100%;
-        max-width: 500px; /* 수정: 원하는 가로 최대 너비로 조정 */
-        box-sizing: border-box; /* 수정: padding과 border 포함한 크기 계산 */
-    }
-    
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    box-sizing: border-box;
+     margin-top: 40px; /* 상단 마진 추가 */
+}
     h1 {
         text-align: center;
         color: #333;
@@ -105,9 +134,15 @@
     .btn:hover {
         opacity: 0.9;
     }
+    
+    
+
+
     </style>
 </head>
 <body>
+<%@ include file="../header.jsp" %>
+<div class="main-content">
     <div class="container">
         <h1>회원탈퇴</h1>
         <div class="icon-container">
@@ -136,12 +171,36 @@
     
         <hr>
         <input type="checkbox" id="quit-confirm" name="quit-confirm"> <label for="quit-confirm">탈퇴를 진행하겠습니다.</label>
-        <form>
-            <div class="button-group">
-                <button type="button" class="btn btn-cancel">취소</button>
-                <button type="submit" class="btn btn-confirm">탈퇴</button>
-            </div>
-        </form>
+        <form id="deleteForm" action="${pageContext.request.contextPath}/user/delete" method="post">
+    		<input type="hidden" name="user_id" value="${sessionScope.loggedInUser.user_id}">
+		    <div class="button-group">
+		        <button type="button" class="btn btn-cancel" onclick="window.history.back()">취소</button>
+		        <button type="button" class="btn btn-confirm" onclick="confirmDelete()">탈퇴</button>
+		    </div>
+		</form>
     </div>
+    </div>
+    <%@ include file="../footer.jsp" %>
+    
 </body>
+<script>
+    function confirmDelete() {
+        const checkbox = document.getElementById('quit-confirm');
+        if (!checkbox.checked) {
+            alert("반드시 탈퇴시 주의사항을 읽어주세요!");
+            return;
+        }
+        
+        if (confirm("정말로 탈퇴하시겠습니까? 이 작업은 되돌릴 수 없습니다.")) {
+            const form = document.getElementById('deleteForm');
+            if (form) {
+                form.submit();
+            } else {
+                console.error('Form not found');
+                alert('오류가 발생했습니다. 관리자에게 문의해주세요.');
+            }
+        }
+    }
+</script>
+
 </html>

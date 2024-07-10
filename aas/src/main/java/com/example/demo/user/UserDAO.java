@@ -76,6 +76,19 @@ public class UserDAO {
         sqlSession.update("user.updatePassword", params);
     }
     
-
+    public int deleteUser(String user_id) {
+        if (user_id == null || user_id.trim().isEmpty()) {
+            System.err.println("user_id is null or empty");
+            return 0;
+        }
+        try {
+            int result = sqlSession.delete("user.deleteUser", user_id);
+            return result;
+        } catch (Exception e) {
+            System.err.println("DAO에서 사용자 삭제 중 오류 발생: " + e.getMessage());
+            e.printStackTrace();
+            throw e;
+        }
+    }
 }//class end
 
