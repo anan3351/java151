@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class ShowCont {
 	
-
-	
 	@GetMapping("/")
 	public String main() {
 		return "main";
@@ -23,7 +21,7 @@ public class ShowCont {
 	@GetMapping("/musical")
 	public String musical() {
 		return "show/musical";
-	} 
+	}
 	
 	
 	// 뮤지컬 상세페이지
@@ -46,11 +44,10 @@ public class ShowCont {
 		return "";
 	}
 
-	
 
+	
 	@Autowired
 	ShowDAO showDAO;
-
     @GetMapping("/searchShows")
     @ResponseBody
     public List<ShowDTO> searchShows(@RequestParam("keyword") String keyword) {
