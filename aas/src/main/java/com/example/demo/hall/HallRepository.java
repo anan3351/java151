@@ -15,7 +15,7 @@ public interface HallRepository extends JpaRepository<HallEntity, String>{
 	Page<HallEntity> findByHnameContaining(String hname, Pageable pageable);
     Page<HallEntity> findByAddrContaining(String addr, Pageable pageable);
 
-    @Query(value = "SELECT * FROM tb_hall WHERE hall_id NOT LIKE '%-%' ORDER BY seat DESC LIMIT :limit OFFSET :offset", nativeQuery = true)
+    @Query(value = "SELECT * FROM tb_hall WHERE hall_id NOT LIKE '%-%' ORDER BY h_code ASC LIMIT :limit OFFSET :offset", nativeQuery = true)
     List<HallEntity> findByHallIdWithoutDash(@Param("limit") int limit, @Param("offset") int offset);
     
     @Query(value = "SELECT COUNT(*) FROM tb_hall WHERE hall_id NOT LIKE '%-%'", nativeQuery = true)
