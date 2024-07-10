@@ -277,6 +277,15 @@ public class UserCont {
 	        }
 	    }
 		
+	    @RequestMapping("/findid")
+		public String findid() {
+		        return "user/findid";      
+		    }//findid() end
+	    
+	    @RequestMapping("/findpw")
+		public String findpw() {
+		        return "user/findpw";      
+		    }//findpw() end
 		
 		
 }//class end
