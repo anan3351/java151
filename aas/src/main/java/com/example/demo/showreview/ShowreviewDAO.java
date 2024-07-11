@@ -1,18 +1,34 @@
 package com.example.demo.showreview;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ImportRuntimeHints;
 import org.springframework.stereotype.Repository;
+
+import com.example.demo.show.DBOpen;
+import com.example.demo.show.ShowDTO;
+
+
 
 @Repository
 public class ShowreviewDAO {
+    private DBOpen dbopen = null;
+    private Connection con = null;
+    private PreparedStatement pstmt = null;
+    private ResultSet rs = null;
+    private StringBuilder sql = null;
 
 	public ShowreviewDAO() {
 		System.out.println("-----ShowreviewDAO 객체 생성");
+		 dbopen = new DBOpen();
 	}
 	
 	@Autowired
@@ -71,5 +87,32 @@ public class ShowreviewDAO {
     public void delete(int rev_id) {
         sqlSession.delete("showreview.delete", rev_id);
     }
+    
+    //공연 제목으로 검색하는 메서드 추가
+    
+    public List<ShowDTO> searchShows(String keyword) {
+        List<ShowDTO> shows = new ArrayList<>();
+        try {
+            Connection con = dbopen.getConnection();
+            String sql = "SELECT show_id, title, genre, start_day, end_day FROM tb_show WHERE title LIKE ?";
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, "%" + keyword + "%");
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                ShowDTO show = new ShowDTO();
+                show.setShow_id(rs.getString("show_id"));
+                show.setTitle(rs.getString("title"));
+                show.setGenre(rs.getString("genre"));
+                show.setStart_day(rs.getString("start_day"));
+                show.setEnd_day(rs.getString("end_day"));
+                shows.add(show);
+            }
+            DBClose.close(con, pstmt, rs);
+        } catch (Exception e) {
+            System.out.println("공연 검색 실패: " + e.getMessage());
+        }
+        return shows;
+    }
+    
     
 }//class end
