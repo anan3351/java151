@@ -1,5 +1,8 @@
 package com.example.demo.showreview;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.like.LikeDAO;
+import com.example.demo.showreview.DBOpen;
 import com.example.demo.show.ShowDAO;
 import com.example.demo.show.ShowDTO;
 import com.example.demo.user.UserDTO;
@@ -42,12 +46,11 @@ public class ShowreviewCont {
 	@Autowired
 	private LikeDAO likeDao;
 	
-	@Autowired
-	ShowDAO showDAO;
+
     @GetMapping("/searchShows")
     @ResponseBody
     public List<ShowDTO> searchShows(@RequestParam("keyword") String keyword) {
-        return showDAO.searchShows(keyword);
+        return showreviewDao.searchShows(keyword);
     } 
     
 	
@@ -184,6 +187,15 @@ public class ShowreviewCont {
 	        showreviewDao.update(showreviewDto);
 	        return "redirect:/showreview/showreviewdetail?rev_id=" + showreviewDto.getRev_id();
 	    }
+
+	    
+	    
+	    private DBOpen dbopen = null;
+	    private Connection con = null;
+	    private PreparedStatement pstmt = null;
+	    private ResultSet rs = null;
+	    private StringBuilder sql = null;
+
 
 	    @PostMapping("/showreview/deleteReview")
 	    @ResponseBody
