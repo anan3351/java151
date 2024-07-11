@@ -91,29 +91,71 @@ public class UserDAO {
         }
     }
     
-    public UserDTO findByEmail(String email) {
-        return sqlSession.selectOne("user.findByEmail", email);
-    }
+    
 
-    public void insertNaverUser(UserDTO userDTO) {
-        sqlSession.insert("user.insertNaverUser", userDTO);
-    }
-
-    public void updateNaverUser(UserDTO userDTO) {
-        sqlSession.update("user.updateNaverUser", userDTO);
+    
+    
+    public UserDTO findByUserId(String userId) {
+        try {
+            System.out.println("Searching for user with ID: " + userId);
+            UserDTO user = sqlSession.selectOne("user.findByUserId", userId);
+            System.out.println("Found user: " + user);
+            return user;
+        } catch (Exception e) {
+            System.err.println("Error in findByUserId: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public UserDTO saveOrUpdateNaverUser(UserDTO userDTO) {
-        UserDTO existingUser = findByEmail(userDTO.getEmail());
-        if (existingUser != null) {
-            // 기존 사용자 정보 업데이트
-            updateNaverUser(userDTO);
-            return findByEmail(userDTO.getEmail());
-        } else {
-            // 새 사용자 등록
-            insertNaverUser(userDTO);
-            return findByEmail(userDTO.getEmail());
+        try {
+            System.out.println("Attempting to save or update user: " + userDTO);
+            UserDTO existingUser = findByUserId(userDTO.getUser_id());
+            if (existingUser == null) {
+                System.out.println("User not found. Inserting new user.");
+                insertNaverUser(userDTO);
+            } else {
+                System.out.println("User found. Updating existing user.");
+                updateNaverUser(userDTO);
+            }
+            UserDTO result = findByUserId(userDTO.getUser_id());
+            System.out.println("Save or update completed. Result: " + result);
+            return result;
+        } catch (Exception e) {
+            System.err.println("Error in saveOrUpdateNaverUser: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("Failed to save or update user: " + e.getMessage(), e);
         }
+    }
+
+    private void insertNaverUser(UserDTO userDTO) {
+        try {
+            System.out.println("Inserting Naver user: " + userDTO);
+            int result = sqlSession.insert("user.insertNaverUser", userDTO);
+            System.out.println("Insert result: " + result);
+        } catch (Exception e) {
+            System.err.println("Error inserting Naver user: " + e.getMessage());
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    private void updateNaverUser(UserDTO userDTO) {
+        try {
+            System.out.println("Updating Naver user: " + userDTO);
+            int result = sqlSession.update("user.updateNaverUser", userDTO);
+            System.out.println("Update result: " + result);
+        } catch (Exception e) {
+            System.err.println("Error updating Naver user: " + e.getMessage());
+            e.printStackTrace();
+            throw e;
+        }
+    }
+    
+    public boolean isUserIdExists(String userId) {
+        Integer count = sqlSession.selectOne("user.countByUserId", userId);
+        return count != null && count > 0;
     }
     
     
