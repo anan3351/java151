@@ -58,15 +58,16 @@
     </form>
     <br><br>
     <div class="findlist">
-        <a href="./findid">아이디 찾기</a> | <a href="./findpw">비밀번호 찾기</a> | <a href="./join">회원가입</a>
+        <a href="./findid">아이디 찾기</a> | <a href="./findpw">비밀번호 찾기</a> | <a href="./agreement">회원가입</a>
     </div>
     <br>
-    <a href="" class="btn-link">
+    
+    <a href="/naverLogin" class="btn-link">
     <button class="btn btn-naver">네이버ID로 로그인</button>
-    </a>
-    <a href="" class="btn-link">
+	</a>
+	<a href="https://kauth.kakao.com/oauth/authorize?client_id=ed2700534e63214f5b299b09f4b82bb0&redirect_uri=http://localhost:9095/kakao/callback&response_type=code">
     <button class="btn btn-kakao">카카오ID로 로그인</button>
-    </a>
+	</a>
     <a href="" class="btn-link">
     <button class="btn btn-apple">구글ID로 로그인</button>
     </a>
