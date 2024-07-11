@@ -38,33 +38,51 @@ public class LoginController {
     @GetMapping("/naver/callback")
     public String callback(@RequestParam String code, @RequestParam String state, HttpSession session, Model model) {
         try {
-            OAuth2AccessToken oauthToken = naverLoginBO.getAccessToken(session, code, state);
-            String apiResult = naverLoginBO.getUserProfile(oauthToken);
+            System.out.println("Received callback with code: " + code + " and state: " + state);
             
+            OAuth2AccessToken oauthToken = naverLoginBO.getAccessToken(session, code, state);
+            System.out.println("Obtained OAuth token: " + oauthToken.getAccessToken());
+            
+            String apiResult = naverLoginBO.getUserProfile(oauthToken);
+            System.out.println("API Result: " + apiResult);
+
             JSONParser parser = new JSONParser();
             JSONObject jsonObj = (JSONObject) parser.parse(apiResult);
             JSONObject response_obj = (JSONObject) jsonObj.get("response");
+            System.out.println("Parsed response: " + response_obj);
             
+
             UserDTO userDTO = new UserDTO();
+            String naverId = (String) response_obj.get("id");
+            String truncatedId = truncateNaverId(naverId, 10); // 10자로 제한
+            String userId = "NAVER_" + truncatedId;
+
+            // 중복 확인 및 처리
+            int suffix = 1;
+            String originalUserId = userId;
+            while (userDao.isUserIdExists(userId)) {
+                userId = originalUserId + suffix;
+                suffix++;
+            }
+
+            userDTO.setUser_id(userId);
             userDTO.setTel_num((String) response_obj.get("mobile"));
             userDTO.setUser_name((String) response_obj.get("name"));
             userDTO.setEmail((String) response_obj.get("email"));
-            
+            System.out.println("Created UserDTO: " + userDTO);
+
             userDTO = userDao.saveOrUpdateNaverUser(userDTO);
+            System.out.println("After saveOrUpdateNaverUser: " + userDTO);
+
             session.setAttribute("loggedInUser", userDTO);
-            
             System.out.println("User logged in: " + userDTO.getUser_name());
-            
+
             return "redirect:/";
-        } catch (IOException e) {
-            model.addAttribute("error", "네이버 로그인 처리 중 오류가 발생했습니다: " + e.getMessage());
-            return "error";
-        } catch (ParseException e) {
-            model.addAttribute("error", "사용자 정보 파싱 중 오류가 발생했습니다: " + e.getMessage());
-            return "error";
         } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Error in callback: " + e.getMessage());
             model.addAttribute("error", "예상치 못한 오류가 발생했습니다: " + e.getMessage());
-            return "error";
+            return "error";  // error.jsp로 이동
         }
     }
     
@@ -87,6 +105,15 @@ public class LoginController {
         }
         model.addAttribute("user", loggedInUser);
         return "mypage";  // mypage.jsp 페이지로 이동
+    }
+    
+    private String truncateNaverId(String naverId, int length) {
+        if (naverId == null) {
+            return "";
+        }
+        // naverId의 뒷부분 length자리를 사용
+        int startIndex = Math.max(0, naverId.length() - length);
+        return naverId.substring(startIndex);
     }
 
    
