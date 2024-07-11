@@ -1,4 +1,4 @@
-package com.example.demo.show;
+package com.example.demo.show.scraping;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

@@ -1,4 +1,4 @@
-package com.example.demo.show;
+package com.example.demo.show.scraping;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -17,9 +17,11 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import com.example.demo.show.DataDAO;
+
 public class ShowData {
 	public static void main(String[] args) {
-		ShowDAO showDao = new ShowDAO();
+		DataDAO dataDao = new DataDAO();
 
 		String defaultUrl = "http://www.kopis.or.kr/openApi/restful/pblprfr";
 		String serviceKey = "f4acc9d51cc74c92871887e4f695cc85";
@@ -114,9 +116,9 @@ public class ShowData {
 					// XML 데이터 파싱
 					Document detailDoc = builder.parse(new java.io.ByteArrayInputStream(detailSb.toString().getBytes("UTF-8")));
 
-					String theater1 = showDao.getTagValue("fcltynm", detailDoc); // 공연장 이름(세부관 포함)
-					String theater2 = showDao.getTagValue("mt10id", detailDoc); // 공연장id
-					List<String> theater_name = showDao.theater_search(theater2); // 공연장(부모) 이름 찾기
+					String theater1 = dataDao.getTagValue("fcltynm", detailDoc); // 공연장 이름(세부관 포함)
+					String theater2 = dataDao.getTagValue("mt10id", detailDoc); // 공연장id
+					List<String> theater_name = dataDao.theater_search(theater2); // 공연장(부모) 이름 찾기
 					String mini = null;
 					int n = theater_name.get(0).length();
 
@@ -130,10 +132,10 @@ public class ShowData {
 							int end = mini.lastIndexOf(")");
 							mini = mini.substring(start, end); // 세부관 이름(miniHall)
 
-							mini = showDao.mini_search(mini); // 세부관 ID(hall_id)
+							mini = dataDao.mini_search(mini); // 세부관 ID(hall_id)
 
 							if (mini == "" || mini == null) {
-								mini = showDao.mini_search2(theater2); // 세부관 ID(hall_id)
+								mini = dataDao.mini_search2(theater2); // 세부관 ID(hall_id)
 								if (mini == null) {
 									mini = theater2;
 								}
@@ -143,7 +145,7 @@ public class ShowData {
 						if (theater_name.get(0).equals("정보없음")) {
 							mini = "FC0";
 						} else {
-							mini = showDao.mini_search2(theater2); // 세부관 ID(hall_id)
+							mini = dataDao.mini_search2(theater2); // 세부관 ID(hall_id)
 							if (mini == null) {
 								mini = theater2;
 							}
@@ -155,17 +157,17 @@ public class ShowData {
 
 					// JSON 객체 생성
 					JSONObject jsonObject = new JSONObject();
-					jsonObject.put("show_id", showDao.getTagValue("mt20id", detailDoc));
-					jsonObject.put("title", showDao.getTagValue("prfnm", detailDoc));
+					jsonObject.put("show_id", dataDao.getTagValue("mt20id", detailDoc));
+					jsonObject.put("title", dataDao.getTagValue("prfnm", detailDoc));
 					jsonObject.put("hall_id", mini);
-					jsonObject.put("genre", showDao.getTagValue("genrenm", detailDoc));
-					jsonObject.put("cast", showDao.getTagValue("prfcast", detailDoc));
-					jsonObject.put("start_day", showDao.getTagValue("prfpdfrom", detailDoc));
-					jsonObject.put("end_day", showDao.getTagValue("prfpdto", detailDoc));
-					jsonObject.put("runningtime", showDao.getTagValue("prfruntime", detailDoc));
-					jsonObject.put("viewing_age", showDao.getTagValue("prfage", detailDoc));
-					jsonObject.put("detail_img", showDao.getTagValue("styurl", detailDoc));
-					jsonObject.put("poster", showDao.getTagValue("poster", detailDoc));
+					jsonObject.put("genre", dataDao.getTagValue("genrenm", detailDoc));
+					jsonObject.put("cast", dataDao.getTagValue("prfcast", detailDoc));
+					jsonObject.put("start_day", dataDao.getTagValue("prfpdfrom", detailDoc));
+					jsonObject.put("end_day", dataDao.getTagValue("prfpdto", detailDoc));
+					jsonObject.put("runningtime", dataDao.getTagValue("prfruntime", detailDoc));
+					jsonObject.put("viewing_age", dataDao.getTagValue("prfage", detailDoc));
+					jsonObject.put("detail_img", dataDao.getTagValue("styurl", detailDoc));
+					jsonObject.put("poster", dataDao.getTagValue("poster", detailDoc));
 
 					// JSON 데이터 확인
 					//System.out.println(jsonObject.toString(2));
@@ -187,8 +189,8 @@ public class ShowData {
 					map.put("poster", jsonObject.getString("poster"));
 
 					// DB에 저장
-					if (showDao.showIdExists(mt20id)) { // DB에 show_id가 존재하지 않는 경우에만 삽입
-						int result = showDao.update2(map, mt20id);
+					if (dataDao.showIdExists(mt20id)) { // DB에 show_id가 존재하지 않는 경우에만 삽입
+						int result = dataDao.update2(map, mt20id);
 						if (result == 1) {
 							System.out.println("ID : " + mt20id + ", 행 수정 성공");
 						}
