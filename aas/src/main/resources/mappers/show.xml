@@ -4,8 +4,21 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="show">
-    <insert id="show_insert" parameterType="java.util.Map">
- 		insert into tb_show(user_id, hall_id, title, s_cast, genre, start_day, end_day, runningtime, viewing_age)
- 		values(#{user_id}, #{hall_id}, #{title}, #{s_cast}, #{genre}, #{start_day}, #{end_day}, #{runningtime}, #{viewing_age})
+    <insert id="insert" parameterType="java.util.Map">
+ 		insert into tb_show(show_id, user_id, hall_id, title, s_cast, genre, start_day, end_day, runningtime, viewing_age, notice_img, dis_img, event_img, detail_img, poster)
+ 		values(#{show_id}, #{user_id}, #{hall_id}, #{title}, #{s_cast}, #{genre}, #{start_day}, #{end_day}, #{runningtime}, #{viewing_age}, #{notice_img}, #{dis_img}, #{event_img}, #{detail_img}, #{poster})
  	</insert>
+ 	
+ 	<select id="list" resultType="java.lang.String">
+	    SELECT show_id from tb_show where show_id like '%SHOW%'
+	</select>
+	
+	<select id="hallsearch" resultType="java.util.Map" parameterType="String">
+	    SELECT hall_id, h_name, miniHall, addr FROM tb_hall WHERE h_name LIKE #{keyword}
+	</select>
+	
+	
+	<select id="list" resultType="java.util.HashMap" parameterType="String">
+	    SELECT * FROM tb_show WHERE user_id = #{keyword}
+	</select>
 </mapper>
