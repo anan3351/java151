@@ -92,12 +92,10 @@ public class UserCont {
 		        return mav;        
 		    }//pwmodify() end
 		
-		@RequestMapping("/quit")
-		public ModelAndView quit() {      
-		        ModelAndView mav=new ModelAndView();
-		        mav.setViewName("user/quit");
-		        return mav;        
-		    }//quit() end
+		@GetMapping("/quit")
+		public String quit(@RequestParam(value = "success", required = false) String success) {
+		    return "user/quit";
+		}
 		
 		@RequestMapping("/agreement")
 		public String agreement() {
@@ -257,7 +255,37 @@ public class UserCont {
 	            return "redirect:/user/login";
 	        }
 	    }//sellerPage() end
+	    
+	    @PostMapping("/delete")
+	    public String deleteUser(HttpSession session, RedirectAttributes redirectAttributes) {
+	        UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+	        String user_id = loggedInUser.getUser_id();
+
+	        try {
+	            int result = userDao.deleteUser(user_id);
+	            if (result > 0) {
+	                session.invalidate();
+	                return "redirect:/user/quit?success=true";
+	            } else {
+	                redirectAttributes.addFlashAttribute("error", "사용자를 찾을 수 없습니다.");
+	                return "redirect:/error";
+	            }
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            redirectAttributes.addFlashAttribute("error", "회원 탈퇴 중 오류가 발생했습니다.");
+	            return "redirect:/error";
+	        }
+	    }
 		
+	    @RequestMapping("/findid")
+		public String findid() {
+		        return "user/findid";      
+		    }//findid() end
+	    
+	    @RequestMapping("/findpw")
+		public String findpw() {
+		        return "user/findpw";      
+		    }//findpw() end
 		
 		
 }//class end

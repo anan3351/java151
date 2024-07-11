@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.like.LikeDAO;
-import com.example.demo.show.DBOpen;
+import com.example.demo.showreview.DBOpen;
 import com.example.demo.show.ShowDAO;
 import com.example.demo.show.ShowDTO;
 import com.example.demo.user.UserDTO;
@@ -213,5 +213,6 @@ public class ShowreviewCont {
 	    
 
 	    
+
 
 }//class end

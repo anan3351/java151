@@ -1,217 +1,259 @@
-
-body{font-family: 'Pretendard';}
+body {
+  font-family: 'Pretendard';
+}
 
 .inner-content {
-	margin: 0 auto;
-	width: 1170px;
-	padding-block: 40px;
+  margin: 0 auto;
+  width: 1170px;
+  padding-block: 40px;
 }
 
 .header-wrap {
-	width: 100%;
-	position: fixed;
-	z-index: 999;
-	background-color: #fff;
-	top: 0;
+  width: 100%;
+  position: fixed;
+  z-index: 999;
+  background-color: #fff;
+  top: 0;
 }
 
 .main-container {
-	margin-top: 130px;
-  
+  margin-top: 130px;
+
 }
 
 header {
-	margin: 0 auto;
-	width: 1600px;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 10px 20px;
-	background-color: #fff;
+  margin: 0 auto;
+  width: 1600px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #fff;
   transition: all 0.3s;
 }
 
 header .logo img {
-	display: inline-block;
-	background-color: #413f3f;
+  display: inline-block;
+  background-color: #413f3f;
   width: 250px;
 }
 
 header .search-bar {
-	position: relative;
+  position: relative;
 }
 
 header .search-bar input {
-	border-radius: 25px;
-	width: 600px;
-	padding: 5px 20px;
-	height: 50px;
-	border: 1px solid #c5c5c5;
+  border-radius: 25px;
+  width: 600px;
+  padding: 5px 20px;
+  height: 50px;
+  border: 1px solid #c5c5c5;
 }
 
 header .search-bar .btn-search {
-	position: absolute;
-	width: 20px;
-	height: 20px;
-	border: none;
-	right: 20px;
-	top: 50%;
-	transform: translateY(-50%);
-    background: url(/images/search.svg);
-    background-repeat: no-repeat;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: none;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: url(/images/search.svg);
+  background-repeat: no-repeat;
 }
 
 header .user-options a {
-	margin: 0 10px;
-	text-decoration: none;
-	color: #000;
+  margin: 0 10px;
+  text-decoration: none;
+  color: #000;
 }
 
 header .language img {
-	height: 20px;
+  height: 20px;
 }
 
 nav {
-	width: 100%;
-	border-top: 1px solid #ccc;
-	border-bottom: 1px solid #ccc;
-	padding: 10px 20px;
-	display: flex;
-	justify-content: center;
+  width: 100%;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: center;
 }
 
-nav ul {
-	list-style: none;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	height: 39px;
-	padding: 0;
-	gap: 40px;
-	border-radius: 6px;
-	white-space: nowrap;
-	list-style-type: none;
-	margin: 0;
+nav > ul {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 39px;
+  padding: 0;
+  gap: 40px;
+  border-radius: 6px;
+  white-space: nowrap;
+  list-style-type: none;
+  margin: 0;
+  position: relative;
 }
 
 nav ul li {
-	display: flex;
-	align-items: center;
-	height: 39px;
-	font-style: normal;
-	font-weight: 700;
-	font-size: 16px;
-	line-height: 19px;
-	border-bottom: 2px solid transparent;
+  display: flex;
+  align-items: center;
+  height: 39px;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 19px;
+  border-bottom: 2px solid transparent;
+  position: relative;
+}
+
+nav ul li ul {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #f9f9f9;
+  min-width: 150px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  padding: 10px 0;
+  border-radius: 4px;
 }
 
 nav ul li a {
-	text-decoration: none;
-	color: #111;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-size: 16px;
+  text-decoration: none;
+  color: #111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
 }
 
 nav ul li a:hover {
-	text-decoration: none;
+  text-decoration: none;
 }
+
+nav ul li:hover > ul {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+nav ul li ul li {
+  width: 100%;
+  text-align: center;
+  padding: 10px 0;
+  height: auto;
+  font-weight: normal;
+}
+
+nav ul li ul li a {
+  padding: 5px 15px;
+  width: 100%;
+  justify-content: center;
+}
+
+nav ul li ul li a:hover {
+  background-color: #e9e9e9;
+}
+
+
 
 /*content*/
 .swiper-container {
-	max-width: 1600px;
-	height: 300px;
-	margin-bottom: 50px;
+  max-width: 1600px;
+  height: 300px;
+  margin-bottom: 50px;
   padding-block: 300px;
 }
 
 .slider1 {
-	position: relative;
+  position: relative;
   max-width: 1507px;
 }
 
 .slider2 {
-	position: relative;
+  position: relative;
 }
 
 
 
 .swiper-slide {
-	background: #fff;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	text-align: center;
-	border: 1px solid #ccc;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border: 1px solid #ccc;
   cursor: pointer;
- 
+
 }
 
 
-.slider1 .swiper-slide{
+.slider1 .swiper-slide {
   align-items: start;
 }
 
 .slider1 .swiper-slide img {
-	max-width: 100%;
-	height: 450px;
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  max-width: 100%;
+  height: 450px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
 }
 
 .navbar-nav {
-	display: flex;
-	justify-content: center;
-	width: 100%;
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 .navbar-nav>li {
-	display: flex;
-	align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 th {
-	text-align: center;
+  text-align: center;
 }
 
 /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
 .row.content {
-	height: 450px
+  height: 450px
 }
 
 /* Set gray background color and 100% height */
 .sidenav {
-	padding-top: 20px;
-	background-color: #f1f1f1;
-	height: 100%;
+  padding-top: 20px;
+  background-color: #f1f1f1;
+  height: 100%;
 }
 
 /* Set black background color, white text and some padding */
 footer {
-	background-color: #413f3f;
-	color: white;
-	padding: 15px;
+  background-color: #413f3f;
+  color: white;
+  padding: 15px;
 }
 
 .centerBox {
-	width: 450;
-	margin-left: auto;
-	margin-right: auto;
+  width: 450;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 
 /* 반응형 스타일 */
 
 @media (max-width: 1600px) {
-  header{
+  header {
     width: 100%;
   }
 }
 
 @media (max-width: 1200px) {
   header {
-    width:100%;
+    width: 100%;
     align-items: center;
     flex-direction: column;
   }
@@ -219,9 +261,9 @@ footer {
   header .search-bar {
     max-width: none;
     margin: 10px 0;
-   
+
   }
-  
+
 
   header .user-options {
     justify-content: flex-end;
@@ -236,7 +278,7 @@ footer {
   header .search-bar input {
     width: 100%;
     padding: 5px 30px 5px 10px;
-   
+
   }
 
   header .user-options {
@@ -247,22 +289,20 @@ footer {
     margin: 5px 10px;
   }
 }
-    
+
 @media (max-width: 480px) {
   header .search-bar input {
     width: 95%;
     padding: 5px 25px 5px 5px;
-    
+
   }
 
   header .user-options {
-     justify-content: center;
+    justify-content: center;
   }
 
   header .user-options a {
-     margin: 5px; /* 여백 조정 */
+    margin: 5px;
+    /* 여백 조정 */
   }
 }
- 
- 
- 

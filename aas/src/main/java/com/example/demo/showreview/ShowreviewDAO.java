@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ImportRuntimeHints;
 import org.springframework.stereotype.Repository;
 
-import com.example.demo.show.DBOpen;
+import com.example.demo.showreview.DBOpen;
 import com.example.demo.show.ShowDTO;
 
 

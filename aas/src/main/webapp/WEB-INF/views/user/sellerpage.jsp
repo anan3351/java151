@@ -528,9 +528,9 @@ footer {
             <div class="menu-section">
                 <div class="menu-title">공연</div>
                 <ul class="menu-items">
-                    <li><a href="#">공연 등록</a></li>
-                    <li><a href="#">공연 수정</a></li>
-                    <li><a href="#">공연할인율 관리</a></li>
+                    <li><a href="/seller/list">공연 관리</a></li>
+                    <li><a href="/seller/create">공연 등록</a></li>
+                    <li><a href="/seller/discount">공연할인 관리</a></li>
                 </ul>
             </div>
             <div class="menu-section">
@@ -567,7 +567,7 @@ footer {
                     <p>비밀번호변경</p>
                     <small>주기적인 변경으로 내정보를 보호하세요.</small>
                 </button>
-                <button class="menu-item">
+                <button class="menu-item" onclick="window.location.href='./quit'">
                     <div class="icon">🔚</div>
                     <p>회원탈퇴</p>
                 </button>

@@ -2,7 +2,9 @@ package com.example.demo.show;
 
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,5 +46,15 @@ public class ShowCont {
 		return "";
 	}
 
+
+
+	
+	/*
+    @GetMapping("/searchShows")
+    @ResponseBody
+    public List<ShowDTO> searchShows(@RequestParam("keyword") String keyword) {
+        return showDAO.searchShows(keyword);
+    } 
+*/
 
 }
