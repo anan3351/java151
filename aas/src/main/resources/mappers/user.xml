@@ -73,7 +73,20 @@
 	
 	<select id="countByUserId" parameterType="string" resultType="int">
     SELECT COUNT(*) FROM aas.tb_user WHERE user_id = #{userId}
-</select>
+	</select>
+	
+	<select id="findByNaverId" parameterType="string" resultType="com.example.demo.user.UserDTO">
+	    SELECT * FROM aas.tb_user WHERE user_id = #{naverId}
+	</select>
+	
+	<insert id="insertKakaoUser" parameterType="com.example.demo.user.UserDTO">
+        INSERT INTO aas.tb_user (user_id, auth)
+        VALUES (#{user_id}, #{auth})
+    </insert>
+    
+    <select id="getUserByUserId" parameterType="string" resultType="com.example.demo.user.UserDTO">
+        SELECT * FROM aas.tb_user WHERE user_id = #{user_id}
+    </select>
 	
 
 
