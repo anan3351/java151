@@ -12,7 +12,6 @@ public class acschCrawlingCont {
     @Autowired
     private acschCrawiling acschCrawiling;
 
-
     @GetMapping("/showSchedule")
     public List<String> getShowSchedule() {
         return acschCrawiling.getShowSchedule();
