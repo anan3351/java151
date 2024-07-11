@@ -1,4 +1,4 @@
-package com.example.demo.show;
+package com.example.demo.show.scraping;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
