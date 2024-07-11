@@ -38,49 +38,32 @@ public class LoginController {
     @GetMapping("/naver/callback")
     public String callback(@RequestParam String code, @RequestParam String state, HttpSession session, Model model) {
         try {
-            System.out.println("Received callback with code: " + code + " and state: " + state);
-            
             OAuth2AccessToken oauthToken = naverLoginBO.getAccessToken(session, code, state);
-            System.out.println("Obtained OAuth token: " + oauthToken.getAccessToken());
             
             String apiResult = naverLoginBO.getUserProfile(oauthToken);
-            System.out.println("API Result: " + apiResult);
 
             JSONParser parser = new JSONParser();
             JSONObject jsonObj = (JSONObject) parser.parse(apiResult);
             JSONObject response_obj = (JSONObject) jsonObj.get("response");
-            System.out.println("Parsed response: " + response_obj);
             
 
             UserDTO userDTO = new UserDTO();
+            
             String naverId = (String) response_obj.get("id");
+            String userId = "NAVER_" + naverId;
             String truncatedId = truncateNaverId(naverId, 10); // 10자로 제한
-            String userId = "NAVER_" + truncatedId;
-
-            // 중복 확인 및 처리
-            int suffix = 1;
-            String originalUserId = userId;
-            while (userDao.isUserIdExists(userId)) {
-                userId = originalUserId + suffix;
-                suffix++;
-            }
-
-            userDTO.setUser_id(userId);
+            userDTO.setUser_id("NAVER_" + truncatedId);
             userDTO.setTel_num((String) response_obj.get("mobile"));
             userDTO.setUser_name((String) response_obj.get("name"));
             userDTO.setEmail((String) response_obj.get("email"));
-            System.out.println("Created UserDTO: " + userDTO);
 
             userDTO = userDao.saveOrUpdateNaverUser(userDTO);
-            System.out.println("After saveOrUpdateNaverUser: " + userDTO);
 
             session.setAttribute("loggedInUser", userDTO);
-            System.out.println("User logged in: " + userDTO.getUser_name());
 
             return "redirect:/";
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println("Error in callback: " + e.getMessage());
             model.addAttribute("error", "예상치 못한 오류가 발생했습니다: " + e.getMessage());
             return "error";  // error.jsp로 이동
         }

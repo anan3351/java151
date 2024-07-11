@@ -110,18 +110,15 @@ public class UserDAO {
 
     public UserDTO saveOrUpdateNaverUser(UserDTO userDTO) {
         try {
-            System.out.println("Attempting to save or update user: " + userDTO);
-            UserDTO existingUser = findByUserId(userDTO.getUser_id());
+            // 네이버 ID로 사용자 찾기
+            UserDTO existingUser = findByNaverId(userDTO.getUser_id());
             if (existingUser == null) {
-                System.out.println("User not found. Inserting new user.");
                 insertNaverUser(userDTO);
+                return findByNaverId(userDTO.getUser_id());
             } else {
-                System.out.println("User found. Updating existing user.");
                 updateNaverUser(userDTO);
+                return findByNaverId(userDTO.getUser_id());
             }
-            UserDTO result = findByUserId(userDTO.getUser_id());
-            System.out.println("Save or update completed. Result: " + result);
-            return result;
         } catch (Exception e) {
             System.err.println("Error in saveOrUpdateNaverUser: " + e.getMessage());
             e.printStackTrace();
@@ -129,13 +126,15 @@ public class UserDAO {
         }
     }
 
+    public UserDTO findByNaverId(String naverId) {
+        UserDTO user = sqlSession.selectOne("user.findByNaverId", naverId);
+        return user;
+    }
+
     private void insertNaverUser(UserDTO userDTO) {
         try {
-            System.out.println("Inserting Naver user: " + userDTO);
             int result = sqlSession.insert("user.insertNaverUser", userDTO);
-            System.out.println("Insert result: " + result);
         } catch (Exception e) {
-            System.err.println("Error inserting Naver user: " + e.getMessage());
             e.printStackTrace();
             throw e;
         }
@@ -143,11 +142,8 @@ public class UserDAO {
 
     private void updateNaverUser(UserDTO userDTO) {
         try {
-            System.out.println("Updating Naver user: " + userDTO);
             int result = sqlSession.update("user.updateNaverUser", userDTO);
-            System.out.println("Update result: " + result);
         } catch (Exception e) {
-            System.err.println("Error updating Naver user: " + e.getMessage());
             e.printStackTrace();
             throw e;
         }
@@ -156,6 +152,14 @@ public class UserDAO {
     public boolean isUserIdExists(String userId) {
         Integer count = sqlSession.selectOne("user.countByUserId", userId);
         return count != null && count > 0;
+    }
+    
+    public void insertKakaoUser(UserDTO user) {
+        sqlSession.insert("user.insertKakaoUser", user);
+    }
+
+    public UserDTO getUserByUserId(String userId) {
+        return sqlSession.selectOne("user.getUserByUserId", userId);
     }
     
     
