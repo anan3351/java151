@@ -90,5 +90,32 @@ public class UserDAO {
             throw e;
         }
     }
+    
+    public UserDTO findByEmail(String email) {
+        return sqlSession.selectOne("user.findByEmail", email);
+    }
+
+    public void insertNaverUser(UserDTO userDTO) {
+        sqlSession.insert("user.insertNaverUser", userDTO);
+    }
+
+    public void updateNaverUser(UserDTO userDTO) {
+        sqlSession.update("user.updateNaverUser", userDTO);
+    }
+
+    public UserDTO saveOrUpdateNaverUser(UserDTO userDTO) {
+        UserDTO existingUser = findByEmail(userDTO.getEmail());
+        if (existingUser != null) {
+            // 기존 사용자 정보 업데이트
+            updateNaverUser(userDTO);
+            return findByEmail(userDTO.getEmail());
+        } else {
+            // 새 사용자 등록
+            insertNaverUser(userDTO);
+            return findByEmail(userDTO.getEmail());
+        }
+    }
+    
+    
 }//class end
 
