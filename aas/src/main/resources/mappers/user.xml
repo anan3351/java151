@@ -51,6 +51,10 @@
     <update id="updatePassword" parameterType="map">
     UPDATE aas.tb_user SET pwd = #{pwd} WHERE user_id = #{userId}
 	</update>
+	
+	<delete id="deleteUser" parameterType="string">
+    DELETE FROM aas.tb_user WHERE user_id = #{user_id}
+	</delete>
 
 
     
