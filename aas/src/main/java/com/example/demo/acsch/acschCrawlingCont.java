@@ -10,12 +10,8 @@ import java.util.List;
 public class acschCrawlingCont {
 
     @Autowired
-    private  acschCrawiling acschCrawiling;
+    private acschCrawiling acschCrawiling;
 
-    @GetMapping("/showTitle")
-    public String getShowTitle() {
-        return acschCrawiling.getShowTitle();
-    }
 
     @GetMapping("/showSchedule")
     public List<String> getShowSchedule() {
