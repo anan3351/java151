@@ -31,9 +31,8 @@
                 <div class="menu-section">
                     <div class="menu-title">공연</div>
                     <ul class="menu-items">
-                        <li><a href="/seller/list">공연 관리</a></li>
+                    <li><a href="/seller/list">공연 목록</a></li>
                     <li><a href="/seller/create">공연 등록</a></li>
-                    <li><a href="/seller/discount">공연할인 관리</a></li>
                     </ul>
                 </div>
                 <div class="menu-section">
@@ -53,53 +52,78 @@
             </div>
 
             <main>
-			<!-- 본문 영역 -->
+				<!-- 본문 영역 -->
                 <br>
 	            <div style="font-size: 20px; font-weight: bold; text-align: center;">
-	                공연 등록
+	                공연 목록
 	            </div><br>
-		        
-		        <div class="row">
-		        	<div class="col-sm-12">
-		        		<!-- 검색 -->
-		        		<form method="get" action="search">
-		        			상품명 : <input type="text" name="product_name" value="${product_name}"> <!-- 검색어를 value로 가져감 -->
-		        				   <input type="submit" value="검색" class="btn btn-secondary" style="background-color: white; color:black;">
-		        		</form>
-		        	</div> <!-- col end -->
-		        </div> <!-- row end -->
-		        
-		        <!-- c:choose : 다중조건문 -->
-		        <div class="row">
-		            <c:forEach items="${list}" var="row" varStatus="vs"> <!-- ProductDTO -> list() -> addObject("list", productDao.list()) 의 list를 가리킴 -->
-		                <div class="col-sm-4 col-md-4">
-		                    <c:choose>
-		                        <c:when test="${row.FILENAME != '-'}">
-		                        	<a href="detail/${row.PRODUCT_CODE}">
-			                            <img src="/storage/${row.FILENAME}" class="img-responsive margin" style="width:100%">
-			                        </a>
-		                        </c:when>
-		                        <c:otherwise>
-		                            등록된 사진 없음! <br>
-		                        </c:otherwise>
-		                    </c:choose>
-		                    <br>
-		                    <%-- 상품명 : <a href="detail?product_code=${row.PRODUCT_CODE}">${row.PRODUCT_NAME}</a><br> --%>
-		                    
-		                    <%-- RESTful Web Service 방식 --%>
-		                    상품명 : <a href="detail/${row.PRODUCT_CODE}">${row.PRODUCT_NAME}</a><br>
-		                    상품가격 : <fmt:formatNumber value="${row.PRICE}" pattern="#,###"/>
-		                    
-		                    <!-- 한줄에 3칸씩 출력 -->        
-			                <c:if test="${vs.count mod 3==0}">
-			            		</div> <!-- row end -->
-			            		<div style="height: 50px;"></div>
-			            		<div class="row">
-			            	</c:if>
-			            </div>
-		            </c:forEach>
-		        </div>
-		        <!-- 본문 끝 -->
+<div class="table-wrap">
+      <table class="table table-hover">
+          <thead>
+          <tr>
+              <th>공연ID</th>
+              <th>제목</th>
+              <th>장르</th>
+              <th>공연장</th>
+              <th>공연기간</th>
+              <th>상태</th>
+          </tr>
+          </thead>
+          <tbody>
+          <c:forEach var="hall" items="${ulist.content}">
+              <tr>
+                  <td>
+                  <a href="detail/${hall.hall_id}"> ${hall.hname} </a>
+                  </td>
+                  <td>${hall.addr}</td>
+                  <td><a href="${hall.url}" target="_blank">${hall.url}</a></td>
+                  <td>${hall.seat}</td>
+                  <td>${hall.h_call}</td>
+                  <td>${hall.h_code}</td>
+              </tr>
+          </c:forEach>
+          </tbody>
+      </table>
+
+
+    <!-- 페이징 시작 -->
+    <div class="text-xs-center">
+      <ul class="pagination justify-content-center">
+          <!-- 이전 -->
+          <c:choose>
+              <c:when test="${ulist.first}"></c:when>
+              <c:otherwise>
+                  <li class="page-item"><a class="page-link" href="${basePath}/hall/list?field=${field}&word=${word}&page=0">처음</a></li>
+                  <li class="page-item"><a class="page-link" href="${basePath}/hall/list?field=${field}&word=${word}&page=${ulist.number - 1}">&larr;</a></li>
+              </c:otherwise>
+          </c:choose>
+  
+          <!-- 페이지 그룹 -->
+          <c:forEach begin="${startBlockPage}" end="${endBlockPage}" var="i">
+              <c:choose>
+                  <c:when test="${ulist.pageable.pageNumber + 1 == i}">
+                      <li class="page-item disabled"><a class="page-link" href="${basePath}/hall/list?field=${field}&word=${word}&page=${i - 1}">${i}</a></li>
+                  </c:when>
+                  <c:otherwise>
+                      <li class="page-item"><a class="page-link" href="${basePath}/hall/list?field=${field}&word=${word}&page=${i - 1}">${i}</a></li>
+                  </c:otherwise>
+              </c:choose>
+          </c:forEach>
+  
+          <!-- 다음 -->
+          <c:choose>
+              <c:when test="${ulist.last}"></c:when>
+              <c:otherwise>
+                  <li class="page-item"><a class="page-link" href="${basePath}/hall/list?field=${field}&word=${word}&page=${ulist.number + 1}">&rarr;</a></li>
+                  <li class="page-item"><a class="page-link" href="${basePath}/hall/list?field=${field}&word=${word}&page=${ulist.totalPages - 1}">마지막</a></li>
+              </c:otherwise>
+          </c:choose>
+      </ul>
+  </div>
+      <!-- 페이징 끝 -->
+    </div>
+				
+		       	<!-- 본문 끝 -->
             </main>
         </div>
         <%@ include file="../footer.jsp" %>
