@@ -559,7 +559,7 @@ footer {
             </ul>
         </div>
         <div class="menu-section">
-            <div class="menu-title"><a href="#">멤버십</a></div>
+            <div class="menu-title"><a href="${pageContext.request.contextPath}/user/mypage/membership?user_id=${sessionScope.loggedInUser.user_id}">멤버십</a></div>
         </div>
         <div class="menu-section">
             <div class="menu-title"><a href="#">보유쿠폰</a></div>

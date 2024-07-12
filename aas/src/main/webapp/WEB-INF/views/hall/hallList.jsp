@@ -29,6 +29,32 @@
 
 </style>
 
+
+<script>
+function checkLogin() {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: '/user/checkLoginStatus',
+            type: 'GET',
+            success: function(response) {
+                if (response.isLoggedIn) {
+                    resolve(true);  // 로그인 되어 있음
+                } else {
+                    alert("로그인이 필요한 서비스입니다.");
+                    // 현재 페이지 URL을 저장
+                    sessionStorage.setItem('redirectAfterLogin', '/hall/list');
+                    window.location.href = '/user/login';  // 로그인 페이지로 리다이렉트
+                    resolve(false);  // 로그인 되어 있지 않음
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('로그인 상태 확인 중 오류 발생:', error);
+                reject(error);
+            }
+        });
+    });
+}
+</script>
 </head>
 <body>
 	<%@ include file="../header.jsp" %>
@@ -67,7 +93,7 @@
           <c:forEach var="hall" items="${ulist.content}">
               <tr>
                   <td>
-                  <a href="detail/${hall.hall_id}"> ${hall.hname} </a>
+                  <a href="detail/${hall.hall_id}" onclick="return checkLogin()"> ${hall.hname} </a>
                   </td>
                   <td>${hall.addr}</td>
                   <td><a href="${hall.url}" target="_blank">${hall.url}</a></td>

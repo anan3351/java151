@@ -39,8 +39,8 @@
             <div class="main-container">
               <!-- 본문시작 -->
               <div class="page-wrap">
-                <button type="button" class="btn btn-info"
-                  style="background-color: #be9ed8; border-color: #be9ed8;" onclick="location.href='<c:url value="/hall/list"/>'">목록으로</button>
+                <button type="button" class="btn btn-info" style="background-color: #be9ed8; border-color: #be9ed8;"
+                  onclick="location.href='<c:url value=" /hall/list" />'">목록으로</button>
 
                 <div class="detail-wrap">
                   <div class="left-area">
@@ -100,7 +100,7 @@
 
                     </div>
                     <div class="btn-area">
-                      <button type="button" class="btn btn-booking">예약하기</button>
+                      <button type="button" class="btn btn-booking" onclick="submitOrder()">예약하기</button>
                       <button type="button" class="btn btn-bookmark">찜하기</button>
                     </div>
                   </div>
@@ -154,6 +154,8 @@
               document.addEventListener('DOMContentLoaded', function () {
                 console.log("DOMContentLoaded event fired");
 
+                //const user_id = "${user_id}";
+                //const hall_id = ${hall_id};
                 const calendar = document.getElementById('calendar');
                 //const selectDateBtn = document.getElementById('select-date-btn');
                 const selectedDateDisplay = document.getElementById('selected-date-display');
@@ -245,7 +247,7 @@
                   }
 
                   highlightSelectedRange();
-                }
+                }// END renderCalendar
 
                 function highlightSelectedRange() {
                   if (!selectedStartDate || !selectedEndDate) return;
@@ -272,7 +274,7 @@
                       cell.classList.remove('selected');
                     }
                   });
-                }
+                }// END highlightSelectedRange
 
 
 
@@ -296,7 +298,7 @@
                     selectedDateDisplay.textContent = '';
                     selectedDateDisplay2.textContent = '';
                   }
-                }
+                }//END updateSelectedDateDisplay
 
 
 
@@ -309,7 +311,7 @@
                   }
                   //console.log("Previous month button clicked: " + currentYear + "-" + currentMonth);
                   renderCalendar(currentYear, currentMonth);
-                });
+                }); //END addEventListener
 
                 nextMonthBtn.addEventListener('click', function () {
                   if (currentMonth === 11) {
@@ -320,8 +322,7 @@
                   }
                   //console.log("Next month button clicked: " + currentYear + "-" + currentMonth);
                   renderCalendar(currentYear, currentMonth);
-                });
-
+                }); //END addEventListener
 
 
                 document.querySelectorAll('.clickable').forEach(function (item) {
@@ -342,7 +343,7 @@
                     document.getElementById('selected-hall').textContent = miniHall;
 
                   });
-                });
+                });// END querySelectorAll
 
 
                 function calculateDiscountedPrice(hDay, totalDays) {
@@ -360,7 +361,7 @@
                     discountRate = 2;
                   }
                   return hDay * (1 - discountRate / 100) * totalDays;
-                }
+                }//END calculateDiscountedPrice
 
 
 
@@ -382,14 +383,48 @@
                   });
                 }); //END 공연관선택컬러
 
-
                 renderCalendar(currentYear, currentMonth);
-
+             
               });// END addEventListener
+              
 
+                function submitOrder() {
+                	var userId = "${loggedInUser}";
+                
+                const selectedDate = document.getElementById('selected-date-display').textContent;
+                const selectedHall = document.getElementById('selected-hall').textContent;
+                const totalPrice = document.getElementById('price-per-day').textContent;
+                const totalDate = document.getElementById('selected-date-display2').textContent;
 
+                if (!selectedDate || selectedDate.trim() === '' || !selectedHall || selectedHall.trim() === '' || !totalPrice == 0) {
+                  alert('시작날짜와 종료날짜, 공연관을 모두 선택해주세요');
+                } else {
+
+                  var data = {
+                    start_date: selectedDate,  //대관일
+                    end_date: totalDate,      //총대관일
+                    price: totalPrice,         //총금액
+                    user_id: userId,  // 로그인한 사용자의 ID 포함
+                    miniHall: selectedHall  //공연관이름
+                  };
+
+                  $.ajax({
+                    url: '/hall/order',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    success: function (response) {
+                      window.location.href = '/hallOrder';
+                    },
+                    error: function (xhr, status, error) {
+                      console.error('Error:', error);
+                    }
+                  });
+                }
+              }//END submitOrder
 
             </script>
+
 
 
 
