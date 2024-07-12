@@ -1,7 +1,9 @@
 package com.example.demo.user;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -74,7 +76,22 @@ public class UserCont {
 	        }
 	        return "user/mypage";
 	    }
-
+		
+		
+		//멤버십 페이지 연결
+		@GetMapping("/mypage/membership")
+	    public ModelAndView membershipMypage(@RequestParam("user_id") String user_Id, HttpSession session, Model model) {
+	        UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+	        ModelAndView mav = new ModelAndView();
+	       
+	        if (loggedInUser != null) {
+	            UserDTO userInfo = userDao.getUserById(loggedInUser.getUser_id());
+	            model.addAttribute("userInfo", userInfo);
+	        }
+	        mav.addObject("user_id", user_Id);
+	        mav.setViewName("membership/membership");	
+			return mav;
+	    }
 		
 		
 		
@@ -156,6 +173,7 @@ public class UserCont {
 		                cookie.setPath("/");
 		                response.addCookie(cookie);
 		            }
+		            
 		            return "redirect:/";  // 메인 페이지로 리다이렉트
 		        } else {
 		            // 로그인 실패
@@ -259,6 +277,19 @@ public class UserCont {
 	    }//sellerPage() end
 		
 		
+	    @GetMapping("/checkLoginStatus")
+	    @ResponseBody
+	    public ResponseEntity<Map<String, Boolean>> checkLoginStatus(HttpSession session) {
+	        UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+	        
+	        Map<String, Boolean> response = new HashMap<>();
+	        response.put("isLoggedIn", loggedInUser != null);
+	        
+	        return ResponseEntity.ok(response);
+	    }//End 로그인 상태 확인을 위한 함수
+	    
+	    
+	    
 		
 }//class end
 	

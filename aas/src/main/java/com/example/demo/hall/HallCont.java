@@ -14,9 +14,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.example.demo.user.UserDTO;
+
+import jakarta.servlet.http.HttpSession;
 
 
 @Controller
@@ -26,7 +33,9 @@ public class HallCont {
 	public HallCont() {
 		System.out.println("----------HallCont 객체생성완료");
 	}
-
+	
+	private UserDTO userDto;
+	
     @Autowired
     private HallDAO hallDao;
     
@@ -51,20 +60,27 @@ public class HallCont {
         return mav;
     }//list() end*/
     
-	@GetMapping("/template.do")
- 	public ModelAndView bbsForm() {
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("hall/template");  
-		return mav;
-	}//bbsForm
     
-    
+    @PostMapping("/hall/order")
+    @ResponseBody
+    public String orderHall(@RequestBody HallOrderDTO request) {
+        HallOrderService hallOrderService = new HallOrderService();
+		hallOrderService.saveOrder(request);
+        return "success";
+    }
 
-    //2) 요청값(Query String) 전달기호로 / 사용한 경우 
+   
     //http://localhost:9095/list/detail/25
     @GetMapping("/detail/{hall_id}")
-    public ModelAndView detail(@PathVariable String hall_id) {
+    public ModelAndView detail(@PathVariable String hall_id, HttpSession session, Model model) {
     //public ModelAndView detail(@PathVariable("product_code") int product_code) { 위의 코드가 에러나는 경우 
+    	
+    	UserDTO loggedInUser  = (UserDTO) session.getAttribute("loggedInUser");
+        if (loggedInUser  == null) {
+            return new ModelAndView("redirect:/login");  // 로그인 페이지로 리다이렉트
+        }
+        model.addAttribute("loggedInUser", loggedInUser);
+    	
     	
     	ModelAndView mav=new ModelAndView();
         mav.setViewName("hall/hallListDetail"); //파일위치
@@ -75,9 +91,12 @@ public class HallCont {
         mav.addObject("hall", list.isEmpty() ? null : list.get(0));
         mav.addObject("list", list);
         mav.addObject("list2", list2);
+        mav.addObject("user_id", loggedInUser.getUser_id()); // 사용자 ID 추가
         
         return mav;
     }//detail() end
+    
+   
     
     
     
