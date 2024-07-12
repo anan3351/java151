@@ -28,7 +28,7 @@
                 </c:when>
                 <c:otherwise>
                     <a href="${pageContext.request.contextPath}/user/login">로그인</a> |
-                    <a href="${pageContext.request.contextPath}/user/join">회원가입</a> |
+                    <a href="${pageContext.request.contextPath}/user/agreement">회원가입</a> |
                     <a href="${pageContext.request.contextPath}/user/login" onclick="alert('로그인이 필요한 서비스입니다.');">마이페이지</a>
                 </c:otherwise>
             </c:choose>

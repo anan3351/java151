@@ -116,9 +116,6 @@
             <a href="agreement" class="btn-link">
                 <button class="btn btn-primary">개인 회원가입</button>
             </a>
-            <button class="btn btn-naver">네이버로 가입</button>
-            <button class="btn btn-kakao">카카오로 가입</button>
-            <p class="small-text">SNS계정 회원가입(만 14세 이상 가능)</p>
         </div>
     </div>
     <%@ include file="../footer.jsp" %>

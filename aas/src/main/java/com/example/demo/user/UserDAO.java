@@ -90,5 +90,78 @@ public class UserDAO {
             throw e;
         }
     }
+    
+    
+
+    
+    
+    public UserDTO findByUserId(String userId) {
+        try {
+            System.out.println("Searching for user with ID: " + userId);
+            UserDTO user = sqlSession.selectOne("user.findByUserId", userId);
+            System.out.println("Found user: " + user);
+            return user;
+        } catch (Exception e) {
+            System.err.println("Error in findByUserId: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public UserDTO saveOrUpdateNaverUser(UserDTO userDTO) {
+        try {
+            // 네이버 ID로 사용자 찾기
+            UserDTO existingUser = findByNaverId(userDTO.getUser_id());
+            if (existingUser == null) {
+                insertNaverUser(userDTO);
+                return findByNaverId(userDTO.getUser_id());
+            } else {
+                updateNaverUser(userDTO);
+                return findByNaverId(userDTO.getUser_id());
+            }
+        } catch (Exception e) {
+            System.err.println("Error in saveOrUpdateNaverUser: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("Failed to save or update user: " + e.getMessage(), e);
+        }
+    }
+
+    public UserDTO findByNaverId(String naverId) {
+        UserDTO user = sqlSession.selectOne("user.findByNaverId", naverId);
+        return user;
+    }
+
+    private void insertNaverUser(UserDTO userDTO) {
+        try {
+            int result = sqlSession.insert("user.insertNaverUser", userDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    private void updateNaverUser(UserDTO userDTO) {
+        try {
+            int result = sqlSession.update("user.updateNaverUser", userDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+    
+    public boolean isUserIdExists(String userId) {
+        Integer count = sqlSession.selectOne("user.countByUserId", userId);
+        return count != null && count > 0;
+    }
+    
+    public void insertKakaoUser(UserDTO user) {
+        sqlSession.insert("user.insertKakaoUser", user);
+    }
+
+    public UserDTO getUserByUserId(String userId) {
+        return sqlSession.selectOne("user.getUserByUserId", userId);
+    }
+    
+    
 }//class end
 
