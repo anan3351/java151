@@ -18,19 +18,6 @@
 	    <link rel="stylesheet" href="/css/template.css">
 	    <link rel="stylesheet" href="/css/seller.css">
 	    <script src="/js/seller.js"></script>
-	    
-	    
-	    <script>
-		    function blankCheck() {
-				let id = document.getElementById("h_name").value.trim();
-				if(id.length<1){
-					alert("두 글자 이상 입력해주세요.");
-					return false;
-				}
-				return true;
-			} // blankCheck() end
-	    </script>
-	
 	    <title>seller Page</title>
 	</head>
 	<body>

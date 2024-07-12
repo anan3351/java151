@@ -8,6 +8,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;  // 올바른 Model 인터페이스 임포트
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.example.demo.hall.HallEntity;
 import com.example.demo.show.ShowDAO;
 import com.example.demo.user.UserDAO;
 import com.example.demo.user.UserDTO;
@@ -123,31 +128,72 @@ public class SellerCont {
     
     // 공연장 검색  
     @GetMapping("/hallList")
-    @ResponseBody
-    public String hall_return(@RequestParam(defaultValue = "") String h_name) {
-        List<Map<String, Object>> list = showDao.hall_search(h_name);
-        StringBuilder html = new StringBuilder();
-        html.append("<table class='table'>");
-        html.append("<thead><tr><th>선택</th><th>공연장ID</th><th>공연장명</th><th>세부관</th><th>주소</th></tr></thead>");
-        html.append("<tbody>");
-        for (Map<String, Object> hall : list) {
-            html.append("<tr>");
-            html.append("<td><input type='radio' name='selected_hall' value='" + hall.get("hall_id") + "'></td>");
-            html.append("<td>" + hall.get("hall_id") + "</td>");
-            html.append("<td>" + hall.get("h_name") + "</td>");
-            if (hall.get("miniHall") != null) {
-            	html.append("<td>" + hall.get("miniHall") + "</td>");
-            } else {
-            	html.append("<td>" + " " + "</td>");
-            }
-            html.append("<td>" + hall.get("addr") + "</td>");
-            html.append("</tr>");
-        }
-        html.append("</tbody></table>");
-        html.append("<button onclick='selectHall()' class='btn btn-primary'>선택</button>");
-        return html.toString();
+    public String hall_return(@RequestParam(defaultValue = "") String h_name,
+                              @RequestParam(defaultValue = "1") int page,
+                              Model model) {
+        int pageSize = 5; // 페이지당 항목 수
+        List<Map<String, Object>> list = showDao.hall_search(h_name, (page - 1) * pageSize, pageSize);
+        int totalCount = showDao.hall_search_count(h_name);
+        int totalPages = (int) Math.ceil((double) totalCount / pageSize);
+
+        model.addAttribute("list", list);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("page", page);
+
+        return "seller/hallList";
     }
 
+    /*
+    @GetMapping("/list")
+    public String hallList(@PageableDefault(size = 5) Pageable pageable,
+                           @RequestParam(defaultValue = "") String h_name, Model model) {
+
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int offset = currentPage * pageSize;
+
+        List<HallEntity> halls;
+        int totalElements;
+
+        if (!word.isEmpty()) {
+            if (field.equals("hname")) {
+                halls = hallRepository.findByHnameContainingWithoutDash(word, pageSize, offset);
+                totalElements = hallRepository.countByHnameContainingWithoutDash(word);
+            } else if (field.equals("addr")) {
+                halls = hallRepository.findByAddrContainingWithoutDash(word, pageSize, offset);
+                totalElements = hallRepository.countByAddrContainingWithoutDash(word);
+            } else {
+                halls = hallRepository.findByHallIdWithoutDash(pageSize, offset);
+                totalElements = hallRepository.countByHallIdWithoutDash();
+            }
+        } else {
+            halls = hallRepository.findByHallIdWithoutDash(pageSize, offset);
+            totalElements = hallRepository.countByHallIdWithoutDash();
+            //halls = hallRepository.findHallsWithMiniHallNotNull(pageSize, offset);
+        }
+        
+
+        Page<HallEntity> ulist = new PageImpl<>(halls, pageable, totalElements);
+
+        int pageNumber = ulist.getPageable().getPageNumber(); //현재페이지
+        int totalPages = ulist.getTotalPages();  //총 페이지 수. 검색에따라 10개면 10개..
+        int pageBlock = 10; //블럭의 수 1, 2, 3, 4, 5
+        int startBlockPage = ((pageNumber) / pageBlock) * pageBlock + 1; //현재 페이지가 7이라면 1*5
+        int endBlockPage = startBlockPage + pageBlock - 1; //6+5-1=10. 6,7,8,9,10해서 10.
+        endBlockPage = totalPages < endBlockPage ? totalPages : endBlockPage;
+
+        model.addAttribute("startBlockPage", startBlockPage);
+        model.addAttribute("endBlockPage", endBlockPage);
+        model.addAttribute("ulist", ulist);
+        model.addAttribute("field", field);
+        model.addAttribute("word", word);
+        
+        return "hall/hallList";
+    }*/
+    
+    
+    
+    
 
     
     @GetMapping("/list")
@@ -157,12 +203,14 @@ public class SellerCont {
             model.addAttribute("userInfo", loggedInUser);
             
             ModelAndView mav = new ModelAndView();
-    	    mav.setViewName("product/list");
+    	    mav.setViewName("show/list");
     	    mav.addObject("list", showDao.list());
     	    return mav;
         } else return null;
     }
     
+    
+
     
 
     @GetMapping("/discount")
@@ -175,4 +223,32 @@ public class SellerCont {
             return "redirect:/user/login";
         }
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
