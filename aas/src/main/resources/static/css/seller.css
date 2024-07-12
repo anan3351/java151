@@ -42,23 +42,53 @@ tr {
 
 .modal-content {
     background-color: #fefefe;
-    margin: 15% auto;
+    margin: 6% auto; /* 상단 여백을 줄임 */
     padding: 20px;
     border: 1px solid #888;
-    width: 50%;
-    max-width: 500px;
+    width: 80%; /* 너비를 80%로 증가 */
+    max-width: 900px; /* 최대 너비를 800px로 증가 */
     border-radius: 5px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
-/*
-.modal-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 600px;
-}*/
+
+.modal-content table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.modal-content th,
+.modal-content td {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+
+/* 페이징 스타일 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+    border: 1px solid #ddd;
+    margin: 0 4px;
+}
+
+.pagination a.active {
+    background-color: #4CAF50;
+    color: white;
+    border: 1px solid #4CAF50;
+}
+
+.pagination a:hover:not(.active) {
+    background-color: #ddd;
+}
 
 
 .modal-content h3 {

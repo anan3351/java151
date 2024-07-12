@@ -1,59 +1,92 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // 공연 등록 모달
 function hallSearch() {
-	let modal = document.getElementById('hallSearchModal');
-	if (!modal) {
-		modal = document.createElement('div');
-		modal.id = 'hallSearchModal';
-		modal.className = 'modal';
-		document.body.appendChild(modal);
-	}
+    let modal = document.getElementById('hallSearchModal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'hallSearchModal';
+        modal.className = 'modal';
+        document.body.appendChild(modal);
+    }
 
-	let modalContent = document.createElement('div');
-	modalContent.className = 'modal-content';
-	modal.innerHTML = '';
-	modal.appendChild(modalContent);
+    let modalContent = document.createElement('div');
+    modalContent.className = 'modal-content';
+    modal.innerHTML = '';
+    modal.appendChild(modalContent);
 
-	// 초기 검색 폼 로드
-	fetch('/seller/hallSearch')
-		.then(response => response.text())
-		.then(data => {
-			modalContent.innerHTML = data;
-			modal.style.display = 'block';
-		})
-		.catch(error => {
-			console.error('오류 발생:', error);
-			modalContent.innerHTML = '<p>오류가 발생했습니다: ' + error.message + '</p>';
-			modal.style.display = 'block';
-		});
+    // 초기 검색 폼 로드
+    fetch('/seller/hallSearch')
+        .then(response => response.text())
+        .then(data => {
+            modalContent.innerHTML = data;
+            modal.style.display = 'block';
+        })
+        .catch(error => {
+            console.error('오류 발생:', error);
+            modalContent.innerHTML = '<p>오류가 발생했습니다: ' + error.message + '</p>';
+            modal.style.display = 'block';
+        });
 }
 
 function performSearch() {
-	let h_name = document.getElementById('h_name').value;
-	fetch('/seller/hallList?h_name=' + encodeURIComponent(h_name))
-		.then(response => response.text())
-		.then(data => {
-			document.querySelector('.modal-body').innerHTML = data;
-		})
-		.catch(error => {
-			console.error('검색 오류:', error);
-		});
-	return false; // 폼 제출 방지
+    let h_name = document.getElementById("h_name").value;
+    let page = 1; // 초기 페이지
+    loadSearchResults(h_name, page);
+    return false;
 }
+
+function loadSearchResults(h_name, page) {
+    fetch(`/seller/hallList?h_name=${encodeURIComponent(h_name)}&page=${page}`)
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('searchResults').innerHTML = data;
+            setupPagination();
+        })
+        .catch(error => {
+            console.error('오류 발생:', error);
+        });
+}
+
+function setupPagination() {
+    document.querySelectorAll('.pagination a').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            let h_name = document.getElementById("h_name").value;
+            let page = this.getAttribute('data-page');
+            loadSearchResults(h_name, page);
+        });
+    });
+}
+
 
 function selectHall() {
-	let selectedRadio = document.querySelector('input[name="selected_hall"]:checked');
-	if (selectedRadio) {
-		let hallId = selectedRadio.value;
-		let hallName = selectedRadio.parentElement.nextElementSibling.nextElementSibling.textContent;
-		document.querySelector('input[name="hall_id"]').value = hallId;
-		document.querySelector('input[name="hall_name"]').value = hallName;
-		closeModal();
-	} else {
-		alert('공연장을 선택해주세요.');
-	}
+    let selectedRadio = document.querySelector('input[name="selected_hall"]:checked');
+    if (selectedRadio) {
+        let hallId = selectedRadio.value;
+        let hallName = selectedRadio.parentElement.nextElementSibling.nextElementSibling.textContent;
+        
+        window.parent.document.querySelector('input[name="hall_id"]').value = hallId;
+        window.parent.closeModal();
+    } else {
+        alert("공연장을 선택해 주세요.");
+    }
 }
 
+function closeModal() {
+    let modal = document.getElementById('hallSearchModal');
+    if (modal) {
+        modal.style.display = 'none';
+    } else {
+        let parentModal = window.parent.document.getElementById('hallSearchModal');
+        if (parentModal) {
+            parentModal.style.display = 'none';
+        }
+    }
+    let iframe = document.querySelector('iframe');
+    if (iframe) {
+        iframe.parentNode.removeChild(iframe);
+    }
+}
 
 // 모달 외부 클릭 시 닫기
 window.onclick = function(event) {
@@ -63,15 +96,6 @@ window.onclick = function(event) {
 	}
 }
 
-// 모달 닫기 함수
-function closeModal() {
-	let modal = document.getElementById('hallSearchModal');
-	if (modal) {
-		console.log('Closing modal');
-		modal.style.display = 'none';
-		document.body.removeChild(modal);
-	}
-}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 

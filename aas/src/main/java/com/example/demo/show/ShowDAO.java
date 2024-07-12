@@ -26,10 +26,19 @@ public class ShowDAO {
     }
 	
 	// 공연장 검색
-	public List<Map<String, Object>> hall_search(String h_name) {
-		return sqlSession.selectList("show.hallsearch", "%" + h_name + "%");
+	public List<Map<String, Object>> hall_search(String h_name, int offset, int limit) {
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("h_name", "%" + h_name + "%");
+	    params.put("offset", offset);
+	    params.put("limit", limit);
+	    return sqlSession.selectList("show.hallsearch", params);
 	}
-	
+
+	public int hall_search_count(String h_name) {
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("h_name", "%" + h_name + "%");
+	    return sqlSession.selectOne("show.hallsearchCount", params);
+	}
 	
 	// show_id 네이밍
 	public String showid_make() {
@@ -61,6 +70,6 @@ public class ShowDAO {
 	
 	// 목록 조회
 	public List<HashMap<String, Object>> list() {
-        return sqlSession.selectList("show.list");
+        return sqlSession.selectList("show.showlist");
     }
 }
