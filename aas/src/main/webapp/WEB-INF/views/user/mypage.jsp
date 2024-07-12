@@ -519,7 +519,7 @@
                   }
                 }
 
-                modal {
+                .modal {
                   display: none;
                   position: fixed;
                   z-index: 1000;
@@ -623,6 +623,28 @@
                   }
                 }
               </style>
+
+              <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                  var modal = document.getElementById("rankModal");
+                  var btn = document.querySelector(".rank-btn");
+                  var span = document.getElementsByClassName("close")[0];
+
+                  btn.onclick = function () {
+                    modal.style.display = "block";
+                  }
+
+                  span.onclick = function () {
+                    modal.style.display = "none";
+                  }
+
+                  window.onclick = function (event) {
+                    if (event.target == modal) {
+                      modal.style.display = "none";
+                    }
+                  }
+                });
+              </script>
         </head>
 
         <body>
@@ -706,6 +728,44 @@
                     <div class="icon">🔚</div>
                     <p>회원탈퇴</p>
                   </button>
+                </div>
+                <div id="rankModal" class="modal">
+                  <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2>등급별 혜택</h2>
+                    <table>
+                      <tr>
+                        <th>등급</th>
+                        <th>주문 건수</th>
+                        <th>주문금액</th>
+                        <th>포인트 적립</th>
+                      </tr>
+                      <tr>
+                        <td>WELCOME</td>
+                        <td>0건</td>
+                        <td>신규회원</td>
+                        <td>-</td>
+                      </tr>
+                      <tr>
+                        <td>FAMILY</td>
+                        <td>1건 ↑</td>
+                        <td>3만원 ↑</td>
+                        <td>-</td>
+                      </tr>
+                      <tr>
+                        <td>VIP</td>
+                        <td>3건 ↑</td>
+                        <td>30만원 ↑</td>
+                        <td>1프로</td>
+                      </tr>
+                      <tr>
+                        <td>VVIP</td>
+                        <td>20건 ↑</td>
+                        <td>100만원 ↑</td>
+                        <td>3프로</td>
+                      </tr>
+                    </table>
+                  </div>
                 </div>
               </main>
             </div>
