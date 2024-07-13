@@ -61,13 +61,14 @@ public class HallCont {
     }//list() end*/
     
     
-    @PostMapping("/hall/order")
-    @ResponseBody
-    public String orderHall(@RequestBody HallOrderDTO request) {
-        HallOrderService hallOrderService = new HallOrderService();
-		hallOrderService.saveOrder(request);
-        return "success";
-    }
+	
+	/*
+	 * @PostMapping("/hall/order")
+	 * 
+	 * @ResponseBody public String orderHall(@RequestBody HallOrderDTO request) {
+	 * HallOrderService hallOrderService = new HallOrderService();
+	 * hallOrderService.saveOrder(request); return "success"; }
+	 */
 
    
     //http://localhost:9095/list/detail/25

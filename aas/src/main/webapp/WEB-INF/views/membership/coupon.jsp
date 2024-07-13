@@ -672,79 +672,6 @@
                       modal.style.display = "none";
                     }
                   }
-
-                  var selectedAmount = 0;
-
-                  // 라디오 버튼 선택 시 금액 업데이트
-                  $('input[name="membership"]').on('change', function () {
-                    selectedMember = $(this).closest('tr').find('td').eq(1).text().replace(',', '')
-                    selectedAmount = $(this).closest('tr').find('td').eq(4).text().replace(',', '').replace('원', '');
-                    selectedAmount = parseInt(selectedAmount, 10); // 문자열을 숫자로 변환
-                    console.log('Selected amount:', selectedAmount);
-                  });
-
-                  // Payment request script
-                  $("#check_order").click(function () {
-                    if (selectedAmount <= 0) {
-                      alert('멤버십을 선택해주세요.');
-                      return;
-                    }
-
-                    IMP.init('imp81610215');
-                    IMP.request_pay({
-                      pg: 'html5_inicis',
-                      pay_method: 'card',
-                      merchant_uid: "order_no_0001", // 상점에서 관리하는 주문 번호를 전달
-                      name: '주문명:결제테스트',
-                      amount: selectedAmount, // 결제금액
-                      //limitDate : selectedLimitDate, // 멤버십 유지기간
-                      //userPoint: selectedUserPoint,  // 회원 포인트 추가
-                      //revCoiunt: selectedrevCount,   // 예매대기 횟수
-                      membership : selectedMember,   // 멤버십 이름
-                      m_redirect_url: '{모바일에서 결제 완료 후 리디렉션 될 URL}' // 예: https://www.my-service.com/payments/complete/mobile
-                    }, function (rsp) { // callback 로직
-                      if (rsp.success) {
-                        // 서버단에서 결제정보 조회를 위해 Fetch API로 imp_uid 전달하기
-                        fetch("/payments/complete", {
-                          method: 'POST',
-                          headers: {
-                            'Content-Type': 'application/json'
-                          },
-                          body: JSON.stringify({
-                            imp_uid: rsp.imp_uid,
-                            membership : selectedMember
-                            // 기타 필요한 데이터가 있으면 추가 전달
-                          })
-                        })
-                          .then(response => response.json())
-                          .then(data => {
-                            // 서버에서 REST API로 결제정보확인 및 서비스루틴이 정상적인 경우
-                            if (data.everythings_fine) {
-                              var msg = '결제가 완료되었습니다.';
-                              msg += '\n고유ID : ' + rsp.imp_uid;
-                              msg += '\n상점 거래ID : ' + rsp.merchant_uid;
-                              msg += '\n결제 금액 : ' + rsp.paid_amount;
-                              msg += '카드 승인번호 : ' + rsp.apply_num;
-
-                              alert(msg);
-                            } else {
-                              // 아직 제대로 결제가 되지 않았습니다.
-                              // 결제된 금액이 요청한 금액과 달라 결제를 자동취소처리하였습니다.
-                              alert('결제 정보가 확인되지 않았습니다. 다시 시도해 주세요.');
-                            }
-                          })
-                          .catch(error => {
-                            console.error('Error:', error);
-                            alert('서버와의 통신에 실패하였습니다. 다시 시도해 주세요.');
-                          });
-                      } else {
-                        var msg = '결제에 실패하였습니다.';
-                        msg += '에러내용 : ' + rsp.error_msg;
-
-                        alert(msg);
-                      }
-                    });
-                  });
                 });
 
               </script>
@@ -801,10 +728,11 @@
                   </ul>
                 </div>
                 <div class="menu-section">
-                  <div class="menu-title"><a href="#">멤버십</a></div>
+                  <div class="menu-title"><a
+                      href="${pageContext.request.contextPath}/user/mypage/membership?user_id=${sessionScope.loggedInUser.user_id}">멤버십</a></div>
                 </div>
                 <div class="menu-section">
-                  <div class="menu-title"><a href="${pageContext.request.contextPath}/user/mypage/coupon?user_id=${sessionScope.loggedInUser.user_id}">보유쿠폰</a></div>
+				<div class="menu-title"><div class="menu-title"><a href="${pageContext.request.contextPath}/user/mypage/coupon?user_id=${sessionScope.loggedInUser.user_id}">보유쿠폰</a></div></div>
                 </div>
                 <c:if test="${userInfo.auth == 'S'}">
                   <div class="menu-section">
@@ -819,67 +747,8 @@
                   <p>${userInfo.user_name}님은 현재 ${userInfo.level_name} Level입니다.</p>
                   <button class="rank-btn">등급별 혜택보기</button>
                 </div>
-                <div class="membership">
-                  <div class="memberlogo" style="align-items: center; ">
-                    <img src="/images/membership.png">
-                  </div>
-                  <form>
-                    <table class="table membership-table">
-                      <thead>
-                        <tr>
-                          <th></th>
-                          <th>멤버십명</th>
-                          <th>혜택</th>
-                          <th>예매대기 횟수</th>
-                          <th>가입액</th>
-                          <th>유지기간</th>
-                          <th>포인트</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td><input type="radio" name="membership" value="BRONZE"></td>
-                          <td>BRONZE</td>
-                          <td>공연할인, 선예매, 티켓포장, 예매대기</td>
-                          <td>5</td>
-                          <td>10,000</td>
-                          <td>365</td>
-                          <td>0</td>
-                        </tr>
-                        <tr>
-                          <td><input type="radio" name="membership" value="SILVER"></td>
-                          <td>SILVER</td>
-                          <td>공연할인, 선예매, 티켓포장, 예매대기, 할인쿠폰</td>
-                          <td>6</td>
-                          <td>20,000</td>
-                          <td>365</td>
-                          <td>0</td>
-                        </tr>
-                        <tr>
-                          <td><input type="radio" name="membership" value="GOLD"></td>
-                          <td>GOLD</td>
-                          <td>공연할인, 선예매, 티켓포장, 예매대기, 할인쿠폰, 포인트</td>
-                          <td>7</td>
-                          <td>30,000</td>
-                          <td>365</td>
-                          <td>10,000</td>
-                        </tr>
-                        <tr>
-                          <td><input type="radio" name="membership" value="DIAMOND"></td>
-                          <td>DIAMOND</td>
-                          <td>공연할인, 선예매, 티켓포장, 예매대기, 할인쿠폰, 포인트</td>
-                          <td>8</td>
-                          <td>500,000</td>
-                          <td>365</td>
-                          <td>250,000</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <div class="button-container">
-                      <button id="check_order" type="button" class="btn btn-success btn-lg" data-toggle="modal"
-                        data-target="#paymentModal">가입하기</button>
-                    </div>
-                  </form>
+                <div class="coupon">
+                
                 </div>
                 <div id="rankModal" class="modal">
                   <div class="modal-content">
