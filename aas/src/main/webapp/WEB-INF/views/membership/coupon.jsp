@@ -749,6 +749,7 @@
                 </div>
                 <div class="coupon">
                 	<h3>안녕하세요</h3>
+                	<h2>네 저도안녕하세요</h2>
                 </div>
                 <div id="rankModal" class="modal">
                   <div class="modal-content">
