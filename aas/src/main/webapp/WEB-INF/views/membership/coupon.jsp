@@ -748,7 +748,7 @@
                   <button class="rank-btn">등급별 혜택보기</button>
                 </div>
                 <div class="coupon">
-                
+                	<h3>안녕하세요</h3>
                 </div>
                 <div id="rankModal" class="modal">
                   <div class="modal-content">
