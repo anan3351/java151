@@ -26,7 +26,7 @@
 <c:if test="${registrationSuccess}">
     <script>
         alert("회원가입이 완료되었습니다.\n로그인 페이지로 이동합니다.");
-        window.location.href = '/user/login';
+        window.location.href = '/user/login?popup=true';
     </script>
 </c:if>
 
@@ -75,6 +75,33 @@
 </div>
 </div>
 <%@ include file="../footer.jsp" %>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel">알림</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        회원가입 축하쿠폰이 발급되었습니다. 마이페이지를 통해 확인해보세요.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+$(document).ready(function() {
+    var urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('popup') === 'true') {
+      $('#myModal').modal('show');
+    }
+  });
+</script>
 </body>
 <style>
 
