@@ -1,6 +1,7 @@
 package com.example.demo.user;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.demo.coupon.CouponDAO;
+import com.example.demo.coupon.CouponDTO;
+
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -32,6 +36,10 @@ public class UserCont {
 
 	@Autowired
 	private UserDAO userDao;
+	
+	@Autowired
+	private CouponDAO couponDao;
+	
 
 	@RequestMapping("/form")
 	public String form() {
@@ -87,7 +95,7 @@ public class UserCont {
 
 	// 쿠폰 페이지 연결
 	@GetMapping("/mypage/coupon")
-	public ModelAndView couponMypage(@RequestParam("user_id") String user_Id, HttpSession session, Model model) {
+	public ModelAndView couponMypage(@RequestParam("user_id") String user_id, HttpSession session, Model model) {
 		UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
 		ModelAndView mav = new ModelAndView();
 
@@ -95,8 +103,12 @@ public class UserCont {
 			UserDTO userInfo = userDao.getUserById(loggedInUser.getUser_id());
 			model.addAttribute("userInfo", userInfo);
 		}
-		mav.addObject("user_id", user_Id);
+		
+		mav.addObject("user_id", user_id);
 		mav.setViewName("membership/coupon");
+		List<CouponDTO> coupons = couponDao.getCouponsByUserId(user_id);
+        model.addAttribute("coupons", coupons);
+		
 		return mav;
 	}
 
@@ -316,4 +328,6 @@ public class UserCont {
 		return ResponseEntity.ok(response);
 	}// End 로그인 상태 확인을 위한 함수
 
+	
+	
 }// class end

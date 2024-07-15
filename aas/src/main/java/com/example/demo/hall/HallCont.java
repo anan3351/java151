@@ -97,8 +97,6 @@ public class HallCont {
         return mav;
     }//detail() end
     
-   
-    
     
     
     

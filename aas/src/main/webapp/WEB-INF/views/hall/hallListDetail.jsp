@@ -396,30 +396,32 @@
                 const totalPrice = document.getElementById('price-per-day').textContent;
                 const totalDate = document.getElementById('selected-date-display2').textContent;
 
-                if (!selectedDate || selectedDate.trim() === '' || !selectedHall || selectedHall.trim() === '' || !totalPrice == 0) {
+                if (!selectedDate || !selectedHall || !totalPrice === 0 || !totalDate) {
                   alert('시작날짜와 종료날짜, 공연관을 모두 선택해주세요');
                 } else {
+                 
+                  alert(' 결제 페이지로 넘어갑니다.')
 
-                  var data = {
-                    start_date: selectedDate,  //대관일
-                    end_date: totalDate,      //총대관일
-                    price: totalPrice,         //총금액
-                    user_id: userId,  // 로그인한 사용자의 ID 포함
-                    miniHall: selectedHall  //공연관이름
-                  };
+                  // var data = {
+                  //   start_date: selectedDate,  //대관일
+                  //   end_date: totalDate,      //총대관일
+                  //   price: totalPrice,         //총금액
+                  //   user_id: userId,  // 로그인한 사용자의 ID 포함
+                  //   miniHall: selectedHall  //공연관이름
+                  // };
 
-                  $.ajax({
-                    url: '/hall/order',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(data),
-                    success: function (response) {
-                      window.location.href = '/hallOrder';
-                    },
-                    error: function (xhr, status, error) {
-                      console.error('Error:', error);
-                    }
-                  });
+                  // $.ajax({
+                  //   url: '/hall/order',
+                  //   type: 'POST',
+                  //   contentType: 'application/json',
+                  //   data: JSON.stringify(data),
+                  //   success: function (response) {
+                  //     window.location.href = '/hallOrder';
+                  //   },
+                  //   error: function (xhr, status, error) {
+                  //     console.error('Error:', error);
+                  //   }
+                  // });
                 }
               }//END submitOrder
 
