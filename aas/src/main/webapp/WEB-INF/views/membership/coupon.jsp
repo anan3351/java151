@@ -239,450 +239,548 @@
                   }
 
                 }
+
+                .container{
+                  position: relative;
+
+                }
+                .card {
+                  width: 400px;
+                  height: 180px;
+                  border-radius: 5px;
+                  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2);
+                  background-color: #fff;
+                  padding: 10px 10px;
+                  position: relative;
+                }
+
+                .main,
+                .copy-button {
+                  display: flex;
+                  justify-content: space-between;
+                  padding: 0 10px;
+                  align-items: center;
+                }
+
+                .card::after {
+                  position: absolute;
+                  content: "";
+                  height: 40px;
+                  right: -20px;
+                  border-radius: 40px;
+                  z-index: 1;
+                  top: 70px;
+                  background-color: #ff6b6b;
+                  width: 40px;
+                }
+
+                .card::before {
+                  position: absolute;
+                  content: "";
+                  height: 40px;
+                  left: -20px;
+                  border-radius: 40px;
+                  z-index: 1;
+                  top: 70px;
+                  background-color: #ff6b6b;
+                  width: 40px;
+                }
+
+                .co-img img {
+                  width: 100px;
+                  height: 100px;
+                }
+
+                .vertical {
+                  border-left: 5px dotted black;
+                  height: 100px;
+                  position: absolute;
+                  left: 40%;
+                }
+
+                .content h1 {
+                  font-size: 35px;
+                  margin-left: -20px;
+                  color: #565656;
+                }
+
+                .content h1 span {
+                  font-size: 18px;
+                }
+
+                .content h2 {
+                  font-size: 18px;
+                  margin-left: -20px;
+                  color: #565656;
+                  text-transform: uppercase;
+                }
+
+                .content p {
+                  font-size: 16px;
+                  color: #696969;
+                  margin-left: -20px;
+                }
+
               </style>
 
-<style>
-body {
-	font-family: 'Pretendard';
-}
+              <style>
+                body {
+                  font-family: 'Pretendard';
+                }
 
-.inner-content {
-	margin: 0 auto;
-	width: 1170px;
-	padding-block: 40px;
-}
+                .inner-content {
+                  margin: 0 auto;
+                  width: 1170px;
+                  padding-block: 40px;
+                }
 
-.header-wrap {
-	width: 100%;
-	position: fixed;
-	z-index: 999;
-	background-color: #fff;
-	top: 0;
-}
+                .header-wrap {
+                  width: 100%;
+                  position: fixed;
+                  z-index: 999;
+                  background-color: #fff;
+                  top: 0;
+                }
 
-.main-container {
-	display: flex;
-	flex-grow: 1;
-	padding: 20px;
-	margin-top: 20px;
-	/* 상단 여백 추가 */
-}
+                .main-container {
+                  display: flex;
+                  flex-grow: 1;
+                  padding: 20px;
+                  margin-top: 20px;
+                  /* 상단 여백 추가 */
+                }
 
-header {
-	margin: 0 auto;
-	width: 1600px;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 10px 20px;
-	background-color: #fff;
-	transition: all 0.3s;
-}
+                header {
+                  margin: 0 auto;
+                  width: 1600px;
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  padding: 10px 20px;
+                  background-color: #fff;
+                  transition: all 0.3s;
+                }
 
-eader .logo img {
-	display: inline-block;
-	background-color: #413f3f;
-	width: 250px;
-	max-width: 100%;
-	/* 반응형을 위해 추가 */
-	height: auto;
-	/* 이미지 비율 유지 */
-	object-fit: contain;
-	/* 이미지가 영역 내에 맞게 조정 */
-}
+                eader .logo img {
+                  display: inline-block;
+                  background-color: #413f3f;
+                  width: 250px;
+                  max-width: 100%;
+                  /* 반응형을 위해 추가 */
+                  height: auto;
+                  /* 이미지 비율 유지 */
+                  object-fit: contain;
+                  /* 이미지가 영역 내에 맞게 조정 */
+                }
 
-header .search-bar {
-	position: relative;
-}
+                header .search-bar {
+                  position: relative;
+                }
 
-header .search-bar input {
-	border-radius: 25px;
-	width: 600px;
-	padding: 5px 20px;
-	height: 50px;
-	border: 1px solid #c5c5c5;
-}
+                header .search-bar input {
+                  border-radius: 25px;
+                  width: 600px;
+                  padding: 5px 20px;
+                  height: 50px;
+                  border: 1px solid #c5c5c5;
+                }
 
-header .search-bar .btn-search {
-	position: absolute;
-	width: 20px;
-	height: 20px;
-	border: none;
-	right: 20px;
-	top: 50%;
-	transform: translateY(-50%);
-	background: url(/images/search.svg);
-	background-repeat: no-repeat;
-}
+                header .search-bar .btn-search {
+                  position: absolute;
+                  width: 20px;
+                  height: 20px;
+                  border: none;
+                  right: 20px;
+                  top: 50%;
+                  transform: translateY(-50%);
+                  background: url(/images/search.svg);
+                  background-repeat: no-repeat;
+                }
 
-header .user-options a {
-	margin: 0 10px;
-	text-decoration: none;
-	color: #000;
-}
+                header .user-options a {
+                  margin: 0 10px;
+                  text-decoration: none;
+                  color: #000;
+                }
 
-header .language img {
-	height: 20px;
-}
+                header .language img {
+                  height: 20px;
+                }
 
-nav {
-	width: 100%;
-	border-top: 1px solid #ccc;
-	border-bottom: 1px solid #ccc;
-	padding: 10px 20px;
-	display: flex;
-	justify-content: center;
-}
+                nav {
+                  width: 100%;
+                  border-top: 1px solid #ccc;
+                  border-bottom: 1px solid #ccc;
+                  padding: 10px 20px;
+                  display: flex;
+                  justify-content: center;
+                }
 
-nav ul {
-	list-style: none;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	height: 39px;
-	padding: 0;
-	gap: 40px;
-	border-radius: 6px;
-	white-space: nowrap;
-	list-style-type: none;
-	margin: 0;
-}
+                nav ul {
+                  list-style: none;
+                  display: flex;
+                  flex-direction: row;
+                  align-items: center;
+                  height: 39px;
+                  padding: 0;
+                  gap: 40px;
+                  border-radius: 6px;
+                  white-space: nowrap;
+                  list-style-type: none;
+                  margin: 0;
+                }
 
-nav ul li {
-	display: flex;
-	align-items: center;
-	height: 39px;
-	font-style: normal;
-	font-weight: 700;
-	font-size: 16px;
-	line-height: 19px;
-	border-bottom: 2px solid transparent;
-}
+                nav ul li {
+                  display: flex;
+                  align-items: center;
+                  height: 39px;
+                  font-style: normal;
+                  font-weight: 700;
+                  font-size: 16px;
+                  line-height: 19px;
+                  border-bottom: 2px solid transparent;
+                }
 
-nav ul li a {
-	text-decoration: none;
-	color: #111;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-size: 16px;
-}
+                nav ul li a {
+                  text-decoration: none;
+                  color: #111;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  font-size: 16px;
+                }
 
-nav ul li a:hover {
-	text-decoration: none;
-}
+                nav ul li a:hover {
+                  text-decoration: none;
+                }
 
-/*content*/
-.swiper-container {
-	max-width: 1600px;
-	height: 300px;
-	margin-bottom: 50px;
-	padding-block: 300px;
-}
+                /*content*/
+                .swiper-container {
+                  max-width: 1600px;
+                  height: 300px;
+                  margin-bottom: 50px;
+                  padding-block: 300px;
+                }
 
-.slider1 {
-	position: relative;
-	max-width: 1507px;
-}
+                .slider1 {
+                  position: relative;
+                  max-width: 1507px;
+                }
 
-.slider2 {
-	position: relative;
-}
+                .slider2 {
+                  position: relative;
+                }
 
-.swiper-slide {
-	background: #fff;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	text-align: center;
-	border: 1px solid #ccc;
-	cursor: pointer;
-}
+                .swiper-slide {
+                  background: #fff;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  text-align: center;
+                  border: 1px solid #ccc;
+                  cursor: pointer;
+                }
 
-.slider1 .swiper-slide {
-	align-items: start;
-}
+                .slider1 .swiper-slide {
+                  align-items: start;
+                }
 
-.slider1 .swiper-slide img {
-	max-width: 100%;
-	height: 450px;
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-	border-radius: 10px;
-}
+                .slider1 .swiper-slide img {
+                  max-width: 100%;
+                  height: 450px;
+                  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                  border-radius: 10px;
+                }
 
-.navbar-nav {
-	display: flex;
-	justify-content: center;
-	width: 100%;
-}
+                .navbar-nav {
+                  display: flex;
+                  justify-content: center;
+                  width: 100%;
+                }
 
-.navbar-nav>li {
-	display: flex;
-	align-items: center;
-}
+                .navbar-nav>li {
+                  display: flex;
+                  align-items: center;
+                }
 
-th {
-	text-align: center;
-}
+                th {
+                  text-align: center;
+                }
 
-/* Set height of the grid so .sidenav can be 100% (adjust as needed) */
-.row.content {
-	height: 450px
-}
+                /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+                .row.content {
+                  height: 450px
+                }
 
-/* Set gray background color and 100% height */
-.sidenav {
-	padding-top: 20px;
-	background-color: #f1f1f1;
-	height: 100%;
-}
+                /* Set gray background color and 100% height */
+                .sidenav {
+                  padding-top: 20px;
+                  background-color: #f1f1f1;
+                  height: 100%;
+                }
 
-/* Set black background color, white text and some padding */
-/* 푸터 스타일 추가 */
-footer {
-	background-color: #413f3f;
-	color: white;
-	padding: 15px;
-	width: 100%;
-}
+                /* Set black background color, white text and some padding */
+                /* 푸터 스타일 추가 */
+                footer {
+                  background-color: #413f3f;
+                  color: white;
+                  padding: 15px;
+                  width: 100%;
+                }
 
-.centerBox {
-	width: 450;
-	margin-left: auto;
-	margin-right: auto;
-}
+                .centerBox {
+                  width: 450;
+                  margin-left: auto;
+                  margin-right: auto;
+                }
 
-/* 반응형 스타일 */
-@media ( max-width : 1600px) {
-	header {
-		width: 100%;
-	}
-}
+                /* 반응형 스타일 */
+                @media (max-width : 1600px) {
+                  header {
+                    width: 100%;
+                  }
+                }
 
-@media ( max-width : 1200px) {
-	header {
-		width: 100%;
-		align-items: center;
-		flex-direction: column;
-	}
-	header .search-bar {
-		max-width: none;
-		margin: 10px 0;
-	}
-	header .user-options {
-		justify-content: flex-end;
-	}
-}
+                @media (max-width : 1200px) {
+                  header {
+                    width: 100%;
+                    align-items: center;
+                    flex-direction: column;
+                  }
 
-@media ( max-width : 768px) {
-	header {
-		padding: 10px;
-	}
-	header .search-bar input {
-		width: 100%;
-		padding: 5px 30px 5px 10px;
-	}
-	header .user-options {
-		justify-content: center;
-	}
-	header .user-options a {
-		margin: 5px 10px;
-	}
-}
+                  header .search-bar {
+                    max-width: none;
+                    margin: 10px 0;
+                  }
 
-@media ( max-width : 480px) {
-	header .search-bar input {
-		width: 95%;
-		padding: 5px 25px 5px 5px;
-	}
-	header .user-options {
-		justify-content: center;
-	}
-	header .user-options a {
-		margin: 5px;
-		/* 여백 조정 */
-	}
-}
+                  header .user-options {
+                    justify-content: flex-end;
+                  }
+                }
 
-.membership-table th, .membership-table td {
-	text-align: center;
-}
+                @media (max-width : 768px) {
+                  header {
+                    padding: 10px;
+                  }
 
-.membership-table th {
-	background-color: #f9f9f9;
-}
+                  header .search-bar input {
+                    width: 100%;
+                    padding: 5px 30px 5px 10px;
+                  }
 
-.membership-table td {
-	vertical-align: middle;
-}
+                  header .user-options {
+                    justify-content: center;
+                  }
 
-.selected-row {
-	background-color: #dcdcdc;
-}
+                  header .user-options a {
+                    margin: 5px 10px;
+                  }
+                }
 
-.button-container {
-	text-align: center;
-	margin-top: 20px;
-}
+                @media (max-width : 480px) {
+                  header .search-bar input {
+                    width: 95%;
+                    padding: 5px 25px 5px 5px;
+                  }
 
-.memberlogo {
-	text-align: center;
-	margin-bottom: 30px;
-}
+                  header .user-options {
+                    justify-content: center;
+                  }
 
-.modal {
-	display: none;
-	position: fixed;
-	z-index: 1000;
-	left: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	overflow: auto;
-	background-color: rgba(0, 0, 0, 0.6);
-}
+                  header .user-options a {
+                    margin: 5px;
+                    /* 여백 조정 */
+                  }
+                }
 
-.modal-content {
-	background-color: #fefefe;
-	margin: 5% auto;
-	padding: 30px;
-	border: none;
-	width: 90%;
-	max-width: 800px;
-	border-radius: 8px;
-	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-}
+                .membership-table th,
+                .membership-table td {
+                  text-align: center;
+                }
 
-.close {
-	color: #aaa;
-	float: right;
-	font-size: 28px;
-	font-weight: bold;
-	transition: color 0.3s ease;
-}
+                .membership-table th {
+                  background-color: #f9f9f9;
+                }
 
-.close:hover, .close:focus {
-	color: #333;
-	text-decoration: none;
-	cursor: pointer;
-}
+                .membership-table td {
+                  vertical-align: middle;
+                }
 
-.modal h2 {
-	margin-top: 0;
-	color: #333;
-	font-size: 24px;
-	margin-bottom: 20px;
-}
+                .selected-row {
+                  background-color: #dcdcdc;
+                }
 
-.modal table {
-	width: 100%;
-	border-collapse: separate;
-	border-spacing: 0;
-	background-color: #fff;
-	border-radius: 6px;
-	overflow: hidden;
-	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
+                .button-container {
+                  text-align: center;
+                  margin-top: 20px;
+                }
 
-.modal th, .modal td {
-	padding: 15px;
-	text-align: left;
-	border-bottom: 1px solid #e0e0e0;
-}
+                .memberlogo {
+                  text-align: center;
+                  margin-bottom: 30px;
+                }
 
-.modal th {
-	background-color: #f5f5f5;
-	font-weight: bold;
-	color: #333;
-	text-transform: uppercase;
-	font-size: 14px;
-}
+                .modal {
+                  display: none;
+                  position: fixed;
+                  z-index: 1000;
+                  left: 0;
+                  top: 0;
+                  width: 100%;
+                  height: 100%;
+                  overflow: auto;
+                  background-color: rgba(0, 0, 0, 0.6);
+                }
 
-.modal tr:last-child td {
-	border-bottom: none;
-}
+                .modal-content {
+                  background-color: #fefefe;
+                  margin: 5% auto;
+                  padding: 30px;
+                  border: none;
+                  width: 90%;
+                  max-width: 800px;
+                  border-radius: 8px;
+                  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+                }
 
-.modal tr:nth-child(even) {
-	background-color: #f9f9f9;
-}
+                .close {
+                  color: #aaa;
+                  float: right;
+                  font-size: 28px;
+                  font-weight: bold;
+                  transition: color 0.3s ease;
+                }
 
-.modal tr:hover {
-	background-color: #f0f0f0;
-}
+                .close:hover,
+                .close:focus {
+                  color: #333;
+                  text-decoration: none;
+                  cursor: pointer;
+                }
 
-.modal td:first-child {
-	font-weight: bold;
-	color: #0066cc;
-}
+                .modal h2 {
+                  margin-top: 0;
+                  color: #333;
+                  font-size: 24px;
+                  margin-bottom: 20px;
+                }
 
-@media ( max-width : 768px) {
-	.modal-content {
-		width: 95%;
-		margin: 10% auto;
-		padding: 20px;
-	}
-	.modal table {
-		font-size: 14px;
-	}
-	.modal th, .modal td {
-		padding: 10px;
-	}
-}
+                .modal table {
+                  width: 100%;
+                  border-collapse: separate;
+                  border-spacing: 0;
+                  background-color: #fff;
+                  border-radius: 6px;
+                  overflow: hidden;
+                  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                }
 
-.coupon table {
-	width: 100%;
-	border-collapse: separate;
-	border-spacing: 0;
-	background-color: #fff;
-	border-radius: 10px;
-	overflow: hidden;
-	box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-	margin-bottom: 20px;
-}
+                .modal th,
+                .modal td {
+                  padding: 15px;
+                  text-align: left;
+                  border-bottom: 1px solid #e0e0e0;
+                }
 
-.coupon th, .coupon td {
-	padding: 15px;
-	text-align: left;
-	border-bottom: 1px solid #e0e0e0;
-}
+                .modal th {
+                  background-color: #f5f5f5;
+                  font-weight: bold;
+                  color: #333;
+                  text-transform: uppercase;
+                  font-size: 14px;
+                }
 
-.coupon th {
-	background-color: #f8f9fa;
-	font-weight: bold;
-	color: #333;
-	text-transform: uppercase;
-	font-size: 14px;
-}
+                .modal tr:last-child td {
+                  border-bottom: none;
+                }
 
-.coupon tr:last-child td {
-	border-bottom: none;
-}
+                .modal tr:nth-child(even) {
+                  background-color: #f9f9f9;
+                }
 
-.coupon tr:nth-child(even) {
-	background-color: #f9f9f9;
-}
+                .modal tr:hover {
+                  background-color: #f0f0f0;
+                }
 
-.coupon tr:hover {
-	background-color: #f0f0f0;
-	transition: background-color 0.3s ease;
-}
+                .modal td:first-child {
+                  font-weight: bold;
+                  color: #0066cc;
+                }
 
-.coupon td:first-child {
-	font-weight: bold;
-	color: #0066cc;
-}
+                @media (max-width : 768px) {
+                  .modal-content {
+                    width: 95%;
+                    margin: 10% auto;
+                    padding: 20px;
+                  }
 
-@media ( max-width : 768px) {
-	.coupon table {
-		font-size: 14px;
-	}
-	.coupon th, .coupon td {
-		padding: 10px;
-	}
-}
-</style>
+                  .modal table {
+                    font-size: 14px;
+                  }
 
-<script>
+                  .modal th,
+                  .modal td {
+                    padding: 10px;
+                  }
+                }
+
+                .coupon table {
+                  width: 100%;
+                  border-collapse: separate;
+                  border-spacing: 0;
+                  background-color: #fff;
+                  border-radius: 10px;
+                  overflow: hidden;
+                  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+                  margin-bottom: 20px;
+                }
+
+                .coupon th,
+                .coupon td {
+                  padding: 15px;
+                  text-align: left;
+                  border-bottom: 1px solid #e0e0e0;
+                }
+
+                .coupon th {
+                  background-color: #f8f9fa;
+                  font-weight: bold;
+                  color: #333;
+                  text-transform: uppercase;
+                  font-size: 14px;
+                }
+
+                .coupon tr:last-child td {
+                  border-bottom: none;
+                }
+
+                .coupon tr:nth-child(even) {
+                  background-color: #f9f9f9;
+                }
+
+                .coupon tr:hover {
+                  background-color: #f0f0f0;
+                  transition: background-color 0.3s ease;
+                }
+
+                .coupon td:first-child {
+                  font-weight: bold;
+                  color: #0066cc;
+                }
+
+                @media (max-width : 768px) {
+                  .coupon table {
+                    font-size: 14px;
+                  }
+
+                  .coupon th,
+                  .coupon td {
+                    padding: 10px;
+                  }
+                }
+              </style>
+
+              <script>
                 document.addEventListener('DOMContentLoaded', function () {
                   var modal = document.getElementById("rankModal");
                   var btn = document.querySelector(".rank-btn");
@@ -758,10 +856,15 @@ footer {
                 </div>
                 <div class="menu-section">
                   <div class="menu-title"><a
-                      href="${pageContext.request.contextPath}/user/mypage/membership?user_id=${sessionScope.loggedInUser.user_id}">멤버십</a></div>
+                      href="${pageContext.request.contextPath}/user/mypage/membership?user_id=${sessionScope.loggedInUser.user_id}">멤버십</a>
+                  </div>
                 </div>
                 <div class="menu-section">
-				<div class="menu-title"><div class="menu-title"><a href="${pageContext.request.contextPath}/user/mypage/coupon?user_id=${sessionScope.loggedInUser.user_id}">보유쿠폰</a></div></div>
+                  <div class="menu-title">
+                    <div class="menu-title"><a
+                        href="${pageContext.request.contextPath}/user/mypage/coupon?user_id=${sessionScope.loggedInUser.user_id}">보유쿠폰</a>
+                    </div>
+                  </div>
                 </div>
                 <c:if test="${userInfo.auth == 'S'}">
                   <div class="menu-section">
@@ -777,33 +880,27 @@ footer {
                   <button class="rank-btn">등급별 혜택보기</button>
                 </div>
                 <div class="coupon">
-                	
-                	<table class="table">
-                		<tr>
-                			<th>쿠폰명</th>
-                			<th>사용기한</th>
-                			<th>발급날짜</th>
-                			<th>잔여개수</th>
-                		</tr>
-                		<c:forEach items="${coupons}" var="cp" varStatus="status">
-                		<tr>
-                			<td>${cp.coupon_name }</td>
-                			<td>${cp.limit_date }</td>
-                			<td>${cp.cp_date }</td>
-                			<td>${cp.left_count }</td>
-                		</tr>
-                		</c:forEach>
-                	</table>
-                	
-                	
-                	
-                	
-                	
-                	
-                	
-                	
-                	
-                	
+                  <c:forEach items="${coupons}" var="cp" varStatus="status">
+                  <div class="container">
+                    <div class="card">
+                      <div class="main">
+                        <div class="co-img">
+                          <img src="../../images/xx11.png"
+                            alt="" />
+                        </div>
+                        <div class="vertical"></div>
+                        <div class="content">
+                          <h2 style="font-weight: 700; color: rgb(158, 5, 163);">${cp.coupon_name }</h2>
+                          <p>${cp.limit_date }</p>
+                          <p>잔여개수 : ${cp.left_count }</p>
+                          <p>발급날짜 : ${cp.cp_date }</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </c:forEach>
+
+
                 </div>
                 <div id="rankModal" class="modal">
                   <div class="modal-content">
