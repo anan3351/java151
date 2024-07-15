@@ -26,7 +26,7 @@
 <c:if test="${registrationSuccess}">
     <script>
         alert("회원가입이 완료되었습니다.\n로그인 페이지로 이동합니다.");
-        window.location.href = '/user/login';
+        window.location.href = '/user/login?popup=true';
     </script>
 </c:if>
 
@@ -58,16 +58,16 @@
     </form>
     <br><br>
     <div class="findlist">
-        <a href="./findid">아이디 찾기</a> | <a href="./findpw">비밀번호 찾기</a> | <a href="./join">회원가입</a>
+        <a href="./findid">아이디 찾기</a> | <a href="./findpw">비밀번호 찾기</a> | <a href="./agreement">회원가입</a>
     </div>
     <br>
     
     <a href="/naverLogin" class="btn-link">
     <button class="btn btn-naver">네이버ID로 로그인</button>
 	</a>
-    <a href="" class="btn-link">
+	<a href="https://kauth.kakao.com/oauth/authorize?client_id=ed2700534e63214f5b299b09f4b82bb0&redirect_uri=http://localhost:9095/kakao/callback&response_type=code">
     <button class="btn btn-kakao">카카오ID로 로그인</button>
-    </a>
+	</a>
     <a href="" class="btn-link">
     <button class="btn btn-apple">구글ID로 로그인</button>
     </a>
@@ -75,6 +75,33 @@
 </div>
 </div>
 <%@ include file="../footer.jsp" %>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel">알림</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        회원가입 축하쿠폰이 발급되었습니다. 마이페이지를 통해 확인해보세요.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+$(document).ready(function() {
+    var urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('popup') === 'true') {
+      $('#myModal').modal('show');
+    }
+  });
+</script>
 </body>
 <style>
 

@@ -20,8 +20,6 @@ public class HallDTO {
     private String h_code;
     
 
-	
-	
 	public String getHall_id() {
 		return hall_id;
 	}

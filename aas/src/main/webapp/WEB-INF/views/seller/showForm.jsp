@@ -18,8 +18,7 @@
     <link rel="stylesheet" href="/css/template.css">
     <link rel="stylesheet" href="/css/seller.css">
     <script src="/js/seller.js"></script>
-    
-    <title>seller Page</title>
+    <title>show upload</title>
 </head>
 	<body>
 	    <%@ include file="../header.jsp" %>
@@ -33,9 +32,8 @@
 	            <div class="menu-section">
 	                <div class="menu-title">공연</div>
 	                <ul class="menu-items">
-	                    <li><a href="/seller/list">공연 관리</a></li>
-	                    <li><a href="/seller/create">공연 등록</a></li>
-	                    <li><a href="/seller/discount">공연할인 관리</a></li>
+                    <li><a href="/seller/list">공연 목록</a></li>
+                    <li><a href="/seller/create">공연 등록</a></li>
 	                </ul>
 	            </div>
 	            <div class="menu-section">
@@ -59,7 +57,7 @@
 	            <div style="font-size: 20px; font-weight: bold; text-align: center;">
 	                공연 등록
 	            </div><br><br>
-	            <form name="showfrm" id="showfrm" method="post" action="show_insert" enctype="multipart/form-data" onsubmit="return validateShow();">
+	            <form name="showfrm" id="showfrm" method="post" action="insert" enctype="multipart/form-data" onsubmit="return validateShow();">
 	                <div style="text-align: left; color: red; font-size:13px">&nbsp;&nbsp;* 은 필수 입력 항목입니다</div>
 	                <table class="table table-hover" style="width:100%">
 	                    <tbody style="text-align: left;">
@@ -67,10 +65,15 @@
 	                            <td><span class="sp">* </span>공연명</td>
 	                            <td><input type="text" name="title" class="form-control"></td>
 	                        </tr>
-	                        <tr>
-	                            <td><span class="sp">* </span>공연장</td> <!-- 검색창 만들어서 검색해서 정보 받아오는걸로 수정 -->
-	                            <td><input type="text" name="hall_id" class="form-control"></td>
+                            <tr>
+	                            <td><span class="sp">* </span>장르</td>
+	                            <td><input type="text" name="genre" class="form-control" placeholder="연극/뮤지컬"></td>
 	                        </tr>
+	                        <tr>
+	                        	<td><span class="sp">* </span>공연장</td>
+	                        	<td><input type="text" name="hall_id" class="form-control" readonly></td>
+						    	<td><input type="button" class="btn btn-default" id="hall_search" value="검색" onclick="hallSearch()"></td>
+						    </tr>
 	                        <tr>
 	                            <td><span class="sp">* </span>공연 시작일</td>
 	                            <td><input type="date" name="start_day" class="form-control"></td>
@@ -81,15 +84,15 @@
 	                        </tr>
 	                        <tr>
 	                            <td><span class="sp">* </span>러닝타임</td>
-	                            <td><input type="number" name="runningtime" class="form-control"></td>
+	                            <td><input type="text" name="runningtime" class="form-control" placeholder="~시간 ~분"></td>
 	                        </tr>
 	                        <tr>
 	                            <td><span class="sp">* </span>관람가</td>
-	                            <td><input type="text" name="viewing_age" class="form-control"></td>
+	                            <td><input type="text" name="viewing_age" class="form-control" placeholder="만 ~세 이상"></td>
 	                        </tr>
 	                        <tr>
-	                            <td>시놉시스</td>
-	                            <td><textarea rows="5" name="synopsis" class="form-control"></textarea></td>
+	                            <td><span class="sp">* </span>캐스팅</td>
+	                            <td><input type="text" name="s_cast" class="form-control" placeholder="김연아, 박지성, 손흥민, 김연경..."></td>
 	                        </tr>
 	                        <tr>
 	                            <td>공지</td>
@@ -98,10 +101,6 @@
 	                        <tr>
 	                            <td>할인정보</td>
 	                            <td><input type="file" name="dis_img" class="form-control"></td>
-	                        </tr>
-	                        <tr>
-	                            <td>캐스팅</td>
-	                            <td><input type="file" name="casting_img" class="form-control"></td>
 	                        </tr>
 	                        <tr>
 	                            <td>이벤트</td>
