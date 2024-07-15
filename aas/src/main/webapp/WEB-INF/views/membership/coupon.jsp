@@ -880,36 +880,7 @@
                   <button class="rank-btn">등급별 혜택보기</button>
                 </div>
                 <div class="coupon">
-<<<<<<< HEAD
-                	
-                	<table class="table">
-                		<tr>
-                			<th>쿠폰명</th>
-                			<th>사용기한</th>
-                			<th>발급날짜</th>
-                			<th>잔여개수</th>
-                		</tr>
-                		<c:forEach items="${coupons}" var="cp" varStatus="status">
-                		<tr>
-                			<td>${cp.coupon_name }</td>
-                			<td>${cp.limit_date }</td>
-                			<td>${cp.cp_date }</td>
-                			<td>${cp.left_count }</td>
-                		</tr>
-                		</c:forEach>
-                	</table>
-                	
-                	
-                	
-                	
-                	
-                	
-                	
-                	
-                	
-                	
-                	<h2>네 저도안녕하세요</h2>
-=======
+
                   <c:forEach items="${coupons}" var="cp" varStatus="status">
                   <div class="container">
                     <div class="card">
@@ -930,8 +901,6 @@
                   </div>
                 </c:forEach>
 
-
->>>>>>> refs/heads/lsy
                 </div>
                 <div id="rankModal" class="modal">
                   <div class="modal-content">
