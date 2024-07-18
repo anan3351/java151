@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.like.LikeDAO;
+import com.example.demo.orderdetail.OrderDetailDAO;
+import com.example.demo.orderdetail.OrderDetailDTO;
 import com.example.demo.showreview.DBOpen;
 import com.example.demo.show.ShowDAO;
 import com.example.demo.show.ShowDTO;
@@ -46,6 +48,8 @@ public class ShowreviewCont {
 	@Autowired
 	private LikeDAO likeDao;
 	
+	@Autowired
+	private OrderDetailDAO orderDetailDao;
 
     @GetMapping("/searchShows")
     @ResponseBody
@@ -211,8 +215,23 @@ public class ShowreviewCont {
 	        }
 	    }
 	    
+	    @GetMapping("/orderDetails")
+	    @ResponseBody
+	    public List<OrderDetailDTO> getOrderDetails(@RequestParam("user_id") String userId) {
+	        return orderDetailDao.getOrderDetailsByUserId(userId);
+	    }
 
-	    
+	    @GetMapping("/showreview/showrvmy")
+	    public ModelAndView showrvmy(HttpSession session) {
+	        UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+	        if (loggedInUser == null) {
+	            return new ModelAndView("redirect:/user/login");
+	        }
+	        List<ShowreviewDTO> myReviews = showreviewDao.getReviewsByUserId(loggedInUser.getUser_id());
+	        ModelAndView mav = new ModelAndView("showreview/showrvmy");
+	        mav.addObject("myReviews", myReviews);
+	        return mav;
+	    }
 
 
 }//class end

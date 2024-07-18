@@ -1,7 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<link rel="stylesheet" href="/css/template.css">
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,7 +23,7 @@
         }
         body {
             padding-top: 200px;
-        }    
+        }
     </style>
 </head>
 <body>
@@ -42,17 +40,17 @@
                     <th>출연 배우</th>
                     <th>포스터</th>
                     <th>할인</th>
-                    <th>수정/삭제</th> <!-- Actions: 수정 및 삭제 버튼을 포함하여 사용자가 스케줄을 편집하거나 삭제할 수 있도록 함 -->
+                    <th>수정/삭제</th>
                 </tr>
             </thead>
             <tbody>
-                <c:forEach var="schedule" items="${schedules}">
+                <c:forEach var="schedule" items="${schedules}" varStatus="status">
                     <tr>
                         <td>${schedule.title}</td>
-                        <td><c:out value="${schedule.showdate}" /></td>
+                        <td>${formattedDates[status.index]}</td>
                         <td>${schedule.seat}</td>
                         <td>${schedule.fair}</td>
-                        <td><img src="${schedule.poster}" alt="Poster" style="width:100px;height:auto;"/></td>
+                        <td><img src="/uploads/${schedule.poster}" alt="Poster" style="width:100px;height:auto;"/></td>
                         <td>${schedule.sale}</td>
                         <td>
                             <a href="${pageContext.request.contextPath}/myschedule/edit?id=${schedule.mysch_id}" class="btn btn-warning">Edit</a>

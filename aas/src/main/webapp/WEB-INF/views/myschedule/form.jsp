@@ -1,7 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,7 +26,6 @@
     <script>
         function populateFields(orderDetails, selectedOrderId) {
             if (!selectedOrderId) {
-                // Clear fields if no order is selected
                 document.getElementById('title').value = '';
                 document.getElementById('showdate').value = '';
                 document.getElementById('seat').value = '';
@@ -54,7 +51,7 @@
     <div class="main-container">
         <h1>${schedule.mysch_id == 0 ? 'New Schedule' : 'Edit Schedule'}</h1>
         <c:set var="formAction" value="${schedule.mysch_id == 0 ? '/myschedule/save' : '/myschedule/update'}" />
-        <form action="${pageContext.request.contextPath}${formAction}" method="post">
+        <form action="${pageContext.request.contextPath}${formAction}" method="post" enctype="multipart/form-data">
             <input type="hidden" name="mysch_id" value="${schedule.mysch_id}">
 
             <div class="form-group">
@@ -83,10 +80,10 @@
                 <label for="fair">Fair:</label>
                 <input type="text" class="form-control" id="fair" name="fair" value="${schedule.fair}" required>
             </div>
-            <div class="form-group">
-                <label for="poster">Poster:</label>
-                <input type="text" class="form-control" id="poster" name="poster" value="${schedule.poster}" required>
-            </div>
+			<div class="form-group">
+			    <label for="posterFile">Poster:</label>
+			    <input type="file" class="form-control" id="posterFile" name="posterFile" ${schedule.mysch_id == 0 ? 'required' : ''}>
+			</div>
             <div class="form-group">
                 <label for="sale">Sale:</label>
                 <input type="text" class="form-control" id="sale" name="sale" value="${schedule.sale}" required>
