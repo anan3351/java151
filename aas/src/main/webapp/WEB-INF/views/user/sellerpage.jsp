@@ -448,8 +448,6 @@ main {
                 <div class="profile-image"></div>
                 <p>${userInfo.user_id} 님</p>
                 <p>회원등급 - ${userInfo.auth}</p>
-                <p>${userInfo.level_name} Level</p>
-                <p class="points">내 포인트 - <fmt:formatNumber value="${userInfo.u_point}" pattern="#,###"/>p</p>
             </div>
             <div class="menu-section">
                 <div class="menu-title">공연</div>
