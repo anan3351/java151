@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>noticeform</title>
+    <title>qnaedit</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.tiny.cloud/1/4limsqsr4t2l3p5v338g1nblplu7cdds2zueq39vw7qjcwf9/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 	<meta charset="utf-8">
@@ -84,23 +84,29 @@
 	</style>
 </head>
 <body>
-<%@ include file="../header.jsp" %>
-	<div class="container">
-    <h1>공지사항 작성</h1>
-    <form name="bbsfrm" id="bbsfrm" method="post" action="/notice/insert" onsubmit="return bbsCheck()">
-    <div class="form-group">
-        <label for="title">제목</label>
-        <input type="text" name="title" id="title" maxlength="100" required class="form-control">
-    </div>
-    
-        <textarea id="editor" name="content"></textarea>
-        
-        <div class="btn-group">
-            <input type="submit" value="저장" class="btn btn-primary">
-            <input type="reset" value="취소" class="btn btn-danger">
-        </div>
-        
-    </form>
+    <%@ include file="../header.jsp" %>
+    <div class="container">
+        <h1>문의 수정</h1>
+        <form name="qnaEditForm" id="qnaEditForm" method="post" action="${pageContext.request.contextPath}/qna/update" onsubmit="return qnaCheck()">
+            <input type="hidden" name="question_id" value="${qna.question_id}">
+            <div class="form-group">
+                <label for="q_open">공개 여부</label>
+                <select name="q_open" id="q_open" class="form-control" required>
+                    <option value="1" ${qna.q_open == '1' ? 'selected' : ''}>공개</option>
+                    <option value="0" ${qna.q_open == '0' ? 'selected' : ''}>비공개</option>
+                </select>
+            </div>
+            <input type="hidden" name="user_id" value="${loggedInUser.user_id}">
+            <div class="form-group">
+                <label for="q_title">제목</label>
+                <input type="text" name="q_title" id="q_title" maxlength="100" required class="form-control" value="${qna.q_title}">
+            </div>
+            <textarea id="editor" name="q_text">${qna.q_text}</textarea>
+            <div class="btn-group">
+    <input type="submit" value="수정" class="btn btn-primary">
+    <input type="button" value="취소" class="btn btn-danger" onclick="history.back()">
+</div>
+        </form>
     </div>
     <%@ include file="../footer.jsp" %>
 </body>
@@ -125,43 +131,11 @@ $(function(){
         selector: '#editor',
         height: 500,
         menubar: false,
-        plugins: [
-            'advlist autolink lists link image charmap print preview anchor',
-            'searchreplace visualblocks code fullscreen',
-            'insertdatetime media table paste code help wordcount'
-        ],
-        toolbar: 'undo redo | formatselect | ' +
-        'bold italic backcolor | alignleft aligncenter ' +
-        'alignright alignjustify | bullist numlist outdent indent | ' +
-        'removeformat | help | image',
+        plugins: plugins,
+        toolbar: edit_toolbar,
+        
         /*** image upload ***/
         image_title: true,
-        images_upload_url: '/notice/upload-image',  // 이미지 업로드 처리할 URL
-        images_upload_handler: function (blobInfo, success, failure, progress) {
-            var xhr, formData;
-            xhr = new XMLHttpRequest();
-            xhr.withCredentials = false;
-            xhr.open('POST', '/notice/upload-image');
-            
-            xhr.onload = function() {
-                var json;
-                if (xhr.status !== 200) {
-                    failure('HTTP Error: ' + xhr.status);
-                    return;
-                }
-                json = JSON.parse(xhr.responseText);
-                if (!json || typeof json.location != 'string') {
-                    failure('Invalid JSON: ' + xhr.responseText);
-                    return;
-                }
-                success(json.location);
-            };
-            
-            formData = new FormData();
-            formData.append('file', blobInfo.blob(), blobInfo.filename());
-            
-            xhr.send(formData);
-        },
         /* enable automatic uploads of images represented by blob or data URIs*/
         automatic_uploads: true,
         /*
@@ -218,5 +192,25 @@ $(function(){
     });
     
 });
+
+
+function qnaCheck() {
+    var title = document.getElementById("q_title").value;
+    var content = tinymce.get("editor").getContent();
+    
+    if (title.trim() === "") {
+        alert("제목을 입력해주세요.");
+        return false;
+    }
+    
+    if (content.trim() === "") {
+        alert("내용을 입력해주세요.");
+        return false;
+    }
+    
+    // 폼 제출
+    document.getElementById("qnaEditForm").submit();
+    return true;
+}
 </script>
 </html>

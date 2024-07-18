@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="notice">
+
+	<select id="getNoticeList" parameterType="map" resultType="map">
+    SELECT * FROM aas.tb_notice
+    <where>
+        <if test="field != null and field == 'title' and word != null and word != ''">
+            AND title LIKE CONCAT('%', #{word}, '%')
+        </if>
+        <if test="field != null and field == 'n_text' and word != null and word != ''">
+            AND (title LIKE CONCAT('%', #{word}, '%') OR n_text LIKE CONCAT('%', #{word}, '%'))
+        </if>
+    </where>
+    ORDER BY n_id DESC
+    LIMIT #{offset}, #{size}
+</select>
+
+    <select id="getTotalNoticeCount" parameterType="map" resultType="int">
+    SELECT COUNT(*) FROM aas.tb_notice
+    <where>
+        <if test="field != null and field == 'title' and word != null and word != ''">
+            AND title LIKE CONCAT('%', #{word}, '%')
+        </if>
+        <if test="field != null and field == 'n_text' and word != null and word != ''">
+            AND (title LIKE CONCAT('%', #{word}, '%') OR n_text LIKE CONCAT('%', #{word}, '%'))
+        </if>
+    </where>
+</select>
+
+    <select id="getNotice" parameterType="long" resultType="map">
+        SELECT n_id, user_id, title, n_text, n_date, cnt
+        FROM aas.tb_notice
+        WHERE n_id = #{n_id}
+    </select>
+    
+    <update id="increaseViewCount" parameterType="long">
+    UPDATE aas.tb_notice
+    SET cnt = cnt + 1
+    WHERE n_id = #{n_id}
+</update>
+
+<insert id="insertNotice" parameterType="map">
+    INSERT INTO aas.tb_notice (user_id, title, n_text, n_date)
+    VALUES (#{user_id}, #{title}, #{n_text}, NOW())
+</insert>
+    
+    <update id="updateNotice" parameterType="map">
+    UPDATE aas.tb_notice
+    SET title = #{title}, n_text = #{n_text}
+    WHERE n_id = #{n_id}
+</update>
+	
+	<delete id="deleteNotice" parameterType="map">
+    DELETE FROM aas.tb_notice
+    WHERE n_id = #{n_id}
+</delete>
+
+
+    
+</mapper>

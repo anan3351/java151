@@ -40,8 +40,8 @@
 <li><a href="/play">연극</a></li>
 <li><a href="/actor">배우</a></li>
 <li><a href="/hall/list">공연장</a></li>
-<li><a href="#">공지사항</a></li>
-<li><a href="#">Q&A</a></li>
+<li><a href="/notice/notice">공지사항</a></li>
+<li><a href="/qna/qna">Q&A</a></li>
 </ul>
 </nav>
 

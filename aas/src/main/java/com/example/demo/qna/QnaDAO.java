@@ -1,11 +1,9 @@
-package com.example.demo.notice;
+package com.example.demo.qna;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 
-@Repository
-public class NoticeDAO {
+public class QnaDAO {
 
 	@Autowired
     private SqlSession sqlSession;
