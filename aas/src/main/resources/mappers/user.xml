@@ -87,6 +87,10 @@
     <select id="getUserByUserId" parameterType="string" resultType="com.example.demo.user.UserDTO">
         SELECT * FROM aas.tb_user WHERE user_id = #{user_id}
     </select>
+    
+    <select id="getUserAuth" parameterType="string" resultType="string">
+        SELECT auth FROM aas.tb_user WHERE user_id = #{userId}
+    </select>
 	
 
 

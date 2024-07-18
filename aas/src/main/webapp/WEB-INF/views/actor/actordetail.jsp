@@ -42,6 +42,7 @@
     .actor_info {
         display: flex;
         flex-direction: column;
+        width: 100%;
     }
 
     .actor_info .title {
@@ -91,34 +92,15 @@
         color: #777;
     }
 
-    .social-icons {
-        display: flex;
-        align-items: center;
-        margin-top: 10px;
-    }
-
-    .social-icons a {
+    .favorite-button {
         display: inline-block;
-        width: 24px;
-        height: 24px;
-        margin-right: 10px;
-        background-size: cover;
-    }
-
-    .social-icons .star {
-        background-image: url('/images/star.png');
-    }
-
-    .social-icons .facebook {
-        background-image: url('/images/facebook.png');
-    }
-
-    .social-icons .twitter {
-        background-image: url('/images/twitter.png');
-    }
-
-    .social-icons .follower-count {
-        color: #555;
+        width: 30px;
+        height: 30px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        cursor: pointer;
+        border: none;
+        margin-top: 10px;
     }
 </style>
 
@@ -148,15 +130,58 @@
             </dl>
         </div>
         <!-- //배우 세부 정보 -->
-        <!-- 소셜 아이콘 -->
-        <div class="social-icons">
-            <a href="#" class="star"></a>
-            <a href="#" class="facebook"></a>
-            <a href="#" class="twitter"></a>
-            
-        </div>
-        <!-- //소셜 아이콘 -->
+        <!-- 즐겨찾기 추가/삭제 버튼 -->
+        <button class="favorite-button" id="favorite-button" style="background-image: url('/images/bheart.png');"></button>
+        <!-- //즐겨찾기 추가/삭제 버튼 -->
     </div>
 </div>
 
 <h1>공연 정보 추가 예정</h1>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    var actorId = ${actor.actor_id};
+    // 페이지 로드 시 즐겨찾기 상태 확인
+    $.ajax({
+        url: '${pageContext.request.contextPath}/favorite/check',
+        type: 'GET',
+        data: {
+            actor_id: actorId
+        },
+        success: function(response) {
+            if (response === 'added') {
+                $('#favorite-button').css('background-image', 'url(/images/kheart.png)');
+            } else {
+                $('#favorite-button').css('background-image', 'url(/images/bheart.png)');
+            }
+        }
+    });
+
+    $('#favorite-button').click(function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: '${pageContext.request.contextPath}/favorite/toggle',
+            type: 'POST',
+            data: {
+                actor_id: actorId
+            },
+            success: function(response) {
+                if (response === 'added') {
+                    $('#favorite-button').css('background-image', 'url(/images/kheart.png)');
+                    alert('즐겨찾기에 추가되었습니다.');
+                } else if (response === 'removed') {
+                    $('#favorite-button').css('background-image', 'url(/images/bheart.png)');
+                    alert('즐겨찾기에서 삭제되었습니다.');
+                } else if (response === 'not_logged_in') {
+                    alert('로그인이 필요합니다.');
+                    window.location.href = '${pageContext.request.contextPath}/user/login';
+                }
+            },
+            error: function() {
+                alert('오류가 발생했습니다.');
+            }
+        });
+    });
+});
+</script>

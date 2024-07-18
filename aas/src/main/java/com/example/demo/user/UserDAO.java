@@ -162,6 +162,11 @@ public class UserDAO {
         return sqlSession.selectOne("user.getUserByUserId", userId);
     }
     
+    public String getUserAuth(String userId) {
+    	String sql = "SELECT auth FROM tb_user WHERE user_id = '" + userId + "'";
+        System.out.println("Executing SQL: " + sql);
+        return sqlSession.selectOne("User.getUserAuth", userId);
+    }
     
 }//class end
 
