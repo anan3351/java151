@@ -68,7 +68,7 @@ function checkLogin() {
 	<form action="/hall/list" class="form-inline d-flex justify-content-end search-box"
 		method="GET">
 		<select name="field" id="field" class="sel-search">
-			<option value="hname">공연장명</option>
+			<option value="h_name">공연장명</option>
 			<option value="addr">주소</option>
 		</select> 
 		<input type="text" id="word" name="word" class="inp-search"> 
@@ -93,7 +93,7 @@ function checkLogin() {
           <c:forEach var="hall" items="${ulist.content}">
               <tr>
                   <td>
-                  <a href="detail/${hall.hall_id}" onclick="return checkLogin()"> ${hall.hname} </a>
+                  <a href="detail/${hall.hall_id}" onclick="return checkLogin()"> ${hall.h_name} </a>
                   </td>
                   <td>${hall.addr}</td>
                   <td><a href="${hall.url}" target="_blank">${hall.url}</a></td>

@@ -92,15 +92,6 @@ function closeModal() {
     }
 }
 
-// 모달 외부 클릭 시 닫기
-window.onclick = function(event) {
-	let modal = document.getElementById('hallSearchModal');
-	if (event.target == modal) {
-		closeModal();
-	}
-}
-
-
 
 // 공연상세 - 할인 적용금액 모달창
 function priceList(show_id) {
@@ -153,11 +144,18 @@ function closePrice() {
 
 // 모달 외부 클릭 시 닫기
 window.onclick = function(event) {
-	let modal = document.getElementById('priceListModal');
-	if (event.target == modal) {
-		closePrice();
-	}
+    let hallModal = document.getElementById('hallSearchModal');
+    let priceModal = document.getElementById('priceListModal');
+
+    if (event.target == hallModal) {
+        closeModal();
+    }
+
+    if (event.target == priceModal) {
+        closePrice();
+    }
 }
+
         
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
