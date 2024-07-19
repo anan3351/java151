@@ -4,27 +4,33 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.coupon.CouponDAO;
 import com.example.demo.coupon.CouponDTO;
+import com.example.demo.hall.HallOrderDAO;
+import com.example.demo.hall.HallOrderDTO;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 
 @Controller
 @RequestMapping("/user")
@@ -36,9 +42,12 @@ public class UserCont {
 
 	@Autowired
 	private UserDAO userDao;
-	
+
 	@Autowired
 	private CouponDAO couponDao;
+	
+	@Autowired
+	private HallOrderDAO hallOrderDao;
 	
 
 	@RequestMapping("/form")
@@ -103,14 +112,35 @@ public class UserCont {
 			UserDTO userInfo = userDao.getUserById(loggedInUser.getUser_id());
 			model.addAttribute("userInfo", userInfo);
 		}
-		
+
 		mav.addObject("user_id", user_id);
 		mav.setViewName("membership/coupon");
 		List<CouponDTO> coupons = couponDao.getCouponsByUserId(user_id);
-        model.addAttribute("coupons", coupons);
-		
+		model.addAttribute("coupons", coupons);
+
 		return mav;
 	}
+
+	// 공연장 대관 내역 페이지 연결
+	@GetMapping("/mypage/hallMypage")
+	public ModelAndView hallMypage(@RequestParam("user_id") String user_id, HttpSession session, Model model) {
+		UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+		ModelAndView mav = new ModelAndView();
+
+		if (loggedInUser != null) {
+			UserDTO userInfo = userDao.getUserById(loggedInUser.getUser_id());
+			model.addAttribute("userInfo", userInfo);
+		}
+
+		HallOrderDTO order = hallOrderDao.getLatestOrder();
+		model.addAttribute("order", order);
+		mav.addObject("user_id", user_id);
+		mav.setViewName("hall/hallMypage");
+
+		return mav;
+	}
+
+	
 
 	@RequestMapping("/pwcheck")
 	public ModelAndView pwcheck() {
@@ -286,6 +316,94 @@ public class UserCont {
 		}
 	}// sellerPage() end
 
+	// 셀러 공연장 등록 페이지 연결
+	@GetMapping("/sellerHallInsert")
+	public ModelAndView hallInsert(@RequestParam(required = false) String hall_id, HttpSession session, Model model) {
+		UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+		ModelAndView mav = new ModelAndView();
+
+		if (loggedInUser != null) {
+			UserDTO userInfo = userDao.getUserById(loggedInUser.getUser_id());
+			model.addAttribute("userInfo", userInfo);
+		}
+
+		List<Map<String, Object>> hallList = userDao.sellerHallInsert(null);
+		mav.addObject("hallList", hallList);
+		mav.setViewName("user/sellerHallInsert");
+
+		return mav;
+	}
+
+	// 하위 관 정보를 가져오는 API
+	@GetMapping("/sellerHallInsert/getSubHalls")
+	@ResponseBody
+	public List<Map<String, Object>> getSubHalls(@RequestParam String hall_id) {
+		return userDao.getSubHallsWithPrices(hall_id);
+	}
+
+	@Transactional
+	@PostMapping("/sellerHallInsert/saveHallPrices")
+	public ResponseEntity<String> saveHallPrices(@RequestBody Map<String, Object> requestData, HttpSession session) {
+		try {
+			String userId = (String) requestData.get("user_id");
+			List<Map<String, String>> halls = (List<Map<String, String>>) requestData.get("halls");
+
+			UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+			if (loggedInUser == null || !loggedInUser.getUser_id().equals(userId)) {
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("올바른 사용자 인증이 필요합니다.");
+			}
+
+			userDao.saveHallPricesAndUpdateUser(halls, userId);
+			return ResponseEntity.ok("Success");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("저장 중 오류가 발생했습니다: " + e.getMessage());
+		}
+	}
+
+	@PostMapping("/sellerHallInsert/updateHallPrices")
+	public ResponseEntity<String> updateHallPrices(@RequestBody Map<String, Object> requestData, HttpSession session) {
+
+		try {
+			String userId = (String) requestData.get("user_id");
+			List<Map<String, String>> halls = (List<Map<String, String>>) requestData.get("halls");
+
+			UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+			if (loggedInUser == null || !loggedInUser.getUser_id().equals(userId)) {
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("올바른 사용자 인증이 필요합니다.");
+			}
+
+			for (Map<String, String> hall : halls) {
+				String hallId = hall.get("hall_id");
+				String hDay = hall.get("h_day");
+
+				Map<String, Object> params = new HashMap<>();
+				params.put("hall_id", hallId);
+				params.put("h_day", Integer.parseInt(hDay));
+
+				userDao.updateHallPrice(params);
+			}
+
+			return ResponseEntity.ok("Success");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("수정 중 오류가 발생했습니다: " + e.getMessage());
+		}
+	}
+
+	@GetMapping("/sellerApprove")
+	public String sellerApprove(HttpSession session, Model model) {
+		UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+		if (loggedInUser != null) {
+			// 로그인한 사용자의 정보를 모델에 추가
+			model.addAttribute("userInfo", loggedInUser);
+			return "user/sellerApprove"; // sellerpage.jsp 뷰를 반환
+		} else {
+			// 로그인하지 않은 경우 로그인 페이지로 리다이렉트
+			return "redirect:/user/login";
+		}
+	}// sellerPage() end
+
 	@PostMapping("/delete")
 	public String deleteUser(HttpSession session, RedirectAttributes redirectAttributes) {
 		UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
@@ -328,6 +446,4 @@ public class UserCont {
 		return ResponseEntity.ok(response);
 	}// End 로그인 상태 확인을 위한 함수
 
-	
-	
 }// class end

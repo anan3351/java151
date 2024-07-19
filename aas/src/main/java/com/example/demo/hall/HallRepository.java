@@ -15,10 +15,21 @@ public interface HallRepository extends JpaRepository<HallEntity, String>{
 	Page<HallEntity> findByHnameContaining(String hname, Pageable pageable);
     Page<HallEntity> findByAddrContaining(String addr, Pageable pageable);
 
-    @Query(value = "SELECT * FROM tb_hall WHERE hall_id NOT LIKE '%-%' ORDER BY h_code ASC LIMIT :limit OFFSET :offset", nativeQuery = true)
-    List<HallEntity> findByHallIdWithoutDash(@Param("limit") int limit, @Param("offset") int offset);
+    @Query(value = "SELECT h.* " +
+            "FROM tb_hall h " +
+            "JOIN tb_hallPay p ON h.hall_id = p.hall_id " +
+            "WHERE p.h_day IS NOT NULL " +
+            "AND h.hall_id LIKE '%-01' " +
+            "ORDER BY h.h_code ASC " +
+            "LIMIT :limit OFFSET :offset", 
+    nativeQuery = true)
+    List<HallEntity> findByHallIdWithNonNullHDayAndWithoutDash(@Param("limit") int limit, @Param("offset") int offset);
     
-    @Query(value = "SELECT COUNT(*) FROM tb_hall WHERE hall_id NOT LIKE '%-%'", nativeQuery = true)
+    @Query(value = "  SELECT COUNT(*) FROM tb_hall h"
+    		+ "		 		  JOIN tb_hallPay p ON h.hall_id = p.hall_id"
+    		+ "				  WHERE p.h_day IS NOT NULL"
+    		+ "               AND h.hall_id LIKE '%-01%'"
+    		+ "               ORDER BY h.h_code ASC ", nativeQuery = true)
     int countByHallIdWithoutDash();
 
     @Query(value = "SELECT * FROM tb_hall WHERE hall_id NOT LIKE '%-%' AND h_name LIKE %:word% ORDER BY seat LIMIT :limit OFFSET :offset", nativeQuery = true)

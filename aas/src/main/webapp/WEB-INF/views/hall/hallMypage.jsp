@@ -12,20 +12,18 @@
           <meta charset="utf-8">
           <meta name="viewport" content="width=device-width, initial-scale=1">
           <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
           <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/css/swiper.min.css">
           <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/js/swiper.min.js"></script>
           <link rel="stylesheet" href="/css/template.css">
-          <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
-          <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> -->
-          <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 
           <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
             <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
               <title>My Page</title>
               <style>
                 body {
-
+                  font-family: Arial, sans-serif;
                   margin: 0;
                   padding: 0;
                   background-color: #f0f0f0;
@@ -35,7 +33,6 @@
                   padding-top: 130px;
                   /* 헤더의 높이만큼 상단 패딩 추가 */
                 }
-
 
                 .sidebar {
                   width: 250px;
@@ -218,7 +215,7 @@
                   border-radius: 5px;
                 }
 
-                @media (max-width: 768px) {
+                @media (max-width : 768px) {
                   body {
                     flex-direction: column;
                     /* 화면이 좁아지면 세로로 배치 */
@@ -237,7 +234,6 @@
                   .main-container {
                     flex-direction: column;
                   }
-
                 }
               </style>
 
@@ -389,8 +385,6 @@
                   position: relative;
                 }
 
-
-
                 .swiper-slide {
                   background: #fff;
                   display: flex;
@@ -399,9 +393,7 @@
                   text-align: center;
                   border: 1px solid #ccc;
                   cursor: pointer;
-
                 }
-
 
                 .slider1 .swiper-slide {
                   align-items: start;
@@ -456,16 +448,14 @@
                   margin-right: auto;
                 }
 
-
                 /* 반응형 스타일 */
-
-                @media (max-width: 1600px) {
+                @media (max-width : 1600px) {
                   header {
                     width: 100%;
                   }
                 }
 
-                @media (max-width: 1200px) {
+                @media (max-width : 1200px) {
                   header {
                     width: 100%;
                     align-items: center;
@@ -475,16 +465,14 @@
                   header .search-bar {
                     max-width: none;
                     margin: 10px 0;
-
                   }
-
 
                   header .user-options {
                     justify-content: flex-end;
                   }
                 }
 
-                @media (max-width: 768px) {
+                @media (max-width : 768px) {
                   header {
                     padding: 10px;
                   }
@@ -492,7 +480,6 @@
                   header .search-bar input {
                     width: 100%;
                     padding: 5px 30px 5px 10px;
-
                   }
 
                   header .user-options {
@@ -504,11 +491,10 @@
                   }
                 }
 
-                @media (max-width: 480px) {
+                @media (max-width : 480px) {
                   header .search-bar input {
                     width: 95%;
                     padding: 5px 25px 5px 5px;
-
                   }
 
                   header .user-options {
@@ -519,33 +505,6 @@
                     margin: 5px;
                     /* 여백 조정 */
                   }
-                }
-
-                .membership-table th,
-                .membership-table td {
-                  text-align: center;
-                }
-
-                .membership-table th {
-                  background-color: #f9f9f9;
-                }
-
-                .membership-table td {
-                  vertical-align: middle;
-                }
-
-                .selected-row {
-                  background-color: #dcdcdc;
-                }
-
-                .button-container {
-                  text-align: center;
-                  margin-top: 20px;
-                }
-
-                .memberlogo {
-                  text-align: center;
-                  margin-bottom: 30px;
                 }
 
                 .modal {
@@ -635,7 +594,7 @@
                   color: #0066cc;
                 }
 
-                @media (max-width: 768px) {
+                @media (max-width : 768px) {
                   .modal-content {
                     width: 95%;
                     margin: 10% auto;
@@ -650,6 +609,76 @@
                   .modal td {
                     padding: 10px;
                   }
+                }
+
+                .hall-wrap {
+                  background-color: #ffffff;
+                  border-radius: 8px;
+                  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                  padding: 30px;
+                  width: 100%;
+                }
+
+                .hall-wrap h1 {
+                  color: #333;
+                  font-size: 24px;
+                  margin-bottom: 20px;
+                  border-bottom: 2px solid #0066cc;
+                  padding-bottom: 10px;
+                }
+
+                .info-table {
+                  width: 100%;
+                  border-collapse: separate;
+                  border-spacing: 0 10px;
+                }
+
+                .info-table th,
+                .info-table td {
+                  padding: 12px 15px;
+                  text-align: left;
+                }
+
+                .info-table th {
+                  background-color: #f5f5f5;
+                  color: #333;
+                  font-weight: bold;
+                  border-radius: 4px 0 0 4px;
+                }
+
+                .info-table td {
+                  background-color: #fafafa;
+                  border-radius: 0 4px 4px 0;
+                }
+
+                .btn-container {
+                  display: flex;
+                  justify-content: center;
+                  margin-top: 20px;
+                }
+
+                .btn {
+                  padding: 10px 20px;
+                  border: none;
+                  border-radius: 4px;
+                  cursor: pointer;
+                  font-weight: bold;
+                  transition: background-color 0.3s ease;
+                }
+
+                .btn-back {
+                  background-color: #6c757d;
+                  color: white;
+                  margin-right: 10px;
+                }
+
+                .btn-approve {
+                  background-color: #0066cc;
+                  color: white;
+                }
+
+                .btn:hover {
+                  opacity: 0.9;
                 }
               </style>
 
@@ -672,97 +701,23 @@
                       modal.style.display = "none";
                     }
                   }
-
-                  var selectedAmount = 0;
-
-                  // 라디오 버튼 선택 시 금액 업데이트
-                  $('input[name="membership"]').on('change', function () {
-                    selectedMember = $(this).closest('tr').find('td').eq(1).text().replace(',', '')
-                    selectedAmount = $(this).closest('tr').find('td').eq(4).text().replace(',', '').replace('원', '');
-                    selectedAmount = parseInt(selectedAmount, 10); // 문자열을 숫자로 변환
-                    console.log('Selected amount:', selectedAmount);
-                  });
-
-                  // Payment request script
-                  $("#check_order").click(function () {
-                    if (selectedAmount <= 0) {
-                      alert('멤버십을 선택해주세요.');
-                      return;
-                    }
-
-                    IMP.init('imp81610215');
-                    IMP.request_pay({
-                      pg: 'html5_inicis',
-                      pay_method: 'card',
-                      merchant_uid: "order_no_0001", // 상점에서 관리하는 주문 번호를 전달
-                      name: '주문명:결제테스트',
-                      amount: selectedAmount, // 결제금액
-                      //limitDate : selectedLimitDate, // 멤버십 유지기간
-                      //userPoint: selectedUserPoint,  // 회원 포인트 추가
-                      //revCoiunt: selectedrevCount,   // 예매대기 횟수
-                      membership : selectedMember,   // 멤버십 이름
-                      m_redirect_url: '{모바일에서 결제 완료 후 리디렉션 될 URL}' // 예: https://www.my-service.com/payments/complete/mobile
-                    }, function (rsp) { // callback 로직
-                      if (rsp.success) {
-                        // 서버단에서 결제정보 조회를 위해 Fetch API로 imp_uid 전달하기
-                        fetch("/payments/complete", {
-                          method: 'POST',
-                          headers: {
-                            'Content-Type': 'application/json'
-                          },
-                          body: JSON.stringify({
-                            imp_uid: rsp.imp_uid,
-                            membership : selectedMember
-                            // 기타 필요한 데이터가 있으면 추가 전달
-                          })
-                        })
-                          .then(response => response.json())
-                          .then(data => {
-                            // 서버에서 REST API로 결제정보확인 및 서비스루틴이 정상적인 경우
-                            if (data.everythings_fine) {
-                              var msg = '결제가 완료되었습니다.';
-                              msg += '\n고유ID : ' + rsp.imp_uid;
-                              msg += '\n상점 거래ID : ' + rsp.merchant_uid;
-                              msg += '\n결제 금액 : ' + rsp.paid_amount;
-                              msg += '카드 승인번호 : ' + rsp.apply_num;
-
-                              alert(msg);
-                            } else {
-                              // 아직 제대로 결제가 되지 않았습니다.
-                              // 결제된 금액이 요청한 금액과 달라 결제를 자동취소처리하였습니다.
-                              alert('결제 정보가 확인되지 않았습니다. 다시 시도해 주세요.');
-                            }
-                          })
-                          .catch(error => {
-                            console.error('Error:', error);
-                            alert('서버와의 통신에 실패하였습니다. 다시 시도해 주세요.');
-                          });
-                      } else {
-                        var msg = '결제에 실패하였습니다.';
-                        msg += '에러내용 : ' + rsp.error_msg;
-
-                        alert(msg);
-                      }
-                    });
-                  });
                 });
-
               </script>
-
         </head>
 
         <body>
-
           <%@ include file="../header.jsp" %>
             <div class="main-container">
               <div class="sidebar">
                 <div class="profile">
                   <div class="profile-image"></div>
-                  <p>${userInfo.user_id} 님</p>
+                  <p>${userInfo.user_id}님</p>
                   <p>회원등급 - ${userInfo.auth}</p>
-                  <p>${userInfo.level_name} Level</p>
-                  <p class="points">내 포인트 -
-                    <fmt:formatNumber value="${userInfo.u_point}" pattern="#,###" />p
+                  <p>${userInfo.level_name}Level</p>
+                  <p class="points">
+                    내 포인트 -
+                    <fmt:formatNumber value="${userInfo.u_point}" pattern="#,###" />
+                    p
                   </p>
                 </div>
                 <div class="menu-section">
@@ -800,131 +755,65 @@
                     </c:choose>
                   </ul>
                 </div>
-                 <div class="menu-section">
-                  <div class="menu-title"><a href="${pageContext.request.contextPath}/user/mypage/hallMypage?user_id=${sessionScope.loggedInUser.user_id}">공연장 대관</a></div>
+                <div class="menu-section">
+                  <div class="menu-title">
+                    <a
+                      href="${pageContext.request.contextPath}/user/mypage/hallMypage?user_id=${sessionScope.loggedInUser.user_id}">공연장
+                      대관</a>
+                  </div>
                 </div>
-                <div class="menu-title"><a
+                <div class="menu-section">
+                  <div class="menu-title">
+                    <a
                       href="${pageContext.request.contextPath}/user/mypage/membership?user_id=${sessionScope.loggedInUser.user_id}">멤버십</a>
                   </div>
+                </div>
                 <div class="menu-section">
-                  <div class="menu-title"><a href="${pageContext.request.contextPath}/user/mypage/coupon?user_id=${sessionScope.loggedInUser.user_id}">보유쿠폰</a></div>
-                </div>
-                <c:if test="${userInfo.auth == 'S'}">
-                  <div class="menu-section">
-                    <div class="menu-title"><a href="./sellerpage">* 판매자 전용 *</a></div>
+                  <div class="menu-title">
+                    <a
+                      href="${pageContext.request.contextPath}/user/mypage/coupon?user_id=${sessionScope.loggedInUser.user_id}">보유쿠폰</a>
                   </div>
-                </c:if>
+                </div>
               </div>
-
-              <main>
-                <div class="welcome-box">
-                  <div class="heart-icon">❤</div>
-                  <p>${userInfo.user_name}님은 현재 ${userInfo.level_name} Level입니다.</p>
-                  <button class="rank-btn">등급별 혜택보기</button>
-                </div>
-                <div class="membership">
-                  <div class="memberlogo" style="align-items: center; ">
-                    <img src="/images/membership.png">
+              <div class="hall-wrap">
+                <h1>공연장 승인 요청</h1>
+                <form id="approvalForm" method="post">
+                  <table class="info-table">
+                    <tr>
+                      <th>시작 날짜</th>
+                      <td>${order.start_date}</td>
+                    </tr>
+                    <tr>
+                      <th>총 대관일</th>
+                      <td>${order.end_date}일</td>
+                    </tr>
+                    <tr>
+                      <th>총 금액</th>
+                      <td>${order.price}원</td>
+                    </tr>
+                    <tr>
+                      <th>승인요청시간</th>
+                      <td>${order.pay_date}</td>
+                    </tr>
+                    <tr>
+                      <th>공연관</th>
+                      <td>${order.miniHall}</td>
+                      <td style="display: none;">${order.hall_id}</td>
+                      <td style="display: none;">${order.user_id}</td>
+                    </tr>
+                    <tr>
+                      <th>승인상황</th>
+                      <td>${order.pay_status}</td>
+                    </tr>
+                  </table>
+                  <div class="btn-container">
+                    <button type="button" class="btn btn-back" onclick=""/>요청삭제</button>
+                    <button type="submit" onclick="confirmApproval()" class="btn btn-approve">승인요청</button>
                   </div>
-                  <form>
-                    <table class="table membership-table">
-                      <thead>
-                        <tr>
-                          <th></th>
-                          <th>멤버십명</th>
-                          <th>혜택</th>
-                          <th>예매대기 횟수</th>
-                          <th>가입액</th>
-                          <th>유지기간</th>
-                          <th>포인트</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td><input type="radio" name="membership" value="BRONZE"></td>
-                          <td>BRONZE</td>
-                          <td>공연할인, 선예매, 티켓포장, 예매대기</td>
-                          <td>5</td>
-                          <td>10,000</td>
-                          <td>365</td>
-                          <td>0</td>
-                        </tr>
-                        <tr>
-                          <td><input type="radio" name="membership" value="SILVER"></td>
-                          <td>SILVER</td>
-                          <td>공연할인, 선예매, 티켓포장, 예매대기, 할인쿠폰</td>
-                          <td>6</td>
-                          <td>20,000</td>
-                          <td>365</td>
-                          <td>0</td>
-                        </tr>
-                        <tr>
-                          <td><input type="radio" name="membership" value="GOLD"></td>
-                          <td>GOLD</td>
-                          <td>공연할인, 선예매, 티켓포장, 예매대기, 할인쿠폰, 포인트</td>
-                          <td>7</td>
-                          <td>30,000</td>
-                          <td>365</td>
-                          <td>10,000</td>
-                        </tr>
-                        <tr>
-                          <td><input type="radio" name="membership" value="DIAMOND"></td>
-                          <td>DIAMOND</td>
-                          <td>공연할인, 선예매, 티켓포장, 예매대기, 할인쿠폰, 포인트</td>
-                          <td>8</td>
-                          <td>500,000</td>
-                          <td>365</td>
-                          <td>250,000</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <div class="button-container">
-                      <button id="check_order" type="button" class="btn btn-success btn-lg" data-toggle="modal"
-                        data-target="#paymentModal">가입하기</button>
-                    </div>
-                  </form>
-                </div>
-                <div id="rankModal" class="modal">
-                  <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <h2>등급별 혜택</h2>
-                    <table>
-                      <tr>
-                        <th>등급</th>
-                        <th>주문 건수</th>
-                        <th>주문금액</th>
-                        <th>포인트 적립</th>
-                      </tr>
-                      <tr>
-                        <td>WELCOME</td>
-                        <td>0건</td>
-                        <td>신규회원</td>
-                        <td>-</td>
-                      </tr>
-                      <tr>
-                        <td>FAMILY</td>
-                        <td>1건 ↑</td>
-                        <td>3만원 ↑</td>
-                        <td>-</td>
-                      </tr>
-                      <tr>
-                        <td>VIP</td>
-                        <td>3건 ↑</td>
-                        <td>30만원 ↑</td>
-                        <td>1프로</td>
-                      </tr>
-                      <tr>
-                        <td>VVIP</td>
-                        <td>20건 ↑</td>
-                        <td>100만원 ↑</td>
-                        <td>3프로</td>
-                      </tr>
-                    </table>
-                  </div>
-                </div>
-              </main>
-            </div>
-            <%@ include file="../footer.jsp" %>
+                </form>
+              </div>
+              </div>
+              <%@ include file="../footer.jsp" %>
         </body>
 
         </html>

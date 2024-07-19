@@ -40,12 +40,13 @@ public class HallDAO {
 		return sqlSession.selectList("hall.hallDetail", hall_id);
 	}// hallDetail() end
 	
+	
 	// 공연장 상세정보 미니홀목록만 리스트 뽑기
 	public List<Map<String, Object>> hallDetailMini(String hall_id) {
 		return sqlSession.selectList("hall.hallDetailMini", hall_id);
 	}// hallDetail() end
 	
-
+	
 	
 	// 공연 코드 임시 테이블에 공연 코드만 먼저 추가
 	public int addCodeOnly(String playCode) throws SQLException {

@@ -1,3 +1,4 @@
+<%@page import="com.example.demo.user.UserDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
   <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -35,6 +36,7 @@
         </head>
 
         <body>
+        
           <%@ include file="../header.jsp" %>
             <div class="main-container">
               <!-- 본문시작 -->
@@ -81,7 +83,6 @@
                         </div>
                         <div id="calendar"></div>
                         <button id="select-date-btn">날짜 선택</button>
-                        <!-- <div id="selected-date-display"></div> -->
                       </div>
                       <div class="option-area">
                         <div class="option-tit">공연관 선택</div>
@@ -89,8 +90,8 @@
                           <ul>
                             <c:forEach items="${list2}" var="mini" varStatus="status">
                               <li class="clickable" data-mini-hall="${mini.miniHall}" data-seat="${mini.seat}"
-                                data-h-day="${mini.h_day}">
-                                ${mini.miniHall} &nbsp;/ 좌석수: ${mini.seat } / 1DAY :
+                                data-h-day="${mini.h_day}" data-hall-id="${mini.hall_id}" data-hallPay-id="${mini.hallPay_id}">
+                                ${mini.miniHall} &nbsp;/ 좌석수: ${mini.seat } / 1DAY : 
                                 <fmt:formatNumber value="${mini.h_day}" type="number" groupingUsed="true" />원
                               </li>
                             </c:forEach>
@@ -101,7 +102,6 @@
                     </div>
                     <div class="btn-area">
                       <button type="button" class="btn btn-booking" onclick="submitOrder()">예약하기</button>
-                      <button type="button" class="btn btn-bookmark">찜하기</button>
                     </div>
                   </div>
                 </div>
@@ -145,11 +145,21 @@
                   <th>결제금액</th>
                   <td id="price-per-day" style="font-size: 18px; color: #ff0000;"></td>
                   <td>원</td>
+                  <td id="selected-hall-id" style="display: none;"></td>
+                  <td id="selected-hallPay-id" style="display: none;"></td>
                 </tr>
 
               </table>
 
             </div>
+          	  <%
+		    UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+		    String userId = loggedInUser != null ? loggedInUser.getUser_id() : "";
+				%>
+            
+            <script type="text/javascript">
+   				 var userId = "<%= userId %>";
+			</script>
             <script>
               document.addEventListener('DOMContentLoaded', function () {
                 console.log("DOMContentLoaded event fired");
@@ -163,13 +173,6 @@
                 const currentMonthYear = document.getElementById('current-month-year');
                 const prevMonthBtn = document.getElementById('prev-month');
                 const nextMonthBtn = document.getElementById('next-month');
-
-                //console.log("Calendar Elements:", calendar, selectDateBtn, selectedDateDisplay, currentMonthYear, prevMonthBtn, nextMonthBtn);
-
-                //if (!calendar || !selectDateBtn || !selectedDateDisplay || !currentMonthYear || !prevMonthBtn || !nextMonthBtn) {
-                //console.error("One or more elements are missing!");
-                //  return;
-                //}
 
                 let selectedStartDate = null;
                 let selectedEndDate = null;
@@ -221,7 +224,17 @@
                         dayCell.classList.add('selected');
                       }
                       dayCell.addEventListener('click', function () {
-                        //console.log("Date clicked: " + cellDate);
+
+                        // 날짜 선택 취소 기능 추가
+                        if (selectedStartDate && selectedEndDate && cellDate >= selectedStartDate && cellDate <= selectedEndDate) {
+                          selectedStartDate = null;
+                          selectedEndDate = null;
+                          document.querySelectorAll('.day-cell').forEach(cell => cell.classList.remove('selected'));
+                          updateSelectedDateDisplay();
+                          return;
+                        }
+
+
                         if (!selectedStartDate || (selectedStartDate && selectedEndDate)) {
                           selectedStartDate = new Date(year, month, day);
                           console.log("selectedStartDate set to: " + selectedStartDate);
@@ -325,23 +338,35 @@
                 }); //END addEventListener
 
 
+                 // 공연관 목록을 클릭했을 때 이벤트 리스너 추가
                 document.querySelectorAll('.clickable').forEach(function (item) {
                   item.addEventListener('click', function () {
                     const miniHall = this.getAttribute('data-mini-hall');
                     const hDay = this.getAttribute('data-h-day');
+                    const hallId = this.getAttribute('data-hall-id');
+                    const hallPayId = this.getAttribute('data-hallPay-id');
 
-                    updateSelectedDateDisplay(); // Update the selected dates before calculating discount
+                    // 공연장 선택 취소 기능 추가
+                    if (document.getElementById('selected-hall').textContent === miniHall) {
+                      document.getElementById('selected-hall').textContent = '';
+                      document.getElementById('selected-hall-id').textContent = ''; // 공연관 ID 초기화
+                      document.getElementById('selected-hallPay-id').textContent = ''; // 공연관 ID 초기화
+                      return;
+                    }
 
-                    const discountedPrice = calculateDiscountedPrice(hDay, totalDays);
-                    const formattedPrice = discountedPrice.toLocaleString('ko-KR');
+                    updateSelectedDateDisplay(); // 선택된 날짜 업데이트
 
+                    const discountedPrice = calculateDiscountedPrice(hDay, totalDays); // 할인된 가격 계산
+                    const formattedPrice = discountedPrice.toLocaleString('ko-KR'); // 가격을 쉼표로 포맷팅
+ 
                     // 숫자를 쉼표로 포맷팅
                     const formattedHDay = parseInt(hDay).toLocaleString();
 
 
-                    document.getElementById('price-per-day').textContent = formattedPrice;
-                    document.getElementById('selected-hall').textContent = miniHall;
-
+                    document.getElementById('price-per-day').textContent = formattedPrice; // 할인된 가격 표시
+                    document.getElementById('selected-hall').textContent = miniHall; // 공연관 이름 표시
+                    document.getElementById('selected-hall-id').textContent = hallId;  // 공연관 ID 표시
+                    document.getElementById('selected-hallPay-id').textContent = hallPayId;  // 공연관 ID 표시
                   });
                 });// END querySelectorAll
 
@@ -383,47 +408,52 @@
                   });
                 }); //END 공연관선택컬러
 
-                renderCalendar(currentYear, currentMonth);
-             
-              });// END addEventListener
-              
+                renderCalendar(currentYear, currentMonth); // 초기 캘린더 렌더링
 
-                function submitOrder() {
-                	var userId = "${loggedInUser}";
-                
+              });// END addEventListener
+
+
+              function submitOrder() {
+
                 const selectedDate = document.getElementById('selected-date-display').textContent;
                 const selectedHall = document.getElementById('selected-hall').textContent;
                 const totalPrice = document.getElementById('price-per-day').textContent;
                 const totalDate = document.getElementById('selected-date-display2').textContent;
+                const hallId = document.getElementById('selected-hall-id').textContent;
+                const hallPayId = document.getElementById('selected-hallPay-id').textContent;
 
-                if (!selectedDate || !selectedHall || !totalPrice === 0 || !totalDate) {
+                if (!selectedDate || !selectedHall || totalPrice == 0 || !totalDate) {
                   alert('시작날짜와 종료날짜, 공연관을 모두 선택해주세요');
                 } else {
-                 
-                  alert(' 결제 페이지로 넘어갑니다.')
 
-                  // var data = {
-                  //   start_date: selectedDate,  //대관일
-                  //   end_date: totalDate,      //총대관일
-                  //   price: totalPrice,         //총금액
-                  //   user_id: userId,  // 로그인한 사용자의 ID 포함
-                  //   miniHall: selectedHall  //공연관이름
-                  // };
+                  alert(' 승인 페이지로 넘어갑니다.')
 
-                  // $.ajax({
-                  //   url: '/hall/order',
-                  //   type: 'POST',
-                  //   contentType: 'application/json',
-                  //   data: JSON.stringify(data),
-                  //   success: function (response) {
-                  //     window.location.href = '/hallOrder';
-                  //   },
-                  //   error: function (xhr, status, error) {
-                  //     console.error('Error:', error);
-                  //   }
-                  // });
+                  var data = {
+                    start_date: selectedDate,  //대관일
+                    end_date: totalDate,      //총대관일
+                    price: totalPrice,         //총금액
+                    user_id: userId,  // 로그인한 사용자의 ID 포함
+                    miniHall: selectedHall,  //공연관이름
+                    hall_id : hallId,        //공연관ID
+                    hallPay_id : hallPayId
+                  };
+                  console.log(data);
+                  $.ajax({
+                    url: '/hall/order',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    success: function (response) {
+                      console.log(data);
+                      window.location.href = '/hall/hallOrder';
+                    },
+                    error: function (xhr, status, error) {
+                      console.error('Error:', error);
+                    }
+                  });
                 }
               }//END submitOrder
+
 
             </script>
 

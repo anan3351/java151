@@ -510,7 +510,7 @@ footer {
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  background-color: #8e43e7;
+  background-color: #c9c511;
   color: white;
 }
 
@@ -543,7 +543,7 @@ footer {
 #select-date-btn {
   width: 100%;
   padding: 15px 0;
-  background-color: #8e43e7;
+  background-color: #c9c511;
   color: white;
   border: none;
   font-size: 16px;
