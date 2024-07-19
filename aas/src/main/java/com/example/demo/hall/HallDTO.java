@@ -3,7 +3,6 @@ package com.example.demo.hall;
 public class HallDTO {
 	
 	public HallDTO() {
-		System.out.println("-----------HallDTO 객채 생성");
 	}
 	
 	private String hall_id;

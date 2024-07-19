@@ -12,20 +12,18 @@
           <meta charset="utf-8">
           <meta name="viewport" content="width=device-width, initial-scale=1">
           <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
           <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/css/swiper.min.css">
           <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/js/swiper.min.js"></script>
           <link rel="stylesheet" href="/css/template.css">
-          <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
-          <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> -->
-          <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 
           <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
             <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
               <title>My Page</title>
               <style>
                 body {
-
+                  font-family: Arial, sans-serif;
                   margin: 0;
                   padding: 0;
                   background-color: #f0f0f0;
@@ -35,7 +33,6 @@
                   padding-top: 130px;
                   /* 헤더의 높이만큼 상단 패딩 추가 */
                 }
-
 
                 .sidebar {
                   width: 250px;
@@ -218,7 +215,7 @@
                   border-radius: 5px;
                 }
 
-                @media (max-width: 768px) {
+                @media (max-width : 768px) {
                   body {
                     flex-direction: column;
                     /* 화면이 좁아지면 세로로 배치 */
@@ -237,90 +234,7 @@
                   .main-container {
                     flex-direction: column;
                   }
-
                 }
-
-                .container{
-                  position: relative;
-
-                }
-                .card {
-                  width: 400px;
-                  height: 180px;
-                  border-radius: 5px;
-                  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2);
-                  background-color: #fff;
-                  padding: 10px 10px;
-                  position: relative;
-                }
-
-                .main,
-                .copy-button {
-                  display: flex;
-                  justify-content: space-between;
-                  padding: 0 10px;
-                  align-items: center;
-                }
-
-                .card::after {
-                  position: absolute;
-                  content: "";
-                  height: 40px;
-                  right: -20px;
-                  border-radius: 40px;
-                  z-index: 1;
-                  top: 70px;
-                  background-color: #ff6b6b;
-                  width: 40px;
-                }
-
-                .card::before {
-                  position: absolute;
-                  content: "";
-                  height: 40px;
-                  left: -20px;
-                  border-radius: 40px;
-                  z-index: 1;
-                  top: 70px;
-                  background-color: #ff6b6b;
-                  width: 40px;
-                }
-
-                .co-img img {
-                  width: 100px;
-                  height: 100px;
-                }
-
-                .vertical {
-                  border-left: 5px dotted black;
-                  height: 100px;
-                  position: absolute;
-                  left: 40%;
-                }
-
-                .content h1 {
-                  font-size: 35px;
-                  margin-left: -20px;
-                  color: #565656;
-                }
-
-                .content h1 span {
-                  font-size: 18px;
-                }
-
-                .content h2 {
-                  font-size: 18px;
-                  margin-left: -20px;
-                  color: #565656;
-                  text-transform: uppercase;
-                }
-
-                .content p {
-                  font-size: 16px;
-                  color: #696969;
-                  margin-left: -20px;
-                }
-
               </style>
 
               <style>
@@ -593,33 +507,6 @@
                   }
                 }
 
-                .membership-table th,
-                .membership-table td {
-                  text-align: center;
-                }
-
-                .membership-table th {
-                  background-color: #f9f9f9;
-                }
-
-                .membership-table td {
-                  vertical-align: middle;
-                }
-
-                .selected-row {
-                  background-color: #dcdcdc;
-                }
-
-                .button-container {
-                  text-align: center;
-                  margin-top: 20px;
-                }
-
-                .memberlogo {
-                  text-align: center;
-                  margin-bottom: 30px;
-                }
-
                 .modal {
                   display: none;
                   position: fixed;
@@ -724,59 +611,74 @@
                   }
                 }
 
-                .coupon table {
+                .hall-wrap {
+                  background-color: #ffffff;
+                  border-radius: 8px;
+                  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                  padding: 30px;
+                  width: 100%;
+                }
+
+                .hall-wrap h1 {
+                  color: #333;
+                  font-size: 24px;
+                  margin-bottom: 20px;
+                  border-bottom: 2px solid #0066cc;
+                  padding-bottom: 10px;
+                }
+
+                .info-table {
                   width: 100%;
                   border-collapse: separate;
-                  border-spacing: 0;
-                  background-color: #fff;
-                  border-radius: 10px;
-                  overflow: hidden;
-                  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-                  margin-bottom: 20px;
+                  border-spacing: 0 10px;
                 }
 
-                .coupon th,
-                .coupon td {
-                  padding: 15px;
+                .info-table th,
+                .info-table td {
+                  padding: 12px 15px;
                   text-align: left;
-                  border-bottom: 1px solid #e0e0e0;
                 }
 
-                .coupon th {
-                  background-color: #f8f9fa;
-                  font-weight: bold;
+                .info-table th {
+                  background-color: #f5f5f5;
                   color: #333;
-                  text-transform: uppercase;
-                  font-size: 14px;
+                  font-weight: bold;
+                  border-radius: 4px 0 0 4px;
                 }
 
-                .coupon tr:last-child td {
-                  border-bottom: none;
+                .info-table td {
+                  background-color: #fafafa;
+                  border-radius: 0 4px 4px 0;
                 }
 
-                .coupon tr:nth-child(even) {
-                  background-color: #f9f9f9;
+                .btn-container {
+                  display: flex;
+                  justify-content: center;
+                  margin-top: 20px;
                 }
 
-                .coupon tr:hover {
-                  background-color: #f0f0f0;
+                .btn {
+                  padding: 10px 20px;
+                  border: none;
+                  border-radius: 4px;
+                  cursor: pointer;
+                  font-weight: bold;
                   transition: background-color 0.3s ease;
                 }
 
-                .coupon td:first-child {
-                  font-weight: bold;
-                  color: #0066cc;
+                .btn-back {
+                  background-color: #6c757d;
+                  color: white;
+                  margin-right: 10px;
                 }
 
-                @media (max-width : 768px) {
-                  .coupon table {
-                    font-size: 14px;
-                  }
+                .btn-approve {
+                  background-color: #0066cc;
+                  color: white;
+                }
 
-                  .coupon th,
-                  .coupon td {
-                    padding: 10px;
-                  }
+                .btn:hover {
+                  opacity: 0.9;
                 }
               </style>
 
@@ -800,23 +702,22 @@
                     }
                   }
                 });
-
               </script>
-
         </head>
 
         <body>
-
           <%@ include file="../header.jsp" %>
             <div class="main-container">
               <div class="sidebar">
                 <div class="profile">
                   <div class="profile-image"></div>
-                  <p>${userInfo.user_id} 님</p>
+                  <p>${userInfo.user_id}님</p>
                   <p>회원등급 - ${userInfo.auth}</p>
-                  <p>${userInfo.level_name} Level</p>
-                  <p class="points">내 포인트 -
-                    <fmt:formatNumber value="${userInfo.u_point}" pattern="#,###" />p
+                  <p>${userInfo.level_name}Level</p>
+                  <p class="points">
+                    내 포인트 -
+                    <fmt:formatNumber value="${userInfo.u_point}" pattern="#,###" />
+                    p
                   </p>
                 </div>
                 <div class="menu-section">
@@ -854,100 +755,65 @@
                     </c:choose>
                   </ul>
                 </div>
-                 <div class="menu-section">
-                  <div class="menu-title"><a href="${pageContext.request.contextPath}/user/mypage/hallMypage?user_id=${sessionScope.loggedInUser.user_id}">공연장 대관</a></div>
+                <div class="menu-section">
+                  <div class="menu-title">
+                    <a
+                      href="${pageContext.request.contextPath}/user/mypage/hallMypage?user_id=${sessionScope.loggedInUser.user_id}">공연장
+                      대관</a>
+                  </div>
                 </div>
                 <div class="menu-section">
-                  <div class="menu-title"><a
+                  <div class="menu-title">
+                    <a
                       href="${pageContext.request.contextPath}/user/mypage/membership?user_id=${sessionScope.loggedInUser.user_id}">멤버십</a>
                   </div>
                 </div>
                 <div class="menu-section">
                   <div class="menu-title">
-                    <div class="menu-title"><a
-                        href="${pageContext.request.contextPath}/user/mypage/coupon?user_id=${sessionScope.loggedInUser.user_id}">보유쿠폰</a>
-                    </div>
+                    <a
+                      href="${pageContext.request.contextPath}/user/mypage/coupon?user_id=${sessionScope.loggedInUser.user_id}">보유쿠폰</a>
                   </div>
                 </div>
-                <c:if test="${userInfo.auth == 'S'}">
-                  <div class="menu-section">
-                    <div class="menu-title"><a href="./sellerpage">* 판매자 전용 *</a></div>
-                  </div>
-                </c:if>
               </div>
-
-              <main>
-                <div class="welcome-box">
-                  <div class="heart-icon">❤</div>
-                  <p>${userInfo.user_name}님은 현재 ${userInfo.level_name} Level입니다.</p>
-                  <button class="rank-btn">등급별 혜택보기</button>
-                </div>
-                <div class="coupon">
-
-
-                  <c:forEach items="${coupons}" var="cp" varStatus="status">
-                  <div class="container">
-                    <div class="card">
-                      <div class="main">
-                        <div class="co-img">
-                          <img src="../../images/xx11.png"
-                            alt="" />
-                        </div>
-                        <div class="vertical"></div>
-                        <div class="content">
-                          <h2 style="font-weight: 700; color: rgb(158, 5, 163);">${cp.coupon_name }</h2>
-                          <p>${cp.limit_date }</p>
-                          <p>잔여개수 : ${cp.left_count }</p>
-                          <p>발급날짜 : ${cp.cp_date }</p>
-                        </div>
-                      </div>
-                    </div>
+              <div class="hall-wrap">
+                <h1>공연장 승인 요청</h1>
+                <form id="approvalForm" method="post">
+                  <table class="info-table">
+                    <tr>
+                      <th>시작 날짜</th>
+                      <td>${order.start_date}</td>
+                    </tr>
+                    <tr>
+                      <th>총 대관일</th>
+                      <td>${order.end_date}일</td>
+                    </tr>
+                    <tr>
+                      <th>총 금액</th>
+                      <td>${order.price}원</td>
+                    </tr>
+                    <tr>
+                      <th>승인요청시간</th>
+                      <td>${order.pay_date}</td>
+                    </tr>
+                    <tr>
+                      <th>공연관</th>
+                      <td>${order.miniHall}</td>
+                      <td style="display: none;">${order.hall_id}</td>
+                      <td style="display: none;">${order.user_id}</td>
+                    </tr>
+                    <tr>
+                      <th>승인상황</th>
+                      <td>${order.pay_status}</td>
+                    </tr>
+                  </table>
+                  <div class="btn-container">
+                    <button type="button" class="btn btn-back" onclick=""/>요청삭제</button>
+                    <button type="submit" onclick="confirmApproval()" class="btn btn-approve">승인요청</button>
                   </div>
-                </c:forEach>
-
-
-                </div>
-                <div id="rankModal" class="modal">
-                  <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <h2>등급별 혜택</h2>
-                    <table>
-                      <tr>
-                        <th>등급</th>
-                        <th>주문 건수</th>
-                        <th>주문금액</th>
-                        <th>포인트 적립</th>
-                      </tr>
-                      <tr>
-                        <td>WELCOME</td>
-                        <td>0건</td>
-                        <td>신규회원</td>
-                        <td>-</td>
-                      </tr>
-                      <tr>
-                        <td>FAMILY</td>
-                        <td>1건 ↑</td>
-                        <td>3만원 ↑</td>
-                        <td>-</td>
-                      </tr>
-                      <tr>
-                        <td>VIP</td>
-                        <td>3건 ↑</td>
-                        <td>30만원 ↑</td>
-                        <td>1프로</td>
-                      </tr>
-                      <tr>
-                        <td>VVIP</td>
-                        <td>20건 ↑</td>
-                        <td>100만원 ↑</td>
-                        <td>3프로</td>
-                      </tr>
-                    </table>
-                  </div>
-                </div>
-              </main>
-            </div>
-            <%@ include file="../footer.jsp" %>
+                </form>
+              </div>
+              </div>
+              <%@ include file="../footer.jsp" %>
         </body>
 
         </html>

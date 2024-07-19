@@ -87,8 +87,50 @@
     <select id="getUserByUserId" parameterType="string" resultType="com.example.demo.user.UserDTO">
         SELECT * FROM aas.tb_user WHERE user_id = #{user_id}
     </select>
-	
-
-
     
+    <select id="hallList" resultType="java.util.Map" parameterType="string">
+		SELECT  hall_id, h_name, miniHall, addr, url, seat
+        FROM aas.tb_hall
+        WHERE hall_id NOT LIKE '%-%' ORDER BY h_code ASC
+	</select>
+	
+	<select id="getSubHalls" parameterType="String" resultType="java.util.Map">
+	    SELECT hall_id, h_name, miniHall
+	    FROM aas.tb_hall
+	    WHERE hall_id LIKE CONCAT(#{hall_id}, '-%')
+	    ORDER BY h_name
+	</select>
+	
+	<insert id="insertHallPrice" parameterType="java.util.Map">
+	    INSERT INTO aas.tb_hallPay (hall_id, h_day)
+	    VALUES (#{hall_id}, #{h_day})
+	</insert>
+	
+	<select id="getSubHallsWithPrices" parameterType="String" resultType="java.util.Map">
+	    SELECT h.hall_id, h.h_name, h.miniHall, p.h_day AS price
+	    FROM aas.tb_hall h
+	    LEFT JOIN aas.tb_hallPay p ON h.hall_id = p.hall_id
+	    WHERE h.hall_id LIKE CONCAT(#{hall_id}, '-%')
+	    ORDER BY h.h_name
+	</select>
+
+	<update id="updateHallPrice" parameterType="java.util.Map">
+	    UPDATE aas.tb_hallPay
+	    SET h_day = #{h_day}
+	    WHERE hall_id = #{hall_id}
+	</update>
+	
+	<update id="updateHallUser" parameterType="java.util.Map">
+	    UPDATE aas.tb_hall
+	    SET user_id = #{user_id}
+	    WHERE hall_id = #{hall_id}
+	</update>
+	
+	<select id="checkHallPriceExists" parameterType="String" resultType="int">
+	    SELECT COUNT(*)
+	    FROM aas.tb_hallPay
+	    WHERE hall_id = #{hall_id}
+	</select>
+
+ 
 </mapper>
