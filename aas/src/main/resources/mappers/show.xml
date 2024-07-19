@@ -192,5 +192,21 @@
 	<delete id="priDelete" parameterType="Integer">
  		DELETE FROM tb_price WHERE price_id = #{price_id}
  	</delete>
+	<!-- //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+ 	
+ 	<!-- 캐스트 관리 목록 -->
+ 	<select id="findByCast" resultType="java.util.HashMap" parameterType="java.util.Map">
+		SELECT s.*, a.*, t.*, ac.a_name from tb_showcasting s inner join tb_acsch a ON s.casting_id = a.casting_id
+		inner join tb_ticket t ON s.show_id = t.show_id inner join tb_actor ac ON s.actor_id = ac.actor_id
+		WHERE s.show_id = #{show_id} and a.ticket_id = t.ticket_id
+		LIMIT #{offset}, #{limit}
+	</select>
+	
+	<!-- 캐스트 일정 개수 -->
+	<select id="countByCast" resultType="int" parameterType="String">
+	    SELECT count(*) from tb_showcasting s inner join tb_acsch a ON s.casting_id = a.casting_id
+		inner join tb_ticket t ON s.show_id = t.show_id inner join tb_actor ac ON s.actor_id = ac.actor_id
+		WHERE s.show_id = #{show_id} and a.ticket_id = t.ticket_id
+	</select>
 	
 </mapper>
