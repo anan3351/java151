@@ -1,8 +1,10 @@
 package com.example.demo.show.seller;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,18 +15,19 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;  // 올바른 Model 인터페이스 임포트
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.example.demo.hall.HallEntity;
+import com.example.demo.hall.HallDTO;
 import com.example.demo.show.ShowDAO;
-import com.example.demo.user.UserDAO;
+import com.example.demo.show.discount.DiscountDTO;
+import com.example.demo.show.price.PriceDTO;
 import com.example.demo.user.UserDTO;
 
 import jakarta.servlet.ServletContext;
@@ -36,15 +39,11 @@ import jakarta.servlet.http.HttpSession;
 public class SellerCont {
     
     @Autowired
-    private UserDAO userDao;
-    
-    @Autowired
     private ShowDAO showDao;
-    
 
     // 공연 등록 페이지
     @GetMapping("/create")
-    public String mypage(HttpSession session, Model model) {
+    public String create(HttpSession session, Model model) {
         UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
         if (loggedInUser != null) {
             model.addAttribute("userInfo", loggedInUser);
@@ -54,68 +53,60 @@ public class SellerCont {
         }
     }
     
-    
     // 공연 등록
     @PostMapping("/insert")
     public String insert(
         @RequestParam Map<String, Object> map,
         @RequestParam Map<String, MultipartFile> files,
-        HttpServletRequest req, HttpSession session, Model model) {
+        HttpServletRequest req, HttpSession session) {
     	
+    	UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
     	String show_id = showDao.showid_make();
     	map.put("show_id", show_id);
     	
-        UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
-        if (loggedInUser != null) {
-            model.addAttribute("userInfo", loggedInUser);
-            
-            // 이미지 저장 경로
-            ServletContext application = req.getServletContext();
-            String basePath = application.getRealPath("/storage");
-            Map<String, String> fileNames = new HashMap<>();
+    	// 이미지 저장 경로
+        ServletContext application = req.getServletContext();
+        String basePath = application.getRealPath("/storage");
+        Map<String, String> fileNames = new HashMap<>();
 
-            files.forEach((key, value) -> {
-                if (value != null && !value.isEmpty()) {
-                    try {
-                        String o_name = value.getOriginalFilename();
-                        int lastDot = o_name.lastIndexOf(".");
-                        
-                        String show_name = (String) map.get("title");
-                        String filename = "all_about_show_" + show_name + o_name.substring(lastDot);
-                        File saveFile = new File(basePath, filename);
+        files.forEach((key, value) -> {
+        	if (value != null && !value.isEmpty()) {
+        		try {
+                	String o_name = value.getOriginalFilename();
+                    int lastDot = o_name.lastIndexOf(".");
+                    
+                    String show_name = (String) map.get("title");
+                    String filename = "all_about_show_" + show_name + o_name.substring(lastDot);
+                    File saveFile = new File(basePath, filename);
 
-                        int count = 1;
-                        while (saveFile.exists()) {
-                            lastDot = filename.lastIndexOf(".");
-                            filename = "all_about_show_" + show_name + "_" + count + filename.substring(lastDot);
-                            saveFile = new File(basePath, filename);
-                            count++;
-                        }
-
-                        value.transferTo(saveFile);
-                        fileNames.put(key, filename);
-
-                    } catch (Exception e) {
-                        System.out.println("이미지 저장 실패: " + e.getMessage());
+                    int count = 1;
+                    while (saveFile.exists()) {
+                    	lastDot = filename.lastIndexOf(".");
+                        filename = "all_about_show_" + show_name + "_" + count + filename.substring(lastDot);
+                        saveFile = new File(basePath, filename);
+                        count++;
                     }
-                } else {
-                    fileNames.put(key, null);
-                }
-            });
 
-            map.putAll(fileNames);
-            map.put("user_id", loggedInUser.getUser_id());
-            showDao.insert(map);
-            return "redirect:/seller/list";
-        } else {
-            return "redirect:/user/login";
-        }
+                    value.transferTo(saveFile);
+                    fileNames.put(key, filename);
+
+        		} catch (Exception e) {
+                	System.out.println("이미지 저장 실패: " + e.getMessage());
+        		}
+        	} else {
+            	fileNames.put(key, null);
+        	}
+        });
+
+        map.putAll(fileNames);
+        map.put("user_id", loggedInUser.getUser_id());
+        showDao.insert(map);
+        return "redirect:/seller/list";
     }
 
-    
-    // 공연장 검색
+    // 공연 등록 - 공연장 검색
     @GetMapping("/hallSearch")
-    public String hall_search(HttpSession session, Model model) {
+    public String hallSearch(HttpSession session, Model model) {
         UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
         if (loggedInUser != null) {
             model.addAttribute("userInfo", loggedInUser);
@@ -124,131 +115,495 @@ public class SellerCont {
             return "redirect:/user/login";
         }
     }
-
     
-    // 공연장 검색  
+    // 공연 등록 - 공연장 목록 페이징
     @GetMapping("/hallList")
-    public String hall_return(@RequestParam(defaultValue = "") String h_name,
-                              @RequestParam(defaultValue = "1") int page,
-                              Model model) {
-        int pageSize = 5; // 페이지당 항목 수
-        List<Map<String, Object>> list = showDao.hall_search(h_name, (page - 1) * pageSize, pageSize);
-        int totalCount = showDao.hall_search_count(h_name);
-        int totalPages = (int) Math.ceil((double) totalCount / pageSize);
+    public ModelAndView hallList(Model model,
+                                 @PageableDefault(size = 5, page = 0) Pageable pageable,
+                                 @RequestParam(required = false, defaultValue = "") String h_name) {
 
-        model.addAttribute("list", list);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("page", page);
-
-        return "seller/hallList";
-    }
-
-    /*
-    @GetMapping("/list")
-    public String hallList(@PageableDefault(size = 5) Pageable pageable,
-                           @RequestParam(defaultValue = "") String h_name, Model model) {
-
+        // 페이지 관련 정보
         int pageSize = pageable.getPageSize();
         int currentPage = pageable.getPageNumber();
         int offset = currentPage * pageSize;
 
-        List<HallEntity> halls;
+        // 검색 결과 및 총 데이터 개수 가져오기
+        List<HallDTO> halls;
         int totalElements;
 
-        if (!word.isEmpty()) {
-            if (field.equals("hname")) {
-                halls = hallRepository.findByHnameContainingWithoutDash(word, pageSize, offset);
-                totalElements = hallRepository.countByHnameContainingWithoutDash(word);
-            } else if (field.equals("addr")) {
-                halls = hallRepository.findByAddrContainingWithoutDash(word, pageSize, offset);
-                totalElements = hallRepository.countByAddrContainingWithoutDash(word);
-            } else {
-                halls = hallRepository.findByHallIdWithoutDash(pageSize, offset);
-                totalElements = hallRepository.countByHallIdWithoutDash();
-            }
-        } else {
-            halls = hallRepository.findByHallIdWithoutDash(pageSize, offset);
-            totalElements = hallRepository.countByHallIdWithoutDash();
-            //halls = hallRepository.findHallsWithMiniHallNotNull(pageSize, offset);
-        }
-        
+        halls = showDao.findByHName(h_name, pageSize, offset);
+        totalElements = showDao.countByHname(h_name);
 
-        Page<HallEntity> ulist = new PageImpl<>(halls, pageable, totalElements);
+        Page<HallDTO> ulist = new PageImpl<>(halls, pageable, totalElements);
+        int pageNumber = pageable.getPageNumber();
+        int totalPages = ulist.getTotalPages();
+        int pageBlock = 5;
+        int startBlockPage = (pageNumber / pageBlock) * pageBlock + 1;
+        int endBlockPage = Math.min(startBlockPage + pageBlock - 1, totalPages);
 
-        int pageNumber = ulist.getPageable().getPageNumber(); //현재페이지
-        int totalPages = ulist.getTotalPages();  //총 페이지 수. 검색에따라 10개면 10개..
-        int pageBlock = 10; //블럭의 수 1, 2, 3, 4, 5
-        int startBlockPage = ((pageNumber) / pageBlock) * pageBlock + 1; //현재 페이지가 7이라면 1*5
-        int endBlockPage = startBlockPage + pageBlock - 1; //6+5-1=10. 6,7,8,9,10해서 10.
-        endBlockPage = totalPages < endBlockPage ? totalPages : endBlockPage;
+        // 모델과 뷰 이름을 설정한 ModelAndView 객체 생성
+        ModelAndView mav = new ModelAndView("seller/hallList");
+        mav.addObject("startBlockPage", startBlockPage);
+        mav.addObject("endBlockPage", endBlockPage);
+        mav.addObject("ulist", ulist);
+        mav.addObject("h_name", h_name);
+        mav.addObject("totalElements", totalElements);
 
-        model.addAttribute("startBlockPage", startBlockPage);
-        model.addAttribute("endBlockPage", endBlockPage);
-        model.addAttribute("ulist", ulist);
-        model.addAttribute("field", field);
-        model.addAttribute("word", word);
-        
-        return "hall/hallList";
-    }*/
+        return mav;
+    }
+    // ---------------------
     
     
-    
-    
-
-    
+    // 공연 목록 페이지 - 진행 중, 진행 예정
     @GetMapping("/list")
-    public ModelAndView list(HttpSession session, Model model) {
-        UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
-        if (loggedInUser != null) {
-            model.addAttribute("userInfo", loggedInUser);
-            
-            ModelAndView mav = new ModelAndView();
-    	    mav.setViewName("show/list");
-    	    mav.addObject("list", showDao.list());
-    	    return mav;
-        } else return null;
-    }
-    
-    
+    public ModelAndView list(HttpSession session,
+                             @RequestParam(defaultValue = "0") int page,
+                             @PageableDefault(size = 10, page = 0) Pageable pageable) {
 
-    
+        ModelAndView mav = new ModelAndView();
 
-    @GetMapping("/discount")
-    public String mypage2(HttpSession session, Model model) {
+        // 페이지 관련 정보
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int offset = currentPage * pageSize;
+
+        // 세션에서 로그인 정보 가져오기
         UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+
         if (loggedInUser != null) {
-            model.addAttribute("userInfo", loggedInUser);
-            return "seller/discountForm";
+            String user_id = loggedInUser.getUser_id();
+
+            // 현재 날짜 설정
+            Date now = new Date();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+            String currentDate = dateFormat.format(now);
+
+            // 공연 목록 조회
+            List<HashMap<String, Object>> showList = showDao.findByShow(user_id, offset, pageSize, currentDate);
+            int today = Integer.parseInt(dateFormat.format(now));
+
+            // 공연 진행 상태 계산
+            for (HashMap<String, Object> show : showList) {
+                try {
+                    Date startDate = (Date) show.get("start_day");
+                    Date endDate = (Date) show.get("end_day");
+                    int start_day = Integer.parseInt(dateFormat.format(startDate));
+                    int end_day = Integer.parseInt(dateFormat.format(endDate));
+
+                    if (start_day <= today) {
+                        if (today <= end_day) {
+                            show.put("state", "공연 중");
+                        }
+                    } else if (today < start_day) {
+                        show.put("state", "공연 예정");
+                    }
+                } catch (Exception e) {
+                    System.out.println("error : " + e);
+                }
+            }
+
+            // 페이지 관련 정보 설정
+            int totalElements = showDao.countByShow(user_id, currentDate);
+            int totalPages = (int) Math.ceil((double) totalElements / pageSize);
+            int startBlockPage = Math.max(0, currentPage - 2);
+            int endBlockPage = Math.min(totalPages - 1, currentPage + 2);
+
+            // 모델에 데이터 추가
+            mav.addObject("userInfo", loggedInUser);
+            mav.addObject("ulist", showList);
+            mav.addObject("currentPage", currentPage);
+            mav.addObject("totalPages", totalPages);
+            mav.addObject("startBlockPage", startBlockPage);
+            mav.addObject("endBlockPage", endBlockPage);
+            mav.addObject("totalElements", totalElements);
+
+            mav.setViewName("seller/list");
         } else {
-            return "redirect:/user/login";
+            mav.setViewName("user/login");
         }
+
+        return mav;
     }
     
+    // 공연 목록 페이지 - 종료
+    @GetMapping("/endList")
+    public ModelAndView endList(HttpSession session,
+                                @RequestParam(defaultValue = "0") int page,
+                                @PageableDefault(size = 10, page = 0) Pageable pageable) {
+
+        // 페이지 관련 정보
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int offset = currentPage * pageSize;
+
+        ModelAndView mav = new ModelAndView();
+        UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+
+        if (loggedInUser != null) {
+            String user_id = loggedInUser.getUser_id();
+
+            // 현재 날짜 설정
+            Date now = new Date();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+            String currentDate = dateFormat.format(now);
+            String state = "공연 종료";
+
+            // 공연 목록 조회
+            List<HashMap<String, Object>> showList = showDao.findByEndShow(user_id, offset, pageSize, currentDate);
+
+            // 페이지 관련 정보 설정
+            int totalElements = showDao.countByEndShow(user_id, currentDate);
+            int totalPages = (int) Math.ceil((double) totalElements / pageSize);
+            int startBlockPage = Math.max(0, currentPage - 2);
+            int endBlockPage = Math.min(totalPages - 1, currentPage + 2);
+
+            // 모델에 데이터 추가
+            mav.addObject("state", state);
+            mav.addObject("userInfo", loggedInUser);
+            mav.addObject("ulist", showList);
+            mav.addObject("currentPage", currentPage);
+            mav.addObject("totalPages", totalPages);
+            mav.addObject("startBlockPage", startBlockPage);
+            mav.addObject("endBlockPage", endBlockPage);
+            mav.addObject("totalElements", totalElements);
+
+            mav.setViewName("seller/endList");
+        } else {
+            mav.setViewName("user/login");
+        }
+
+        return mav;
+    }
+    // ---------------------
     
     
+    // 공연 상세페이지
+    @GetMapping("/detail/{show_id}")
+    public ModelAndView detail(@PathVariable String show_id, HttpSession session) {
+        ModelAndView mav = new ModelAndView();
+        UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+
+        if (loggedInUser != null) {
+            String user_id = loggedInUser.getUser_id();
+            mav.addObject("show", showDao.sellerDetail(show_id, user_id));
+            List<Map<String, Object>> priceList = showDao.sellerDetail2(show_id, user_id);
+            mav.addObject("priceList", priceList);
+            mav.addObject("userInfo", loggedInUser);
+            mav.setViewName("seller/detail");
+        } else {
+            mav.setViewName("user/login");
+        }
+
+        return mav;
+    }
+    
+    // 공연 상세 - 전체가격 모달
+    @GetMapping("/detail/allPrice")
+    public ModelAndView allPrice(String show_id, HttpSession session) {
+    	ModelAndView mav = new ModelAndView();
+        UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+        
+        if (loggedInUser != null) {
+        	String user_id = loggedInUser.getUser_id();
+        	mav.addObject("userInfo", loggedInUser);
+            List<Map<String, Object>> priceList = showDao.allPrice(show_id, user_id);
+            mav.addObject("priceList", priceList);
+            mav.setViewName("seller/allPrice");
+        } else {
+        	mav.setViewName("seller/detail");
+        }
+        
+        return mav;
+    }
+
+
+    
+    // 공연상세 - 할인 목록
+    @GetMapping("/detail/{show_id}/disList")
+    public ModelAndView disList(HttpSession session, @PathVariable String show_id,
+					            @RequestParam(defaultValue = "0") int page,
+					            @PageableDefault(size = 10, page = 0) Pageable pageable) {
+    	
+    	ModelAndView mav = new ModelAndView();
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int offset = currentPage * pageSize;
+
+        UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+        
+        if (loggedInUser != null) {
+            String user_id = loggedInUser.getUser_id();
+            
+            // 할인 목록 조회
+            List<HashMap<String, Object>> disList = showDao.findByDiscount(show_id, user_id, offset, pageSize);
+            
+            // 날짜 형식 변환
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH시");
+            for (HashMap<String, Object> dis : disList) {
+                Date disStart = (Date) dis.get("dis_start");
+                Date disEnd = (Date) dis.get("dis_end");
+                dis.put("start", dateFormat.format(disStart));
+                dis.put("end", dateFormat.format(disEnd));
+            }
+
+            // 페이지 관련 정보 설정
+            int totalElements = showDao.countByDiscount(show_id, user_id);
+            int totalPages = (int) Math.ceil((double) totalElements / pageSize);
+            int startBlockPage = Math.max(0, currentPage - 2);
+            int endBlockPage = Math.min(totalPages - 1, currentPage + 2);
+
+            // 모델에 데이터 추가
+            mav.addObject("userInfo", loggedInUser);
+            mav.addObject("ulist", disList);
+            mav.addObject("currentPage", currentPage);
+            mav.addObject("totalPages", totalPages);
+            mav.addObject("startBlockPage", startBlockPage);
+            mav.addObject("endBlockPage", endBlockPage);
+            mav.addObject("totalElements", totalElements);
+
+            mav.setViewName("seller/disList");
+        } else {
+            mav.setViewName("user/login");
+        }
+
+        return mav;
+    }
+    
+    // 공연상세 - 종료된 할인 목록
+    @GetMapping("/detail/{show_id}/endDisList")
+    public ModelAndView endDisList(HttpSession session, @PathVariable String show_id,
+					            @RequestParam(defaultValue = "0") int page,
+					            @PageableDefault(size = 10, page = 0) Pageable pageable) {
+    	
+    	ModelAndView mav = new ModelAndView();
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int offset = currentPage * pageSize;
+
+        UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+        
+        if (loggedInUser != null) {
+            String user_id = loggedInUser.getUser_id();
+            
+            // 할인 목록 조회
+            List<HashMap<String, Object>> disList = showDao.findByEndDiscount(show_id, user_id, offset, pageSize);
+            
+            // 날짜 형식 변환
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH시");
+            for (HashMap<String, Object> dis : disList) {
+                Date disStart = (Date) dis.get("dis_start");
+                Date disEnd = (Date) dis.get("dis_end");
+                dis.put("start", dateFormat.format(disStart));
+                dis.put("end", dateFormat.format(disEnd));
+            }
+
+            // 페이지 관련 정보 설정
+            int totalElements = showDao.countByEndDiscount(show_id, user_id);
+            int totalPages = (int) Math.ceil((double) totalElements / pageSize);
+            int startBlockPage = Math.max(0, currentPage - 2);
+            int endBlockPage = Math.min(totalPages - 1, currentPage + 2);
+
+            // 모델에 데이터 추가
+            mav.addObject("userInfo", loggedInUser);
+            mav.addObject("ulist", disList);
+            mav.addObject("currentPage", currentPage);
+            mav.addObject("totalPages", totalPages);
+            mav.addObject("startBlockPage", startBlockPage);
+            mav.addObject("endBlockPage", endBlockPage);
+            mav.addObject("totalElements", totalElements);
+
+            mav.setViewName("seller/endDisList");
+        } else {
+            mav.setViewName("user/login");
+        }
+
+        return mav;
+    }
+    // ---------------------
     
     
+    // 할인 등록 페이지
+    @GetMapping("/detail/{show_id}/discount")
+    public ModelAndView discount(@PathVariable String show_id, HttpSession session) {
+    	
+    	ModelAndView mav = new ModelAndView();
+        UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+
+        if (loggedInUser != null) {
+            mav.addObject("userInfo", loggedInUser);
+            List<String> seatList = showDao.seatList(show_id);
+            mav.addObject("seatList", seatList);
+            mav.setViewName("seller/discount");
+        } else {
+            mav.setViewName("user/login");
+        }
+        
+        return mav;
+    }
+    
+    // 할인 등록
+    @PostMapping("/detail/{show_id}/disInsert")
+    public String disInsert(DiscountDTO disDto, @PathVariable String show_id, HttpSession session) {
+    	disDto.setShow_id(show_id);
+        showDao.disInsert(disDto);
+        return "redirect:/seller/detail/" + show_id + "/disList";
+    }
+    
+    // 할인 수정(페이지)
+    @GetMapping("/detail/{dis_id}/disUpdate")
+    public ModelAndView disUpdate(@PathVariable int dis_id, HttpSession session) {
+
+        ModelAndView mav = new ModelAndView();
+        UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+        DiscountDTO disDto = showDao.discountSelect(dis_id);
+
+        if (loggedInUser != null) {
+            mav.addObject("userInfo", loggedInUser);
+            mav.addObject("data", disDto);
+
+            String disRange = disDto.getDis_range();
+            List<String> disRanges = Arrays.asList(disRange.split(","));
+            List<String> disRangeList = new ArrayList<>();
+            for (String range : disRanges) {
+                disRangeList.add(range.trim());
+            }
+
+            List<String> seatList = showDao.seatList(disDto.getShow_id());
+            mav.addObject("disRangeList", disRangeList);
+            mav.addObject("seatList", seatList);
+
+            mav.setViewName("seller/disUpdate");
+        } else {
+            mav.setViewName("user/login");
+        }
+
+        return mav;
+    }
+
+
+    // 할인 수정(업데이트)
+    @PostMapping("/detail/{dis_id}/disUpdate")
+    public String disUpdate(DiscountDTO disDto, @PathVariable int dis_id, HttpSession session) {
+    	String show_id = showDao.findByDisShowID(dis_id);
+        disDto.setShow_id(show_id);
+        showDao.disUpdate(disDto);
+        return "redirect:/seller/detail/" + show_id + "/disList";
+    }
+    
+    // 할인 삭제
+    @PostMapping("/detail/{dis_id}/disDelete")
+    public String disDelete(@PathVariable int dis_id, HttpSession session) {
+    	String show_id = showDao.findByDisShowID(dis_id);
+    	showDao.disDelete(dis_id);
+        return "redirect:/seller/detail/" + show_id + "/disList";
+    }
+    // ---------------------
     
     
+    // 공연 상세 - 좌석 금액 리스트
+    @GetMapping("/detail/{show_id}/priList")
+    public ModelAndView priList(HttpSession session, @PathVariable String show_id,
+					            @RequestParam(defaultValue = "0") int page,
+					            @PageableDefault(size = 10, page = 0) Pageable pageable) {
+    	
+    	ModelAndView mav = new ModelAndView();
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int offset = currentPage * pageSize;
+
+        UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+        
+        if (loggedInUser != null) {
+            String user_id = loggedInUser.getUser_id();
+            
+            // 좌석금액 목록 조회
+            List<HashMap<String, Object>> priList = showDao.findByPrice(show_id, user_id, offset, pageSize);
+
+            int totalElements = showDao.countByPrice(show_id, user_id);
+            int totalPages = (int) Math.ceil((double) totalElements / pageSize);
+            int startBlockPage = Math.max(0, currentPage - 2);
+            int endBlockPage = Math.min(totalPages - 1, currentPage + 2);
+
+            mav.addObject("userInfo", loggedInUser);
+            mav.addObject("ulist", priList);
+            mav.addObject("currentPage", currentPage);
+            mav.addObject("totalPages", totalPages);
+            mav.addObject("startBlockPage", startBlockPage);
+            mav.addObject("endBlockPage", endBlockPage);
+            mav.addObject("totalElements", totalElements);
+
+            mav.setViewName("seller/priList");
+        } else {
+            mav.setViewName("user/login");
+        }
+
+        return mav;
+    }
     
+    // 좌석금액 등록
+    @GetMapping("/detail/{show_id}/price")
+    public ModelAndView price(@PathVariable String show_id, HttpSession session) {
+    	
+    	ModelAndView mav = new ModelAndView();
+        UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+        
+        if (loggedInUser != null) {
+            mav.addObject("userInfo", loggedInUser);
+            mav.setViewName("seller/price");
+        } else {
+            mav.setViewName("user/login");
+        }
+        
+        return mav;
+    }
     
+    // 좌석금액 등록
+    @PostMapping("/detail/{show_id}/priInsert")
+    public String priInsert(PriceDTO priDto, @PathVariable String show_id, HttpSession session) {
+    	if (priDto.getAdd_p() == null) {
+            priDto.setAdd_p(null);
+        }
+    	priDto.setShow_id(show_id);
+        showDao.priInsert(priDto);
+        return "redirect:/seller/detail/" + show_id + "/priList";
+    }
     
+    // 좌석금액 수정(페이지)
+    @GetMapping("/detail/{price_id}/priUpdate")
+    public ModelAndView priceUpdate(@PathVariable int price_id, HttpSession session) {
+    	
+    	ModelAndView mav = new ModelAndView();
+        UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+        PriceDTO priDto = showDao.priceSelect(price_id);
+        
+        if (loggedInUser != null) {
+            mav.addObject("userInfo", loggedInUser);
+            mav.addObject("data", priDto);
+            mav.setViewName("seller/priUpdate");
+        } else {
+            mav.setViewName("user/login");
+        }
+        
+        return mav;
+    }
     
+    // 좌석금액 수정(업데이트)
+    @PostMapping("/detail/{price_id}/priUpdate")
+    public String priUpdate(PriceDTO priDto, @PathVariable int price_id, HttpSession session) {
+    	if (priDto.getAdd_p() == null) {
+            priDto.setAdd_p(null);
+        }
+    	String show_id = showDao.findByPriShowID(price_id);
+        priDto.setShow_id(show_id);
+        showDao.priUpdate(priDto);
+        return "redirect:/seller/detail/" + show_id + "/priList";
+    }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    // 좌석금액 삭제
+    @PostMapping("/detail/{price_id}/priDelete")
+    public String priDelete(@PathVariable int price_id, HttpSession session) {
+    	String show_id = showDao.findByPriShowID(price_id);
+    	showDao.priDelete(price_id);
+        return "redirect:/seller/detail/" + show_id + "/priList";
+    }
 }

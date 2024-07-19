@@ -209,10 +209,7 @@
         </c:forEach>
     </div>
     <div class="filters">
-        <div class="filters-left">
-            <button class="filter-button">주간조회수</button>
-            <button class="filter-button">누적조회수</button>
-        </div>
+
         <div class="filters-right">
             <button class="filter-button" onclick="location.href='${pageContext.request.contextPath}/actor/list'">전체</button>
         </div>
@@ -246,17 +243,17 @@
     </div>
     <div class="pagination">
         <c:if test="${currentPage > 1}">
-            <a href="${pageContext.request.contextPath}/actor/list?pageNum=${currentPage - 1}">
+            <a href="${pageContext.request.contextPath}/actor?pageNum=${currentPage - 1}">
                 <button class="nav-button">&lt;</button>
             </a>
         </c:if>
         <c:forEach var="i" begin="${startPage}" end="${endPage}">
-            <a href="${pageContext.request.contextPath}/actor/list?pageNum=${i}">
+            <a href="${pageContext.request.contextPath}/actor?pageNum=${i}">
                 <button class="page-button ${currentPage == i ? 'active' : ''}">${i}</button>
             </a>
         </c:forEach>
         <c:if test="${currentPage < totalPages}">
-            <a href="${pageContext.request.contextPath}/actor/list?pageNum=${currentPage + 1}">
+            <a href="${pageContext.request.contextPath}/actor?pageNum=${currentPage + 1}">
                 <button class="nav-button">&gt;</button>
             </a>
         </c:if>

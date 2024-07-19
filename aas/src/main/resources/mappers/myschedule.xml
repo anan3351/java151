@@ -4,12 +4,48 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="myschedule">
+
     <select id="getAllSchedules" parameterType="string" resultType="com.example.demo.myschedule.MyScheduleDTO">
-        SELECT mysch_id, user_id, order_id, title, showdate, showtime, seat, fair, poster, sale
+        SELECT mysch_id, user_id, order_id, title, showdate, seat, fair, poster, sale
         FROM tb_myschedule
         WHERE user_id = #{user_id}
     </select>
+    
+	<insert id="saveSchedule" parameterType="com.example.demo.myschedule.MyScheduleDTO">
+	    INSERT INTO tb_myschedule (user_id, order_id, title, showdate, seat, fair, poster, sale)
+	    VALUES (#{user_id}, #{order_id, jdbcType=INTEGER}, #{title}, #{showdate}, #{seat}, #{fair}, #{poster}, #{sale})
+	</insert>
 
+    <select id="getScheduleById" parameterType="int" resultType="com.example.demo.myschedule.MyScheduleDTO">
+        SELECT mysch_id, user_id, order_id, title, showdate, seat, fair, poster, sale
+        FROM tb_myschedule
+        WHERE mysch_id = #{mysch_id}
+    </select>
+
+    <update id="updateSchedule" parameterType="com.example.demo.myschedule.MyScheduleDTO">
+        UPDATE tb_myschedule
+        SET title = #{title}, showdate = #{showdate}, seat = #{seat}, fair = #{fair}, poster = #{poster}, sale = #{sale}
+        WHERE mysch_id = #{mysch_id}
+    </update>
+
+    <delete id="deleteSchedule" parameterType="int">
+        DELETE FROM tb_myschedule
+        WHERE mysch_id = #{mysch_id}
+    </delete>
+
+    <!-- 사용자 ID에 따른 주문 내역 조회 -->
+    <select id="getOrderDetailsByUserId" parameterType="string" resultType="com.example.demo.orderdetail.OrderDetailDTO">
+        SELECT order_id, ticket_id, user_id, seat_id, dis_id, coupon_id, order_point, order_date, progress, discount, order_info, total_amount
+        FROM tb_orderdetail
+        WHERE user_id = #{user_id}
+    </select>
+
+    <!-- 주문 ID에 따른 주문 내역 조회 -->
+    <select id="getOrderDetailById" parameterType="int" resultType="com.example.demo.orderdetail.OrderDetailDTO">
+        SELECT order_id, ticket_id, user_id, seat_id, dis_id, coupon_id, order_point, order_date, progress, discount, order_info, total_amount
+        FROM tb_orderdetail
+        WHERE order_id = #{order_id}
+    </select>
 
     
 </mapper>

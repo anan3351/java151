@@ -18,7 +18,7 @@
 	    <link rel="stylesheet" href="/css/template.css">
 	    <link rel="stylesheet" href="/css/seller.css">
 	    <script src="/js/seller.js"></script>
-	    <title>seller Page</title>
+	    <title>Hall Search</title>
 	</head>
 	<body>
 		<div class="modal-header">

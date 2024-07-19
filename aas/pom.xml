@@ -31,7 +31,7 @@
 			<groupId>org.mybatis.spring.boot</groupId>
 			<artifactId>mybatis-spring-boot-starter</artifactId>
 			<version>3.0.3</version>
-		</dependency>	
+		</dependency>
 		<!-- jpa 사용 추가 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -62,7 +62,13 @@
 		</dependency>
 
 		<!-- 사용자 추가 라이브러리(의존성) 시작 -->
-
+		
+		<!-- 컨트롤러 변경시 자동 리부트 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+		</dependency>
+		
 		<!-- 셀레니움 -->
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
@@ -107,17 +113,17 @@
 		<!--api끝-->
 
 		<!--사진에서 텍스트 추출 -->
-	    <dependency>
-	        <groupId>net.sourceforge.tess4j</groupId>
-	        <artifactId>tess4j</artifactId>
-	        <version>4.5.5</version>
-	    </dependency>
-	    			
-		    <dependency>
-	        <groupId>org.apache.httpcomponents</groupId>
-	        <artifactId>httpclient</artifactId>
-	        <version>4.5.13</version>
-	    </dependency>
+		<dependency>
+			<groupId>net.sourceforge.tess4j</groupId>
+			<artifactId>tess4j</artifactId>
+			<version>4.5.5</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.13</version>
+		</dependency>
 		<!--사진에서 텍스트 추출 끝 -->
 
 
@@ -127,7 +133,6 @@
 			<artifactId>jsoup</artifactId>
 			<version>1.15.3</version>
 		</dependency>
-
 
 
 		<dependency>
@@ -160,32 +165,30 @@
 			<version>4.21.0</version>
 		</dependency>
 		<!-- Spring Data JPA -->
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-data-jpa</artifactId>
-    </dependency>
-    
-    <!-- mail 라이브러리 -->
 		<dependency>
-		    <groupId>org.springframework.boot</groupId>
-		    <artifactId>spring-boot-starter-mail</artifactId>
-		</dependency>
-		
-		<!--네이버로그인 -->
-		<dependency>
-		    <groupId>com.github.scribejava</groupId>
-		    <artifactId>scribejava-core</artifactId>
-		    <version>2.8.1</version>
-		</dependency>
-		
-		<!--카카오로그인-->
-		<dependency>
-		    <groupId>com.google.code.gson</groupId>
-		    <artifactId>gson</artifactId>
-		    <version>2.8.9</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 
-		
+		<!-- mail 라이브러리 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+
+		<!--네이버로그인 -->
+		<dependency>
+			<groupId>com.github.scribejava</groupId>
+			<artifactId>scribejava-core</artifactId>
+			<version>2.8.1</version>
+		</dependency>
+
+		<!--카카오로그인-->
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.8.9</version>
+		</dependency>
 
 
 		<!-- 사용자 추가 라이브러리(의존성) 끝 -->
@@ -198,15 +201,15 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-			
+
 			<plugin>
-			    <groupId>org.apache.maven.plugins</groupId>
-			    <artifactId>maven-compiler-plugin</artifactId>
-			    <configuration>
-			        <compilerArgs>
-			            <arg>-parameters</arg>
-			        </compilerArgs>
-			    </configuration>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<compilerArgs>
+						<arg>-parameters</arg>
+					</compilerArgs>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
@@ -230,7 +233,6 @@
 			</releases>
 		</pluginRepository>
 	</pluginRepositories>
-	
-	
+
 
 </project>

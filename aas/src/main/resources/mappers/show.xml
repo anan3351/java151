@@ -4,30 +4,193 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="show">
+
+	<!-- Seller ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- 공연 등록 -->
     <insert id="insert" parameterType="java.util.Map">
  		insert into tb_show(show_id, user_id, hall_id, title, s_cast, genre, start_day, end_day, runningtime, viewing_age, notice_img, dis_img, event_img, detail_img, poster)
  		values(#{show_id}, #{user_id}, #{hall_id}, #{title}, #{s_cast}, #{genre}, #{start_day}, #{end_day}, #{runningtime}, #{viewing_age}, #{notice_img}, #{dis_img}, #{event_img}, #{detail_img}, #{poster})
  	</insert>
  	
- 	<select id="list" resultType="java.lang.String">
+ 	<select id="id_list" resultType="java.lang.String">
 	    SELECT show_id from tb_show where show_id like '%SHOW%'
 	</select>
 	
-	<select id="hallsearch" resultType="java.util.Map" parameterType="java.util.Map">
-	    SELECT hall_id, h_name, miniHall, addr 
-	    FROM tb_hall 
-	    WHERE h_name LIKE #{h_name}
+	<!-- 공연 등록 - 공연장 페이징 -->
+	<select id="findByHName" resultType="com.example.demo.hall.HallDTO" parameterType="map">
+	    SELECT * FROM tb_hall WHERE h_name LIKE CONCAT('%', #{h_name}, '%') ORDER BY hall_id LIMIT #{offset}, #{limit}
+	</select>
+	
+	<select id="countByHname" resultType="int" parameterType="String">
+	    SELECT COUNT(*) FROM tb_hall WHERE h_name LIKE CONCAT('%', #{h_name}, '%')
+	</select>
+	<!-- //////////// -->
+
+
+	<!-- 공연 목록 - 진행 중, 예정 -->
+	<select id="findByShow" resultType="java.util.HashMap" parameterType="java.util.Map">
+	    SELECT s.*, h.h_name, h.miniHall
+	    FROM tb_show s
+	    INNER JOIN tb_hall h ON s.hall_id = h.hall_id
+	    WHERE s.user_id = #{user_id}
+	        AND (
+	            (s.start_day &lt;= #{currentDate} AND s.end_day >= #{currentDate}) OR
+	            (s.start_day > #{currentDate})
+	        )
+	    ORDER BY 
+	        CASE 
+	            WHEN s.start_day &lt;= #{currentDate} AND s.end_day >= #{currentDate} THEN 1
+	            WHEN s.start_day > #{currentDate} THEN 2
+	        END, 
+	        s.start_day
 	    LIMIT #{offset}, #{limit}
 	</select>
 	
-	<select id="hallsearchCount" resultType="int" parameterType="java.util.Map">
-	    SELECT COUNT(*) 
-	    FROM tb_hall 
-	    WHERE h_name LIKE #{h_name}
+	<!-- 공연 개수 - 진행 중, 예정 -->
+	<select id="countByShow" resultType="int" parameterType="java.util.Map">
+		SELECT COUNT(*) FROM tb_show s INNER JOIN tb_hall h ON s.hall_id = h.hall_id 
+		WHERE s.user_id = #{user_id} AND ((s.start_day &lt;= #{currentDate} AND s.end_day >= #{currentDate}) OR (s.start_day > #{currentDate}))
+	</select>
+	
+	<!-- 공연 목록 - 종료 -->
+	<select id="findByEndShow" resultType="java.util.HashMap" parameterType="java.util.Map">
+	    SELECT s.*, h.h_name, h.miniHall
+	    FROM tb_show s
+	    INNER JOIN tb_hall h ON s.hall_id = h.hall_id
+	    WHERE s.user_id = #{user_id} AND s.end_day &lt; #{currentDate}
+	    ORDER BY s.start_day desc
+	    LIMIT #{offset}, #{limit}
+	</select>
+	
+	<!-- 공연 개수 - 종료 -->
+	<select id="countByEndShow" resultType="int" parameterType="java.util.Map">
+		SELECT COUNT(*) FROM tb_show s INNER JOIN tb_hall h ON s.hall_id = h.hall_id 
+		WHERE s.user_id = #{user_id} AND s.end_day &lt; #{currentDate}
+	</select>	
+	
+	<!-- 공연 상세보기 -->
+	<select id="sellerDetail" resultType="java.util.HashMap" parameterType="java.util.Map">
+		SELECT s.*, h.h_name, h.miniHall FROM tb_show s INNER JOIN tb_hall h ON s.hall_id = h.hall_id
+	    WHERE s.show_id = #{show_id} and s.user_id = #{user_id}
+	</select>
+	
+	<select id="sellerDetail2" resultType="java.util.HashMap" parameterType="java.util.Map">
+		SELECT p.seat_level, p.price FROM tb_show s
+		INNER JOIN tb_price p ON p.show_id = s.show_id
+	    WHERE s.show_id = #{show_id} and s.user_id = #{user_id}
+	</select>
+	
+	<select id="allPrice" resultType="java.util.HashMap" parameterType="java.util.Map">
+		SELECT p.seat_level, d.dis_name, d.dis_rate, p.price
+		FROM tb_show s
+		INNER JOIN tb_price p ON p.show_id = s.show_id
+		INNER JOIN tb_discount d ON d.show_id = s.show_id
+		WHERE s.show_id = #{show_id}
+		AND FIND_IN_SET(REPLACE(p.seat_level, ' ', ''), d.dis_range) > 0
+		ORDER BY p.price DESC, p.price*((100-d.dis_rate)*0.01) DESC
+	</select>
+	
+	<!-- //////////// -->
+	
+	
+	<!-- 적용 가능 할인 목록 -->
+	<select id="findByDiscount" resultType="java.util.HashMap" parameterType="java.util.Map">
+		SELECT d.* from tb_show s inner join tb_discount d ON s.show_id = d.show_id
+		WHERE d.show_id = #{show_id} and s.user_id = #{user_id} AND d.dis_end >= now() order by d.dis_start
+		LIMIT #{offset}, #{limit}
+	</select>
+	
+	<select id="countByDiscount" resultType="int" parameterType="java.util.Map">
+		SELECT COUNT(*) from tb_show s inner join tb_discount d ON s.show_id = d.show_id
+		WHERE d.show_id = #{show_id} and s.user_id = #{user_id} AND d.dis_end >= now()
+	</select>	
+	
+	
+	<!-- 적용 불가능 할인 목록 -->
+	<select id="findByEndDiscount" resultType="java.util.HashMap" parameterType="java.util.Map">
+		SELECT d.* from tb_show s inner join tb_discount d ON s.show_id = d.show_id
+		WHERE d.show_id = #{show_id} and s.user_id = #{user_id} AND d.dis_end &lt; now() order by d.dis_start
+		LIMIT #{offset}, #{limit}
+	</select>
+	
+	<select id="countByEndDiscount" resultType="int" parameterType="java.util.Map">
+		SELECT COUNT(*) from tb_show s inner join tb_discount d ON s.show_id = d.show_id
+		WHERE d.show_id = #{show_id} and s.user_id = #{user_id} AND d.dis_end &lt; now()
 	</select>
 	
 	
-	<select id="showlist" resultType="java.util.HashMap" parameterType="String">
-	    SELECT * FROM tb_show WHERE user_id = #{keyword}
+	<!-- 할인 추가 -->
+    <insert id="disInsert" parameterType="com.example.demo.show.discount.DiscountDTO">
+	    INSERT INTO tb_discount(dis_name, dis_range, dis_rate, dis_info, dis_start, dis_end, dis_check, show_id)
+	    VALUES (#{dis_name}, #{dis_range}, #{dis_rate}, #{dis_info}, #{dis_start}, #{dis_end}, #{dis_check}, #{show_id})
+	</insert>
+
+	<!-- 할인 수정(조회) -->
+	<select id="discountSelect" resultType="com.example.demo.show.discount.DiscountDTO" parameterType="int">
+		SELECT * FROM tb_discount WHERE dis_id = #{dis_id}
 	</select>
+	
+	<!-- show_id 조회(업데이트에 사용) -->
+ 	<select id="findByDisShowID" resultType="String" parameterType="int">
+		SELECT show_id FROM tb_discount WHERE dis_id = #{dis_id};
+	</select>
+	
+	<!-- 할인 수정(업데이트) -->
+	<update id="disUpdate" parameterType="com.example.demo.show.discount.DiscountDTO">
+ 		UPDATE tb_discount SET dis_name = #{dis_name}, dis_range = #{dis_range}, dis_rate = #{dis_rate}, dis_info = #{dis_info},
+		dis_start = #{dis_start}, dis_end = #{dis_end}, dis_check = #{dis_check} WHERE dis_id = #{dis_id}
+ 	</update>
+ 	
+	<!-- 할인 삭제 -->
+	<delete id="disDelete" parameterType="Integer">
+ 		DELETE FROM tb_discount WHERE dis_id = #{dis_id}
+ 	</delete>
+ 	
+ 	
+	<!-- //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+	<!-- 좌석금액 목록 -->
+	<select id="findByPrice" resultType="java.util.HashMap" parameterType="java.util.Map">
+		SELECT p.* from tb_show s inner join tb_price p ON s.show_id = p.show_id
+		WHERE p.show_id = #{show_id} and s.user_id = #{user_id}
+		order by p.seat_level LIMIT #{offset}, #{limit}
+	</select>
+	
+	<!-- 좌석금액 개수 -->
+	<select id="countByPrice" resultType="int" parameterType="java.util.Map">
+		SELECT COUNT(*) from tb_show s inner join tb_price p ON s.show_id = p.show_id
+		WHERE p.show_id = #{show_id} and s.user_id = #{user_id}
+	</select>
+	
+	<!-- 좌석금액 - 좌석등급 리스트 -->
+ 	<select id="seatList" resultType="java.lang.String">
+	    SELECT seat_level FROM tb_price WHERE show_id = #{show_id}
+	</select>
+	
+	<!-- 좌석금액 등록 -->
+    <insert id="priInsert" parameterType="java.util.Map">
+ 		insert into tb_price(seat_level, price, add_p, show_id)
+		values(#{seat_level}, #{price}, #{add_p}, #{show_id})
+ 	</insert>
+ 	
+ 	<!-- 좌석금액 수정(조회) -->
+	<select id="priceSelect" resultType="com.example.demo.show.price.PriceDTO" parameterType="int">
+		SELECT * FROM tb_price WHERE price_id = #{price_id}
+	</select>
+ 	
+ 	<!-- show_id 조회(업데이트에 사용) -->
+ 	<select id="findByPriShowID" resultType="String" parameterType="int">
+		SELECT show_id FROM tb_price WHERE price_id = #{price_id}
+	</select>
+	
+ 	<!-- 좌석금액 수정(업데이트) -->
+	<update id="priUpdate" parameterType="com.example.demo.show.price.PriceDTO">
+ 		UPDATE tb_price SET seat_level = #{seat_level}, price = #{price}, add_p = #{add_p} WHERE price_id = #{price_id}
+ 	</update>
+ 	
+	<!-- 좌석금액 삭제 -->
+	<delete id="priDelete" parameterType="Integer">
+ 		DELETE FROM tb_price WHERE price_id = #{price_id}
+ 	</delete>
+	
 </mapper>

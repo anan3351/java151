@@ -6,27 +6,27 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>noticeform</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.tiny.cloud/1/4limsqsr4t2l3p5v338g1nblplu7cdds2zueq39vw7qjcwf9/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/css/swiper.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/js/swiper.min.js"></script>
 
+    <link rel="stylesheet" href="/css/template.css">
 	<style>
-	body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-	}
+	
 	.container {
 	    background-color: #f4f4f4; /* body 배경색과 동일하게 설정 */
 	    padding: 30px 10px; /* 양옆 여백을 줄이기 위해 padding 조정 */
 	    border-radius: 8px;
 	    width: 100%; /* 컨테이너의 너비를 100%로 설정 */
 	    max-width: 900px; /* 최대 너비를 1200px로 설정 */
+	    margin-top: 150px;
 	}
 	h1 {
 	    text-align: center;
@@ -84,15 +84,16 @@
 	</style>
 </head>
 <body>
+<%@ include file="../header.jsp" %>
 	<div class="container">
     <h1>공지사항 작성</h1>
-    <form name="bbsfrm" id="bbsfrm" method="post" action="bbsIns.jsp" onsubmit="return bbsCheck()">
-     <div class="form-group">
-            <label for="subject">제목</label>
-            <input type="text" name="subject" id="subject" maxlength="100" required class="form-control">
-        </div>
+    <form name="bbsfrm" id="bbsfrm" method="post" action="/notice/insert" onsubmit="return bbsCheck()">
+    <div class="form-group">
+        <label for="title">제목</label>
+        <input type="text" name="title" id="title" maxlength="100" required class="form-control">
+    </div>
     
-        <textarea id="editor"></textarea>
+        <textarea id="editor" name="content"></textarea>
         
         <div class="btn-group">
             <input type="submit" value="저장" class="btn btn-primary">
@@ -101,6 +102,7 @@
         
     </form>
     </div>
+    <%@ include file="../footer.jsp" %>
 </body>
 
 <script>
@@ -123,11 +125,43 @@ $(function(){
         selector: '#editor',
         height: 500,
         menubar: false,
-        plugins: plugins,
-        toolbar: edit_toolbar,
-        
+        plugins: [
+            'advlist autolink lists link image charmap print preview anchor',
+            'searchreplace visualblocks code fullscreen',
+            'insertdatetime media table paste code help wordcount'
+        ],
+        toolbar: 'undo redo | formatselect | ' +
+        'bold italic backcolor | alignleft aligncenter ' +
+        'alignright alignjustify | bullist numlist outdent indent | ' +
+        'removeformat | help | image',
         /*** image upload ***/
         image_title: true,
+        images_upload_url: '/notice/upload-image',  // 이미지 업로드 처리할 URL
+        images_upload_handler: function (blobInfo, success, failure, progress) {
+            var xhr, formData;
+            xhr = new XMLHttpRequest();
+            xhr.withCredentials = false;
+            xhr.open('POST', '/notice/upload-image');
+            
+            xhr.onload = function() {
+                var json;
+                if (xhr.status !== 200) {
+                    failure('HTTP Error: ' + xhr.status);
+                    return;
+                }
+                json = JSON.parse(xhr.responseText);
+                if (!json || typeof json.location != 'string') {
+                    failure('Invalid JSON: ' + xhr.responseText);
+                    return;
+                }
+                success(json.location);
+            };
+            
+            formData = new FormData();
+            formData.append('file', blobInfo.blob(), blobInfo.filename());
+            
+            xhr.send(formData);
+        },
         /* enable automatic uploads of images represented by blob or data URIs*/
         automatic_uploads: true,
         /*

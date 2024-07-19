@@ -905,7 +905,6 @@
                   </div>
                 </c:forEach>
 
-
                 </div>
                 <div id="rankModal" class="modal">
                   <div class="modal-content">
