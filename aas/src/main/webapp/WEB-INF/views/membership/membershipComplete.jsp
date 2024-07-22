@@ -12,19 +12,20 @@
           <meta charset="utf-8">
           <meta name="viewport" content="width=device-width, initial-scale=1">
           <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
           <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/css/swiper.min.css">
           <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/js/swiper.min.js"></script>
           <link rel="stylesheet" href="/css/template.css">
           <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+          <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> -->
+          <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 
           <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
             <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
               <title>My Page</title>
               <style>
                 body {
-                  font-family: 'Pretendard';
+
                   margin: 0;
                   padding: 0;
                   background-color: #f0f0f0;
@@ -34,6 +35,7 @@
                   padding-top: 130px;
                   /* 헤더의 높이만큼 상단 패딩 추가 */
                 }
+
 
                 .sidebar {
                   width: 250px;
@@ -216,7 +218,7 @@
                   border-radius: 5px;
                 }
 
-                @media (max-width : 768px) {
+                @media (max-width: 768px) {
                   body {
                     flex-direction: column;
                     /* 화면이 좁아지면 세로로 배치 */
@@ -235,10 +237,15 @@
                   .main-container {
                     flex-direction: column;
                   }
+
                 }
               </style>
 
               <style>
+                body {
+                  font-family: 'Pretendard';
+                }
+
                 .inner-content {
                   margin: 0 auto;
                   width: 1170px;
@@ -382,6 +389,8 @@
                   position: relative;
                 }
 
+
+
                 .swiper-slide {
                   background: #fff;
                   display: flex;
@@ -390,7 +399,9 @@
                   text-align: center;
                   border: 1px solid #ccc;
                   cursor: pointer;
+
                 }
+
 
                 .slider1 .swiper-slide {
                   align-items: start;
@@ -445,14 +456,16 @@
                   margin-right: auto;
                 }
 
+
                 /* 반응형 스타일 */
-                @media (max-width : 1600px) {
+
+                @media (max-width: 1600px) {
                   header {
                     width: 100%;
                   }
                 }
 
-                @media (max-width : 1200px) {
+                @media (max-width: 1200px) {
                   header {
                     width: 100%;
                     align-items: center;
@@ -462,14 +475,16 @@
                   header .search-bar {
                     max-width: none;
                     margin: 10px 0;
+
                   }
+
 
                   header .user-options {
                     justify-content: flex-end;
                   }
                 }
 
-                @media (max-width : 768px) {
+                @media (max-width: 768px) {
                   header {
                     padding: 10px;
                   }
@@ -477,6 +492,7 @@
                   header .search-bar input {
                     width: 100%;
                     padding: 5px 30px 5px 10px;
+
                   }
 
                   header .user-options {
@@ -488,10 +504,11 @@
                   }
                 }
 
-                @media (max-width : 480px) {
+                @media (max-width: 480px) {
                   header .search-bar input {
                     width: 95%;
                     padding: 5px 25px 5px 5px;
+
                   }
 
                   header .user-options {
@@ -502,6 +519,33 @@
                     margin: 5px;
                     /* 여백 조정 */
                   }
+                }
+
+                .membership-table th,
+                .membership-table td {
+                  text-align: center;
+                }
+
+                .membership-table th {
+                  background-color: #f9f9f9;
+                }
+
+                .membership-table td {
+                  vertical-align: middle;
+                }
+
+                .selected-row {
+                  background-color: #dcdcdc;
+                }
+
+                .button-container {
+                  text-align: center;
+                  margin-top: 20px;
+                }
+
+                .memberlogo {
+                  text-align: center;
+                  margin-bottom: 30px;
                 }
 
                 .modal {
@@ -591,7 +635,7 @@
                   color: #0066cc;
                 }
 
-                @media (max-width : 768px) {
+                @media (max-width: 768px) {
                   .modal-content {
                     width: 95%;
                     margin: 10% auto;
@@ -607,81 +651,7 @@
                     padding: 10px;
                   }
                 }
-
-                .hall-wrap {
-                  background-color: #f9f9f9;
-                  border-radius: 10px;
-                  padding: 30px;
-                  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-                }
-
-                .hall-wrap h1 {
-                  color: #333;
-                  font-size: 24px;
-                  margin-bottom: 20px;
-                  border-bottom: 2px solid #0066cc;
-                  padding-bottom: 10px;
-                }
-
-                .info-table {
-                  width: 100%;
-                  border-collapse: separate;
-                  border-spacing: 0 10px;
-                }
-
-                .info-table th,
-                .info-table td {
-                  padding: 15px;
-                  text-align: left;
-                  border-bottom: 1px solid #eee;
-                }
-
-                .info-table th {
-                  background-color: #f0f8ff;
-                  color: #0066cc;
-                  font-weight: bold;
-                  width: 30%;
-                  border-radius: 5px 0 0 5px;
-                }
-
-                .info-table td {
-                  background-color: #fff;
-                  border-radius: 0 5px 5px 0;
-                }
-
-                .btn-container {
-                  display: flex;
-                  justify-content: center;
-                  margin-top: 20px;
-                }
-
-                .btn {
-                  padding: 10px 20px;
-                  border: none;
-                  border-radius: 5px;
-                  cursor: pointer;
-                  font-weight: bold;
-                  transition: all 0.3s ease;
-                }
-
-                .btn-back {
-                  background-color: #f0f0f0;
-                  color: #333;
-                  margin-right: 10px;
-                }
-
-                .btn-approve {
-                  background-color: #0066cc;
-                  color: white;
-                }
-
-                .btn:hover {
-                  opacity: 0.8;
-                }
               </style>
-              <script>
-                var orderPrice = "<c:out value='${order.price}' />";
-              </script>
 
               <script>
                 document.addEventListener('DOMContentLoaded', function () {
@@ -702,61 +672,24 @@
                       modal.style.display = "none";
                     }
                   }
-                });
-              </script>
 
-              <script>
-                function confirmApproval() {
-                  if (confirm("승인요청 하시겠습니까?")) {
-                    $.ajax({
-                      url: "/hall/requestApproval",
-                      type: "POST",
-                      data: {
-                        hallOrder_id: "${order.hallOrder_id}",
-                        seller_id: "${get.user_id}"
-                      },
-                      success: function (response) {
-                        alert("판매자에게 승인요청을 완료하였습니다.");
-                        location.reload();
-                      },
-                      error: function (xhr, status, error) {
-                        alert("판매자 승인요청 중 오류가 발생했습니다.");
-                      }
-                    });
-                  }
-                }
+                  var selectedAmount = 0;
 
-                function hallOrderDel() {
-                  if (confirm("대관요청을 삭제 하시겠습니까?")) {
-                    $.ajax({
-                      url: "/hall/requestDel",
-                      type: "POST",
-                      data: {
-                        hallOrder_id: "${order.hallOrder_id}",
-                      },
-                      success: function (response) {
-                        alert("대관요청을 삭제 완료하였습니다.");
-                        document.getElementById('deleteRequestBtn').style.display = 'none'; // 버튼 숨기기
-                        location.reload();
-                      },
-                      error: function (xhr, status, error) {
-                        alert("대관요청을 삭제 중 오류가 발생했습니다.");
-                      }
-                    });
-                  }
-                }
+                  // 라디오 버튼 선택 시 금액 업데이트
+                  $('input[name="membership"]').on('change', function () {
+                    selectedMember = $(this).closest('tr').find('td').eq(1).text().replace(',', '')
+                    selectedAmount = $(this).closest('tr').find('td').eq(4).text().replace(',', '').replace('원', '');
+                    selectedAmount = parseInt(selectedAmount, 10); // 문자열을 숫자로 변환
+                    console.log('Selected amount:', selectedAmount);
+                  });
 
-                document.addEventListener('DOMContentLoaded', function () {
+                  // Payment request script
                   $("#check_order").click(function () {
-                    var priceString = "${order.price}";
-                    var selectedAmount = parseInt(priceString.replace(/[^0-9]/g, ""), 10);
-
-                    if (isNaN(selectedAmount)) {
-                      alert("유효하지 않은 가격입니다.");
+                    if (selectedAmount <= 0) {
+                      alert('멤버십을 선택해주세요.');
                       return;
                     }
-                    
-                    // 결제창 호출
+
                     IMP.init('imp81610215');
                     IMP.request_pay({
                       pg: 'html5_inicis',
@@ -764,6 +697,10 @@
                       merchant_uid: "order_no_0001", // 상점에서 관리하는 주문 번호를 전달
                       name: '주문명:결제테스트',
                       amount: selectedAmount, // 결제금액
+                      //limitDate : selectedLimitDate, // 멤버십 유지기간
+                      //userPoint: selectedUserPoint,  // 회원 포인트 추가
+                      //revCoiunt: selectedrevCount,   // 예매대기 횟수
+                      membership: selectedMember,   // 멤버십 이름
                       m_redirect_url: '{모바일에서 결제 완료 후 리디렉션 될 URL}' // 예: https://www.my-service.com/payments/complete/mobile
                     }, function (rsp) { // callback 로직
                       if (rsp.success) {
@@ -775,6 +712,7 @@
                           },
                           body: JSON.stringify({
                             imp_uid: rsp.imp_uid,
+                            membership: selectedMember
                             // 기타 필요한 데이터가 있으면 추가 전달
                           })
                         })
@@ -789,9 +727,32 @@
                               msg += '카드 승인번호 : ' + rsp.apply_num;
 
                               alert(msg);
+
+                              // 결제 완료 후 서버에 멤버십 가입 요청
+                              fetch("/membership/join", {
+                                method: 'POST',
+                                headers: {
+                                  'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                  userId: '${sessionScope.loggedInUser.user_id}', // 세션에서 사용자 ID 가져오기
+                                  membership: selectedMember
+                                })
+                              })
+                                .then(response => response.json())
+                                .then(data => {
+                                  if (data.success) {
+                                    // 멤버십 가입 성공 시 새로운 페이지로 이동
+                                    window.location.href = '/membership/complete';
+                                  } else {
+                                    alert('멤버십 가입 중 오류가 발생했습니다. 고객센터에 문의해주세요.');
+                                  }
+                                })
+                                .catch(error => {
+                                  console.error('Error:', error);
+                                  alert('서버와의 통신에 실패하였습니다. 다시 시도해 주세요.');
+                                });
                             } else {
-                              // 아직 제대로 결제가 되지 않았습니다.
-                              // 결제된 금액이 요청한 금액과 달라 결제를 자동취소처리하였습니다.
                               alert('결제 정보가 확인되지 않았습니다. 다시 시도해 주세요.');
                             }
                           })
@@ -807,25 +768,75 @@
                       }
                     });
                   });
+                  $("#refund_order").click(function () {
+                    var refundAmount = selectedAmount;
+                    var refundMember = selectedMember;
+
+                    if (refundAmount <= 0) {
+                      alert('환불할 멤버십이 선택되지 않았습니다.');
+                      return;
+                    }
+
+                    IMP.init('imp81610215');
+                    IMP.request_refund({
+                      merchant_uid: orderNo // 주문 번호 전달
+                    }, function (rsp) { // callback 로직
+                      if (rsp.success) {
+                        // 서버단에서 환불정보를 처리하기 위해 Fetch API로 imp_uid 전달하기
+                        fetch("/payments/refund", {
+                          method: 'POST',
+                          headers: {
+                            'Content-Type': 'application/json'
+                          },
+                          body: JSON.stringify({
+                            imp_uid: rsp.imp_uid,
+                            membership: refundMember
+                          })
+                        })
+                          .then(response => response.json())
+                          .then(data => {
+                            // 서버에서 REST API로 환불 정보 확인 및 처리 루틴이 정상적인 경우
+                            if (data.everythings_fine) {
+                              var msg = '환불이 완료되었습니다.';
+                              msg += '\n고유ID : ' + rsp.imp_uid;
+                              msg += '\n상점 거래ID : ' + rsp.merchant_uid;
+                              msg += '\n환불 금액 : ' + rsp.paid_amount;
+
+                              alert(msg);
+                            } else {
+                              alert('환불 정보가 확인되지 않았습니다. 다시 시도해 주세요.');
+                            }
+                          })
+                          .catch(error => {
+                            console.error('Error:', error);
+                            alert('서버와의 통신에 실패하였습니다. 다시 시도해 주세요.');
+                          });
+                      } else {
+                        var msg = '환불에 실패하였습니다.';
+                        msg += '에러내용 : ' + rsp.error_msg;
+
+                        alert(msg);
+                      }
+                    });
+                  });
                 });
 
-
               </script>
+
         </head>
 
         <body>
+
           <%@ include file="../header.jsp" %>
             <div class="main-container">
               <div class="sidebar">
                 <div class="profile">
                   <div class="profile-image"></div>
-                  <p>${userInfo.user_id}님</p>
+                  <p>${userInfo.user_id} 님</p>
                   <p>회원등급 - ${userInfo.auth}</p>
-                  <p>${userInfo.level_name}Level</p>
-                  <p class="points">
-                    내 포인트 -
-                    <fmt:formatNumber value="${userInfo.u_point}" pattern="#,###" />
-                    p
+                  <p>${userInfo.level_name} Level</p>
+                  <p class="points">내 포인트 -
+                    <fmt:formatNumber value="${userInfo.u_point}" pattern="#,###" />p
                   </p>
                 </div>
                 <div class="menu-section">
@@ -864,74 +875,79 @@
                   </ul>
                 </div>
                 <div class="menu-section">
-                  <div class="menu-title">
-                    <a
+                  <div class="menu-title"><a
                       href="${pageContext.request.contextPath}/user/mypage/hallMypage?user_id=${sessionScope.loggedInUser.user_id}">공연장
-                      대관</a>
-                  </div>
+                      대관</a></div>
+                </div>
+                <div class="menu-title"><a
+                    href="${pageContext.request.contextPath}/user/mypage/membership?user_id=${sessionScope.loggedInUser.user_id}">멤버십</a>
                 </div>
                 <div class="menu-section">
-                  <div class="menu-title">
-                    <a
-                      href="${pageContext.request.contextPath}/user/mypage/membership?user_id=${sessionScope.loggedInUser.user_id}">멤버십</a>
-                  </div>
-                </div>
-                <div class="menu-section">
-                  <div class="menu-title">
-                    <a
+                  <div class="menu-title"><a
                       href="${pageContext.request.contextPath}/user/mypage/coupon?user_id=${sessionScope.loggedInUser.user_id}">보유쿠폰</a>
                   </div>
                 </div>
+                <c:if test="${userInfo.auth == 'S'}">
+                  <div class="menu-section">
+                    <div class="menu-title"><a href="./sellerpage">* 판매자 전용 *</a></div>
+                  </div>
+                </c:if>
               </div>
+
               <main>
-                <div class="hall-wrap" id="approvalForm2">
-                  <h1>공연장 승인 요청</h1>
-                  <form id="approvalForm" method="post">
-                    <table class="info-table">
-                      <tr>
-                        <th>시작 날짜</th>
-                        <td>${order.start_date}</td>
-                      </tr>
-                      <tr>
-                        <th>종료 날짜</th>
-                        <td>${order.end_date}일</td>
-                      </tr>
-                      <tr>
-                        <th>총 금액</th>
-                        <td>${order.price}원</td>
-                      </tr>
-                      <tr>
-                        <th>승인요청시간</th>
-                        <td>
-                          <fmt:formatDate value="${order.pay_date}" pattern="yyyy-MM-dd HH:mm:ss" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <th>공연관</th>
-                        <td>${order.miniHall}</td>
-                        <td style="display: none;">${order.hall_id}</td>
-                        <td style="display: none;">${order.user_id}</td> <!-- 구매자 user_id-->
-                        <td style="display: none;">${order.hallOrder_id}</td>
-                        <td style="display: none;">${get.user_id}</td> <!-- 판매자 user_id-->
-                      </tr>
-                      <tr>
-                        <th>승인상황</th>
-                        <td>${order.pay_status}</td>
-                      </tr>
-                    </table>
-                    <div class="btn-container">
-                      <button type="button" class="btn btn-back" onclick="hallOrderDel()">요청삭제</button>
-                      <c:choose>
-                        <c:when test="${order.pay_status eq '승인대기'}">
-                          <button type="button" onclick="confirmApproval()" class="btn btn-approve">승인요청</button>
-                        </c:when>
-                        <c:when test="${order.pay_status eq '승인완료'}">
-                          <button id="check_order" type="button" class="btn btn-success" data-toggle="modal"
-                            data-target="#paymentModal">결제하기</button>
-                        </c:when>
-                      </c:choose>
+                <div class="welcome-box">
+                  <div class="heart-icon">❤</div>
+                  <p>${userInfo.user_name}님은 현재 ${userInfo.level_name} Level입니다.</p>
+                  <button class="rank-btn">등급별 혜택보기</button>
+                </div>
+                <div class="membership">
+                  <div class="memberlogo" style="align-items: center; ">
+                    <img src="/images/membership.png">
+                  </div>
+                  <form>
+                    <h1> 당신은 현재 멤버입니다. </h1>
+                    <div class="button-container">
+                      <button id="refund_order" type="button" class="btn btn-danger btn-lg">환불 요청</button>
                     </div>
                   </form>
+                </div>
+                <div id="rankModal" class="modal">
+                  <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2>등급별 혜택</h2>
+                    <table>
+                      <tr>
+                        <th>등급</th>
+                        <th>주문 건수</th>
+                        <th>주문금액</th>
+                        <th>포인트 적립</th>
+                      </tr>
+                      <tr>
+                        <td>WELCOME</td>
+                        <td>0건</td>
+                        <td>신규회원</td>
+                        <td>-</td>
+                      </tr>
+                      <tr>
+                        <td>FAMILY</td>
+                        <td>1건 ↑</td>
+                        <td>3만원 ↑</td>
+                        <td>-</td>
+                      </tr>
+                      <tr>
+                        <td>VIP</td>
+                        <td>3건 ↑</td>
+                        <td>30만원 ↑</td>
+                        <td>1프로</td>
+                      </tr>
+                      <tr>
+                        <td>VVIP</td>
+                        <td>20건 ↑</td>
+                        <td>100만원 ↑</td>
+                        <td>3프로</td>
+                      </tr>
+                    </table>
+                  </div>
                 </div>
               </main>
             </div>

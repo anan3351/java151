@@ -1,6 +1,7 @@
 package com.example.demo.hall;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 public class HallOrderDTO {
 	
@@ -15,7 +16,7 @@ public class HallOrderDTO {
 	private String start_date;
 	private String end_date;
 	private String cancel;
-	private Date pay_date;
+	private Timestamp pay_date;
 	private String pay_info;
 	private String pay_status;
 	private String price;
@@ -78,10 +79,10 @@ public class HallOrderDTO {
 	public void setCancel(String cancel) {
 		this.cancel = cancel;
 	}
-	public Date getPay_date() {
+	public Timestamp getPay_date() {
 		return pay_date;
 	}
-	public void setPay_date(Date pay_date) {
+	public void setPay_date(Timestamp pay_date) {
 		this.pay_date = pay_date;
 	}
 	public String getPay_info() {

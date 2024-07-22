@@ -13,14 +13,5 @@
 		WHERE d.user_id = #{user_id}
 	</select>
 	
-	
-	
-	 <select id="detail" resultType="java.util.Map"  parameterType="string">
-        SELECT  hall_id, h_name, miniHall, addr, url, seat
-        FROM aas.tb_hall
-        WHERE hall_id = #{hall_id}    
-    </select>
-    
-
     
 </mapper>

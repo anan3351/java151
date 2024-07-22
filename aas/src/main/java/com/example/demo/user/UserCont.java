@@ -1,5 +1,6 @@
 package com.example.demo.user;
 
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +34,7 @@ import com.example.demo.coupon.CouponDAO;
 import com.example.demo.coupon.CouponDTO;
 import com.example.demo.hall.HallOrderDAO;
 import com.example.demo.hall.HallOrderDTO;
+import com.example.demo.membership.MembershipDTO;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -53,17 +55,17 @@ public class UserCont {
 
 	@Autowired
 	private CouponDAO couponDao;
-	
+
 	@Autowired
 
 	private JavaMailSender mailSender;
 
 	private HallOrderDAO hallOrderDao;
+
 	
 	@Value("${spring.mail.username}")
 	private String fromEmail;
 
-	
 
 	@RequestMapping("/form")
 	public String form() {
@@ -110,7 +112,10 @@ public class UserCont {
 
 		if (loggedInUser != null) {
 			UserDTO userInfo = userDao.getUserById(loggedInUser.getUser_id());
+			MembershipDTO mbName = userDao.selectMbname(loggedInUser.getUser_id());
+
 			model.addAttribute("userInfo", userInfo);
+			model.addAttribute("mbName", mbName);
 		}
 		mav.addObject("user_id", user_Id);
 		mav.setViewName("membership/membership");
@@ -148,14 +153,14 @@ public class UserCont {
 		}
 
 		HallOrderDTO order = hallOrderDao.getLatestOrder();
+		HallOrderDTO hallIdOrder = hallOrderDao.gethallIdOrder();
+		model.addAttribute("get", hallIdOrder);
 		model.addAttribute("order", order);
 		mav.addObject("user_id", user_id);
 		mav.setViewName("hall/hallMypage");
 
 		return mav;
 	}
-
-	
 
 	@RequestMapping("/pwcheck")
 	public ModelAndView pwcheck() {
@@ -407,17 +412,27 @@ public class UserCont {
 	}
 
 	@GetMapping("/sellerApprove")
-	public String sellerApprove(HttpSession session, Model model) {
+	public ModelAndView sellerApprove(@RequestParam("user_id") String user_id, HttpSession session, Model model) {
 		UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+		ModelAndView mav = new ModelAndView();
+
 		if (loggedInUser != null) {
 			// 로그인한 사용자의 정보를 모델에 추가
-			model.addAttribute("userInfo", loggedInUser);
-			return "user/sellerApprove"; // sellerpage.jsp 뷰를 반환
+			UserDTO userInfo = userDao.getUserById(loggedInUser.getUser_id());
+			model.addAttribute("userInfo", userInfo);
+			// 해당 user_id로 보류 중인 주문을 조회
+			HallOrderDTO orders = hallOrderDao.getPendingOrdersBySellerId(loggedInUser.getUser_id());
+
+			model.addAttribute("orders", orders);
+			mav.addObject("user_id", user_id);
+			mav.setViewName("user/sellerApprove");
+			return mav;
 		} else {
 			// 로그인하지 않은 경우 로그인 페이지로 리다이렉트
-			return "redirect:/user/login";
+			mav.setViewName("redirect:/user/login");
+			return mav;
 		}
-	}// sellerPage() end
+	}
 
 	@PostMapping("/delete")
 	public String deleteUser(HttpSession session, RedirectAttributes redirectAttributes) {

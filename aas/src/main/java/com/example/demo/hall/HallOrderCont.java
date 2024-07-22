@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.example.demo.user.UserDAO;
 import com.example.demo.user.UserDTO;
 
 import jakarta.servlet.http.HttpSession;
@@ -45,6 +46,9 @@ public class HallOrderCont {
 	@Autowired
 	private HallOrderDAO hallOrderDao;
 	
+	@Autowired
+	private UserDAO userDao;
+	
 	
 	@Transactional
 	@PostMapping("/order")
@@ -62,13 +66,34 @@ public class HallOrderCont {
     @GetMapping("/hallOrder")
     public String showOrderDetails(Model model) {
         HallOrderDTO latestOrder = hallOrderDao.getLatestOrder();
+        HallOrderDTO hallIdOrder = hallOrderDao.gethallIdOrder();
         model.addAttribute("order", latestOrder);
+        model.addAttribute("get", hallIdOrder);
+        
         return "hall/hallOrder";
     }
     
-    
-    
-   
-   
+
+	@PostMapping("/requestApproval")
+	@ResponseBody
+	public ResponseEntity<?> requestApproval(@RequestParam String hallOrder_id) {
+		hallOrderDao.updatePayStatus(hallOrder_id, "승인대기진행중");
+		return ResponseEntity.ok().build();
+	}
+
+
+	@PostMapping("/approveRequest")
+	@ResponseBody
+	public ResponseEntity<?> approveRequest(@RequestParam String hallOrderId) {
+		hallOrderDao.updatePayStatus(hallOrderId, "승인완료");
+		return ResponseEntity.ok().build();
+	}
+	
+	@PostMapping("/requestDel")
+	@ResponseBody
+	public int hallOrderDel(@RequestParam("hallOrder_id") String hallOrderId) {
+	    return hallOrderDao.hallOrderDel(hallOrderId);
+	}
+	
    
 }//end HallCont
