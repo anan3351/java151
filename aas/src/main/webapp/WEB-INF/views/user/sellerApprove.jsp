@@ -438,9 +438,98 @@
               }
             }
 
-         
-         
+            .hall-wrap {
+              background-color: #f9f9f9;
+              border-radius: 10px;
+              padding: 30px;
+              box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            }
+
+            .hall-wrap h1 {
+              color: #333;
+              font-size: 24px;
+              margin-bottom: 20px;
+              border-bottom: 2px solid #0066cc;
+              padding-bottom: 10px;
+            }
+
+            .info-table {
+              width: 100%;
+              border-collapse: separate;
+              border-spacing: 0 10px;
+            }
+
+            .info-table th,
+            .info-table td {
+              padding: 15px;
+              text-align: left;
+              border-bottom: 1px solid #eee;
+            }
+
+            .info-table th {
+              background-color: #f0f8ff;
+              color: #0066cc;
+              font-weight: bold;
+              width: 30%;
+              border-radius: 5px 0 0 5px;
+            }
+
+            .info-table td {
+              background-color: #fff;
+              border-radius: 0 5px 5px 0;
+            }
+
+            .btn-container {
+              display: flex;
+              justify-content: center;
+              margin-top: 20px;
+            }
+
+            .btn {
+              padding: 10px 20px;
+              border: none;
+              border-radius: 5px;
+              cursor: pointer;
+              font-weight: bold;
+              transition: all 0.3s ease;
+            }
+
+            .btn-back {
+              background-color: #f0f0f0;
+              color: #333;
+              margin-right: 10px;
+            }
+
+            .btn-approve {
+              background-color: #0066cc;
+              color: white;
+            }
+
+            .btn:hover {
+              opacity: 0.8;
+            }
           </style>
+
+          <script>
+            function confirmSeller() {
+              if (confirm("승인하시겠습니까?")) {
+                $.ajax({
+                  url: "/user/approveRequest",
+                  type: "POST",
+                  data: {
+                    hallOrderId: "${orders.hallOrder_id}"
+                  },
+                  success: function (response) {
+                    alert("승인이 완료되었습니다.");
+                    location.reload();
+                  },
+                  error: function (xhr, status, error) {
+                    alert("승인 중 오류가 발생했습니다.");
+                  }
+                });
+              }
+            }
+          </script>
         </head>
 
         <body>
@@ -480,12 +569,57 @@
               </div>
 
               <main>
-                <h1>공연장 대관 승인</h1>
-                
-
+                <div class="hall-wrap">
+                  <h1>공연장 대관 승인</h1>
+                  <form id="approvalForm" method="post">
+                    <table class="info-table">
+                      <tr>
+                        <th>시작 날짜</th>
+                        <td>${orders.start_date}</td>
+                      </tr>
+                      <tr>
+                        <th>총 대관일</th>
+                        <td>${orders.end_date}일</td>
+                      </tr>
+                      <tr>
+                        <th>총 금액</th>
+                        <td>${orders.price}원</td>
+                      </tr>
+                      <tr>
+                        <th>승인요청시간</th>
+                        <td>
+                          <fmt:formatDate value="${orders.pay_date}" pattern="yyyy-MM-dd HH:mm:ss" />
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>공연관</th>
+                        <td>${orders.miniHall}</td>
+                        <td style="display: none;">${orders.hall_id}</td>
+                        <td style="display: none;">${orders.hallOrder_id}</td>
+                      </tr>
+                      <tr>
+                        <th>승인상황</th>
+                        <td>${orders.pay_status}</td>
+                      </tr>
+                      <tr>
+                        <th>구매자 요청 ID</th>
+                        <td>${orders.user_id}</td>
+                      </tr>
+                    </table>
+                    <div class="btn-container">
+                      <button type="button" class="btn btn-back" onclick="" />요청취소</button>
+                      <c:choose>
+                        <c:when test="${orders.pay_status eq '승인대기진행중'}">
+                          <button type="button" id="approveButton" onclick="confirmSeller()"
+                            class="btn btn-approve">승인하기</button>
+                        </c:when>
+                      </c:choose>
+                    </div>
+                  </form>
+                </div>
               </main>
             </div>
-            
+
             <%@ include file="../footer.jsp" %>
         </body>
 

@@ -87,12 +87,12 @@ public class HallDAO {
 	public int addPlay(HallDTO hallDto) throws SQLException {
 		int result = 0;
 
-		String sql = "UPDATE aas.TB_HALL SET HNAME = ?, MINIHALL = ?, ADDR = ?, H_CALL = ?, URL = ?, SEAT = ?, H_CODE = ? "
+		String sql = "UPDATE aas.TB_HALL SET H_NAME = ?, MINIHALL = ?, ADDR = ?, H_CALL = ?, URL = ?, SEAT = ?, H_CODE = ? "
 				+ "WHERE HALL_ID = ?";
 
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 
-		pstmt.setString(1, hallDto.getHname());
+		pstmt.setString(1, hallDto.getH_name());
 		pstmt.setString(2, hallDto.getMiniHall());
 		pstmt.setString(3, hallDto.getAddr());
 		pstmt.setString(4, hallDto.getH_call());
@@ -112,13 +112,13 @@ public class HallDAO {
 	public int addPlay2(HallDTO hallDto) throws SQLException {
 		int result = 0;
 
-		String sql = "INSERT INTO aas.TB_HALL(HALL_ID, HNAME, MINIHALL, ADDR, H_CALL, URL, SEAT, H_CODE) "
+		String sql = "INSERT INTO aas.TB_HALL(HALL_ID, H_NAME, MINIHALL, ADDR, H_CALL, URL, SEAT, H_CODE) "
 				+ " VALUES  (?, ?, ?, ?, ?, ?, ?, ?)";
 
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 
 		pstmt.setString(1, hallDto.getHall_id());
-		pstmt.setString(2, hallDto.getHname());
+		pstmt.setString(2, hallDto.getH_name());
 		pstmt.setString(3, hallDto.getPrfplcnm());
 		pstmt.setString(4, hallDto.getAddr());
 		pstmt.setString(5, hallDto.getH_call());

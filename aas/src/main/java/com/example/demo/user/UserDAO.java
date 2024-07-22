@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.example.demo.membership.MembershipDTO;
+
 @Repository
 public class UserDAO {
 
@@ -213,6 +215,10 @@ public class UserDAO {
 	        sqlSession.insert("user.insertHallPrice", params);
 	        sqlSession.update("user.updateHallUser", params);
 	    }
+	}
+	
+	public MembershipDTO selectMbname(String userId) {
+		return sqlSession.selectOne("membership.selectMbname", userId);
 	}
 
 }// class end

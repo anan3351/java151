@@ -62,13 +62,13 @@ public class HallOrderCont {
     @GetMapping("/hallOrder")
     public String showOrderDetails(Model model) {
         HallOrderDTO latestOrder = hallOrderDao.getLatestOrder();
+        HallOrderDTO hallIdOrder = hallOrderDao.gethallIdOrder();
         model.addAttribute("order", latestOrder);
+        model.addAttribute("get", hallIdOrder);
+        
         return "hall/hallOrder";
     }
     
-    
-    
-   
    
    
 }//end HallCont

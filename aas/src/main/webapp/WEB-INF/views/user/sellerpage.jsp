@@ -469,7 +469,7 @@ main {
             <div class="menu-section">
                 <div class="menu-title">공연장대관</div>
                 <ul class="menu-items">
-                    <li><a href="/user/sellerApprove">대관 관리</a></li>
+                    <li><a href="${pageContext.request.contextPath}/user/sellerApprove?user_id=${sessionScope.loggedInUser.user_id}">대관 관리</a></li>
                 </ul>
             </div>
         </div>

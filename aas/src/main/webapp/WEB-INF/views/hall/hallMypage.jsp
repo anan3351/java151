@@ -17,13 +17,14 @@
           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/css/swiper.min.css">
           <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/js/swiper.min.js"></script>
           <link rel="stylesheet" href="/css/template.css">
+          <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 
           <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
             <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
               <title>My Page</title>
               <style>
                 body {
-                  font-family: Arial, sans-serif;
+                  font-family: 'Pretendard';
                   margin: 0;
                   padding: 0;
                   background-color: #f0f0f0;
@@ -238,10 +239,6 @@
               </style>
 
               <style>
-                body {
-                  font-family: 'Pretendard';
-                }
-
                 .inner-content {
                   margin: 0 auto;
                   width: 1170px;
@@ -612,11 +609,10 @@
                 }
 
                 .hall-wrap {
-                  background-color: #ffffff;
-                  border-radius: 8px;
-                  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                  background-color: #f9f9f9;
+                  border-radius: 10px;
                   padding: 30px;
-                  width: 100%;
+                  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
                 }
 
                 .hall-wrap h1 {
@@ -635,20 +631,22 @@
 
                 .info-table th,
                 .info-table td {
-                  padding: 12px 15px;
+                  padding: 15px;
                   text-align: left;
+                  border-bottom: 1px solid #eee;
                 }
 
                 .info-table th {
-                  background-color: #f5f5f5;
-                  color: #333;
+                  background-color: #f0f8ff;
+                  color: #0066cc;
                   font-weight: bold;
-                  border-radius: 4px 0 0 4px;
+                  width: 30%;
+                  border-radius: 5px 0 0 5px;
                 }
 
                 .info-table td {
-                  background-color: #fafafa;
-                  border-radius: 0 4px 4px 0;
+                  background-color: #fff;
+                  border-radius: 0 5px 5px 0;
                 }
 
                 .btn-container {
@@ -660,15 +658,15 @@
                 .btn {
                   padding: 10px 20px;
                   border: none;
-                  border-radius: 4px;
+                  border-radius: 5px;
                   cursor: pointer;
                   font-weight: bold;
-                  transition: background-color 0.3s ease;
+                  transition: all 0.3s ease;
                 }
 
                 .btn-back {
-                  background-color: #6c757d;
-                  color: white;
+                  background-color: #f0f0f0;
+                  color: #333;
                   margin-right: 10px;
                 }
 
@@ -678,9 +676,12 @@
                 }
 
                 .btn:hover {
-                  opacity: 0.9;
+                  opacity: 0.8;
                 }
               </style>
+              <script>
+                var orderPrice = "<c:out value='${order.price}' />";
+              </script>
 
               <script>
                 document.addEventListener('DOMContentLoaded', function () {
@@ -702,6 +703,113 @@
                     }
                   }
                 });
+              </script>
+
+              <script>
+                function confirmApproval() {
+                  if (confirm("승인요청 하시겠습니까?")) {
+                    $.ajax({
+                      url: "/user/requestApproval",
+                      type: "POST",
+                      data: {
+                        hallOrder_id: "${order.hallOrder_id}",
+                        seller_id: "${get.user_id}"
+                      },
+                      success: function (response) {
+                        alert("판매자에게 승인요청을 완료하였습니다.");
+                        location.reload();
+                      },
+                      error: function (xhr, status, error) {
+                        alert("판매자 승인요청 중 오류가 발생했습니다.");
+                      }
+                    });
+                  }
+                }
+
+                function hallOrderDel() {
+                  if (confirm("대관요청을 삭제 하시겠습니까?")) {
+                    $.ajax({
+                      url: "/user/requestDel",
+                      type: "POST",
+                      data: {
+                        hallOrder_id: "${order.hallOrder_id}",
+                      },
+                      success: function (response) {
+                        alert("대관요청을 삭제 완료하였습니다.");
+                        document.getElementById('deleteRequestBtn').style.display = 'none'; // 버튼 숨기기
+                        location.reload();
+                      },
+                      error: function (xhr, status, error) {
+                        alert("대관요청을 삭제 중 오류가 발생했습니다.");
+                      }
+                    });
+                  }
+                }
+
+                document.addEventListener('DOMContentLoaded', function () {
+                  $("#check_order").click(function () {
+                    var priceString = "${order.price}";
+                    var selectedAmount = parseInt(priceString.replace(/[^0-9]/g, ""), 10);
+
+                    if (isNaN(selectedAmount)) {
+                      alert("유효하지 않은 가격입니다.");
+                      return;
+                    }
+                    
+                    // 결제창 호출
+                    IMP.init('imp81610215');
+                    IMP.request_pay({
+                      pg: 'html5_inicis',
+                      pay_method: 'card',
+                      merchant_uid: "order_no_0001", // 상점에서 관리하는 주문 번호를 전달
+                      name: '주문명:결제테스트',
+                      amount: selectedAmount, // 결제금액
+                      m_redirect_url: '{모바일에서 결제 완료 후 리디렉션 될 URL}' // 예: https://www.my-service.com/payments/complete/mobile
+                    }, function (rsp) { // callback 로직
+                      if (rsp.success) {
+                        // 서버단에서 결제정보 조회를 위해 Fetch API로 imp_uid 전달하기
+                        fetch("/payments/complete", {
+                          method: 'POST',
+                          headers: {
+                            'Content-Type': 'application/json'
+                          },
+                          body: JSON.stringify({
+                            imp_uid: rsp.imp_uid,
+                            // 기타 필요한 데이터가 있으면 추가 전달
+                          })
+                        })
+                          .then(response => response.json())
+                          .then(data => {
+                            // 서버에서 REST API로 결제정보확인 및 서비스루틴이 정상적인 경우
+                            if (data.everythings_fine) {
+                              var msg = '결제가 완료되었습니다.';
+                              msg += '\n고유ID : ' + rsp.imp_uid;
+                              msg += '\n상점 거래ID : ' + rsp.merchant_uid;
+                              msg += '\n결제 금액 : ' + rsp.paid_amount;
+                              msg += '카드 승인번호 : ' + rsp.apply_num;
+
+                              alert(msg);
+                            } else {
+                              // 아직 제대로 결제가 되지 않았습니다.
+                              // 결제된 금액이 요청한 금액과 달라 결제를 자동취소처리하였습니다.
+                              alert('결제 정보가 확인되지 않았습니다. 다시 시도해 주세요.');
+                            }
+                          })
+                          .catch(error => {
+                            console.error('Error:', error);
+                            alert('서버와의 통신에 실패하였습니다. 다시 시도해 주세요.');
+                          });
+                      } else {
+                        var msg = '결제에 실패하였습니다.';
+                        msg += '에러내용 : ' + rsp.error_msg;
+
+                        alert(msg);
+                      }
+                    });
+                  });
+                });
+
+
               </script>
         </head>
 
@@ -775,45 +883,59 @@
                   </div>
                 </div>
               </div>
-              <div class="hall-wrap">
-                <h1>공연장 승인 요청</h1>
-                <form id="approvalForm" method="post">
-                  <table class="info-table">
-                    <tr>
-                      <th>시작 날짜</th>
-                      <td>${order.start_date}</td>
-                    </tr>
-                    <tr>
-                      <th>총 대관일</th>
-                      <td>${order.end_date}일</td>
-                    </tr>
-                    <tr>
-                      <th>총 금액</th>
-                      <td>${order.price}원</td>
-                    </tr>
-                    <tr>
-                      <th>승인요청시간</th>
-                      <td>${order.pay_date}</td>
-                    </tr>
-                    <tr>
-                      <th>공연관</th>
-                      <td>${order.miniHall}</td>
-                      <td style="display: none;">${order.hall_id}</td>
-                      <td style="display: none;">${order.user_id}</td>
-                    </tr>
-                    <tr>
-                      <th>승인상황</th>
-                      <td>${order.pay_status}</td>
-                    </tr>
-                  </table>
-                  <div class="btn-container">
-                    <button type="button" class="btn btn-back" onclick=""/>요청삭제</button>
-                    <button type="submit" onclick="confirmApproval()" class="btn btn-approve">승인요청</button>
-                  </div>
-                </form>
-              </div>
-              </div>
-              <%@ include file="../footer.jsp" %>
+              <main>
+                <div class="hall-wrap" id="approvalForm2">
+                  <h1>공연장 승인 요청</h1>
+                  <form id="approvalForm" method="post">
+                    <table class="info-table">
+                      <tr>
+                        <th>시작 날짜</th>
+                        <td>${order.start_date}</td>
+                      </tr>
+                      <tr>
+                        <th>종료 날짜</th>
+                        <td>${order.end_date}일</td>
+                      </tr>
+                      <tr>
+                        <th>총 금액</th>
+                        <td>${order.price}원</td>
+                      </tr>
+                      <tr>
+                        <th>승인요청시간</th>
+                        <td>
+                          <fmt:formatDate value="${order.pay_date}" pattern="yyyy-MM-dd HH:mm:ss" />
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>공연관</th>
+                        <td>${order.miniHall}</td>
+                        <td style="display: none;">${order.hall_id}</td>
+                        <td style="display: none;">${order.user_id}</td> <!-- 구매자 user_id-->
+                        <td style="display: none;">${order.hallOrder_id}</td>
+                        <td style="display: none;">${get.user_id}</td> <!-- 판매자 user_id-->
+                      </tr>
+                      <tr>
+                        <th>승인상황</th>
+                        <td>${order.pay_status}</td>
+                      </tr>
+                    </table>
+                    <div class="btn-container">
+                      <button type="button" class="btn btn-back" onclick="hallOrderDel()">요청삭제</button>
+                      <c:choose>
+                        <c:when test="${order.pay_status eq '승인대기'}">
+                          <button type="button" onclick="confirmApproval()" class="btn btn-approve">승인요청</button>
+                        </c:when>
+                        <c:when test="${order.pay_status eq '승인완료'}">
+                          <button id="check_order" type="button" class="btn btn-success" data-toggle="modal"
+                            data-target="#paymentModal">결제하기</button>
+                        </c:when>
+                      </c:choose>
+                    </div>
+                  </form>
+                </div>
+              </main>
+            </div>
+            <%@ include file="../footer.jsp" %>
         </body>
 
         </html>
