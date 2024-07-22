@@ -729,7 +729,7 @@
                 function hallOrderDel() {
                   if (confirm("대관요청을 삭제 하시겠습니까?")) {
                     $.ajax({
-                      url: "/user/requestDel",
+                      url: "/hall/requestDel",
                       type: "POST",
                       data: {
                         hallOrder_id: "${order.hallOrder_id}",
