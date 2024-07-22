@@ -709,7 +709,7 @@
                 function confirmApproval() {
                   if (confirm("승인요청 하시겠습니까?")) {
                     $.ajax({
-                      url: "/user/requestApproval",
+                      url: "/hall/requestApproval",
                       type: "POST",
                       data: {
                         hallOrder_id: "${order.hallOrder_id}",

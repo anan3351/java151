@@ -97,10 +97,9 @@ public class UserCont {
 		if (loggedInUser != null) {
 			UserDTO userInfo = userDao.getUserById(loggedInUser.getUser_id());
 			MembershipDTO mbName = userDao.selectMbname(loggedInUser.getUser_id());
-			
 
 			model.addAttribute("userInfo", userInfo);
-			model.addAttribute("mbName",mbName);
+			model.addAttribute("mbName", mbName);
 		}
 		mav.addObject("user_id", user_Id);
 		mav.setViewName("membership/membership");
@@ -396,13 +395,6 @@ public class UserCont {
 		}
 	}
 
-	@PostMapping("/requestApproval")
-	@ResponseBody
-	public ResponseEntity<?> requestApproval(@RequestParam String hallOrder_id) {
-		hallOrderDao.updatePayStatus(hallOrder_id, "승인대기진행중");
-		return ResponseEntity.ok().build();
-	}
-
 	@GetMapping("/sellerApprove")
 	public ModelAndView sellerApprove(@RequestParam("user_id") String user_id, HttpSession session, Model model) {
 		UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
@@ -425,21 +417,6 @@ public class UserCont {
 			return mav;
 		}
 	}
-
-	@PostMapping("/approveRequest")
-	@ResponseBody
-	public ResponseEntity<?> approveRequest(@RequestParam String hallOrderId) {
-		hallOrderDao.updatePayStatus(hallOrderId, "승인완료");
-		return ResponseEntity.ok().build();
-	}
-	
-	@PostMapping("/requestDel")
-	@ResponseBody
-	public int hallOrderDel(@RequestParam("hallOrder_id") String hallOrderId) {
-	    return hallOrderDao.hallOrderDel(hallOrderId);
-	}
-	
-	
 
 	@PostMapping("/delete")
 	public String deleteUser(HttpSession session, RedirectAttributes redirectAttributes) {

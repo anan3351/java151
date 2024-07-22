@@ -514,7 +514,7 @@
             function confirmSeller() {
               if (confirm("승인하시겠습니까?")) {
                 $.ajax({
-                  url: "/user/approveRequest",
+                  url: "/hall/approveRequest",
                   type: "POST",
                   data: {
                     hallOrderId: "${orders.hallOrder_id}"

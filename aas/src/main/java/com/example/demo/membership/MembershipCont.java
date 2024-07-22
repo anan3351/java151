@@ -42,7 +42,7 @@ public class MembershipCont {
 
 			switch (membershipType) {
 			case "DIAMOND":
-				couponId = "1";
+				couponId = "5";
 				points = 250000;
 				leftCount = 3;
 				break;

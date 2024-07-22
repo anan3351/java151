@@ -128,7 +128,7 @@
             function confirmApproval() {
               if (confirm("승인요청 하시겠습니까?")) {
                 $.ajax({
-                  url: "/user/requestApproval",
+                  url: "/hall/requestApproval",
                   type: "POST",
                   data: {
                     hallOrder_id: "${order.hallOrder_id}",
@@ -175,7 +175,7 @@
                 <table class="info-table">
                   <tr>
                     <th>시작 날짜</th>
-                    <td>${order.start_date}</td>
+                    <td>${order.start_date} 일</td>
                   </tr>
                   <tr>
                     <th>종료 날짜</th>
