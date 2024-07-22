@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="favorites">
+
+    <insert id="insertFavorite" parameterType="com.example.demo.favorites.FavoritesDTO">
+        INSERT INTO tb_favorites (user_id, actor_id, show_id, favor)
+        VALUES (#{user_id}, #{actor_id}, #{show_id}, #{favor})
+    </insert>
+    
+    <select id="findFavorite" parameterType="com.example.demo.favorites.FavoritesDTO" resultType="com.example.demo.favorites.FavoritesDTO">
+        SELECT * FROM tb_favorites 
+        WHERE user_id = #{user_id} AND actor_id = #{actor_id}
+    </select>
+    
+    <delete id="deleteFavorite" parameterType="int">
+        DELETE FROM tb_favorites WHERE favorites_id = #{favorites_id}
+    </delete>
+</mapper>
+    

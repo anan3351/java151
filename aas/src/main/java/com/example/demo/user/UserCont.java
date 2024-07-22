@@ -5,11 +5,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
+import org.apache.commons.lang3.RandomStringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailException;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,7 +57,15 @@ public class UserCont {
 	private CouponDAO couponDao;
 
 	@Autowired
+
+	private JavaMailSender mailSender;
+
 	private HallOrderDAO hallOrderDao;
+
+	
+	@Value("${spring.mail.username}")
+	private String fromEmail;
+
 
 	@RequestMapping("/form")
 	public String form() {
@@ -439,10 +455,10 @@ public class UserCont {
 		}
 	}
 
-	@RequestMapping("/findid")
-	public String findid() {
-		return "user/findid";
-	}// findid() end
+	@GetMapping("/findid")
+	public String findid(Model model) {
+	    return "user/findid";
+	}
 
 	@RequestMapping("/findpw")
 	public String findpw() {
@@ -459,5 +475,61 @@ public class UserCont {
 
 		return ResponseEntity.ok(response);
 	}// End 로그인 상태 확인을 위한 함수
+
+
+	@PostMapping("/findUserId")
+	public String findUserId(@RequestParam String user_name, @RequestParam String email, Model model, RedirectAttributes redirectAttributes) {
+	    String userId = userDao.findUserId(user_name, email);
+	    if (userId != null) {
+	        model.addAttribute("foundUserId", userId);
+	        return "user/foundId";
+	    } else {
+	        redirectAttributes.addFlashAttribute("error", "이름과 이메일이 일치하지 않습니다.");
+	        return "redirect:/user/findid";
+	    }
+	}
+	
+	@PostMapping("/findPassword")
+	public String findPassword(@RequestParam String user_id, @RequestParam String user_name, @RequestParam String email, RedirectAttributes redirectAttributes) {
+	    UserDTO user = userDao.findUserByIdNameEmail(user_id, user_name, email);
+	    if (user != null) {
+	        String tempPassword = generateTempPassword();
+	        userDao.updatePassword(user.getUser_id(), tempPassword);
+	        boolean emailSent = sendPasswordResetEmail(user.getEmail(), tempPassword);
+	        if (emailSent) {
+	            redirectAttributes.addFlashAttribute("message", "임시 비밀번호가 이메일로 전송되었습니다.");
+	        } else {
+	            redirectAttributes.addFlashAttribute("error", "이메일 전송에 실패했습니다. 나중에 다시 시도해주세요.");
+	        }
+	    } else {
+	        redirectAttributes.addFlashAttribute("error", "이름, 아이디 또는 이메일을 다시 확인해주세요.");
+	    }
+	    return "redirect:/user/findpw";
+	}
+	
+	private String generateTempPassword() {
+	    return RandomStringUtils.randomAlphanumeric(10);
+	}
+	
+	private boolean sendPasswordResetEmail(String email, String tempPassword) {
+	    try {
+	        SimpleMailMessage message = new SimpleMailMessage();
+	        message.setFrom(fromEmail);  // @Value로 주입받은 값 사용
+	        message.setTo(email);
+	        message.setSubject("비밀번호 재설정");
+	        message.setText("귀하의 임시 비밀번호는 " + tempPassword + " 입니다. 로그인 후 비밀번호를 변경해주세요.");
+	        
+	        System.out.println("Attempting to send email from: " + fromEmail + " to: " + email);
+	        
+	        mailSender.send(message);
+	        return true;
+	    } catch (MailException e) {
+	        System.out.println("Email sending failed: " + e.getMessage());
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
+	
+	
 
 }// class end

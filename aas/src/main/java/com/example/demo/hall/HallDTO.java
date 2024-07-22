@@ -1,6 +1,7 @@
 package com.example.demo.hall;
 
 public class HallDTO {
+
 	
 	public HallDTO() {
 	}
@@ -15,8 +16,8 @@ public class HallDTO {
 	private String user_id;
 	private String prfplcnm;
 	private String mt13id;
-    private String seatscale;
-    private String h_code;
+  private String seatscale;
+  private String h_code;
     
 
 	public String getHall_id() {
@@ -107,3 +108,4 @@ public class HallDTO {
 	
 	
 }//END hallDTO
+

@@ -126,7 +126,7 @@ public class HallInsertMini
                                     {
                                         HallDTO hallDto = new HallDTO();
                                         hallDto.setHall_id(mt13id);
-                                        hallDto.setHname(facilityName); // 공연 시설 명
+                                        hallDto.setH_name(facilityName); // 공연 시설 명
                                         hallDto.setMiniHall(miniHall); // 공연장수
                                         hallDto.setAddr(addr); // 지역
                                         hallDto.setH_call(call); // 전화번호

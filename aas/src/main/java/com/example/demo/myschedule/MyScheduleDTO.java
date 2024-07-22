@@ -1,16 +1,15 @@
 package com.example.demo.myschedule;
 
-import java.sql.Date;
-import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class MyScheduleDTO {
 
     private int mysch_id;
     private String user_id;
-    private int order_id;
+    private Integer order_id;
     private String title;
-    private Date showdate;
-    private Time showtime;
+    private LocalDateTime showdate;
     private String seat;
     private String fair;
     private String poster;
@@ -40,12 +39,12 @@ public class MyScheduleDTO {
 	}
 
 
-	public int getOrder_id() {
+	public Integer getOrder_id() {
 		return order_id;
 	}
 
 
-	public void setOrder_id(int order_id) {
+	public void setOrder_id(Integer order_id) {
 		this.order_id = order_id;
 	}
 
@@ -60,23 +59,13 @@ public class MyScheduleDTO {
 	}
 
 
-	public Date getShowdate() {
+	public LocalDateTime getShowdate() {
 		return showdate;
 	}
 
 
-	public void setShowdate(Date showdate) {
+	public void setShowdate(LocalDateTime showdate) {
 		this.showdate = showdate;
-	}
-
-
-	public Time getShowtime() {
-		return showtime;
-	}
-
-
-	public void setShowtime(Time showtime) {
-		this.showtime = showtime;
 	}
 
 
@@ -123,9 +112,13 @@ public class MyScheduleDTO {
 	@Override
 	public String toString() {
 		return "MyScheduleDTO [mysch_id=" + mysch_id + ", user_id=" + user_id + ", order_id=" + order_id + ", title="
-				+ title + ", showdate=" + showdate + ", showtime=" + showtime + ", seat=" + seat + ", fair=" + fair
-				+ ", poster=" + poster + ", sale=" + sale + "]";
+				+ title + ", showdate=" + showdate + ", seat=" + seat + ", fair=" + fair + ", poster=" + poster
+				+ ", sale=" + sale + "]";
 	}
+
+	
+	
+
 	
 	
 	
