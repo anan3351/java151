@@ -92,7 +92,7 @@ public class HallDAO {
 
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 
-		pstmt.setString(1, hallDto.getHname());
+		pstmt.setString(1, hallDto.getH_name());
 		pstmt.setString(2, hallDto.getMiniHall());
 		pstmt.setString(3, hallDto.getAddr());
 		pstmt.setString(4, hallDto.getH_call());
@@ -118,7 +118,7 @@ public class HallDAO {
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 
 		pstmt.setString(1, hallDto.getHall_id());
-		pstmt.setString(2, hallDto.getHname());
+		pstmt.setString(2, hallDto.getH_name());
 		pstmt.setString(3, hallDto.getPrfplcnm());
 		pstmt.setString(4, hallDto.getAddr());
 		pstmt.setString(5, hallDto.getH_call());

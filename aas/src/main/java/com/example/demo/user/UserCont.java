@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
@@ -58,6 +59,9 @@ public class UserCont {
 	private JavaMailSender mailSender;
 
 	private HallOrderDAO hallOrderDao;
+	
+	@Value("${spring.mail.username}")
+	private String fromEmail;
 
 	
 
@@ -495,14 +499,17 @@ public class UserCont {
 	private boolean sendPasswordResetEmail(String email, String tempPassword) {
 	    try {
 	        SimpleMailMessage message = new SimpleMailMessage();
-	        message.setFrom("your-email@gmail.com"); // 발신자 이메일
+	        message.setFrom(fromEmail);  // @Value로 주입받은 값 사용
 	        message.setTo(email);
 	        message.setSubject("비밀번호 재설정");
 	        message.setText("귀하의 임시 비밀번호는 " + tempPassword + " 입니다. 로그인 후 비밀번호를 변경해주세요.");
 	        
+	        System.out.println("Attempting to send email from: " + fromEmail + " to: " + email);
+	        
 	        mailSender.send(message);
 	        return true;
 	    } catch (MailException e) {
+	        System.out.println("Email sending failed: " + e.getMessage());
 	        e.printStackTrace();
 	        return false;
 	    }
