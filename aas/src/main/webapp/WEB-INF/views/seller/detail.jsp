@@ -19,14 +19,14 @@
 </head>
 <body>
     <%@ include file="../header.jsp" %>
-	<div class="main-container">
-		<%@ include file="./sidebar.jsp" %>
+    <div class="main-container">
+        <%@ include file="./sidebar.jsp" %>
         <main>
             <br>
             <div style="font-size: 20px; font-weight: bold; text-align: center;">
                 공연 상세정보
             </div><br><br>
-            
+
             <div class="show-details">
                 <div class="show-poster">
                     <c:if test="${not empty show.poster}">
@@ -43,25 +43,25 @@
                 <div class="show-info">
                     <div style="font-size: 20px; font-weight: bold;">${show.genre} <${show.title}></div><br>
                     <ul>
-	                    <li class="list"><strong>공연코드</strong>${show.show_id}</li>
-	                    <c:choose>
-	                        <c:when test="${not empty show.miniHall}">
-	                            <li class="list"><strong>공연장</strong>${show.h_name} - ${show.miniHall}</li>
-	                        </c:when>
-	                        <c:otherwise>
-	                            <li class="list"><strong>공연장</strong>${show.h_name}</li>
-	                        </c:otherwise>
-	                    </c:choose>
-	                    <li class="list"><strong>캐스팅</strong>${show.s_cast}</li>
-	                    <li class="list"><strong>시작일</strong><fmt:formatDate value="${show.start_day}" pattern="yyyy-MM-dd"/></li>
-	                    <li class="list"><strong>종료일</strong><fmt:formatDate value="${show.end_day}" pattern="yyyy-MM-dd"/></li>
-	                    <li class="list"><strong>러닝타임</strong>${show.runningtime}</li>
-	                    <li class="list"><strong>관람가</strong>${show.viewing_age}</li>
-	                    <li class="list"><strong>예매처</strong><a href="http://localhost:9095/seller/detail/PF239896">http://localhost:9095/seller/detail/PF239896</a></li>
-	                    <li class="list"><strong>가격 </strong><span class="lPointer" onclick="priceList('${show.show_id}')" style="margin-left: 0">전체가격보기▶</span></li>
-	                    <c:forEach items="${priceList}" var="price">
-						    <li class="list"><strong></strong>${price.seat_level} <fmt:formatNumber value="${price.price}" pattern="#,###" />원</li>
-						</c:forEach>					
+                        <li class="list"><strong>공연코드</strong>${show.show_id}</li>
+                        <c:choose>
+                            <c:when test="${not empty show.miniHall}">
+                                <li class="list"><strong>공연장</strong>${show.h_name} - ${show.miniHall}</li>
+                            </c:when>
+                            <c:otherwise>
+                                <li class="list"><strong>공연장</strong>${show.h_name}</li>
+                            </c:otherwise>
+                        </c:choose>
+                        <li class="list"><strong>캐스팅</strong>${show.s_cast}</li>
+                        <li class="list"><strong>시작일</strong><fmt:formatDate value="${show.start_day}" pattern="yyyy-MM-dd"/></li>
+                        <li class="list"><strong>종료일</strong><fmt:formatDate value="${show.end_day}" pattern="yyyy-MM-dd"/></li>
+                        <li class="list"><strong>러닝타임</strong>${show.runningtime}</li>
+                        <li class="list"><strong>관람가</strong>${show.viewing_age}</li>
+                        <li class="list"><strong>예매처</strong><a href="http://localhost:9095/seller/detail/PF239896">http://localhost:9095/seller/detail/PF239896</a></li>
+                        <li class="list"><strong>가격 </strong><span class="lPointer" onclick="priceList('${show.show_id}')" style="margin-left: 0">전체가격보기▶</span></li>
+                        <c:forEach items="${priceList}" var="price">
+                            <li class="list"><strong></strong>${price.seat_level} <fmt:formatNumber value="${price.price}" pattern="#,###" />원</li>
+                        </c:forEach>
                     </ul><br>
                     <input type="button" class="btn btn-default" value="공연정보 수정" onclick="window.location.href='./${show.show_id}/castList'">
                     <input type="button" class="btn btn-default" value="캐스트 관리" onclick="window.location.href='./${show.show_id}/castList'">
@@ -70,64 +70,27 @@
                     <input type="button" class="btn btn-default" value="목록" onclick="window.location.href='javascript:history.back()'">
                 </div>
             </div>
-            <br><hr><br>
-            
+            <br><hr><br><br>
+
             <div class="show-images">
-                <c:if test="${not empty show.noticce_img}">
-                    <div style="font-size: 20px; font-weight: bold; text-align: center;">공지</div><br>
-                    <c:choose>
-                        <c:when test="${show.show_id.startsWith('SHOW')}">
-                            <img src="../../storage/${show.noticce_img}" alt="공지 이미지">
-                        </c:when>
-                        <c:otherwise>
-                            <img src="${show.noticce_img}" alt="공지 이미지">
-                        </c:otherwise>
-                    </c:choose>
-                </c:if>
-                <c:if test="${not empty show.dis_img}">
-                	<div style="font-size: 20px; font-weight: bold; text-align: center;">할인</div><br>
-                    <c:choose>
-                        <c:when test="${show.show_id.startsWith('SHOW')}">
-                            <img src="../../storage/${show.dis_img}" alt="할인 이미지">
-                        </c:when>
-                        <c:otherwise>
-                            <img src="${show.dis_img}" alt="할인 이미지">
-                        </c:otherwise>
-                    </c:choose>
-                </c:if>
-                <c:if test="${not empty show.event_img}">
-                    <div style="font-size: 20px; font-weight: bold; text-align: center;">이벤트</div><br>
-                    <c:choose>
-                        <c:when test="${show.show_id.startsWith('SHOW')}">
-                            <img src="../../storage/${show.event_img}" alt="이벤트 이미지">
-                        </c:when>
-                        <c:otherwise>
-                            <img src="${show.event_img}" alt="이벤트 이미지">
-                        </c:otherwise>
-                    </c:choose>
-                </c:if>
-                <c:if test="${not empty show.detail_img}">
-                    <div style="font-size: 20px; font-weight: bold; text-align: center;">상세정보</div><br>
-                    <c:choose>
-                        <c:when test="${show.show_id.startsWith('SHOW')}">
-                            <img src="../../storage/${show.detail_img}" alt="상세정보 이미지">
-                        </c:when>
-                        <c:otherwise>
-                            <img src="${show.detail_img}" alt="상세정보 이미지">
-                        </c:otherwise>
-                    </c:choose>
-                </c:if>
-                <c:if test="${not empty show.casting_img}">
-                    <div style="font-size: 20px; font-weight: bold; text-align: center;">캐스팅 일정</div><br>
-                    <c:choose>
-                        <c:when test="${show.show_id.startsWith('SHOW')}">
-                            <img src="../../storage/${show.casting_img}" alt="캐스팅 이미지">
-                        </c:when>
-                        <c:otherwise>
-                            <img src="${show.casting_img}" alt="캐스팅 이미지">
-                        </c:otherwise>
-                    </c:choose>
-                </c:if>
+                <c:forEach items="${imgMap}" var="entry">
+                    <c:if test="${not empty entry.value}">
+                        <c:forEach items="${entry.value}" var="imgSrc">
+                            <c:if test="${not empty imgSrc}">
+                            	<c:choose>
+		                            <c:when test="${show.show_id.startsWith('SHOW')}">
+		                                <div style="font-size: 20px; font-weight: bold; text-align: center;">${entry.key}</div><br>
+                                		<img src="../../storage/${imgSrc}">
+		                            </c:when>
+		                            <c:otherwise>
+		                                <div style="font-size: 20px; font-weight: bold; text-align: center;">${entry.key}</div><br>
+                                		<img src="${imgSrc}">
+		                            </c:otherwise>
+		                        </c:choose>
+                            </c:if>
+                        </c:forEach><br><br><br>
+                    </c:if>
+                </c:forEach>
             </div>
         </main>
     </div>

@@ -26,8 +26,9 @@
             <br>
             <div style="font-size: 20px; font-weight: bold; text-align: center;">
                 캐스트 관리(배역/일정)
-                <br><input type="button" class="btn btn-default" value="배역 등록" onclick="window.location.href='./role'" style="float: right;">
+                <br><input type="button" class="btn btn-default" value="배역 목록" onclick="window.location.href='./roleList'" style="float: right;">
             </div><br><br>
+            
             
             <div class="table-wrap">
                 <table class="table table-hover">
