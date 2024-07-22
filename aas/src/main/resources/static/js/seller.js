@@ -156,6 +156,147 @@ window.onclick = function(event) {
     }
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+function actorSearch() {
+    let modal = document.getElementById('actorSearchModal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'actorSearchModal';
+        modal.className = 'modal';
+        modal.style.display = 'none'; // 기본적으로 모달을 숨김
+        document.body.appendChild(modal);
+    }
+
+    let modalContent = document.createElement('div');
+    modalContent.className = 'modal-content';
+    modal.innerHTML = '';
+    modal.appendChild(modalContent);
+
+    fetch('/seller/actorSearch')
+        .then(response => response.text())
+        .then(data => {
+            modalContent.innerHTML = data;
+            modal.style.display = 'block';
+            actSetupPagination();
+        })
+        .catch(error => {
+            console.error('오류 발생:', error);
+            modalContent.innerHTML = '<p>오류가 발생했습니다: ' + error.message + '</p>';
+            modal.style.display = 'block';
+        });
+}
+
+// actorSearch.jsp -> actorList.jsp
+function actPerformSearch() {
+    let h_name = document.getElementById("a_name").value.trim(); // 검색어 조회
+    let page = 0; // 초기 페이지 값
+    actLoadSearchResults(h_name, page); // 검색결과 로드
+    return false;
+}
+
+// 페이징 관련
+function actSetupPagination() {
+    document.querySelectorAll('.pagination a').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            let h_name = document.getElementById("a_name").value.trim();
+            let page = this.getAttribute('data-page');
+            actLoadSearchResults(h_name, page);
+        });
+    });
+}
+
+function actLoadSearchResults(a_name, page) {
+    fetch(`/seller/actorList?a_name=${encodeURIComponent(a_name)}&page=${page}`)
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('actSearchResults').innerHTML = data;
+            actSetupPagination();
+            reapplyStyles(); // 스타일을 다시 적용
+        })
+        .catch(error => {
+            console.error('오류 발생:', error);
+        });
+}
+
+// 스타일을 다시 적용하는 새로운 함수
+function reapplyStyles() {
+    document.querySelectorAll('.role-choice').forEach(el => {
+        el.style.display = 'inline-block';
+        el.style.width = '100px';
+        el.style.height = '30px';
+        el.style.verticalAlign = 'middle';
+    });
+
+    document.querySelectorAll('.role-radio').forEach(el => {
+        el.style.width = '10px';
+        el.style.height = '10px';
+        el.style.marginRight = '5px';
+    });
+}
+
+function selectActor() {
+    let selectedRadio = document.querySelector('input[name="selected_actor"]:checked');
+    if (selectedRadio) {
+        let actorId = selectedRadio.value;
+        let parentDocument = window.parent.document;
+        let actorInput = parentDocument.querySelector('input[name="actor"]');
+        if (actorInput) {
+            actorInput.value = actorId;
+        }
+        closeActModal(); // 모달을 닫기
+    } else {
+        alert("배우를 선택해 주세요.");
+    }
+}
+
+function closeActModal() {
+    let modal = document.getElementById('actorSearchModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+window.onclick = function(event) {
+    let actModal = document.getElementById('actorSearchModal');
+    if (event.target == actModal) {
+        closeActModal();
+    }
+}
+
+function roleCheck() {
+    const form = document.forms['rolefrm'];
+
+    // 배역 선택 확인
+    const castingRadio = form['casting'];
+    let roleSelected = false;
+    if (castingRadio.length) {
+        for (let i = 0; i < castingRadio.length; i++) {
+            if (castingRadio[i].checked) {
+                roleSelected = true;
+                break;
+            }
+        }
+    } else if (castingRadio.checked) {
+        roleSelected = true;
+    }
+    if (!roleSelected) {
+        alert('배역을 선택해 주세요.');
+        return false;
+    }
+
+    // 배우 입력 확인
+    const actorId2 = form['actorId'];
+    if (actorId2.value.trim() === '') {
+        alert('배우를 선택해 주세요.');
+        actorId2.focus();
+        return false;
+    }
+
+    return true;
+}
         
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -327,6 +468,22 @@ function deletePrice(price_id) {
 		$.ajax({
 			type: "POST",
 			url: "../" + price_id + "/priDelete", // 컨트롤러 매핑 주소
+			success: function(data) {
+				location.reload();
+			},
+			error: function() {
+				alert('삭제 실패');
+			}
+		});
+	}
+}
+
+// 배역-배우 삭제
+function deleteRole(actor_id) {
+	if (confirm("정말로 삭제하시겠습니까?")) {
+		$.ajax({
+			type: "POST",
+			url: "../" + actor_id + "/roleDelete", // 컨트롤러 매핑 주소
 			success: function(data) {
 				location.reload();
 			},

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.example.demo.actor.ActorDTO;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import com.example.demo.hall.HallDTO;
 import com.example.demo.show.discount.DiscountDTO;
 import com.example.demo.show.price.PriceDTO;
+import com.example.demo.showcasting.ShowCastingDTO;
 
 @Repository
 public class ShowDAO {
@@ -275,5 +277,34 @@ public class ShowDAO {
 	public int countByCast(String show_id) {
 		return sqlSession.selectOne("show.countByCast", show_id);
 	}
+
+	// 배우 조회
+	public List<ActorDTO> findByActor(String a_name, int pageSize, int offset) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("a_name", a_name);
+		params.put("limit", pageSize);
+		params.put("offset", offset);
+		return sqlSession.selectList("show.findByActor", params);
+	}
+
+	// 배역 추가 - 검색된 배우 수
+	public int countByActor(String a_name) {
+		return sqlSession.selectOne("show.countByActor", a_name);
+	}
 	
+	// 배역추가
+	public void roleInsert(ShowCastingDTO scDto) {
+		sqlSession.insert("show.roleInsert", scDto);
+	}
+	
+	// 배역 리스트
+	public List<Map<String, String>> roleList(String show_id) {
+	    return sqlSession.selectList("show.roleList", show_id);
+	}
+
+	// 배역 - 배우 삭제
+	public void actorDelete(int actor_id) {
+		sqlSession.delete("show.actorDelete", actor_id);
+	}
+
 }

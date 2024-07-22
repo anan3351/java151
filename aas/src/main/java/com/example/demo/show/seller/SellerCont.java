@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.example.demo.actor.ActorDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -20,6 +21,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +33,7 @@ import com.example.demo.hall.HallDTO;
 import com.example.demo.show.ShowDAO;
 import com.example.demo.show.discount.DiscountDTO;
 import com.example.demo.show.price.PriceDTO;
+import com.example.demo.showcasting.ShowCastingDTO;
 import com.example.demo.user.UserDTO;
 
 import jakarta.servlet.ServletContext;
@@ -121,8 +124,7 @@ public class SellerCont {
     
     // 공연 등록 - 공연장 목록 페이징
     @GetMapping("/hallList")
-    public ModelAndView hallList(Model model,
-                                 @PageableDefault(size = 5, page = 0) Pageable pageable,
+    public ModelAndView hallList(@PageableDefault(size = 5, page = 0) Pageable pageable,
                                  @RequestParam(required = false, defaultValue = "") String h_name) {
 
         // 페이지 관련 정보
@@ -280,7 +282,6 @@ public class SellerCont {
     // ---------------------
     
     
-    // 공연 상세페이지
     @GetMapping("/detail/{show_id}")
     public ModelAndView detail(@PathVariable String show_id, HttpSession session) {
         ModelAndView mav = new ModelAndView();
@@ -288,10 +289,47 @@ public class SellerCont {
 
         if (loggedInUser != null) {
             String user_id = loggedInUser.getUser_id();
-            mav.addObject("show", showDao.sellerDetail(show_id, user_id));
+            Map<String, Object> show = showDao.sellerDetail(show_id, user_id);
+            
+            if (show == null) {
+                mav.setViewName("seller/showNotFound");
+                return mav;
+            }
+
             List<Map<String, Object>> priceList = showDao.sellerDetail2(show_id, user_id);
+            
+            mav.addObject("show", show);
             mav.addObject("priceList", priceList);
             mav.addObject("userInfo", loggedInUser);
+
+            String[] imgKeys = {"notice_img", "dis_img", "event_img", "detail_img", "casting_img"};
+            Map<String, List<String>> imgMap = new HashMap<>();
+
+            for (String key : imgKeys) {
+                String imgData = (String) show.get(key);
+                if (imgData != null && !imgData.isEmpty()) {
+                    List<String> imgList = new ArrayList<>();
+                    if (imgData.contains("\n")) {
+                        String[] parts = imgData.split("\n");
+                        imgList = new ArrayList<>(Arrays.asList(parts));
+                    } else {
+                        imgList.add(imgData);
+                    }
+
+                    String displayKey = switch (key) {
+                        case "notice_img" -> "공지사항";
+                        case "dis_img" -> "할인정보";
+                        case "event_img" -> "이벤트";
+                        case "detail_img" -> "상세정보";
+                        case "casting_img" -> "캐스팅 일정";
+                        default -> key;
+                    };
+
+                    imgMap.put(displayKey, imgList);
+                }
+            }
+
+            mav.addObject("imgMap", imgMap);
             mav.setViewName("seller/detail");
         } else {
             mav.setViewName("user/login");
@@ -299,6 +337,7 @@ public class SellerCont {
 
         return mav;
     }
+
     
     // 공연 상세 - 전체가격 모달
     @GetMapping("/detail/allPrice")
@@ -320,7 +359,6 @@ public class SellerCont {
     }
 
 
-    
     // 공연상세 - 할인 목록
     @GetMapping("/detail/{show_id}/disList")
     public ModelAndView disList(HttpSession session, @PathVariable String show_id,
@@ -610,8 +648,7 @@ public class SellerCont {
         return "redirect:/seller/detail/" + show_id + "/priList";
     }
     // ---------------------
-    
-    
+
     // 캐스트 관리 페이지
     @GetMapping("/detail/{show_id}/castList")
     public ModelAndView findByCast(HttpSession session, @PathVariable String show_id,
@@ -676,6 +713,148 @@ public class SellerCont {
 
         return mav;
     }
+
+    // 배역 등록
+    @GetMapping("/detail/{show_id}/role")
+    public ModelAndView role(@PathVariable String show_id, HttpSession session) {
+
+        ModelAndView mav = new ModelAndView();
+        UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+
+        if (loggedInUser != null) {
+            String user_id = loggedInUser.getUser_id();
+            mav.addObject("userInfo", loggedInUser);
+            Map<String, Object> roles = showDao.sellerDetail(show_id, user_id);
+            String role = (String) roles.get("role");
+
+            if (role != null && role.contains(",")) {
+                String[] parts = role.split(",");
+                List<String> roleList = new ArrayList<>();
+                for (String part : parts) {
+                    roleList.add(part.trim());
+                }
+                mav.addObject("roleList", roleList);
+            } else {
+                List<String> roleList = new ArrayList<>();
+                if (role != null) {
+                    roleList.add(role);
+                }
+                mav.addObject("roleList", roleList);
+            }
+            mav.setViewName("seller/role");
+        } else {
+            mav.setViewName("user/login");
+        }
+        return mav;
+    }
+
+    // 배역 등록 - 배우 검색
+    @GetMapping("/actorSearch")
+    public String actorSearch(HttpSession session, Model model) {
+        UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+        if (loggedInUser != null) {
+            model.addAttribute("userInfo", loggedInUser);
+            return "seller/actorSearch";
+        } else {
+            return "redirect:/user/login";
+        }
+    }
+
+    // 배역 등록 - 배우 조회
+    @GetMapping("/actorList")
+    public ModelAndView actorList(@PageableDefault(size = 5, page = 0) Pageable pageable,
+                                 @RequestParam(required = false, defaultValue = "") String a_name) {
+
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int offset = currentPage * pageSize;
+
+        List<ActorDTO> actors;
+        int totalElements;
+
+        actors = showDao.findByActor(a_name, pageSize, offset);
+        totalElements = showDao.countByActor(a_name);
+
+        Page<ActorDTO> ulist = new PageImpl<>(actors, pageable, totalElements);
+        int pageNumber = pageable.getPageNumber();
+        int totalPages = ulist.getTotalPages();
+        int pageBlock = 5;
+        int startBlockPage = (pageNumber / pageBlock) * pageBlock + 1;
+        int endBlockPage = Math.min(startBlockPage + pageBlock - 1, totalPages);
+
+        // 모델과 뷰 이름을 설정한 ModelAndView 객체 생성
+        ModelAndView mav = new ModelAndView("seller/actorList");
+        mav.addObject("startBlockPage", startBlockPage);
+        mav.addObject("endBlockPage", endBlockPage);
+        mav.addObject("ulist", ulist);
+        mav.addObject("a_name", a_name);
+        mav.addObject("totalElements", totalElements);
+
+        return mav;
+    }
+    
+    // 배역 등록
+    @PostMapping("/detail/{show_id}/roleInsert")
+    public String roleInsert(ShowCastingDTO scDto, @PathVariable String show_id, HttpSession session) {
+    	scDto.setShowId(show_id);
+        showDao.roleInsert(scDto);
+        return "redirect:/seller/detail/" + show_id + "/roleList";
+    }
+
+    // 배역 리스트
+    @GetMapping("/detail/{show_id}/roleList")
+    public ModelAndView roleList(@PathVariable String show_id, HttpSession session) {
+    	
+    	ModelAndView mav = new ModelAndView();
+    	UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+        if (loggedInUser != null) {
+	        List<Map<String, String>> rolesList = showDao.roleList(show_id);
+	        Map<String, List<Map<String, String>>> roles = new HashMap<>(); // 역할과 배우 리스트를 저장
+	
+	        for (Map<String, String> entry : rolesList) {
+	            String casting = (String) entry.get("casting");
+	            String actorName = (String) entry.get("a_name");
+	            String actorId = String.valueOf(entry.get("actor_id"));
+	
+	            if (!roles.containsKey(casting)) {
+	                roles.put(casting, new ArrayList<>());
+	            }
+	
+	            Map<String, String> actorInfo = new HashMap<>();
+	            actorInfo.put("a_name", actorName);
+	            actorInfo.put("actor_id", actorId);
+	
+	            roles.get(casting).add(actorInfo);
+	        }
+	        
+	        mav.addObject("userInfo", loggedInUser);
+	        mav.addObject("roles", roles);
+	        mav.setViewName("seller/roleList");
+        } else {
+        	mav.setViewName("user/login");
+        }
+        
+        return mav;
+    }
+
+    // 배역 - 배우 수정
+    @PostMapping("/roleUpdate")
+    public String roleUpdate(@RequestParam int actor_id, @RequestParam String show_id, Model model) {
+        // 수정 페이지를 위한 로직
+        model.addAttribute("actorId", actor_id);
+        model.addAttribute("showId", show_id);
+        // 필요한 데이터 추가 (예: 수정할 역할 정보 등)
+        return "roleUpdatePage"; // 수정 페이지 뷰 이름
+    }
+
+    // 배역 - 배우 삭제
+    @PostMapping("/roleDelete")
+    public String roleDelete(@RequestParam int actor_id, @RequestParam String show_id, HttpSession session) {
+        showDao.actorDelete(actor_id);
+        return "redirect:/seller/detail/" + show_id + "/roleList";
+    }
+
+
 
 
 
