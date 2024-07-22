@@ -6,8 +6,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -606,4 +609,74 @@ public class SellerCont {
     	showDao.priDelete(price_id);
         return "redirect:/seller/detail/" + show_id + "/priList";
     }
+    // ---------------------
+    
+    
+    // 캐스트 관리 페이지
+    @GetMapping("/detail/{show_id}/castList")
+    public ModelAndView findByCast(HttpSession session, @PathVariable String show_id,
+                                    @RequestParam(defaultValue = "0") int page,
+                                    @PageableDefault(size = 10, page = 0) Pageable pageable) {
+
+        ModelAndView mav = new ModelAndView();
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int offset = currentPage * pageSize;
+
+        UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+
+        if (loggedInUser != null) {
+            List<HashMap<String, Object>> castList = showDao.findByCast(show_id, offset, pageSize);
+
+            // 날짜 및 시간 형식화 설정
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd(E)");
+            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+
+            // 회차에 따른 캐스팅 일정
+            Map<String, Map<String, List<String>>> castingList = new LinkedHashMap<>();
+            
+            for (HashMap<String, Object> cast : castList) {
+                Date timestamp = (Date) cast.get("ticket_date");
+                String dateStr = dateFormat.format(timestamp); // 날짜 및 요일
+                String timeStr = timeFormat.format(timestamp); // 시간
+                String dateTimeStr = dateStr + " " + timeStr; // 날짜 + 시간
+                String casting = (String) cast.get("casting");
+                String a_name = (String) cast.get("a_name");
+
+                castingList.computeIfAbsent(dateTimeStr, k -> new LinkedHashMap<>())
+                           .computeIfAbsent(casting, k -> new ArrayList<>())
+                           .add(a_name);
+            }
+
+            // 배역 목록 정리 (중복 제거)
+            Set<String> distinctCastingSet = new HashSet<>();
+            for (Map<String, List<String>> castingMap : castingList.values()) {
+                distinctCastingSet.addAll(castingMap.keySet());
+            }
+            List<String> d_castingList = new ArrayList<>(distinctCastingSet);
+
+            int totalElements = showDao.countByCast(show_id);
+            int totalPages = (int) Math.ceil((double) totalElements / pageSize);
+            int startBlockPage = Math.max(0, currentPage - 2);
+            int endBlockPage = Math.min(totalPages - 1, currentPage + 2);
+
+            mav.addObject("userInfo", loggedInUser);
+            mav.addObject("dateCastingMap", castingList); // 날짜와 배역별 배우
+            mav.addObject("distinctCastingList", d_castingList); // 배역 목록 (중복 제거)
+            mav.addObject("currentPage", currentPage);
+            mav.addObject("totalPages", totalPages);
+            mav.addObject("startBlockPage", startBlockPage);
+            mav.addObject("endBlockPage", endBlockPage);
+            mav.addObject("totalElements", totalElements);
+
+            mav.setViewName("seller/castList");
+        } else {
+            mav.setViewName("user/login");
+        }
+
+        return mav;
+    }
+
+
+
 }

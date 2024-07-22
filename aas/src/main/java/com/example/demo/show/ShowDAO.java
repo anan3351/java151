@@ -260,4 +260,20 @@ public class ShowDAO {
 	public void priDelete(int price_id) {
 		sqlSession.delete("show.priDelete", price_id);
 	}
+	// -----------------------------------------------------------------------------------------------------------------------------------------
+	
+	// 캐스트 관리 목록
+	public List<HashMap<String, Object>> findByCast(String show_id, int offset, long limit) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("show_id", show_id);
+		params.put("offset", offset);
+		params.put("limit", limit);
+		return sqlSession.selectList("show.findByCast", params);
+	}
+	
+	// 캐스트 일정 개수
+	public int countByCast(String show_id) {
+		return sqlSession.selectOne("show.countByCast", show_id);
+	}
+	
 }
