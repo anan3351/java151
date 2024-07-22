@@ -376,6 +376,23 @@ public class UserDAO {
         return sqlSession.selectOne("User.getUserAuth", userId);
     }
     
+
+    public String findUserId(String user_name, String email) {
+        Map<String, String> params = new HashMap<>();
+        params.put("user_name", user_name);
+        params.put("email", email);
+        return sqlSession.selectOne("user.findUserId", params);
+    }
+    
+    public UserDTO findUserByIdNameEmail(String userId, String userName, String email) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("userId", userId);
+        params.put("userName", userName);
+        params.put("email", email);
+        return sqlSession.selectOne("user.findUserByIdNameEmail", params);
+    }
+
+
 }//class end
 
 
