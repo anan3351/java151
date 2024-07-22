@@ -84,11 +84,7 @@
 			<version>3.5.1</version>
 		</dependency>
 
-		<dependency>
-			<groupId>javax.mail</groupId>
-			<artifactId>mail</artifactId>
-			<version>1.4.7</version>
-		</dependency>
+		
 		<!-- lombok 검색. sts에서 설치한 롬복과 버전 동일한 라이브러리 다운 -->
 		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
 		<dependency>
@@ -251,6 +247,11 @@
 		    <artifactId>gson</artifactId>
 		    <version>2.8.9</version>
 		</dependency>
+		
+		<dependency>
+    <groupId>org.apache.commons</groupId>
+    <artifactId>commons-lang3</artifactId>
+</dependency>
 
 		
 

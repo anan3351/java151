@@ -92,6 +92,14 @@
         SELECT auth FROM aas.tb_user WHERE user_id = #{userId}
     </select>
 	
+	<select id="findUserId" resultType="string">
+    SELECT user_id FROM aas.tb_user WHERE user_name = #{user_name} AND email = #{email}
+</select>
+
+<select id="findUserByIdNameEmail" parameterType="map" resultType="com.example.demo.user.UserDTO">
+    SELECT * FROM aas.tb_user 
+    WHERE user_id = #{userId} AND user_name = #{userName} AND email = #{email}
+</select>
 
 
     

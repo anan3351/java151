@@ -56,36 +56,32 @@
 
 </head>
 <body>
-	<%@ include file="../header.jsp" %>
-			<div class="main-container">
-				<!-- 본문시작 -->
-				<div class="container">
-    <h2>아이디 찾기</h2>
-    
+    <%@ include file="../header.jsp" %>
+    <div class="main-container">
+        <div class="container">
+            <h2>아이디 찾기</h2>
+            
+            <c:if test="${not empty error}">
+                <div class="alert alert-danger" role="alert">
+                    ${error}
+                </div>
+            </c:if>
 
-    <div >
-        <div id="idTab" >
-            <form action="#" method="post">
-                
-                <div class="form-group">
-                    <input type="text" class="form-control" id="name" placeholder="이름" required>
+            <div>
+                <div id="idTab">
+                    <form action="/user/findUserId" method="post">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="user_name" name="user_name" placeholder="이름" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-control" id="email" name="email" placeholder="이메일 주소" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">ID 찾기</button>
+                    </form>
                 </div>
-                <div class="form-group">
-                    <input type="email" class="form-control" id="email" placeholder="이메일 주소" required>
-                </div>
-                <button type="submit" class="btn btn-primary btn-block">이메일로 아이디 받기</button>
-            </form>
-        </div>
-        <div id="pwTab" class="tab-pane fade">
-            <!-- 비밀번호 찾기 폼 내용 (필요시 추가) -->
+            </div>
         </div>
     </div>
-</div>
-				
-				
-				
-				<!-- 본문 끝 -->
-			</div>
-	<%@ include file="../footer.jsp" %>
+    <%@ include file="../footer.jsp" %>
 </body>
 </html>
