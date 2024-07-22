@@ -18,47 +18,22 @@
     <link rel="stylesheet" href="/css/template.css">
     <link rel="stylesheet" href="/css/seller.css">
     <script src="/js/seller.js"></script>
-    <title>show upload</title>
+    <title>Show Upload</title>
 </head>
 	<body>
 	    <%@ include file="../header.jsp" %>
 	    <div class="main-container">
-	        <div class="sidebar">
-	            <div class="profile">
-	                <div class="profile-image"></div>
-	                <p>${userInfo.user_id} 님</p>
-	                <p>회원등급 - ${userInfo.auth}</p>
-	            </div>
-	            <div class="menu-section">
-	                <div class="menu-title">공연</div>
-	                <ul class="menu-items">
-                    <li><a href="/seller/list">공연 목록</a></li>
-                    <li><a href="/seller/create">공연 등록</a></li>
-	                </ul>
-	            </div>
-	            <div class="menu-section">
-	                <div class="menu-title">공연장</div>
-	                <ul class="menu-items">
-	                    <li><a href="#">공연장 등록</a></li>
-	                    <li><a href="#">공연장 수정</a></li>
-	                    <li><a href="#">대관비 관리</a></li>
-	                </ul>
-	            </div>
-	            <div class="menu-section">
-	                <div class="menu-title">공연장대관</div>
-	                <ul class="menu-items">
-	                    <li><a href="#">대관 관리</a></li>
-	                </ul>
-	            </div>
-	        </div>
-	
+		    <%@ include file="./sidebar.jsp" %>
 	        <main>
 	        	<br>
 	            <div style="font-size: 20px; font-weight: bold; text-align: center;">
 	                공연 등록
 	            </div><br><br>
 	            <form name="showfrm" id="showfrm" method="post" action="insert" enctype="multipart/form-data" onsubmit="return validateShow();">
-	                <div style="text-align: left; color: red; font-size:13px">&nbsp;&nbsp;* 은 필수 입력 항목입니다</div>
+	                <div style="text-align: left; color: red; font-size:13px">
+	                	&nbsp;&nbsp;* 은 필수 입력 항목입니다<br>
+	                	&nbsp;&nbsp;&nbsp;&nbsp;공연 등록 후, 목록에서 상세정보를 추가하세요. (배역, 할인율, 좌석별 금액..)
+	                </div>
 	                <table class="table table-hover" style="width:100%">
 	                    <tbody style="text-align: left;">
 	                        <tr>
@@ -92,7 +67,7 @@
 	                        </tr>
 	                        <tr>
 	                            <td><span class="sp">* </span>캐스팅</td>
-	                            <td><input type="text" name="s_cast" class="form-control" placeholder="김연아, 박지성, 손흥민, 김연경..."></td>
+	                            <td><input type="text" name="s_cast" class="form-control" placeholder="김배우, 이배우, 박배우, ..."></td>
 	                        </tr>
 	                        <tr>
 	                            <td>공지</td>
@@ -117,7 +92,7 @@
 	                    </tbody>
 	                </table>
 	                <hr>
-	                <input type="submit" value="공연 등록" class="btn btn-warning" style="background-color: white; color: black;">
+	                <input type="submit" value="공연 등록" class="btn btn-default">
 	            </form>
 	            <br>
 	        </main>

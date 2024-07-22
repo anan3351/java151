@@ -1,3 +1,4 @@
+/* showForm */
 .input-group {
     margin-bottom: 10px;
     text-align: left;
@@ -27,8 +28,12 @@ tr {
 	font: bold;
 }
 
-/* 기존 CSS에 다음 내용을 추가합니다 */
+.lPointer:hover {
+    cursor: pointer; /* 마우스를 가져다 대면 포인터 모양으로 변경 */
+}
 
+
+/* showForm, hallSearch, hallList */
 .modal {
     display: none;
     position: fixed;
@@ -62,8 +67,6 @@ tr {
     overflow-wrap: break-word;
 }
 
-
-/* 페이징 스타일 */
 .pagination {
     display: flex;
     justify-content: center;
@@ -165,6 +168,74 @@ tr {
 .pagination a:hover:not(.active) {background-color: #ddd;}
 
 
+
+
+
+/* detail */
+.show-details {
+	display: flex;
+	align-items: flex-start;
+	margin-bottom: 20px;
+	margin-left: 50px;
+}
+
+.show-poster {
+	flex: 1;
+	padding: 20px;
+}
+
+.show-poster img {
+	max-width: 100%;
+	height: auto;
+}
+
+.show-info {
+	flex: 2;
+	padding: 20px;
+}
+
+.show-images {
+	margin-bottom: 20px;
+	text-align: center;
+}
+
+.show-images img {
+	width: 60%;
+	height: auto;
+	margin-bottom: 10px;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.show-store {
+	padding: 20px;
+}
+
+.show-images h3 {
+	margin-top: 0;
+}
+
+.show-info span {
+	margin-left: 10%;
+}
+        
+.list {
+	list-style-position: inside;
+	list-style: none;
+	text-indent: -20px;
+	margin-bottom: 10px;
+}
+		
+.list strong {
+	display: inline-block;
+	width: 60px;
+	margin-right: 5px;
+}
+		
+
+
+/* 프레임 */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -546,20 +617,16 @@ th {
     text-align: center;
 }
 
-/* Set height of the grid so .sidenav can be 100% (adjust as needed) */
 .row.content {
     height: 450px
 }
 
-/* Set gray background color and 100% height */
 .sidenav {
     padding-top: 20px;
     background-color: #f1f1f1;
     height: 100%;
 }
 
-/* Set black background color, white text and some padding */
-/* 푸터 스타일 추가 */
 footer {
     background-color: #413f3f;
     color: white;

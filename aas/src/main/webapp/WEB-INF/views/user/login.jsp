@@ -41,7 +41,7 @@
   <div class="login-box">
     <div class="logo">
       <a href="${pageContext.request.contextPath}/">
-       <img src="../images/xx11.png" alt="로고">
+       <img src="./../../../images/xx11.png" alt="로고">
      </a>
     </div>
     <form action="/user/login" method="post">
