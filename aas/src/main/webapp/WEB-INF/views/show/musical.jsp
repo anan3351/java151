@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -17,6 +17,40 @@
         <link rel="stylesheet" href="../css/template.css">
         <script src="../js/show.js"></script>
         <link rel="stylesheet" href="../css/show.css">
+        <style>
+            .musical-img {
+                width: 150px;
+                height: 200px;
+                object-fit: cover;
+            }
+            .musical-card {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 150px;
+                margin: 10px;
+            }
+            .musical-title {
+                font-weight: bold;
+                text-align: left;
+                font-size: 14px; /* 기본 글씨 크기보다 5px 줄임 */
+                margin-top: 5px;
+                width: 100%;
+                margin-left: 0; /* 왼쪽 여백 제거 */
+            }
+            .musical-info {
+                text-align: left;
+                color: gray;
+                font-size: 12px; /* 기본 글씨 크기보다 5px 줄임 */
+                width: 100%;
+                margin-left: 0; /* 왼쪽 여백 제거 */
+            }
+            .musical-row {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-around;
+            }
+        </style>
     </head>
 
     <body>
@@ -28,14 +62,14 @@
             <div class="container">
                 <div class="swiper-container slider1">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide"><img src="/images/p1.jpg"></div>
-                        <div class="swiper-slide"><img src="/images/p2.jpg"></div>
-                        <div class="swiper-slide"><img src="/images/p3.jpg"></div>
-                        <div class="swiper-slide"><img src="/images/p4.jpg"></div>
-                        <div class="swiper-slide"><img src="/images/p5.jpg"></div>
-                        <div class="swiper-slide"><img src="/images/p6.jpg"></div>
-                        <div class="swiper-slide"><img src="/images/p7.jpg"></div>
-                        <div class="swiper-slide"><img src="/images/p8.jpg"></div>
+                        <!-- 반복문을 사용하여 상위 10개의 이미지를 슬라이드로 표시 -->
+                        <c:forEach var="musical" items="${musicals}" varStatus="status">
+                            <c:if test="${status.index < 10}">
+                                <div class="swiper-slide">
+                                    <img class="musical-img" src="${musical.poster != null ? musical.poster : '../images/non.png'}" alt="${musical.title}">
+                                </div>
+                            </c:if>
+                        </c:forEach>
                     </div>
                     <div class="swiper-button-next swiper-button-next1"></div>
                     <div class="swiper-button-prev swiper-button-prev1"></div>
@@ -48,35 +82,33 @@
 
                     <div class="container">
                         <div class="showall">
-                            <table>
-                                <tr style="text-align: left;">
-                                    <td><img src="/images/p12.jpg">&nbsp;&nbsp;<p><b>뮤지컬 어쩌구</b></p>어쩌구아트센터<br><span style="color: gray">2024/06/06~2024/09/09</span></td>
-                                    <td><img src="/images/p11.jpg">&nbsp;&nbsp;<p><b>뮤지컬 어쩌구</b></p>어쩌구아트센터<br><span style="color: gray">2024/06/06~2024/09/09</span></td>
-                                    <td><img src="/images/p10.jpg">&nbsp;&nbsp;<p><b>뮤지컬 어쩌구</b></p>어쩌구아트센터<br><span style="color: gray">2024/06/06~2024/09/09</span></td>
-                                    <td><img src="/images/p9.jpg">&nbsp;&nbsp;<p><b>뮤지컬 어쩌구</b></p>어쩌구아트센터<br><span style="color: gray">2024/06/06~2024/09/09</span></td>
-                                    <td><img src="/images/p8.jpg">&nbsp;&nbsp;<p><b>뮤지컬 어쩌구</b></p>어쩌구아트센터<br><span style="color: gray">2024/06/06~2024/09/09</span></td>
-                                    <td><img src="/images/p7.jpg">&nbsp;&nbsp;<p><b>뮤지컬 어쩌구</b></p>어쩌구아트센터<br><span style="color: gray">2024/06/06~2024/09/09</span></td>
-                                </tr>
-                            </table>
-                        </div>
-                        <br><br>
-                        <div class="showall">
-                            <table>
-                                <tr style="text-align: left;">
-                                    <td><img src="/images/p6.jpg">&nbsp;&nbsp;<p><b>뮤지컬 어쩌구</b></p>어쩌구아트센터<br><span style="color: gray">2024/06/06~2024/09/09</span></td>
-                                    <td><img src="/images/p5.jpg">&nbsp;&nbsp;<p><b>뮤지컬 어쩌구</b></p>어쩌구아트센터<br><span style="color: gray">2024/06/06~2024/09/09</span></td>
-                                    <td><img src="/images/p4.jpg">&nbsp;&nbsp;<p><b>뮤지컬 어쩌구</b></p>어쩌구아트센터<br><span style="color: gray">2024/06/06~2024/09/09</span></td>
-                                    <td><img src="/images/p3.jpg">&nbsp;&nbsp;<p><b>뮤지컬 어쩌구</b></p>어쩌구아트센터<br><span style="color: gray">2024/06/06~2024/09/09</span></td>
-                                    <td><img src="/images/p2.jpg">&nbsp;&nbsp;<p><b>뮤지컬 어쩌구</b></p>어쩌구아트센터<br><span style="color: gray">2024/06/06~2024/09/09</span></td>
-                                    <td><img src="/images/p1.jpg">&nbsp;&nbsp;<p><b>뮤지컬 어쩌구</b></p>어쩌구아트센터<br><span style="color: gray">2024/06/06~2024/09/09</span></td>
-                                </tr>
-                            </table>
+                            <div class="musical-row">
+                                <!-- 공연 정보를 카드 형식으로 표시 -->
+                                <c:forEach var="musical" items="${musicals}">
+                                    <div class="musical-card">
+                                        <img class="musical-img" src="${musical.poster != null ? musical.poster : '../images/non.png'}" alt="${musical.title}">
+                                        <div class="musical-title">뮤지컬 ${musical.title}</div>
+                                        <div class="musical-info">
+                                            <c:choose>
+                                                <c:when test="${musical.minihall != null}">
+                                                    ${musical.h_name} - ${musical.minihall}
+                                                </c:when>
+                                                <c:otherwise>
+                                                    ${musical.h_name}
+                                                </c:otherwise>
+                                            </c:choose>
+                                            <br>
+                                            ${fn:replace(musical.start_day, "-", "/")}~${fn:replace(musical.end_day, "-", "/")}
+                                        </div>
+                                    </div>
+                                </c:forEach>
+                            </div>
                         </div>
                     </div>
                     <br><br><br>
                 </div>
             </div>
-	    </div>
+        </div>
         <%@ include file="../footer.jsp" %>
     </body>
 </html>

@@ -63,7 +63,7 @@
                                 </c:forEach>
                                 <td>
                                     <input type="button" class="btn btn-default" value="수정" onclick="window.location.href='../${entry.key}/castUpdate'">
-                                    <input type="button" class="btn btn-default" value="삭제" onclick="deleteCast(${entry.key})">
+                                    <input type="button" class="btn btn-default" value="삭제" onclick="deleteCast('${entry.key}')">
                                 </td>
                             </tr>
                         </c:forEach>
@@ -107,28 +107,6 @@
                     </c:choose>
                 </c:if>
             </ul>
-            
-            <div class="comment-section">
-                <form action="${pageContext.request.contextPath}/path/to/your/submit" method="post" id="commentForm">
-                    <div class="form-group">
-                        <label for="performanceDate">공연일:</label>
-                        <input type="text" class="form-control" id="performanceDate" name="performanceDate" placeholder="공연일을 입력하세요">
-                    </div>
-                    <div class="form-group">
-                        <label for="performanceTime">공연시간:</label>
-                        <input type="text" class="form-control" id="performanceTime" name="performanceTime" placeholder="공연시간을 입력하세요">
-                    </div>
-                    
-                    <c:forEach var="casting" items="${distinctCastingList}">
-                        <div class="form-group">
-                            <label for="casting_${casting}">${casting}:</label>
-                            <input type="text" class="form-control" id="casting_${casting}" name="casting_${casting}" placeholder="${casting}을 입력하세요">
-                        </div>
-                    </c:forEach>
-                    
-                    <button type="submit" class="btn btn-primary">등록</button>
-                </form>
-            </div>
         </main>
     </div>
     <%@ include file="../footer.jsp" %>

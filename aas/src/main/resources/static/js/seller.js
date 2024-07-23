@@ -142,19 +142,6 @@ function closePrice() {
     }
 }
 
-// 모달 외부 클릭 시 닫기
-window.onclick = function(event) {
-    let hallModal = document.getElementById('hallSearchModal');
-    let priceModal = document.getElementById('priceListModal');
-
-    if (event.target == hallModal) {
-        closeModal();
-    }
-
-    if (event.target == priceModal) {
-        closePrice();
-    }
-}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -182,10 +169,13 @@ function actorSearch() {
             actSetupPagination();
         })
         .catch(error => {
-            console.error('오류 발생:', error);
-            modalContent.innerHTML = '<p>오류가 발생했습니다: ' + error.message + '</p>';
-            modal.style.display = 'block';
-        });
+        console.error('오류 발생:', error);
+        modalContent.innerHTML = '<p>오류가 발생했습니다: ' + error.message + '</p>';
+        modal.style.display = 'block';
+    })
+    .finally(() => {
+        reapplyStyles(); // 모달 열린 후 스타일 재적용
+    });
 }
 
 // actorSearch.jsp -> actorList.jsp
@@ -224,16 +214,11 @@ function actLoadSearchResults(a_name, page) {
 // 스타일을 다시 적용하는 새로운 함수
 function reapplyStyles() {
     document.querySelectorAll('.role-choice').forEach(el => {
-        el.style.display = 'inline-block';
-        el.style.width = '100px';
-        el.style.height = '30px';
-        el.style.verticalAlign = 'middle';
+        el.style.cssText = 'display: inline-block !important; width: 100px !important; height: 30px !important; vertical-align: middle !important;';
     });
 
     document.querySelectorAll('.role-radio').forEach(el => {
-        el.style.width = '10px';
-        el.style.height = '10px';
-        el.style.marginRight = '5px';
+        el.style.cssText = 'width: 10px !important; height: 10px !important; margin-right: 5px !important;';
     });
 }
 
@@ -242,11 +227,12 @@ function selectActor() {
     if (selectedRadio) {
         let actorId = selectedRadio.value;
         let parentDocument = window.parent.document;
-        let actorInput = parentDocument.querySelector('input[name="actor"]');
+        let actorInput = parentDocument.querySelector('input[name="actorId"]');
         if (actorInput) {
             actorInput.value = actorId;
         }
         closeActModal(); // 모달을 닫기
+        setTimeout(reapplyStyles, 100); // 약간의 지연 후 스타일 재적용
     } else {
         alert("배우를 선택해 주세요.");
     }
@@ -256,13 +242,6 @@ function closeActModal() {
     let modal = document.getElementById('actorSearchModal');
     if (modal) {
         modal.style.display = 'none';
-    }
-}
-
-window.onclick = function(event) {
-    let actModal = document.getElementById('actorSearchModal');
-    if (event.target == actModal) {
-        closeActModal();
     }
 }
 
@@ -297,13 +276,36 @@ function roleCheck() {
 
     return true;
 }
-        
+
+
+// 모달 외부 클릭 시 닫기
+window.onclick = function(event) {
+    let hallModal = document.getElementById('hallSearchModal');
+    let priceModal = document.getElementById('priceListModal');
+    let actModal = document.getElementById('actorSearchModal');
+
+    // hallSearchModal 외부 클릭 시 닫기
+    if (hallModal && event.target === hallModal) {
+        closeModal();
+    }
+
+    // priceListModal 외부 클릭 시 닫기
+    if (priceModal && event.target === priceModal) {
+        closePrice();
+    }
+
+    // actorSearchModal 외부 클릭 시 닫기
+    if (actModal && event.target === actModal) {
+        closeActModal();
+    }
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // 공연정보 입력 검증
 function validateShow() {
 	const form = document.forms['showfrm'];
-	const requiredFields = ['title', 'hall_id', 'start_day', 'end_day', 'runningtime', 'viewing_age', 's_cast'];
+	const requiredFields = ['title', 'hall_id', 'start_day', 'end_day', 'runningtime', 'viewing_age', 'role'];
 	for (let field of requiredFields) {
 		if (form[field].value.trim() === '') {
 			alert('필수 입력 항목을 모두 작성해 주세요.');
@@ -479,17 +481,20 @@ function deletePrice(price_id) {
 }
 
 // 배역-배우 삭제
-function deleteRole(actor_id) {
-	if (confirm("정말로 삭제하시겠습니까?")) {
-		$.ajax({
-			type: "POST",
-			url: "../" + actor_id + "/roleDelete", // 컨트롤러 매핑 주소
-			success: function(data) {
-				location.reload();
-			},
-			error: function() {
-				alert('삭제 실패');
-			}
-		});
-	}
+function deleteRole(actor_id, show_id) {
+    if (confirm("정말로 삭제하시겠습니까?")) {
+        $.ajax({
+            type: "POST",
+            url: "/seller/detail/" + show_id + "/roleDelete",
+            data: { actor_id: actor_id }, // actor_id를 데이터로 포함
+            success: function(data) {
+                location.reload();
+            },
+            error: function() {
+                alert('삭제 실패');
+            }
+        });
+    }
 }
+
+
