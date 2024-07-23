@@ -107,10 +107,11 @@ public class FavoritesCont {
         return "favorites/list"; // view 이름 반환
     }
 
-	    @GetMapping("/favorite/top")
-	    public String getTopFavoriteActors(Model model) {
-	        List<ActorDTO> topFavoriteActors = favoritesDAO.getTopFavoriteActors();
-	        model.addAttribute("topFavoriteActors", topFavoriteActors);
-	        return "favorites/top"; // view 이름 반환
-	    }
+    @GetMapping("/favorite/top")
+    public String getTopFavoriteActors(Model model) {
+        List<ActorDTO> topFavoriteActors = favoritesDAO.getTopFavoriteActors();
+        model.addAttribute("topFavoriteActors", topFavoriteActors);
+        return "actor/list"; // view 이름 반환
+    }
+
 }

@@ -43,12 +43,13 @@
     </select>
     
     <select id="getTopFavoriteActors" resultType="com.example.demo.actor.ActorDTO">
-	    SELECT a.actor_id, a.a_name, a.photo, a.job, a.recent_work, COUNT(f.favorites_id) AS favorite_count
-	    FROM tb_actor a
-	    JOIN tb_favorites f ON a.actor_id = f.actor_id
-	    GROUP BY a.actor_id, a.a_name, a.photo, a.job, a.recent_work
-	    ORDER BY favorite_count DESC
-	    LIMIT 5
-	</select>
+        SELECT a.actor_id, a.a_name, a.photo, a.job, a.recent_work, COUNT(f.favorites_id) AS favorite_count
+        FROM tb_actor a
+        JOIN tb_favorites f ON a.actor_id = f.actor_id
+        GROUP BY a.actor_id, a.a_name, a.photo, a.job, a.recent_work
+        ORDER BY favorite_count DESC, a.a_name ASC
+        LIMIT 5
+    </select>
+
     
 </mapper>
