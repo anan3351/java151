@@ -63,7 +63,7 @@
                             <li class="list"><strong></strong>${price.seat_level} <fmt:formatNumber value="${price.price}" pattern="#,###" />원</li>
                         </c:forEach>
                     </ul><br>
-                    <input type="button" class="btn btn-default" value="공연정보 수정" onclick="window.location.href='./${show.show_id}/castList'">
+                    <input type="button" class="btn btn-default" value="공연정보 수정" onclick="window.location.href='./${show.show_id}/showUpdate'">
                     <input type="button" class="btn btn-default" value="캐스트 관리" onclick="window.location.href='./${show.show_id}/castList'">
                     <input type="button" class="btn btn-default" value="좌석금액" onclick="window.location.href='./${show.show_id}/priList'">
                     <input type="button" class="btn btn-default" value="할인율" onclick="window.location.href='./${show.show_id}/disList'">

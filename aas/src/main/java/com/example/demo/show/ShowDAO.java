@@ -82,6 +82,25 @@ public class ShowDAO {
 	public int countByHname(String h_name) {
 		return sqlSession.selectOne("show.countByHname", h_name);
 	}
+	
+	
+	// 공연 수정 페이지
+	public ShowDTO showSelect(String show_id) {
+		return sqlSession.selectOne("show.showSelect", show_id);
+	}
+	
+	public void showUpdate(ShowDTO showDto) {
+		sqlSession.update("show.showUpdate", showDto);
+	}
+	
+	/*// 이미지 수정
+	public void fileDelete(String show_id, String file) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("show_id", show_id);
+		params.put("file", file);
+		sqlSession.update("show.fileDelete", params);
+	}*/
+	
 	// -----
 
 	
@@ -298,7 +317,7 @@ public class ShowDAO {
 	}
 	
 	// 배역 리스트
-	public List<Map<String, String>> roleList(String show_id) {
+	public List<Map<String, Object>> roleList(String show_id) {
 	    return sqlSession.selectList("show.roleList", show_id);
 	}
 
@@ -306,5 +325,22 @@ public class ShowDAO {
 	public void actorDelete(int actor_id) {
 		sqlSession.delete("show.actorDelete", actor_id);
 	}
+	
+	// 배역 수정 페이지
+	public ShowCastingDTO roleSelect(int casting_id) {
+	    return sqlSession.selectOne("show.roleSelect", casting_id);
+	}
+	
+	// 배역 - 배우 수정
+	public void roleUpdate(int actorId, String casting, int castingId) {
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("actorId", actorId);
+	    params.put("casting", casting);
+	    params.put("castingId", castingId);
+	    sqlSession.update("show.roleUpdate", params);
+	}
+	
+
+
 
 }

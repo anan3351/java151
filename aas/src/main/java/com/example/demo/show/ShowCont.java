@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class ShowCont {
@@ -21,8 +22,10 @@ public class ShowCont {
 	
 	// 뮤지컬 목록
 	@GetMapping("/musical")
-	public String musical() {
-		return "show/musical";
+	public ModelAndView musical() {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("show/musical");
+		return mav;
 	}
 	
 	

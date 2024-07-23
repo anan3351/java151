@@ -31,7 +31,7 @@
             <div style="font-size: 20px; font-weight: bold; text-align: center;">
                 배역 목록
                 <br>
-                <input type="button" class="btn btn-default" value="배우 등록" onclick="window.location.href='./roleList'" style="float: right;">
+                <input type="button" class="btn btn-default" value="배우 등록" onclick="window.location.href='./role'" style="float: right;">
             </div><br><br>
 
             <div class="table-wrap">
@@ -54,16 +54,8 @@
                                         </c:if>
                                         <td>${actorInfo.a_name}</td>
                                         <td style="width: 20%">
-                                            <form action="../roleUpdate" method="post" style="display:inline;">
-                                                <input type="hidden" name="actor_id" value="${actorInfo.actor_id}">
-                                                <input type="hidden" name="show_id" value="${show_id}">
-                                                <button type="submit" class="btn btn-default">수정</button>
-                                            </form>
-                                            <form action="../roleDelete" method="post" style="display:inline;">
-                                                <input type="hidden" name="actor_id" value="${actorInfo.actor_id}">
-                                                <input type="hidden" name="show_id" value="${show_id}">
-                                                <button type="button" class="btn btn-default" onclick="confirmDelete(this.form)">삭제</button>
-                                            </form>
+                                            <input type="button" class="btn btn-default" value="수정" onclick="window.location.href='../${actorInfo.casting_id}/roleUpdate'">
+                                            <input type="button" class="btn btn-default" value="삭제" onclick="deleteRole(${actorInfo.actor_id}, '${show_id}')">
                                         </td>
                                     </tr>
                                 </c:forEach>
@@ -73,7 +65,7 @@
                 </table>
                 
                 <c:if test="${empty roles}">
-                    <p>등록된 배역이 없습니다.</p>
+                    <p style="text-align: center;">등록된 배우가 없습니다.</p>
                 </c:if>
             </div>
         </main>
