@@ -19,7 +19,7 @@ public class ShowCastingController {
     public String getAllShowCastings(Model model) {
         List<ShowCastingDTO> showCastings = showCastingService.getAllShowCastings()
                 .stream()
-                .sorted((sc1, sc2) -> Integer.compare(sc1.getCastingId(), sc2.getCastingId()))
+                .sorted((sc1, sc2) -> Integer.compare(sc1.getCasting_id(), sc2.getCasting_id()))
                 .collect(Collectors.toList());
         model.addAttribute("showCastings", showCastings);
         return "showcasting/showcasting";
@@ -40,7 +40,7 @@ public class ShowCastingController {
 
     @PutMapping("/{id}")
     public String updateShowCasting(@PathVariable String id, @ModelAttribute ShowCastingDTO showCasting) {
-        showCasting.setShowId(id);
+        showCasting.setShow_id(id);
         showCastingService.updateShowCasting(showCasting);
         return "redirect:/showcasting";
     }

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.acsch.AcschMapper">
+
+    <!-- TicketMapper Methods -->
+    <insert id="insertTicket" parameterType="com.example.demo.ticket.TicketDTO" useGeneratedKeys="true" keyProperty="ticket_id">
+        INSERT INTO tb_ticket (show_id, ticket_date)
+        VALUES (#{show_id}, #{ticket_Date})
+    </insert>
+
+    <!-- ActorMapper Methods -->
+    <select id="findActorIdByRecentWork" parameterType="map" resultType="Integer">
+        SELECT actor_id
+        FROM tb_actor
+        WHERE REPLACE(a_name, ' ', '') = REPLACE(#{params.actorName}, ' ', '')
+        AND (
+            <foreach collection="params.keywords" item="keyword" open="(" separator=" OR " close=")">
+                recent_work LIKE CONCAT('%', #{keyword}, '%')
+            </foreach>
+        )
+    </select>
+ 
+    <!-- ShowCastingMapper Methods -->
+    <insert id="insertShowCasting" parameterType="com.example.demo.showcasting.ShowCastingDTO" useGeneratedKeys="true" keyProperty="casting_id">
+        INSERT INTO tb_showcasting (show_id, actor_id, casting)
+        VALUES (#{show_id}, #{actor_id}, #{casting})
+    </insert>
+
+    <!-- AcschMapper Methods -->
+    <insert id="insertAcsch">
+        INSERT INTO tb_acsch (casting_id, ticket_id)
+        VALUES (#{casting_id}, #{ticket_id})
+    </insert>
+
+    <!-- Check for duplicate casting -->
+    <select id="checkDuplicateCasting" resultType="Integer">
+        SELECT COUNT(*) 
+        FROM tb_showcasting 
+        WHERE show_id = #{show_id} 
+        AND actor_id = #{actor_id} 
+        AND casting = #{casting}
+    </select>
+
+    <!-- Check for duplicate ticket -->
+    <select id="checkDuplicateTicket" resultType="Integer">
+        SELECT COUNT(*) 
+        FROM tb_ticket 
+        WHERE show_id = #{show_id} 
+        AND ticket_date = #{ticket_date}
+    </select>
+
+    <!-- Check for duplicate acsch -->
+    <select id="checkDuplicateAcsch" resultType="Integer">
+        SELECT COUNT(*) 
+        FROM tb_acsch 
+        WHERE casting_id = #{casting_id} 
+        AND ticket_id = #{ticket_id}
+    </select>
+    
+</mapper>

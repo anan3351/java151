@@ -4,23 +4,23 @@
 <link rel="stylesheet" href="/css/template.css">
 <h1>배우 상세 정보</h1>
 <style>
-    .header {
-        margin-bottom: 0;
-        position: fixed;
-        top: 0;
-        width: 100%;
-        z-index: 1000;
-        background: #333;
-        color: #fff;
-        padding: 10px 0;
-    }
+        .header {
+            margin-bottom: 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: #333;
+            color: #fff;
+            padding: 10px 0;
+        }
 
-    body {
-        padding-top: 80px;
-        font-family: Arial, sans-serif;
-        background-color: #f9f9f9;
-        color: #333;
-    }
+        body {
+            padding-top: 100px;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+        }
 
     .container {
         display: flex;

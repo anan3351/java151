@@ -55,7 +55,7 @@
             <input type="hidden" name="mysch_id" value="${schedule.mysch_id}">
 
             <div class="form-group">
-                <label for="order_id">Order Details:</label>
+                <label for="order_id">주문 내역:</label>
                 <select class="form-control" id="order_id" name="order_id" onchange="populateFields(${orderDetails}, this.value)">
                     <option value="">Select an Order</option>
                     <c:forEach var="order" items="${orderDetails}">
@@ -65,27 +65,27 @@
             </div>
 
             <div class="form-group">
-                <label for="title">Title:</label>
+                <label for="title">공연 제목:</label>
                 <input type="text" class="form-control" id="title" name="title" value="${schedule.title}" required>
             </div>
             <div class="form-group">
-                <label for="showdate">Show Date & Time:</label>
+                <label for="showdate">공연 시간:</label>
                 <input type="datetime-local" class="form-control" id="showdate" name="showdate" value="${schedule.showdate}" required>
             </div>
             <div class="form-group">
-                <label for="seat">Seat:</label>
+                <label for="seat">좌석:</label>
                 <input type="text" class="form-control" id="seat" name="seat" value="${schedule.seat}" required>
             </div>
             <div class="form-group">
-                <label for="fair">Fair:</label>
+                <label for="fair">출연배우:</label>
                 <input type="text" class="form-control" id="fair" name="fair" value="${schedule.fair}" required>
             </div>
 			<div class="form-group">
-			    <label for="posterFile">Poster:</label>
+			    <label for="posterFile">포스터:</label>
 			    <input type="file" class="form-control" id="posterFile" name="posterFile" ${schedule.mysch_id == 0 ? 'required' : ''}>
 			</div>
             <div class="form-group">
-                <label for="sale">Sale:</label>
+                <label for="sale">할인:</label>
                 <input type="text" class="form-control" id="sale" name="sale" value="${schedule.sale}" required>
             </div>
             <button type="submit" class="btn btn-success">${schedule.mysch_id == 0 ? 'Create' : 'Update'}</button>
