@@ -57,9 +57,9 @@ public class UserCont {
 	private CouponDAO couponDao;
 
 	@Autowired
-
 	private JavaMailSender mailSender;
 
+	@Autowired
 	private HallOrderDAO hallOrderDao;
 
 	
