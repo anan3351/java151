@@ -608,8 +608,6 @@
                   <div class="menu-title">공연장</div>
                   <ul class="menu-items">
                     <li><a href="/user/sellerHallInsert">공연장 등록</a></li>
-                    <li><a href="#">공연장 수정</a></li>
-                    <li><a href="#">대관비 관리</a></li>
                   </ul>
                 </div>
                 <div class="menu-section">
@@ -659,17 +657,27 @@
                       var userId = "${userInfo.user_id}";
                       form.append($('<input>').attr('type', 'hidden').attr('name', 'user_id').val(userId));
 
+                      var hasPrice = false;
+
+
                       $.each(data, function (index, value) {
                         var formGroup = $('<div></div>').addClass('form-group');
                         formGroup.append($('<label></label>').text(value.miniHall));
                         formGroup.append($('<input>').attr('type', 'number').addClass('form-control').attr('name', 'price_' + value.hall_id).val(value.price || ''));
                         form.append(formGroup);
+                        if (value.price) {
+                          hasPrice = true;
+                        }
                       });
 
+
+
                       // 제출 버튼을 추가합니다.
-                      form.append($('<button></button>').attr('type', 'button').addClass('btn btn-primary').text('가격등록').on('click', function () {
-                        submitForm('insert');
-                      }));
+                      if (!hasPrice) {
+                        form.append($('<button></button>').attr('type', 'button').addClass('btn btn-primary').text('가격등록').on('click', function () {
+                          submitForm('insert');
+                        }));
+                      }
 
                       // 수정 버튼을 추가합니다.
                       form.append($('<button></button>').attr('type', 'button').addClass('btn btn-secondary').text('수정').on('click', function () {
@@ -684,6 +692,7 @@
                     }
                   });
                 });
+
 
                 function submitForm(action) {
                   var formData = $('#sub-halls-form').serializeArray();
