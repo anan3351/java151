@@ -626,57 +626,126 @@
                 .info-table {
                   width: 100%;
                   border-collapse: separate;
-                  border-spacing: 0 10px;
+                  border-spacing: 0;
+                  margin-bottom: 20px;
+                  background-color: #ffffff;
+                  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+                  border-radius: 10px;
+                  overflow: hidden;
+                  table-layout: fixed;
+                  /* 고정 레이아웃 사용 */
                 }
 
                 .info-table th,
                 .info-table td {
                   padding: 15px;
                   text-align: left;
-                  border-bottom: 1px solid #eee;
+                  border-bottom: 1px solid #f0f0f0;
+                  word-wrap: break-word;
+                  /* 텍스트가 길 경우 줄바꿈 처리 */
                 }
 
                 .info-table th {
-                  background-color: #f0f8ff;
-                  color: #0066cc;
-                  font-weight: bold;
-                  width: 30%;
-                  border-radius: 5px 0 0 5px;
+                  background-color: #f8f9fa;
+                  font-weight: 600;
+                  text-transform: uppercase;
+                  font-size: 0.85em;
+                  color: #495057;
+                  letter-spacing: 0.5px;
                 }
 
-                .info-table td {
-                  background-color: #fff;
-                  border-radius: 0 5px 5px 0;
+                .info-table tr:last-child td {
+                  border-bottom: none;
                 }
 
-                .btn-container {
+                .info-table tr:nth-child(even) {
+                  background-color: #f8f9fa;
+                }
+
+                .info-table tr:hover {
+                  background-color: #f1f3f5;
+                  transition: background-color 0.3s ease;
+                }
+
+                .info-table td:first-child,
+                .info-table th:first-child {
+                  padding-left: 20px;
+                }
+
+                .info-table td:last-child,
+                .info-table th:last-child {
+                  padding-right: 20px;
+                }
+
+                .info-table .btn-container {
                   display: flex;
-                  justify-content: center;
-                  margin-top: 20px;
+                  justify-content: flex-end;
+                  gap: 10px;
                 }
 
-                .btn {
-                  padding: 10px 20px;
-                  border: none;
+                .info-table .btn {
+                  padding: 8px 15px;
                   border-radius: 5px;
-                  cursor: pointer;
-                  font-weight: bold;
+                  font-size: 0.9em;
                   transition: all 0.3s ease;
                 }
 
-                .btn-back {
-                  background-color: #f0f0f0;
-                  color: #333;
-                  margin-right: 10px;
-                }
-
-                .btn-approve {
-                  background-color: #0066cc;
+                .info-table .btn-approve {
+                  background-color: #007bff;
                   color: white;
                 }
 
-                .btn:hover {
+                .info-table .btn-danger {
+                  background-color: #dc3545;
+                  color: white;
+                }
+
+                .info-table .btn:hover {
                   opacity: 0.8;
+                  transform: translateY(-2px);
+                }
+
+                /* 각 열의 고정 너비 설정 */
+                .info-table th:nth-child(1),
+                .info-table td:nth-child(1) {
+                  width: 15%;
+                  /* 시작 날짜 */
+                }
+
+                .info-table th:nth-child(2),
+                .info-table td:nth-child(2) {
+                  width: 15%;
+                  /* 종료 날짜 */
+                }
+
+                .info-table th:nth-child(3),
+                .info-table td:nth-child(3) {
+                  width: 15%;
+                  /* 총 금액 */
+                }
+
+                .info-table th:nth-child(4),
+                .info-table td:nth-child(4) {
+                  width: 20%;
+                  /* 승인요청시간 */
+                }
+
+                .info-table th:nth-child(5),
+                .info-table td:nth-child(5) {
+                  width: 15%;
+                  /* 공연관 */
+                }
+
+                .info-table th:nth-child(6),
+                .info-table td:nth-child(6) {
+                  width: 20%;
+                  /* 승인상황 */
+                }
+
+                .info-table th:nth-child(7),
+                .info-table td:nth-child(7) {
+                  width: 10%;
+                  /* 버튼 컨테이너 */
                 }
               </style>
               <script>
@@ -706,14 +775,15 @@
               </script>
 
               <script>
-                function confirmApproval() {
+                function confirmApproval(hallOrderId, user_id) {
+                  console.log("Confirming approval for user_id:", user_id); // 디버깅용 로그 추가
                   if (confirm("승인요청 하시겠습니까?")) {
                     $.ajax({
                       url: "/hall/requestApproval",
                       type: "POST",
                       data: {
-                        hallOrder_id: "${order.hallOrder_id}",
-                        seller_id: "${get.user_id}"
+                        hallOrder_id: hallOrderId,
+                        seller_id: user_id // user_id가 문자열로 처리되는지 확인
                       },
                       success: function (response) {
                         alert("판매자에게 승인요청을 완료하였습니다.");
@@ -726,88 +796,108 @@
                   }
                 }
 
-                function hallOrderDel() {
-                  if (confirm("대관요청을 삭제 하시겠습니까?")) {
+                function hallOrderDel(hallOrder_id) {
+                  console.log("Confirming approval for user_id:", hallOrder_id); // 디버깅용 로그 추가
+                  if (confirm("대관요청을 취소 하시겠습니까?")) {
                     $.ajax({
-                      url: "/user/requestDel",
+                      url: "/hall/requestDel",
                       type: "POST",
                       data: {
-                        hallOrder_id: "${order.hallOrder_id}",
+                        hallOrder_id: hallOrder_id,
                       },
                       success: function (response) {
-                        alert("대관요청을 삭제 완료하였습니다.");
-                        document.getElementById('deleteRequestBtn').style.display = 'none'; // 버튼 숨기기
+                        alert("대관요청을 취소 완료하였습니다.");
                         location.reload();
                       },
                       error: function (xhr, status, error) {
-                        alert("대관요청을 삭제 중 오류가 발생했습니다.");
+                        alert("대관요청을 취소 중 오류가 발생했습니다.");
                       }
                     });
                   }
                 }
 
-                document.addEventListener('DOMContentLoaded', function () {
-                  $("#check_order").click(function () {
-                    var priceString = "${order.price}";
-                    var selectedAmount = parseInt(priceString.replace(/[^0-9]/g, ""), 10);
-
-                    if (isNaN(selectedAmount)) {
-                      alert("유효하지 않은 가격입니다.");
-                      return;
-                    }
-                    
-                    // 결제창 호출
-                    IMP.init('imp81610215');
-                    IMP.request_pay({
-                      pg: 'html5_inicis',
-                      pay_method: 'card',
-                      merchant_uid: "order_no_0001", // 상점에서 관리하는 주문 번호를 전달
-                      name: '주문명:결제테스트',
-                      amount: selectedAmount, // 결제금액
-                      m_redirect_url: '{모바일에서 결제 완료 후 리디렉션 될 URL}' // 예: https://www.my-service.com/payments/complete/mobile
-                    }, function (rsp) { // callback 로직
-                      if (rsp.success) {
-                        // 서버단에서 결제정보 조회를 위해 Fetch API로 imp_uid 전달하기
-                        fetch("/payments/complete", {
-                          method: 'POST',
-                          headers: {
-                            'Content-Type': 'application/json'
-                          },
-                          body: JSON.stringify({
-                            imp_uid: rsp.imp_uid,
-                            // 기타 필요한 데이터가 있으면 추가 전달
-                          })
-                        })
-                          .then(response => response.json())
-                          .then(data => {
-                            // 서버에서 REST API로 결제정보확인 및 서비스루틴이 정상적인 경우
-                            if (data.everythings_fine) {
-                              var msg = '결제가 완료되었습니다.';
-                              msg += '\n고유ID : ' + rsp.imp_uid;
-                              msg += '\n상점 거래ID : ' + rsp.merchant_uid;
-                              msg += '\n결제 금액 : ' + rsp.paid_amount;
-                              msg += '카드 승인번호 : ' + rsp.apply_num;
-
-                              alert(msg);
-                            } else {
-                              // 아직 제대로 결제가 되지 않았습니다.
-                              // 결제된 금액이 요청한 금액과 달라 결제를 자동취소처리하였습니다.
-                              alert('결제 정보가 확인되지 않았습니다. 다시 시도해 주세요.');
-                            }
-                          })
-                          .catch(error => {
-                            console.error('Error:', error);
-                            alert('서버와의 통신에 실패하였습니다. 다시 시도해 주세요.');
-                          });
-                      } else {
-                        var msg = '결제에 실패하였습니다.';
-                        msg += '에러내용 : ' + rsp.error_msg;
-
-                        alert(msg);
+                function deleteOrder(hallOrder_id) {
+                  console.log("Deleting order with hallOrder_id:", hallOrder_id); // 디버깅용 로그 추가
+                  if (confirm("내역을 완전히 삭제 하시겠습니까?")) {
+                    $.ajax({
+                      url: "/hall/deleteOrder",
+                      type: "POST",
+                      data: {
+                        hallOrder_id: hallOrder_id
+                      },
+                      success: function (response) {
+                        alert("내역을 삭제 완료하였습니다.");
+                        location.reload();
+                      },
+                      error: function (xhr, status, error) {
+                        alert("내역 삭제 중 오류가 발생했습니다.");
                       }
                     });
-                  });
-                });
+                  }
+                }
+
+                // document.addEventListener('DOMContentLoaded', function () {
+                //   $("#check_order").click(function () {
+                //     var priceString = "${order.price}";
+                //     var selectedAmount = parseInt(priceString.replace(/[^0-9]/g, ""), 10);
+
+                //     if (isNaN(selectedAmount)) {
+                //       alert("유효하지 않은 가격입니다.");
+                //       return;
+                //     }
+
+                //     // 결제창 호출
+                //     IMP.init('imp81610215');
+                //     IMP.request_pay({
+                //       pg: 'html5_inicis',
+                //       pay_method: 'card',
+                //       merchant_uid: "order_no_0001", // 상점에서 관리하는 주문 번호를 전달
+                //       name: '주문명:결제테스트',
+                //       amount: selectedAmount, // 결제금액
+                //       m_redirect_url: '{모바일에서 결제 완료 후 리디렉션 될 URL}' // 예: https://www.my-service.com/payments/complete/mobile
+                //     }, function (rsp) { // callback 로직
+                //       if (rsp.success) {
+                //         // 서버단에서 결제정보 조회를 위해 Fetch API로 imp_uid 전달하기
+                //         fetch("/payments/complete", {
+                //           method: 'POST',
+                //           headers: {
+                //             'Content-Type': 'application/json'
+                //           },
+                //           body: JSON.stringify({
+                //             imp_uid: rsp.imp_uid,
+                //             // 기타 필요한 데이터가 있으면 추가 전달
+                //           })
+                //         })
+                //           .then(response => response.json())
+                //           .then(data => {
+                //             // 서버에서 REST API로 결제정보확인 및 서비스루틴이 정상적인 경우
+                //             if (data.everythings_fine) {
+                //               var msg = '결제가 완료되었습니다.';
+                //               msg += '\n고유ID : ' + rsp.imp_uid;
+                //               msg += '\n상점 거래ID : ' + rsp.merchant_uid;
+                //               msg += '\n결제 금액 : ' + rsp.paid_amount;
+                //               msg += '카드 승인번호 : ' + rsp.apply_num;
+
+                //               alert(msg);
+                //             } else {
+                //               // 아직 제대로 결제가 되지 않았습니다.
+                //               // 결제된 금액이 요청한 금액과 달라 결제를 자동취소처리하였습니다.
+                //               alert('결제 정보가 확인되지 않았습니다. 다시 시도해 주세요.');
+                //             }
+                //           })
+                //           .catch(error => {
+                //             console.error('Error:', error);
+                //             alert('서버와의 통신에 실패하였습니다. 다시 시도해 주세요.');
+                //           });
+                //       } else {
+                //         var msg = '결제에 실패하였습니다.';
+                //         msg += '에러내용 : ' + rsp.error_msg;
+
+                //         alert(msg);
+                //       }
+                //     });
+                //   });
+                // });
 
 
               </script>
@@ -884,54 +974,62 @@
                 </div>
               </div>
               <main>
-                <div class="hall-wrap" id="approvalForm2">
-                  <h1>공연장 승인 요청</h1>
-                  <form id="approvalForm" method="post">
-                    <table class="info-table">
-                      <tr>
-                        <th>시작 날짜</th>
-                        <td>${order.start_date}</td>
-                      </tr>
-                      <tr>
-                        <th>종료 날짜</th>
-                        <td>${order.end_date}일</td>
-                      </tr>
-                      <tr>
-                        <th>총 금액</th>
-                        <td>${order.price}원</td>
-                      </tr>
-                      <tr>
-                        <th>승인요청시간</th>
-                        <td>
-                          <fmt:formatDate value="${order.pay_date}" pattern="yyyy-MM-dd HH:mm:ss" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <th>공연관</th>
-                        <td>${order.miniHall}</td>
-                        <td style="display: none;">${order.hall_id}</td>
-                        <td style="display: none;">${order.user_id}</td> <!-- 구매자 user_id-->
-                        <td style="display: none;">${order.hallOrder_id}</td>
-                        <td style="display: none;">${get.user_id}</td> <!-- 판매자 user_id-->
-                      </tr>
-                      <tr>
-                        <th>승인상황</th>
-                        <td>${order.pay_status}</td>
-                      </tr>
-                    </table>
-                    <div class="btn-container">
-                      <button type="button" class="btn btn-back" onclick="hallOrderDel()">요청삭제</button>
-                      <c:choose>
-                        <c:when test="${order.pay_status eq '승인대기'}">
-                          <button type="button" onclick="confirmApproval()" class="btn btn-approve">승인요청</button>
-                        </c:when>
-                        <c:when test="${order.pay_status eq '승인완료'}">
-                          <button id="check_order" type="button" class="btn btn-success" data-toggle="modal"
-                            data-target="#paymentModal">결제하기</button>
-                        </c:when>
-                      </c:choose>
-                    </div>
-                  </form>
+                <h1>공연장 승인 요청</h1>
+                <div>
+                  <div>
+                    <c:forEach items="${orders}" var="order" varStatus="status">
+                      <div>
+                        <form id="approvalForm-${status.index}" method="post">
+                          <table class="info-table">
+                            <tr>
+                              <th>시작 날짜</th>
+                              <th>종료 날짜</th>
+                              <th>총 금액</th>
+                              <th>승인요청시간</th>
+                              <th>공연관</th>
+                              <th colspan="2">승인상황</th>
+                            </tr>
+                            <tr>
+                              <td>${order.start_date} 일</td>
+                              <td>${order.end_date} 일</td>
+                              <td>${order.price} 원</td>
+                              <td>${order.pay_date}</td>
+                              <td>${order.miniHall}</td>
+                              <td>${order.pay_status}</td>
+                              <td style="display: none;">${order.hall_id}</td>
+                              <td style="display: none;">${order.hallOrder_id}</td>
+                              <td style="display: none;">${order.user_id}</td>
+                              <td style="display: none;">${hallIdOrders[status.index].user_id}</td>
+                              <td>
+                                <div class="btn-container">
+                                  <c:choose>
+                                    <c:when test="${order.pay_status == '승인취소'}">
+                                      <button type="button" onclick="deleteOrder('${order.hallOrder_id}')"
+                                        class="btn btn-danger">내역삭제</button>
+                                    </c:when>
+                                    <c:when test="${order.pay_status == '승인완료'}">
+                                      <button type="button" onclick="makePayment('${order.hallOrder_id}')"
+                                        class="btn btn-warning">결제하기</button>
+                                    </c:when>
+                                    <c:otherwise>
+                                      <button type="button"
+                                        onclick="confirmApproval('${order.hallOrder_id}', '${order.user_id}')"
+                                        class="btn btn-approve">승인요청</button>
+                                      <button type="button" onclick="hallOrderDel('${order.hallOrder_id}')"
+                                        class="btn btn-danger">승인취소</button>
+                                    </c:otherwise>
+                                  </c:choose>
+                                </div>
+                              </td>
+                            </tr>
+                          </table>
+                        </form>
+                      </div>
+                    </c:forEach>
+                  </div>
+                  <c:forEach items="${get}" var="get" varStatus="status">
+                    <div style="display: none;"> ${get.user_id}</div>
+                  </c:forEach>
                 </div>
               </main>
             </div>

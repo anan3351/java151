@@ -160,8 +160,9 @@ public class UserDAO {
 		return sqlSession.selectOne("user.getUserByUserId", userId);
 	}
 
-	public List<Map<String, Object>> sellerHallInsert(String hall_id) {
-		return sqlSession.selectList("user.hallList", hall_id);
+	public List<Map<String, Object>> sellerHallInsert(String userId) {
+		List<Map<String, Object>> result = sqlSession.selectList("user.hallList", userId);
+	    return result;
 	}// sellerHallInsert() end
 
 	public List<Map<String, Object>> getSubHalls(String hall_id) {
