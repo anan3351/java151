@@ -87,4 +87,10 @@
     	WHERE user_id =#{userId}
     </select>
    
+   	<update id="updateOrderStatus" parameterType="map">
+        UPDATE tb_hallOrder
+        SET pay_date = #{pay_date}, pay_status = #{pay_status}
+        WHERE hallOrder_id = #{hallOrderId}
+    </update>
+    
 	</mapper>

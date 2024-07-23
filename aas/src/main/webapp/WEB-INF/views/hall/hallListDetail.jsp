@@ -391,7 +391,8 @@
                       } else if (totalDays >= 7) {
                         discountRate = 2;
                       }
-                      return hDay * (1 - discountRate / 100) * totalDays;
+                      return Math.round(hDay * (1 - discountRate / 100) * totalDays);
+                      //return hDay * (1 - discountRate / 100) * totalDays;
                     }
 
                     var clickableItems = document.querySelectorAll('.clickable');

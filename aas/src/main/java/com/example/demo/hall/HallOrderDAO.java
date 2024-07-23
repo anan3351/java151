@@ -68,7 +68,14 @@ public class HallOrderDAO {
         return sqlSession.selectOne("hall.countHallOrder", userId);
     }
     
-    
+    public int updateOrderStatus(String hallOrderId, String payDate, String payStatus) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("hallOrderId", hallOrderId);
+        params.put("pay_date", payDate);
+        params.put("pay_status", payStatus);
+
+        return sqlSession.update("hall.updateOrderStatus", params);
+    }
     
     
 }// End hallDAO

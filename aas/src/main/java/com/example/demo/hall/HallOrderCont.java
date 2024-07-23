@@ -1,5 +1,7 @@
 package com.example.demo.hall;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -109,5 +111,32 @@ public class HallOrderCont {
 		
 	}
 	
+	//결제 완료 정보 넘어오면 데이터 테이블 결제완료로 업데이트
+	@PostMapping("/updateOrderStatus")
+    public Map<String, Object> updateOrderStatus(@RequestBody Map<String, Object> request) {
+        String hallOrderId = (String) request.get("hallOrderId");
+        String payDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        String payStatus = (String) request.get("pay_status");
+
+        int updateSuccess = hallOrderDao.updateOrderStatus(hallOrderId, payDate, payStatus);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("update_success", updateSuccess);
+
+        return response;
+    }
+	
+	//결제 정보 로직 정상결과 확인
+	@PostMapping("/complete")
+    public Map<String, Object> completePayment(@RequestBody Map<String, Object> request) {
+        String impUid = (String) request.get("imp_uid");
+
+        // 여기에 결제 정보 확인 로직을 추가합니다.
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("everythings_fine", true); // 결제 정보가 정상인지 확인하는 로직 추가
+
+        return response;
+    }
    
 }//end HallCont
