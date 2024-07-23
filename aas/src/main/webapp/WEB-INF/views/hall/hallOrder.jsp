@@ -223,7 +223,7 @@
                   },
                   success: function (response) {
                     alert("대관요청을 취소 완료하였습니다.");
-                    window.location.href = "http://localhost:9095/hall/list";
+                    location.reload();
                   },
                   error: function (xhr, status, error) {
                     alert("대관요청을 취소 중 오류가 발생했습니다.");
@@ -262,8 +262,10 @@
               <h1>공연장 승인 요청</h1>
 
               <div class="swiper-container">
-                <button type="button" class="btn btn-info" style="background-color: #be9ed8; border-color: #be9ed8;"
-                  onclick="location.href='<c:url value=" /hall/list?filter=available" />'">목록으로</button>
+                <div style="width: 100%; display: flex; justify-content: center;">
+                  <button type="button" class="btn btn-info" style=" background-color: #be9ed8; border-color: #be9ed8; text-align: center;"
+                    onclick="location.href='<c:url value=" /hall/list?filter=available" />'">목록으로</button>
+                </div>
                 <div class="swiper-wrapper">
                   <c:forEach items="${Carts}" var="order" varStatus="status">
                     <div class="swiper-slide">
