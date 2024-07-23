@@ -2,15 +2,14 @@ package com.example.demo.show.seller;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import com.example.demo.actor.ActorDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +29,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.hall.HallDTO;
 import com.example.demo.show.ShowDAO;
+import com.example.demo.show.ShowDTO;
 import com.example.demo.show.discount.DiscountDTO;
 import com.example.demo.show.price.PriceDTO;
 import com.example.demo.showcasting.ShowCastingDTO;
@@ -156,6 +155,77 @@ public class SellerCont {
 
         return mav;
     }
+    
+    // 공연 수정 페이지
+    @GetMapping("/detail/{show_id}/showUpdate")
+    public ModelAndView showUpdate(@PathVariable String show_id, HttpSession session) {
+        ModelAndView mav = new ModelAndView();
+        UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+        ShowDTO showDto = showDao.showSelect(show_id);
+
+        if (loggedInUser != null) {
+        	String user_id = loggedInUser.getUser_id();
+            mav.addObject("userInfo", loggedInUser);
+            mav.addObject("data", showDto);
+            mav.addObject("now", LocalDate.now().toString());
+            
+            Map<String, Object> show = showDao.sellerDetail(show_id, user_id);
+            
+            String[] imgKeys = {"notice_img", "dis_img", "event_img", "detail_img", "casting_img"};
+            Map<String, List<String>> imgMap = new HashMap<>();
+            int i = 0;
+            
+            for (String key : imgKeys) {
+                String imgData = (String) show.get(key);
+                if (imgData != null && !imgData.isEmpty()) {
+                    List<String> imgList = new ArrayList<>();
+                    if (imgData.contains("\n")) {
+                        String[] parts = imgData.split("\n");
+                        imgList = new ArrayList<>(Arrays.asList(parts));
+                    } else {
+                        imgList.add(imgData);
+                    }
+
+                    imgMap.put(imgKeys[i], imgList);
+                    i++;
+                }
+            }
+            mav.addObject("imgMap", imgMap); 
+            mav.setViewName("seller/showUpdate");
+        } else {
+            mav.setViewName("user/login");
+        }
+
+        return mav;
+    }
+    
+    // 공연 수정 - 업데이트
+    /*
+    	1. x 버튼을 클릭하면 이미지 파일 삭제 -> 저장 경로에서도 삭제
+    	2. 해당 공연 데이터 불러와서 이미지가 비어있다면 리네임된 파일을 그대로 저장, 아니라면 \n을 붙여서 저장
+    */
+    @PostMapping("/detail/{show_id}/showUpdate")
+    public String showUpdate2(@PathVariable String show_id, HttpSession session, ShowDTO showDto) {
+        showDao.showUpdate(showDto);
+        return "redirect:/seller/detail/" + show_id;
+    }
+    
+    /*// 공연 - 파일 삭제
+    @PostMapping("/detail/{show_id}/fileDelete")
+    public String fileDelete(@PathVariable String show_id, 
+                             @RequestParam("file") String file) {
+        showDao.fileDelete(show_id, file);
+        return "redirect:/seller/detail/" + show_id + "/showUpdate";
+    }*/
+    
+    /*
+    @PostMapping("/detail/{show_id}/fileDelete")
+    public String disDelete(@PathVariable int dis_id, HttpSession session) {
+    	String show_id = showDao.findByDisShowID(dis_id);
+    	showDao.disDelete(dis_id);
+        return "redirect:/seller/detail/" + show_id + "/disList";
+    }*/
+    
     // ---------------------
     
     
@@ -649,6 +719,7 @@ public class SellerCont {
     }
     // ---------------------
 
+    
     // 캐스트 관리 페이지
     @GetMapping("/detail/{show_id}/castList")
     public ModelAndView findByCast(HttpSession session, @PathVariable String show_id,
@@ -672,7 +743,7 @@ public class SellerCont {
             // 회차에 따른 캐스팅 일정
             Map<String, Map<String, List<String>>> castingList = new LinkedHashMap<>();
             
-            for (HashMap<String, Object> cast : castList) {
+            for (HashMap<String, Object> cast : castList) {                
                 Date timestamp = (Date) cast.get("ticket_date");
                 String dateStr = dateFormat.format(timestamp); // 날짜 및 요일
                 String timeStr = timeFormat.format(timestamp); // 시간
@@ -685,13 +756,6 @@ public class SellerCont {
                            .add(a_name);
             }
 
-            // 배역 목록 정리 (중복 제거)
-            Set<String> distinctCastingSet = new HashSet<>();
-            for (Map<String, List<String>> castingMap : castingList.values()) {
-                distinctCastingSet.addAll(castingMap.keySet());
-            }
-            List<String> d_castingList = new ArrayList<>(distinctCastingSet);
-
             int totalElements = showDao.countByCast(show_id);
             int totalPages = (int) Math.ceil((double) totalElements / pageSize);
             int startBlockPage = Math.max(0, currentPage - 2);
@@ -699,7 +763,6 @@ public class SellerCont {
 
             mav.addObject("userInfo", loggedInUser);
             mav.addObject("dateCastingMap", castingList); // 날짜와 배역별 배우
-            mav.addObject("distinctCastingList", d_castingList); // 배역 목록 (중복 제거)
             mav.addObject("currentPage", currentPage);
             mav.addObject("totalPages", totalPages);
             mav.addObject("startBlockPage", startBlockPage);
@@ -714,6 +777,8 @@ public class SellerCont {
         return mav;
     }
 
+
+
     // 배역 등록
     @GetMapping("/detail/{show_id}/role")
     public ModelAndView role(@PathVariable String show_id, HttpSession session) {
@@ -725,7 +790,7 @@ public class SellerCont {
             String user_id = loggedInUser.getUser_id();
             mav.addObject("userInfo", loggedInUser);
             Map<String, Object> roles = showDao.sellerDetail(show_id, user_id);
-            String role = (String) roles.get("role");
+            String role = (String) roles.get("c_role");
 
             if (role != null && role.contains(",")) {
                 String[] parts = role.split(",");
@@ -804,55 +869,95 @@ public class SellerCont {
     // 배역 리스트
     @GetMapping("/detail/{show_id}/roleList")
     public ModelAndView roleList(@PathVariable String show_id, HttpSession session) {
-    	
-    	ModelAndView mav = new ModelAndView();
-    	UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+        ModelAndView mav = new ModelAndView();
+        UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
         if (loggedInUser != null) {
-	        List<Map<String, String>> rolesList = showDao.roleList(show_id);
-	        Map<String, List<Map<String, String>>> roles = new HashMap<>(); // 역할과 배우 리스트를 저장
-	
-	        for (Map<String, String> entry : rolesList) {
-	            String casting = (String) entry.get("casting");
-	            String actorName = (String) entry.get("a_name");
-	            String actorId = String.valueOf(entry.get("actor_id"));
-	
-	            if (!roles.containsKey(casting)) {
-	                roles.put(casting, new ArrayList<>());
-	            }
-	
-	            Map<String, String> actorInfo = new HashMap<>();
-	            actorInfo.put("a_name", actorName);
-	            actorInfo.put("actor_id", actorId);
-	
-	            roles.get(casting).add(actorInfo);
-	        }
-	        
-	        mav.addObject("userInfo", loggedInUser);
-	        mav.addObject("roles", roles);
-	        mav.setViewName("seller/roleList");
+            List<Map<String, Object>> rolesList = showDao.roleList(show_id);
+            Map<String, List<Map<String, Object>>> roles = new HashMap<>(); // 역할과 배우 리스트를 저장
+
+            for (Map<String, Object> entry : rolesList) {
+                String casting = (String) entry.get("casting");
+                String a_name = (String) entry.get("a_name");
+                int actor_id = (int) entry.get("actor_id");
+                int casting_id = (int) entry.get("casting_id"); // casting_id 추가
+
+                if (!roles.containsKey(casting)) {
+                    roles.put(casting, new ArrayList<>());
+                }
+
+                Map<String, Object> actorInfo = new HashMap<>();
+                actorInfo.put("a_name", a_name);
+                actorInfo.put("actor_id", actor_id);
+                actorInfo.put("casting_id", casting_id);
+
+                roles.get(casting).add(actorInfo);
+            }
+
+            mav.addObject("userInfo", loggedInUser);
+            mav.addObject("roles", roles);
+            mav.setViewName("seller/roleList");
         } else {
-        	mav.setViewName("user/login");
+            mav.setViewName("user/login");
         }
-        
+
         return mav;
     }
 
-    // 배역 - 배우 수정
-    @PostMapping("/roleUpdate")
-    public String roleUpdate(@RequestParam int actor_id, @RequestParam String show_id, Model model) {
-        // 수정 페이지를 위한 로직
-        model.addAttribute("actorId", actor_id);
-        model.addAttribute("showId", show_id);
-        // 필요한 데이터 추가 (예: 수정할 역할 정보 등)
-        return "roleUpdatePage"; // 수정 페이지 뷰 이름
+    // 배역 - 배우 수정 페이지
+    @GetMapping("/detail/{casting_id}/roleUpdate")
+    public ModelAndView roleUpdate(@PathVariable int casting_id, HttpSession session) {
+        
+        ModelAndView mav = new ModelAndView();
+        UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+        
+        if (loggedInUser != null) {
+        	ShowCastingDTO scDto = showDao.roleSelect(casting_id);
+            String show_id = scDto.getShowId();
+            String user_id = loggedInUser.getUser_id();
+            
+            Map<String, Object> roles2 = showDao.sellerDetail(show_id, user_id);
+            String role = (String) roles2.get("c_role");
+
+            List<String> roleList = new ArrayList<>();
+            if (role != null) {
+                String[] parts = role.split(",");
+                for (String part : parts) {
+                    roleList.add(part.trim());
+                }
+            }
+            mav.addObject("roleList", roleList);
+            mav.addObject("scDto", scDto);
+            mav.addObject("userInfo", loggedInUser);
+            mav.setViewName("seller/roleUpdate");
+        } else {
+            mav.setViewName("user/login");
+        }
+        return mav;
     }
 
+    // 배역 - 배우 수정 업데이트
+    @PostMapping("/detail/{casting_id}/roleUpdate")
+    public String roleUpdate2(
+            @PathVariable("casting_id") int castingId,
+            @RequestParam("actorId") int actorId,
+            @RequestParam("casting") String casting,
+            HttpSession session) {
+        
+        ShowCastingDTO scDto = showDao.roleSelect(castingId);
+        String showId = scDto.getShowId();
+        
+        showDao.roleUpdate(actorId, casting, castingId);
+        return "redirect:/seller/detail/" + showId + "/roleList";
+    }
+
+
     // 배역 - 배우 삭제
-    @PostMapping("/roleDelete")
-    public String roleDelete(@RequestParam int actor_id, @RequestParam String show_id, HttpSession session) {
+    @PostMapping("/detail/{show_id}/roleDelete")
+    public String roleDelete(@RequestParam int actor_id, @PathVariable String show_id, HttpSession session) {
         showDao.actorDelete(actor_id);
         return "redirect:/seller/detail/" + show_id + "/roleList";
     }
+
 
 
 

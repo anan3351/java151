@@ -24,6 +24,7 @@ public class ShowDTO {
 	private String event_img;	  // 이벤트 이미지
 	private String detail_img;	  // 상세정보 이미지
 	private String poster;		  // 포스터
+	private String c_role;		  // 배역
 }
 
 // 공지 content > contentDetail > img

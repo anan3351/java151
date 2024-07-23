@@ -66,8 +66,8 @@
 	                            <td><input type="text" name="viewing_age" class="form-control" placeholder="만 ~세 이상"></td>
 	                        </tr>
 	                        <tr>
-	                            <td><span class="sp">* </span>캐스팅</td>
-	                            <td><input type="text" name="s_cast" class="form-control" placeholder="김배우, 이배우, 박배우, ..."></td>
+	                            <td><span class="sp">* </span>배역</td>
+	                            <td><input type="text" name="role" class="form-control" placeholder="지킬, 하이드, 엠마, ..."></td>
 	                        </tr>
 	                        <tr>
 	                            <td>공지</td>
