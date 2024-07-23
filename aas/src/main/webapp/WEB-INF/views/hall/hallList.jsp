@@ -23,23 +23,39 @@
               font-size: 28px;
               font-weight: 600;
               text-align: center;
-              padding-block: 40px;
+              padding-top: 20px;
             }
 
             .button-container {
-              text-align: center;
-              margin: 10px 0;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              margin: 20px auto;
+              max-width: 800px;
+              width: 100%;
+              padding: 0 15px;
+              box-sizing: border-box;
+              position: relative;
+              left: 40px;
+              /* 추가 */
+            }
+
+            .filter-buttons {
+              display: flex;
+              gap: 10px;
+              margin-right: 20px;
+              /* 장바구니 아이콘과의 간격 */
             }
 
             .filter-button {
               background-color: rgb(51, 230, 176);
               /* 녹색 배경 */
               border: none;
-              color: white;
+              color: black;
               padding: 10px 10px;
               text-align: center;
               text-decoration: none;
-              display: inline-block;
+              display: flex;
               font-size: 13px;
               margin: 4px 2px;
               cursor: pointer;
@@ -56,9 +72,41 @@
               outline: none;
               box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.5);
             }
+
+            #btn-cart {
+              background-color: #fff;
+              border: 2px solid #fff;
+              padding: 0;
+              position: relative;
+              margin-bottom: 33px;
+              bottom: -15px;
+
+            }
+
+            .cart-icon {
+              position: relative;
+              width: 50px;
+              height: 50px;
+              top: 45%;
+              left: 55%;
+              transform: translate(-48%, -15%);
+            }
+
+            #cartCount {
+              position: absolute;
+              font-size: 17px;
+              font-weight: bold;
+              color: black;
+              background-color: #03ffc0;
+              border-radius: 50%;
+              width: 24px;
+              left: 35px;
+            }
           </style>
 
+
           <script>
+
             function checkLogin() {
               return new Promise((resolve, reject) => {
                 $.ajax({
@@ -67,6 +115,7 @@
                   success: function (response) {
                     if (response.isLoggedIn) {
                       resolve(true);  // 로그인 되어 있음
+                      updateCartCount(); // 로그인 되어 있으면 updateCartCount 함수 호출
                     } else {
                       alert("로그인이 필요한 서비스입니다.");
                       // 현재 페이지 URL을 저장
@@ -82,10 +131,35 @@
                 });
               });
             }
+
+            function updateCartCount() {
+              $.ajax({
+                url: '/hall/cartCount',
+                type: 'GET',
+                data: { userId: userId },
+                success: function (count) {
+                  const cartCountElement = document.getElementById('cartCount');
+                  if (count > 0) {
+                    cartCountElement.textContent = count;
+                    cartCountElement.style.display = 'inline';
+                  } else {
+                    cartCountElement.style.display = 'none';
+                  }
+                },
+                error: function (xhr, status, error) {
+                  console.error('Error:', error);
+                }
+              });
+            }
+
+            function listCartOrder() {
+              window.location.href = '/hall/hallOrder';
+            }
           </script>
         </head>
 
         <body>
+
           <%@ include file="../header.jsp" %>
             <div class="main-container">
               <!-- 본문시작 -->
@@ -93,9 +167,17 @@
                 <c:set var="basePath" value="${pageContext.request.contextPath}" />
                 <h1 class="list-title">공연장 목록</h1>
                 <div class="button-container">
-                  <button class="filter-button" onclick="location.href='/hall/list?filter=all'">공연장 전체목록</button>
-                  <button class="filter-button" onclick="location.href='/hall/list?filter=available'">공연장
-                    대관가능목록</button>
+                  <div class="filter-buttons">
+                    <button class="filter-button" onclick="location.href='/hall/list?filter=all'">공연장 전체목록</button>
+                    <button class="filter-button" onclick="location.href='/hall/list?filter=available'">공연장
+                      대관가능목록</button>
+                  </div>
+                  <div class="cart-wrap">
+                    <button type="button" id="btn-cart" onclick="listCartOrder()">
+                      <img src="<c:url value='/images/cart.png' />" alt="장바구니" class="cart-icon">
+                      <span id="cartCount">0</span>
+                    </button>
+                  </div>
                 </div>
 
                 <!-- 검색 영역 시작-->
@@ -105,7 +187,7 @@
                     <option value="addr">주소</option>
                   </select>
                   <input type="text" id="word" name="word" class="inp-search">
-                  <input type="submit" class="btn btn-search" value="검색">
+                  <input type="submit" class="btn-search2" value="검색">
                 </form>
                 <!-- 검색 영역 끝 -->
 
@@ -184,8 +266,8 @@
                   </div>
                   <!-- 페이징 끝 -->
                 </div>
-
                 <!-- 본문 끝 -->
+
             </div>
             <%@ include file="../footer.jsp" %>
         </body>

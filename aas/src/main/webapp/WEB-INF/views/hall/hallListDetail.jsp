@@ -213,7 +213,7 @@
                 ? loggedInUser.getUser_id() : "" ; %>
 
                 <script type="text/javascript">
-                  var userId = "<%= userId %>";
+                  var userId = "<%= userId %>";  //로그인 되어있는 전역 아이디 변수
                 </script>
                 <script>
 

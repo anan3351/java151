@@ -684,6 +684,7 @@
                         submitForm('update');
                       }));
 
+
                       // sub-options-container에 폼을 추가합니다.
                       $('#sub-options-container').append(form);
                     },

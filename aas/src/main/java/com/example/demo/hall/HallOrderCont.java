@@ -69,13 +69,15 @@ public class HallOrderCont {
     public String showOrderDetails(Model model) {
     	 List<HallOrderDTO> latestOrder = hallOrderDao.getLatestOrder();
     	 List<HallOrderDTO> hallIdOrder = hallOrderDao.gethallIdOrder();
+    	 List<HallOrderDTO> hallIdOrderCart = hallOrderDao.getLatestOrderCart();
         model.addAttribute("orders", latestOrder);
         model.addAttribute("get", hallIdOrder);
+        model.addAttribute("Carts", hallIdOrderCart);
         
         return "hall/hallOrder";
     }
     
-
+    
 	@PostMapping("/requestApproval")
 	@ResponseBody
 	public ResponseEntity<?> requestApproval(@RequestParam String hallOrder_id) {
@@ -110,9 +112,9 @@ public class HallOrderCont {
 		return hallOrderDao.getCartCount(userId);
 		
 	}
-	
 	//결제 완료 정보 넘어오면 데이터 테이블 결제완료로 업데이트
 	@PostMapping("/updateOrderStatus")
+	@ResponseBody
     public Map<String, Object> updateOrderStatus(@RequestBody Map<String, Object> request) {
         String hallOrderId = (String) request.get("hallOrderId");
         String payDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
@@ -122,7 +124,6 @@ public class HallOrderCont {
 
         Map<String, Object> response = new HashMap<>();
         response.put("update_success", updateSuccess);
-
         return response;
     }
 	
