@@ -65,9 +65,9 @@ public class HallOrderCont {
 	
     @GetMapping("/hallOrder")
     public String showOrderDetails(Model model) {
-        HallOrderDTO latestOrder = hallOrderDao.getLatestOrder();
-        HallOrderDTO hallIdOrder = hallOrderDao.gethallIdOrder();
-        model.addAttribute("order", latestOrder);
+    	 List<HallOrderDTO> latestOrder = hallOrderDao.getLatestOrder();
+    	 List<HallOrderDTO> hallIdOrder = hallOrderDao.gethallIdOrder();
+        model.addAttribute("orders", latestOrder);
         model.addAttribute("get", hallIdOrder);
         
         return "hall/hallOrder";
@@ -91,8 +91,22 @@ public class HallOrderCont {
 	
 	@PostMapping("/requestDel")
 	@ResponseBody
-	public int hallOrderDel(@RequestParam("hallOrder_id") String hallOrderId) {
-	    return hallOrderDao.hallOrderDel(hallOrderId);
+	public int hallOrderDel(@RequestParam String hallOrder_id) {
+	    return hallOrderDao.hallOrderDel(hallOrder_id);
+	}
+	
+	@PostMapping("/deleteOrder")
+	@ResponseBody
+	public int hallDeleteOrder(@RequestParam String hallOrder_id) {
+	    return hallOrderDao.hallDeleteOrder(hallOrder_id);
+	}
+	
+		
+	@GetMapping("/cartCount")
+	@ResponseBody
+	public int countHallOrder(@RequestParam String userId) {
+		return hallOrderDao.getCartCount(userId);
+		
 	}
 	
    

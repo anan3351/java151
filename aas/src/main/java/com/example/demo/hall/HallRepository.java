@@ -34,18 +34,29 @@ public interface HallRepository extends JpaRepository<HallEntity, String>{
 
     @Query(value = "SELECT * FROM tb_hall WHERE hall_id NOT LIKE '%-%' AND h_name LIKE %:word% ORDER BY seat LIMIT :limit OFFSET :offset", nativeQuery = true)
     List<HallEntity> findByHnameContainingWithoutDash(@Param("word") String word, @Param("limit") int limit, @Param("offset") int offset);
+    //공연장명으로 검색했을시 나오는 공연장 데이터
 
     @Query(value = "SELECT COUNT(*) FROM tb_hall WHERE hall_id NOT LIKE '%-%' AND h_name LIKE %:word%", nativeQuery = true)
     int countByHnameContainingWithoutDash(@Param("word") String word);
+    //공연장명으로 검색했을 시 나오는 공연장 갯수 데이터
 
     @Query(value = "SELECT * FROM tb_hall WHERE hall_id NOT LIKE '%-%' AND addr LIKE %:word% ORDER BY hall_id DESC LIMIT :limit OFFSET :offset", nativeQuery = true)
     List<HallEntity> findByAddrContainingWithoutDash(@Param("word") String word, @Param("limit") int limit, @Param("offset") int offset);
+    //주소명으로 검색했을 시 나오는 공연장 데이터
 
     @Query(value = "SELECT COUNT(*) FROM tb_hall WHERE hall_id NOT LIKE '%-%' AND addr LIKE %:word%", nativeQuery = true)
     int countByAddrContainingWithoutDash(@Param("word") String word);
+    //주소명으로 검색했을 시 나오는 공연장 데이터 갯수
     
     @Query(value = "SELECT * FROM tb_hall WHERE hall_id LIKE '%-%' AND miniHall IS NOT NULL", nativeQuery = true)
     List<HallEntity> findHallsWithMiniHallNotNull(@Param("limit") int limit, @Param("offset") int offset);
     
     
+    @Query(value = "SELECT * FROM tb_hall WHERE miniHall IS NULL ORDER BY hall_id DESC LIMIT :limit OFFSET :offset", nativeQuery = true)
+    List<HallEntity> findAllHallsWithMiniHall(@Param("limit") int limit, @Param("offset") int offset);
+    //공연장 미니홀을 제외한 공연장만 보여주는 리스트 
+   
+    @Query(value = "SELECT COUNT(*) FROM tb_hall WHERE miniHall IS NULL", nativeQuery = true)
+    int countAllHallsWithMiniHall();
+    //공연장 미니홀을 제외한 공연만 갯수 리스트
 }

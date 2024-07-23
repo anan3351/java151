@@ -456,68 +456,137 @@
             .info-table {
               width: 100%;
               border-collapse: separate;
-              border-spacing: 0 10px;
+              border-spacing: 0;
+              margin-bottom: 20px;
+              background-color: #ffffff;
+              box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+              border-radius: 10px;
+              overflow: hidden;
+              table-layout: fixed;
+              /* 고정 레이아웃 사용 */
             }
 
             .info-table th,
             .info-table td {
               padding: 15px;
               text-align: left;
-              border-bottom: 1px solid #eee;
+              border-bottom: 1px solid #f0f0f0;
+              word-wrap: break-word;
+              /* 텍스트가 길 경우 줄바꿈 처리 */
             }
 
             .info-table th {
-              background-color: #f0f8ff;
-              color: #0066cc;
-              font-weight: bold;
-              width: 30%;
-              border-radius: 5px 0 0 5px;
+              background-color: #f8f9fa;
+              font-weight: 600;
+              text-transform: uppercase;
+              font-size: 0.85em;
+              color: #495057;
+              letter-spacing: 0.5px;
             }
 
-            .info-table td {
-              background-color: #fff;
-              border-radius: 0 5px 5px 0;
+            .info-table tr:last-child td {
+              border-bottom: none;
             }
 
-            .btn-container {
+            .info-table tr:nth-child(even) {
+              background-color: #f8f9fa;
+            }
+
+            .info-table tr:hover {
+              background-color: #f1f3f5;
+              transition: background-color 0.3s ease;
+            }
+
+            .info-table td:first-child,
+            .info-table th:first-child {
+              padding-left: 20px;
+            }
+
+            .info-table td:last-child,
+            .info-table th:last-child {
+              padding-right: 20px;
+            }
+
+            .info-table .btn-container {
               display: flex;
-              justify-content: center;
-              margin-top: 20px;
+              justify-content: flex-end;
+              gap: 10px;
             }
 
-            .btn {
-              padding: 10px 20px;
-              border: none;
+            .info-table .btn {
+              padding: 8px 15px;
               border-radius: 5px;
-              cursor: pointer;
-              font-weight: bold;
+              font-size: 0.9em;
               transition: all 0.3s ease;
             }
 
-            .btn-back {
-              background-color: #f0f0f0;
-              color: #333;
-              margin-right: 10px;
-            }
-
-            .btn-approve {
-              background-color: #0066cc;
+            .info-table .btn-approve {
+              background-color: #007bff;
               color: white;
             }
 
-            .btn:hover {
+            .info-table .btn-danger {
+              background-color: #dc3545;
+              color: white;
+            }
+
+            .info-table .btn:hover {
               opacity: 0.8;
+              transform: translateY(-2px);
+            }
+
+            /* 각 열의 고정 너비 설정 */
+            .info-table th:nth-child(1),
+            .info-table td:nth-child(1) {
+              width: 10%;
+              /* 시작 날짜 */
+            }
+
+            .info-table th:nth-child(2),
+            .info-table td:nth-child(2) {
+              width: 10%;
+              /* 종료 날짜 */
+            }
+
+            .info-table th:nth-child(3),
+            .info-table td:nth-child(3) {
+              width: 10%;
+              /* 총 금액 */
+            }
+
+            .info-table th:nth-child(4),
+            .info-table td:nth-child(4) {
+              width: 15%;
+              /* 승인요청시간 */
+            }
+
+            .info-table th:nth-child(5),
+            .info-table td:nth-child(5) {
+              width: 15%;
+              /* 공연관 */
+            }
+
+            .info-table th:nth-child(6),
+            .info-table td:nth-child(6) {
+              width: 15%;
+              /* 승인상황 */
+            }
+
+            .info-table th:nth-child(7),
+            .info-table td:nth-child(7) {
+              width: 10%;
+              /* 버튼 컨테이너 */
             }
           </style>
 
           <script>
-            function confirmSeller() {
+            function confirmSeller(hallOrder_id) {
               if (confirm("승인하시겠습니까?")) {
                 $.ajax({
                   url: "/hall/approveRequest",
                   type: "POST",
                   data: {
-                    hallOrderId: "${orders.hallOrder_id}"
+                    hallOrderId: hallOrder_id
                   },
                   success: function (response) {
                     alert("승인이 완료되었습니다.");
@@ -525,6 +594,25 @@
                   },
                   error: function (xhr, status, error) {
                     alert("승인 중 오류가 발생했습니다.");
+                  }
+                });
+              }
+            }
+
+            function approveCancel(hallOrder_id){
+              if (confirm("승인 취소 하시겠습니까?")) {
+                $.ajax({
+                  url: "/hall/requestDel",
+                  type: "POST",
+                  data: {
+                    hallOrderId: hallOrder_id
+                  },
+                  success: function (response) {
+                    alert("승인 취소 완료되었습니다.");
+                    location.reload();
+                  },
+                  error: function (xhr, status, error) {
+                    alert("승인 취소 중 오류가 발생했습니다.");
                   }
                 });
               }
@@ -570,51 +658,40 @@
 
               <main>
                 <div class="hall-wrap">
+                  <c:forEach items="${approve}" var="approve" varStatus="status">
                   <h1>공연장 대관 승인</h1>
-                  <form id="approvalForm" method="post">
+                  <form id="approvalForm-${status.index}" method="post">
                     <table class="info-table">
                       <tr>
                         <th>시작 날짜</th>
-                        <td>${orders.start_date}</td>
-                      </tr>
-                      <tr>
                         <th>총 대관일</th>
-                        <td>${orders.end_date}일</td>
-                      </tr>
-                      <tr>
                         <th>총 금액</th>
-                        <td>${orders.price}원</td>
-                      </tr>
-                      <tr>
                         <th>승인요청시간</th>
-                        <td>
-                          <fmt:formatDate value="${orders.pay_date}" pattern="yyyy-MM-dd HH:mm:ss" />
-                        </td>
-                      </tr>
-                      <tr>
                         <th>공연관</th>
-                        <td>${orders.miniHall}</td>
-                        <td style="display: none;">${orders.hall_id}</td>
-                        <td style="display: none;">${orders.hallOrder_id}</td>
-                      </tr>
-                      <tr>
-                        <th>승인상황</th>
-                        <td>${orders.pay_status}</td>
-                      </tr>
-                      <tr>
                         <th>구매자 요청 ID</th>
-                        <td>${orders.user_id}</td>
+                        <th>승인상황</th>
+                      </tr>
+                      <tr>
+                        <td>${approve.start_date}일</td>
+                        <td>${approve.end_date}일</td>
+                        <td>${approve.price}원</td>
+                        <td><fmt:formatDate value="${approve.pay_date}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
+                        <td>${approve.miniHall}</td>
+                        <td>${approve.user_id}</td>
+                        <td>${approve.pay_status}<div class="btn-container">
+                          <button type="button" class="btn btn-back" onclick="approveCancel(${approve.hallOrder_id})">요청취소</button>
+                          <c:choose>
+                            <c:when test="${approve.pay_status eq '승인대기진행중'}">
+                              <button type="button" id="approveButton" onclick="confirmSeller(${approve.hallOrder_id})"
+                                class="btn btn-approve">승인하기</button>
+                            </c:when>
+                          </c:choose>
+                        </div></td>
+                        <td style="display: none;">${approve.hall_id}</td>
+                        <td style="display: none;">${approve.hallOrder_id}</td>
                       </tr>
                     </table>
-                    <div class="btn-container">
-                      <button type="button" class="btn btn-back" onclick="" />요청취소</button>
-                      <c:choose>
-                        <c:when test="${orders.pay_status eq '승인대기진행중'}">
-                          <button type="button" id="approveButton" onclick="confirmSeller()"
-                            class="btn btn-approve">승인하기</button>
-                        </c:when>
-                      </c:choose>
-                    </div>
+                  </c:forEach>
                   </form>
                 </div>
               </main>

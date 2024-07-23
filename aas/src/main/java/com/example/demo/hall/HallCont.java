@@ -47,28 +47,6 @@ public class HallCont {
     
     @Autowired
     private HallRepository	hallRepository;
-    
-  
-    //결과확인 공연장 목록
-    //->http://localhost:9095/hall/list
-    //
-    /*@RequestMapping("/list")
-    public ModelAndView list() {
-        ModelAndView mav=new ModelAndView();
-        mav.setViewName("hall/hallList");
-        mav.addObject("list", hallDao.list());
-        return mav;
-    }//list() end*/
-    
-    
-	
-	/*
-	 * @PostMapping("/hall/order")
-	 * 
-	 * @ResponseBody public String orderHall(@RequestBody HallOrderDTO request) {
-	 * HallOrderService hallOrderService = new HallOrderService();
-	 * hallOrderService.saveOrder(request); return "success"; }
-	 */
 
    
     //http://localhost:9095/list/detail/25
@@ -103,9 +81,10 @@ public class HallCont {
     //게시판 페이징 및 검색 메서드
     @GetMapping("/list")
     public String hallList(Model model,
-                           @PageableDefault(size = 5) Pageable pageable,
+                           @PageableDefault(size = 10) Pageable pageable,
                            @RequestParam(required = false, defaultValue = "") String field,
-                           @RequestParam(required = false, defaultValue = "") String word) {
+                           @RequestParam(required = false, defaultValue = "") String word,
+                           @RequestParam(required = false, defaultValue = "all") String filter) {
 
         int pageSize = pageable.getPageSize();
         int currentPage = pageable.getPageNumber();
@@ -114,7 +93,13 @@ public class HallCont {
         List<HallEntity> halls;
         int totalElements;
 
-        if (!word.isEmpty()) {
+        if ("all".equals(filter)) {
+            halls = hallRepository.findAllHallsWithMiniHall(pageSize, offset);
+            totalElements = hallRepository.countAllHallsWithMiniHall();
+        } else if ("available".equals(filter)) {
+            halls = hallRepository.findByHallIdWithNonNullHDayAndWithoutDash(pageSize, offset);
+            totalElements = hallRepository.countByHallIdWithoutDash();
+        } else if (!word.isEmpty()) {
             if (field.equals("hname")) {
                 halls = hallRepository.findByHnameContainingWithoutDash(word, pageSize, offset);
                 totalElements = hallRepository.countByHnameContainingWithoutDash(word);
@@ -122,13 +107,12 @@ public class HallCont {
                 halls = hallRepository.findByAddrContainingWithoutDash(word, pageSize, offset);
                 totalElements = hallRepository.countByAddrContainingWithoutDash(word);
             } else {
-                halls = hallRepository.findByHallIdWithNonNullHDayAndWithoutDash(pageSize, offset);
+            	halls = hallRepository.findByHallIdWithNonNullHDayAndWithoutDash(pageSize, offset);
                 totalElements = hallRepository.countByHallIdWithoutDash();
             }
         } else {
             halls = hallRepository.findByHallIdWithNonNullHDayAndWithoutDash(pageSize, offset);
             totalElements = hallRepository.countByHallIdWithoutDash();
-            //halls = hallRepository.findHallsWithMiniHallNotNull(pageSize, offset);
         }
         
 
@@ -146,6 +130,7 @@ public class HallCont {
         model.addAttribute("ulist", ulist);
         model.addAttribute("field", field);
         model.addAttribute("word", word);
+        model.addAttribute("filter", filter); //추가
         
         return "hall/hallList";
     }

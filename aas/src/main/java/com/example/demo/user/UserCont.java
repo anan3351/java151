@@ -144,6 +144,7 @@ public class UserCont {
 	// 공연장 대관 내역 페이지 연결
 	@GetMapping("/mypage/hallMypage")
 	public ModelAndView hallMypage(@RequestParam("user_id") String user_id, HttpSession session, Model model) {
+		System.out.println("Received user_id: " + user_id);
 		UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
 		ModelAndView mav = new ModelAndView();
 
@@ -152,11 +153,11 @@ public class UserCont {
 			model.addAttribute("userInfo", userInfo);
 		}
 
-		HallOrderDTO order = hallOrderDao.getLatestOrder();
-		HallOrderDTO hallIdOrder = hallOrderDao.gethallIdOrder();
+		List<HallOrderDTO> order = hallOrderDao.getLatestOrder();
+		List<HallOrderDTO> hallIdOrder = hallOrderDao.gethallIdOrder();
 		model.addAttribute("get", hallIdOrder);
-		model.addAttribute("order", order);
-		mav.addObject("user_id", user_id);
+		model.addAttribute("orders", order);
+		//mav.addObject("user_id", user_id);
 		mav.setViewName("hall/hallMypage");
 
 		return mav;
@@ -338,17 +339,20 @@ public class UserCont {
 
 	// 셀러 공연장 등록 페이지 연결
 	@GetMapping("/sellerHallInsert")
-	public ModelAndView hallInsert(@RequestParam(required = false) String hall_id, HttpSession session, Model model) {
+	public ModelAndView hallInsert(HttpSession session, Model model) {
 		UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
 		ModelAndView mav = new ModelAndView();
 
 		if (loggedInUser != null) {
+			String userId = loggedInUser.getUser_id();
+			  
 			UserDTO userInfo = userDao.getUserById(loggedInUser.getUser_id());
 			model.addAttribute("userInfo", userInfo);
+			
+			List<Map<String, Object>> hallList = userDao.sellerHallInsert(userId);
+			mav.addObject("hallList", hallList);
 		}
 
-		List<Map<String, Object>> hallList = userDao.sellerHallInsert(null);
-		mav.addObject("hallList", hallList);
 		mav.setViewName("user/sellerHallInsert");
 
 		return mav;
@@ -420,10 +424,11 @@ public class UserCont {
 			// 로그인한 사용자의 정보를 모델에 추가
 			UserDTO userInfo = userDao.getUserById(loggedInUser.getUser_id());
 			model.addAttribute("userInfo", userInfo);
+			
 			// 해당 user_id로 보류 중인 주문을 조회
-			HallOrderDTO orders = hallOrderDao.getPendingOrdersBySellerId(loggedInUser.getUser_id());
+			List<HallOrderDTO> approve = hallOrderDao.getPendingOrdersBySellerId(loggedInUser.getUser_id());
 
-			model.addAttribute("orders", orders);
+			model.addAttribute("approve", approve);
 			mav.addObject("user_id", user_id);
 			mav.setViewName("user/sellerApprove");
 			return mav;

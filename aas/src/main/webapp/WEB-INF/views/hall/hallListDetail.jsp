@@ -32,6 +32,42 @@
               .main-container li {
                 list-style: none;
               }
+
+              .btn-cart {
+                width: 50px;
+                height: 50px;
+                background-color: black;
+                border: 2px solid #fff;
+                padding: 0;
+                position: relative;
+
+              }
+
+              .cart-icon {
+                width: 50px;
+                height: 50px;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-48%, -53%);
+              }
+
+              .cartCount {
+                position: absolute;
+                font-size: 16px;
+                font-weight: bold;
+                color: black;
+                background-color: #b61962;
+                border-radius: 50%;
+                width: 24px;
+                height: 24px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                top: -10px;
+                right: -10px;
+                z-index: 1;
+              }
             </style>
           </head>
 
@@ -103,6 +139,26 @@
                       </div>
                       <div class="btn-area">
                         <button type="button" class="btn btn-booking" onclick="submitOrder()">예약하기</button>
+                        <button type="button" class="btn btn-bookmark" onclick="submitCartOrder()">담아두기</button>
+                        <button type="button" class="btn btn-cart" onclick="listCartOrder()"><img
+                            src="<c:url value='/images/cart.png' />" alt="장바구니" class="cart-icon"></button>
+                        <span id="cartCount" style="position: absolute;
+                        font-size: 16px;
+                        font-weight: bold;
+                        color: black;
+                        background-color: #03ffc0;
+                        border-radius: 50%;
+                        width: 24px;
+                        height: 24px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        top: 0px;
+                        right: 73px;
+                        z-index: 1;
+                        text-align: center;
+                        line-height: 1.6;
+                        padding: 0;">0</span>
                       </div>
                     </div>
                   </div>
@@ -355,6 +411,8 @@
                     });
 
                     renderCalendar(currentYear, currentMonth);
+
+                    updateCartCount();
                   });
 
                   function submitOrder() {
@@ -404,7 +462,77 @@
                   }
 
 
+                  function submitCartOrder() {
+                    if (!selectedStartDate || !selectedEndDate) {
+                      alert('시작날짜와 종료날짜를 모두 선택해주세요');
+                      return;
+                    }
 
+                    const selectedHall = document.getElementById('selected-hall').textContent;
+                    const totalPrice = document.getElementById('price-per-day').textContent;
+                    const totalDate = document.getElementById('selected-date-display2').textContent;
+                    const hallId = document.getElementById('selected-hall-id').textContent;
+                    const hallPayId = document.getElementById('selected-hallPay-id').textContent;
+
+                    if (!selectedHall || totalPrice === '' || !totalDate) {
+                      alert('공연관을 선택해주세요');
+                      return;
+                    }
+
+                    alert('대관 내역 담아두기에 성공했습니다.');
+                    updateCartCount();
+
+                    var data = {
+                      start_date: selectedStartDate.toISOString().split('T')[0],
+                      end_date: selectedEndDate.toISOString().split('T')[0],
+                      price: totalPrice.replace(/,/g, ''),
+                      user_id: userId,
+                      miniHall: selectedHall,
+                      hall_id: hallId,
+                      hallPay_id: hallPayId
+                    };
+
+                    console.log(data);
+
+                    $.ajax({
+                      url: '/hall/order',
+                      type: 'POST',
+                      contentType: 'application/json',
+                      data: JSON.stringify(data),
+                      success: function (response) {
+                        console.log(response);
+                        location.reload();
+                      },
+                      error: function (xhr, status, error) {
+                        console.error('Error:', error);
+                      }
+                    });
+                  }
+
+                  function updateCartCount() {
+                    $.ajax({
+                      url: '/hall/cartCount',
+                      type: 'GET',
+                      data: { userId: userId },
+                      success: function (count) {
+                        const cartCountElement = document.getElementById('cartCount');
+                        if (count > 0) {
+                          cartCountElement.textContent = count;
+                          cartCountElement.style.display = 'inline';
+                        } else {
+                          cartCountElement.style.display = 'none';
+                        }
+                      },
+                      error: function (xhr, status, error) {
+                        console.error('Error:', error);
+                      }
+                    });
+                  }
+
+
+                  function listCartOrder() {
+                    window.location.href = '/hall/hallOrder';
+                  }
 
                 </script>
 

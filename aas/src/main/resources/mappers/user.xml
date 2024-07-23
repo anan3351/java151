@@ -92,7 +92,8 @@
     <select id="hallList" resultType="java.util.Map" parameterType="string">
 		SELECT  hall_id, h_name, miniHall, addr, url, seat
         FROM aas.tb_hall
-        WHERE hall_id NOT LIKE '%-%' ORDER BY h_code ASC
+        WHERE hall_id NOT LIKE '%-%' AND user_id = #{userId}
+        ORDER BY h_code ASC
 	</select>
 	
 	<select id="getSubHalls" parameterType="String" resultType="java.util.Map">

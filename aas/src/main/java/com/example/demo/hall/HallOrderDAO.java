@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -34,12 +35,12 @@ public class HallOrderDAO {
         sqlSession.insert("hall.insertOrder", hallOrderDto);
     }
 
-    public HallOrderDTO getLatestOrder() {
-        return sqlSession.selectOne("hall.getLatestOrder");
+    public List<HallOrderDTO> getLatestOrder() {
+        return sqlSession.selectList("hall.getLatestOrder");
     }
     
-    public HallOrderDTO gethallIdOrder() {  //판매자에게 승인요청 보낼 판매자 user_id가져오기위한 조인
-        return sqlSession.selectOne("hall.gethallIdOrder");
+    public List<HallOrderDTO> gethallIdOrder() {  //판매자에게 승인요청 보낼 판매자 user_id가져오기위한 조인
+        return sqlSession.selectList("hall.gethallIdOrder");
     }
     
     public int updatePayStatus(String hallOrderId, String payStatus) {
@@ -50,13 +51,24 @@ public class HallOrderDAO {
     }
 
 
-    public HallOrderDTO getPendingOrdersBySellerId(String sellerId){
-        return sqlSession.selectOne("hall.getPendingOrdersBySellerId", sellerId);
+    public List<HallOrderDTO> getPendingOrdersBySellerId(String sellerId){
+        return sqlSession.selectList("hall.getPendingOrdersBySellerId", sellerId);
     }
     
     public int hallOrderDel(String hallOrderId) {
     	return sqlSession.update("hall.hallOrderDel", hallOrderId);
     }
+    
+    public int hallDeleteOrder(String hallOrderId) {
+    	return sqlSession.delete("hall.hallDeleteOrder", hallOrderId);
+    }
+    
+       
+    public int getCartCount(String userId) {
+        return sqlSession.selectOne("hall.countHallOrder", userId);
+    }
+    
+    
     
     
 }// End hallDAO

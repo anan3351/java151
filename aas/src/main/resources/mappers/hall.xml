@@ -41,15 +41,14 @@
         )
     </insert>
 
-    <select id="getLatestOrder" resultType="com.example.demo.hall.HallOrderDTO">
+    <select id="getLatestOrder" resultType="com.example.demo.hall.HallOrderDTO" parameterType="String">
             SELECT o.hall_id, o.user_id, o.start_date, o.end_date, o.price, o.pay_date, h.miniHall, o.pay_status, o.hallOrder_id
 		    FROM aas.tb_hallOrder o
 		    JOIN aas.tb_hall h ON o.hall_id = h.hall_id
 		    ORDER BY o.pay_date DESC 
-		    LIMIT 1
     </select>
     
-   	<select id="gethallIdOrder" parameterType="String"  resultType="com.example.demo.hall.HallOrderDTO">
+   	<select id="gethallIdOrder" resultType="com.example.demo.hall.HallOrderDTO">
 		   	SELECT a.user_id 
 		    FROM aas.tb_hall a
 		    INNER JOIN aas.tb_hallOrder b ON a.hall_id = b.hall_id
@@ -66,17 +65,26 @@
         FROM aas.tb_hall a
 		INNER JOIN aas.tb_hallOrder b ON a.hall_id = b.hall_id 
 		WHERE a.user_id = #{sellerId} AND b.pay_status = '승인대기진행중' or b.pay_status = '승인완료'
-		LIMIT 1
     </select>
     
     <delete id="hallOrderDel"  parameterType="String">
     	UPDATE aas.tb_hallOrder SET pay_status = '승인취소' WHERE hallOrder_id = #{hallOrder_id}
     </delete>
     
+    <delete id="hallDeleteOrder"  parameterType="String">
+    	DELETE FROM aas.tb_hallOrder WHERE hallOrder_id = #{hallOrder_id}
+    </delete>
+        
     <select id="countDuplication">
     	SELECT COUNT(*) 
     	FROM aas.tb_hallOrder
     	WHERE hall_id = #{hallId} AND 
+    </select>
+    
+    <select id="countHallOrder" parameterType="String" resultType="int" >
+    	SELECT COUNT(*)
+    	FROM aas.tb_hallOrder
+    	WHERE user_id =#{userId}
     </select>
    
 	</mapper>

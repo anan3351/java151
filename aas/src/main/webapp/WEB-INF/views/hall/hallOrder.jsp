@@ -123,16 +123,84 @@
               position: fixed;
               bottom: 0;
             }
+
+            .swiper-container {
+              width: 100%;
+              height: 670px;
+              /* Adjust height as needed */
+              padding-bottom: 35px;
+              padding-block: 100px;
+            }
+
+            .swiper-slide {
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+              background: #fff;
+              border-radius: 15px;
+              box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+              padding: 20px;
+            }
+
+            .swiper-pagination-bullet-active {
+              background: #be9ed8;
+            }
+
+            .swiper-button-next,
+            .swiper-button-prev {
+              color: #be9ed8;
+            }
+
+            .custom-button {
+              background-color: #be9ed8;
+              border: none;
+              color: white;
+              padding: 10px 20px;
+              text-align: center;
+              text-decoration: none;
+              display: inline-block;
+              font-size: 14px;
+              margin: 4px 2px;
+              cursor: pointer;
+              border-radius: 5px;
+              transition-duration: 0.4s;
+              box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+              height: 35px;
+            }
+
+            .custom-button:hover {
+              background-color: #a682c9;
+              box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+            }
           </style>
           <script>
-            function confirmApproval() {
+            document.addEventListener('DOMContentLoaded', function () {
+              var mySwiper = new Swiper('.swiper-container', {
+                slidesPerView: 1,
+                spaceBetween: 30,
+                loop: true,
+                pagination: {
+                  el: '.swiper-pagination',
+                  clickable: true,
+                },
+                navigation: {
+                  nextEl: '.swiper-button-next',
+                  prevEl: '.swiper-button-prev',
+                },
+              });
+
+
+            });
+
+            function confirmApproval(hallOrderId, sellerId) {
               if (confirm("승인요청 하시겠습니까?")) {
                 $.ajax({
                   url: "/hall/requestApproval",
                   type: "POST",
                   data: {
-                    hallOrder_id: "${order.hallOrder_id}",
-                    seller_id: "${get.user_id}"
+                    hallOrder_id: hallOrderId,
+                    seller_id: sellerId
                   },
                   success: function (response) {
                     alert("판매자에게 승인요청을 완료하였습니다.");
@@ -142,28 +210,49 @@
                     alert("판매자 승인요청 중 오류가 발생했습니다.");
                   }
                 });
-              } 
+              }
             }
 
-
-            function hallOrderDel() {
+            function hallOrderDel(hallOrderId) {
               if (confirm("대관요청을 취소 하시겠습니까?")) {
                 $.ajax({
-                  url: "/user/requestDel",
+                  url: "/hall/requestDel",
                   type: "POST",
                   data: {
-                    hallOrder_id: "${order.hallOrder_id}",
+                    hallOrder_id: hallOrderId,
                   },
                   success: function (response) {
                     alert("대관요청을 취소 완료하였습니다.");
-                    window.location.href = "http://localhost:9095/hall/list"; // 페이지 이동
+                    window.location.href = "http://localhost:9095/hall/list";
                   },
                   error: function (xhr, status, error) {
                     alert("대관요청을 취소 중 오류가 발생했습니다.");
                   }
                 });
-              } 
+              }
             }
+
+            function deleteOrder(hallOrder_id) {
+              console.log("Deleting order with hallOrder_id:", hallOrder_id); // 디버깅용 로그 추가
+              if (confirm("내역을 완전히 삭제 하시겠습니까?")) {
+                $.ajax({
+                  url: "/hall/deleteOrder",
+                  type: "POST",
+                  data: {
+                    hallOrder_id: hallOrder_id
+                  },
+                  success: function (response) {
+                    alert("내역을 삭제 완료하였습니다.");
+                    location.reload();
+                  },
+                  error: function (xhr, status, error) {
+                    alert("내역 삭제 중 오류가 발생했습니다.");
+                  }
+                });
+              }
+            }
+
+
           </script>
         </head>
 
@@ -171,42 +260,67 @@
           <%@ include file="../header.jsp" %>
             <div class="main-container">
               <h1>공연장 승인 요청</h1>
-              <form id="approvalForm" method="post">
-                <table class="info-table">
-                  <tr>
-                    <th>시작 날짜</th>
-                    <td>${order.start_date} 일</td>
-                  </tr>
-                  <tr>
-                    <th>종료 날짜</th>
-                    <td>${order.end_date} 일</td>
-                  </tr>
-                  <tr>
-                    <th>총 금액</th>
-                    <td>${order.price} 원</td>
-                  </tr>
-                  <tr>
-                    <th>승인요청시간</th>
-                    <td>${order.pay_date}</td>
-                  </tr>
-                  <tr>
-                    <th>공연관</th>
-                    <td>${order.miniHall}</td>
-                    <td style="display: none;">${order.hall_id}</td>
-                    <td style="display: none;">${order.hallOrder_id}</td>
-                    <td style="display: none;">${order.user_id}</td> <!-- 구매자 user_id-->
-                    <td style="display: none;">${get.user_id}</td> <!-- 판매자 user_id-->
-                  </tr>
-                  <tr>
-                    <th>승인상황</th>
-                    <td>${order.pay_status}</td>
-                  </tr>
-                </table>
-                <div class="btn-container">
-                  <button type="submit" onclick="confirmApproval()" class="btn btn-approve">승인요청</button>
-                  <button type="submit" onclick="hallOrderDel()" class="btn btn-danger">승인취소</button>
+              
+              <div class="swiper-container">
+                <button type="button" class="btn btn-info"
+                style="background-color: #be9ed8; border-color: #be9ed8;"
+                onclick="location.href='<c:url value=" /hall/list?filter=available" />'">목록으로</button>
+                <div class="swiper-wrapper">
+                  <c:forEach items="${orders}" var="order" varStatus="status">
+                    <div class="swiper-slide">
+                      <button class="custom-button"
+                        style="background-color: #2ba1c5; border-color: #2ba1c5; height: 35px;"
+                        onclick="deleteOrder('${order.hallOrder_id}')">요청 삭제</button>
+                      <form id="approvalForm-${status.index}" method="post">
+                        <table class="info-table">
+                          <tr>
+                            <th>시작 날짜</th>
+                            <td>${order.start_date} 일</td>
+                          </tr>
+                          <tr>
+                            <th>종료 날짜</th>
+                            <td>${order.end_date} 일</td>
+                          </tr>
+                          <tr>
+                            <th>총 금액</th>
+                            <td>${order.price} 원</td>
+                          </tr>
+                          <tr>
+                            <th>승인요청시간</th>
+                            <td>${order.pay_date}</td>
+                          </tr>
+                          <tr>
+                            <th>공연관</th>
+                            <td>${order.miniHall}</td>
+                            <td style="display: none;">${order.hall_id}</td>
+                            <td style="display: none;">${order.hallOrder_id}</td>
+                            <td style="display: none;">${order.user_id}</td>
+                            <td style="display: none;">${hallIdOrders[status.index].user_id}</td>
+                          </tr>
+                          <tr>
+                            <th>승인상황</th>
+                            <td>${order.pay_status}</td>
+                          </tr>
+                        </table>
+                        <div class="btn-container">
+                          <button type="button"
+                            onclick="confirmApproval(${order.hallOrder_id}, '${hallIdOrders[status.index].user_id}')"
+                            class="btn btn-approve">승인요청</button>
+                          <button type="button" onclick="hallOrderDel(${order.hallOrder_id})"
+                            class="btn btn-danger">승인취소</button>
+                        </div>
+                        <div></div>
+                      </form>
+                    </div>
+                  </c:forEach>
                 </div>
-              </form>
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+                <c:forEach items="${get}" var="get" varStatus="status">
+                  <div style="display: none;"> ${get.user_id}</div>
+                </c:forEach>
+              </div>
             </div>
             <div class="footer">
               <%@ include file="../footer.jsp" %>
