@@ -198,16 +198,15 @@
         }
     </style>
     <div class="top-actors">
-        <c:forEach var="actor" items="${list}" varStatus="status">
-            <c:if test="${status.index < 5}">
-                <div class="actor-card">
-                    <div class="rank-number">${status.index + 1}</div>
-                    <img src="${actor.photo}" alt="${actor.a_name}" />
-                    <p>${actor.a_name}</p>
-                </div>
-            </c:if>
+        <c:forEach var="actor" items="${topFavoriteActors}" varStatus="status">
+            <div class="actor-card">
+                <div class="rank-number">${status.index + 1}</div>
+                <img src="${actor.photo}" alt="${actor.a_name}" />
+                <p>${actor.a_name}</p>
+            </div>
         </c:forEach>
     </div>
+</div>
     <div class="filters">
 
         <div class="filters-right">

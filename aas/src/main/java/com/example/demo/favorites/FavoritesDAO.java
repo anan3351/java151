@@ -7,6 +7,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.example.demo.actor.ActorDTO;
+
 @Repository
 public class FavoritesDAO {
 
@@ -35,5 +37,9 @@ public class FavoritesDAO {
 
     public List<Map<String, Object>> getFavoriteActors(String user_id) {
         return sqlSession.selectList("favorites.getFavoriteActors", user_id);
+    }
+    
+    public List<ActorDTO> getTopFavoriteActors() {
+        return sqlSession.selectList("favorites.getTopFavoriteActors");
     }
 }

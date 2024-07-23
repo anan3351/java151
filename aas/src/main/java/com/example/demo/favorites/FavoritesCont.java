@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.demo.actor.ActorDTO;
 import com.example.demo.user.UserDTO;
 
 import jakarta.servlet.http.HttpSession;
@@ -106,4 +107,10 @@ public class FavoritesCont {
         return "favorites/list"; // view 이름 반환
     }
 
+	    @GetMapping("/favorite/top")
+	    public String getTopFavoriteActors(Model model) {
+	        List<ActorDTO> topFavoriteActors = favoritesDAO.getTopFavoriteActors();
+	        model.addAttribute("topFavoriteActors", topFavoriteActors);
+	        return "favorites/top"; // view 이름 반환
+	    }
 }
