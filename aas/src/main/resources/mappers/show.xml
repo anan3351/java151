@@ -272,4 +272,21 @@
 	<update id="roleUpdate" parameterType="java.util.Map">
 	    UPDATE tb_showcasting SET actor_id = #{actorId}, casting = #{casting} WHERE casting_id = #{castingId}
 	</update>
+	
+	
+	
+	
+	
+	<!-- //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- 뮤지컬 페이지 -->
+	<select id="musicalList" resultType="java.util.HashMap">
+	    SELECT s.*, h.h_name, h.minihall FROM tb_show s
+	    LEFT JOIN tb_favorites f ON s.show_id = f.show_id inner join tb_hall h ON h.hall_id = s.hall_id
+		WHERE s.end_day >= now() GROUP BY s.show_id ORDER BY COUNT(f.show_id) DESC, title
+	</select>
+	
+	
+	
+	
+	
 </mapper>

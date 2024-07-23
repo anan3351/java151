@@ -20,10 +20,17 @@ import com.example.demo.showcasting.ShowCastingDTO;
 public class ShowDAO {
 	@Autowired
 	SqlSession sqlSession;
+	
+	// Show
+	public List<Map<String, Object>> musicalList() {
+	    return sqlSession.selectList("show.musicalList");
+	}
 
-	// Seller
+	
+
+	
 	// ----------------------------------------------------------------------------------------------------------------------------------
-
+	// Seller
 	
 	// 공연 추가
 	public void insert(Map<String, Object> map) {
