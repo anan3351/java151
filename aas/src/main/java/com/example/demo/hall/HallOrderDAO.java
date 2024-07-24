@@ -81,5 +81,13 @@ public class HallOrderDAO {
         return sqlSession.update("hall.updateOrderStatus", params);
     }
     
+    public List<HallOrderDTO> findOverlappingReservations(String hallId, String startDate, String endDate) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("hallId", hallId);
+        params.put("startDate", startDate);
+        params.put("endDate", endDate);
+        return sqlSession.selectList("hall.checkHallOrderDupli", params);
+    }
+    
     
 }// End hallDAO

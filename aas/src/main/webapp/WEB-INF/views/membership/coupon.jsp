@@ -25,7 +25,6 @@
               <title>My Page</title>
               <style>
                 body {
-
                   margin: 0;
                   padding: 0;
                   background-color: #f0f0f0;
@@ -192,15 +191,6 @@
                 .menu-item small {
                   color: #666;
                   font-size: 12px;
-                }
-
-                .btn-search {
-                  background-color: #0066cc;
-                  color: white;
-                  border: none;
-                  padding: 10px 20px;
-                  border-radius: 5px;
-                  cursor: pointer;
                 }
 
                 .user-options a {

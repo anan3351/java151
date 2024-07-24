@@ -629,10 +629,6 @@
                   <div class="profile-image"></div>
                   <p>${userInfo.user_id} 님</p>
                   <p>회원등급 - ${userInfo.auth}</p>
-                  <p>${userInfo.level_name} Level</p>
-                  <p class="points">내 포인트 -
-                    <fmt:formatNumber value="${userInfo.u_point}" pattern="#,###" />p
-                  </p>
                 </div>
                 <div class="menu-section">
                   <div class="menu-title">공연</div>
@@ -650,7 +646,7 @@
                 <div class="menu-section">
                   <div class="menu-title">공연장대관</div>
                   <ul class="menu-items">
-                    <li><a href="/user/sellerApprove">대관 관리</a></li>
+                    <li><a href="${pageContext.request.contextPath}/user/sellerApprove?user_id=${sessionScope.loggedInUser.user_id}">대관 관리</a></li>
                   </ul>
                 </div>
               </div>
