@@ -123,7 +123,7 @@
                         } else {
                           alert("로그인이 필요한 서비스입니다.");
                           // 현재 페이지 URL을 저장
-                          sessionStorage.setItem('redirectAfterLogin', '/hall/list');
+                          sessionStorage.setItem('redirectAfterLogin', window.location.href);
                           window.location.href = '/user/login';  // 로그인 페이지로 리다이렉트
                           resolve(false);  // 로그인 되어 있지 않음
                         }
@@ -172,7 +172,7 @@
                   }
 
                   console.log('Updating cart count for userId:', userId);
-                  
+
                   $.ajax({
                     url: '/hall/cartCount',
                     type: 'GET',
@@ -243,12 +243,14 @@
 
                     <!-- 검색 영역 시작-->
                     <form action="/hall/list" class="form-inline d-flex justify-content-end search-box" method="GET">
+                      <input type="hidden" name="filter" value="${filter}">
                       <select name="field" id="field" class="sel-search">
-                        <option value="hname">공연장명</option>
-                        <option value="addr">주소</option>
+                        <option value="hname" <c:if test="${field == 'hname'}">selected</c:if>>공연장명</option>
+                        <option value="addr" <c:if test="${field == 'addr'}">selected</c:if>>주소</option>
                       </select>
-                      <input type="text" id="word" name="word" class="inp-search">
+                      <input type="text" id="word" name="word" class="inp-search" value="${word}">
                       <input type="submit" class="btn-search2" value="검색">
+                    </form>
                     </form>
                     <!-- 검색 영역 끝 -->
 

@@ -1,5 +1,6 @@
 package com.example.demo.hall;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -89,32 +90,44 @@ public class HallCont {
         int pageSize = pageable.getPageSize();
         int currentPage = pageable.getPageNumber();
         int offset = currentPage * pageSize;
+        
+        System.out.println("field: " + field);
+        System.out.println("word: " + word);
+        System.out.println("filter: " + filter);
 
-        List<HallEntity> halls;
-        int totalElements;
 
-        if ("all".equals(filter)) {
-            halls = hallRepository.findAllHallsWithMiniHall(pageSize, offset);
-            totalElements = hallRepository.countAllHallsWithMiniHall();
-        } else if ("available".equals(filter)) {
-            halls = hallRepository.findByHallIdWithNonNullHDayAndWithoutDash(pageSize, offset);
-            totalElements = hallRepository.countByHallIdWithoutDash();
-        } else if (!word.isEmpty()) {
-            if (field.equals("hname")) {
-                halls = hallRepository.findByHnameContainingWithoutDash(word, pageSize, offset);
-                totalElements = hallRepository.countByHnameContainingWithoutDash(word);
-            } else if (field.equals("addr")) {
-                halls = hallRepository.findByAddrContainingWithoutDash(word, pageSize, offset);
-                totalElements = hallRepository.countByAddrContainingWithoutDash(word);
+        List<HallEntity> halls = new ArrayList<>();
+        int totalElements = 0;
+
+        if ("all".equals(filter)) { // 공연장 전체목록
+            if (!word.isEmpty()) { // 검색어가 있는 경우
+                if ("hname".equals(field)) { // 공연장명으로 검색
+                    halls = hallRepository.findByHnameContainingWithoutDash(word, pageSize, offset);
+                    totalElements = hallRepository.countByHnameContainingWithoutDash(word);
+                } else if ("addr".equals(field)) { // 주소로 검색
+                    halls = hallRepository.findByAddrContainingWithoutDash(word, pageSize, offset);
+                    totalElements = hallRepository.countByAddrContainingWithoutDash(word);
+                }
             } else {
-            	halls = hallRepository.findByHallIdWithNonNullHDayAndWithoutDash(pageSize, offset);
+                halls = hallRepository.findAllHallsWithMiniHall(pageSize, offset);
+                totalElements = hallRepository.countAllHallsWithMiniHall();
+            }
+        } else if ("available".equals(filter)) { // 공연장 대관가능 목록
+            if (!word.isEmpty()) { // 검색어가 있는 경우
+                if ("hname".equals(field)) { // 공연장명으로 검색
+                    halls = hallRepository.findByHallIdWithNonNullHDayAndHname(word, pageSize, offset);
+                    totalElements = hallRepository.countByHallIdWithoutDashAndHname(word);
+                } else if ("addr".equals(field)) { // 주소로 검색
+                    halls = hallRepository.findByHallIdWithNonNullHDayAndAddr(word, pageSize, offset);
+                    totalElements = hallRepository.countByHallIdWithoutDashAndAddr(word);
+                }
+            } else {
+                halls = hallRepository.findByHallIdWithNonNullHDayAndWithoutDash(pageSize, offset);
                 totalElements = hallRepository.countByHallIdWithoutDash();
             }
-        } else {
-            halls = hallRepository.findByHallIdWithNonNullHDayAndWithoutDash(pageSize, offset);
-            totalElements = hallRepository.countByHallIdWithoutDash();
         }
-        
+
+
 
         Page<HallEntity> ulist = new PageImpl<>(halls, pageable, totalElements);
 

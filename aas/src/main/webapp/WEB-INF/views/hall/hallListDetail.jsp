@@ -4,7 +4,7 @@
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
       <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
         <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-        
+
           <!DOCTYPE html>
           <html>
 
@@ -81,7 +81,7 @@
                 animation: forwards;
                 animation-name: moveToCart;
                 animation-duration: 5s;
-                
+
               }
             </style>
           </head>
@@ -426,10 +426,40 @@
                       });
                     });
 
+
+
                     renderCalendar(currentYear, currentMonth);
 
                     updateCartCount();
                   });
+
+                  function formatDateForServer(date) {
+                    const d = new Date(date);
+                    d.setHours(12, 0, 0, 0);  // Set the time to 12:00:00
+                    return d.toISOString().split('T')[0];
+                  }
+
+                  function checkReservations(startDate, endDate, hallId, callback) {
+                    $.ajax({
+                      url: '/hall/checkOverlap',
+                      type: 'POST',
+                      contentType: 'application/json',
+                      data: JSON.stringify({
+                        start_date: startDate,
+                        end_date: endDate,
+                        hall_id: hallId
+                      }),
+                      success: function (response) {
+                        console.log('Check Overlap Response:', response); // 응답 로그 출력
+                        callback(response);
+                      },
+                      error: function (xhr, status, error) {
+                        console.error('Error:', error);
+                        console.log('Response Text:', xhr.responseText); // 응답 텍스트 출력
+                        callback(false);
+                      }
+                    });
+                  }
 
                   function submitOrder() {
                     if (!selectedStartDate || !selectedEndDate) {
@@ -448,35 +478,55 @@
                       return;
                     }
 
-                    alert('승인 페이지로 넘어갑니다.');
+                    const startDate = formatDateForServer(selectedStartDate);
+                    const endDate = formatDateForServer(selectedEndDate);
 
-                    var data = {
-                      start_date: selectedStartDate.toISOString().split('T')[0],
-                      end_date: selectedEndDate.toISOString().split('T')[0],
-                      price: totalPrice.replace(/,/g, ''),
-                      user_id: userId,
-                      miniHall: selectedHall,
-                      hall_id: hallId,
-                      hallPay_id: hallPayId
-                    };
 
-                    console.log(data);
+                    if (!startDate || !endDate) {
+                      alert('유효하지 않은 날짜입니다.');
+                      return;
+                    }
 
-                    $.ajax({
-                      url: '/hall/order',
-                      type: 'POST',
-                      contentType: 'application/json',
-                      data: JSON.stringify(data),
-                      success: function (response) {
-                        console.log(response);
-                        window.location.href = '/hall/hallOrder';
-                      },
-                      error: function (xhr, status, error) {
-                        console.error('Error:', error);
+                    checkReservations(startDate, endDate, hallId, function (isOverlapping) {
+                      if (isOverlapping) {
+                        alert('이미 선택한 날짜와 공연관입니다');
+                        location.reload();
+                      } else {
+                        alert('승인 페이지로 넘어갑니다.');
+
+                        var data = {
+                          start_date: startDate,
+                          end_date: endDate,
+                          price: totalPrice.replace(/,/g, ''),
+                          user_id: userId,
+                          miniHall: selectedHall,
+                          hall_id: hallId,
+                          hallPay_id: hallPayId
+                        };
+
+                        console.log(data);
+
+                        $.ajax({
+                          url: '/hall/order',
+                          type: 'POST',
+                          contentType: 'application/json',
+                          data: JSON.stringify(data),
+                          success: function (response) {
+                            if (response === 'success') {
+                              window.location.href = '/hall/hallOrder';
+                            } else {
+                              alert(response);
+                            }
+                          },
+                          error: function (xhr, status, error) {
+                            console.error('Error:', error);
+                            console.log('Response Text:', xhr.responseText); // 응답 텍스트 출력
+                            alert('에러가 발생했습니다. 다시 시도해주세요.');
+                          }
+                        });
                       }
                     });
                   }
-
 
                   function submitCartOrder() {
                     if (!selectedStartDate || !selectedEndDate) {

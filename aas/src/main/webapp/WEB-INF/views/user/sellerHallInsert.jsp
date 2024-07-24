@@ -453,40 +453,97 @@
             }
 
             /* 폼 스타일 */
-            #sub-halls-form {
-              margin-top: 20px;
-              background-color: #f8f9fa;
-              padding: 20px;
-              border-radius: 8px;
-              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            main h1 {
+              font-size: 24px;
+              color: #333;
+              margin-bottom: 30px;
+              border-bottom: 2px solid #0066cc;
+              padding-bottom: 10px;
             }
 
+            .form-group.halls-select-container {
+              margin-bottom: 30px;
+            }
+
+            .form-group.halls-select-container label {
+              display: block;
+              font-size: 18px;
+              font-weight: 600;
+              color: #444;
+              margin-bottom: 10px;
+            }
+
+            /* Select2 custom styling */
+            .select2-container--default .select2-selection--single {
+              height: 50px;
+              border: 2px solid #007bff;
+              border-radius: 25px;
+              background-color: #f8f9fa;
+              transition: all 0.3s ease;
+            }
+
+            .select2-container--default .select2-selection--single:hover {
+              border-color: #0056b3;
+            }
+
+            .select2-container--default .select2-selection--single .select2-selection__rendered {
+              line-height: 50px;
+              padding-left: 20px;
+              color: #333;
+            }
+
+            .select2-container--default .select2-selection--single .select2-selection__arrow {
+              height: 48px;
+              width: 40px;
+            }
+
+            .select2-container--default .select2-results__option--highlighted[aria-selected] {
+              background-color: #007bff;
+            }
+
+            /* Sub-options container */
+            #sub-options-container {
+              background-color: #f8f9fa;
+              border-radius: 8px;
+              padding: 20px;
+              margin-top: 20px;
+            }
+
+            /* Form within sub-options */
             #sub-halls-form .form-group {
-              margin-bottom: 15px;
+              margin-bottom: 20px;
             }
 
             #sub-halls-form label {
               display: block;
-              margin-bottom: 5px;
-              font-weight: bold;
-              color: #495057;
+              font-size: 16px;
+              font-weight: 600;
+              color: #555;
+              margin-bottom: 8px;
             }
 
             #sub-halls-form input[type="number"] {
               width: 100%;
-              padding: 8px 12px;
+              padding: 12px 15px;
               border: 1px solid #ced4da;
               border-radius: 4px;
-              font-size: 14px;
+              font-size: 16px;
+              transition: border-color 0.3s ease;
+            }
+
+            #sub-halls-form input[type="number"]:focus {
+              border-color: #007bff;
+              box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
             }
 
             #sub-halls-form button {
-              margin-right: 10px;
-              padding: 10px 20px;
-              font-size: 14px;
-              border-radius: 4px;
+              padding: 12px 25px;
+              font-size: 16px;
+              font-weight: 600;
+              border-radius: 25px;
               cursor: pointer;
-              transition: background-color 0.3s;
+              transition: all 0.3s ease;
+              margin-right: 15px;
             }
 
             #sub-halls-form button.btn-primary {
@@ -509,77 +566,35 @@
               background-color: #545b62;
             }
 
-            select#halls {
-              width: 100%;
-              max-width: 400px;
-              padding: 10px 15px;
-              font-size: 16px;
-              border: 1px solid #ced4da;
-              border-radius: 4px;
-              background-color: #fff;
-              color: #495057;
-              appearance: none;
-              -webkit-appearance: none;
-              -moz-appearance: none;
-              background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23343a40' d='M10.293 3.293L6 7.586 1.707 3.293A1 1 0 00.293 4.707l5 5a1 1 0 001.414 0l5-5a1 1 0 10-1.414-1.414z'/%3E%3C/svg%3E");
-              background-repeat: no-repeat;
-              background-position: right 15px center;
-              background-size: 12px;
-              cursor: pointer;
-              transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+            /* Responsive adjustments */
+            @media (max-width: 768px) {
+              main {
+                padding: 20px;
+              }
+
+              main h1 {
+                font-size: 24px;
+              }
+
+              .select2-container--default .select2-selection--single {
+                height: 45px;
+              }
+
+              .select2-container--default .select2-selection--single .select2-selection__rendered {
+                line-height: 45px;
+              }
+
+              #sub-halls-form button {
+                width: 100%;
+                margin-bottom: 10px;
+              }
             }
 
-            select#halls:focus {
-              border-color: #80bdff;
-              outline: 0;
-              box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-            }
-
-            select#halls:hover {
-              border-color: #b8daff;
-            }
-
-            /* Select2와 함께 사용할 경우의 추가 스타일 */
-            .select2-container--default .select2-selection--single {
-              height: 44px;
-              border: 1px solid #ced4da;
-              border-radius: 4px;
-            }
-
-            .select2-container--default .select2-selection--single .select2-selection__rendered {
-              line-height: 44px;
-              padding-left: 15px;
-              color: #495057;
-            }
-
-            .select2-container--default .select2-selection--single .select2-selection__arrow {
-              height: 42px;
-              width: 30px;
-            }
-
-            .select2-container--default .select2-results__option--highlighted[aria-selected] {
-              background-color: #007bff;
-            }
-
-            .select2-container--default .select2-search--dropdown .select2-search__field {
-              border: 1px solid #ced4da;
-              border-radius: 4px;
-            }
-
-            .select2-dropdown {
-              border: 1px solid #ced4da;
-              border-radius: 4px;
-            }
-
-            .halls-select-container {
-              margin-bottom: 20px;
-            }
-
-            .halls-select-container label {
-              display: block;
-              margin-bottom: 5px;
-              font-weight: bold;
-              color: #495057;
+            .hall-wrap {
+              background-color: #f9f9f9;
+              border-radius: 10px;
+              padding: 30px;
+              box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
             }
           </style>
         </head>
@@ -592,10 +607,6 @@
                   <div class="profile-image"></div>
                   <p>${userInfo.user_id} 님</p>
                   <p>회원등급 - ${userInfo.auth}</p>
-                  <p>${userInfo.level_name} Level</p>
-                  <p class="points">내 포인트 -
-                    <fmt:formatNumber value="${userInfo.u_point}" pattern="#,###" />p
-                  </p>
                 </div>
                 <div class="menu-section">
                   <div class="menu-title">공연</div>
@@ -613,23 +624,26 @@
                 <div class="menu-section">
                   <div class="menu-title">공연장대관</div>
                   <ul class="menu-items">
-                    <li><a href="#">대관 관리</a></li>
+                    <li><a
+                        href="${pageContext.request.contextPath}/user/sellerApprove?user_id=${sessionScope.loggedInUser.user_id}">대관
+                        관리</a></li>
                   </ul>
                 </div>
               </div>
 
               <main>
-                <h1>공연관 대관료 등록</h1>
-                <div class="form-group halls-select-container">
-                  <label for="halls">공연장 선택</label>
-                  <select name="halls" id="halls">
-                    <c:forEach var="hall" items="${hallList}">
-                      <option value="${hall.hall_id}">${hall.h_name}</option>
-                    </c:forEach>
-                  </select>
+                <div class="hall-wrap">
+                  <h1>공연관 대관료 등록</h1>
+                  <div class="form-group halls-select-container">
+                    <label for="halls">공연장 선택</label>
+                    <select name="halls" id="halls">
+                      <c:forEach var="hall" items="${hallList}">
+                        <option value="${hall.hall_id}">${hall.h_name}</option>
+                      </c:forEach>
+                    </select>
+                  </div>
+                  <div id="sub-options-container"></div>
                 </div>
-                <div id="sub-options-container"></div>
-
               </main>
             </div>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

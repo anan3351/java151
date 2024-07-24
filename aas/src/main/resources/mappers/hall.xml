@@ -71,7 +71,7 @@
         SELECT b.hallOrder_id, b.pay_status, b.user_id, a.miniHall, b.price, b.start_date, b.end_date, b.pay_date
         FROM aas.tb_hall a
 		INNER JOIN aas.tb_hallOrder b ON a.hall_id = b.hall_id 
-		WHERE a.user_id = #{sellerId} AND b.pay_status = '승인대기진행중' or b.pay_status = '승인완료'
+		WHERE a.user_id = #{sellerId} AND b.pay_status = '승인대기진행중' or b.pay_status = '승인완료' or  b.pay_status = '결제완료'
     </select>
     
     <delete id="hallOrderDel"  parameterType="String">
@@ -99,5 +99,18 @@
         SET pay_date = #{pay_date}, pay_status = #{pay_status}
         WHERE hallOrder_id = #{hallOrderId}
     </update>
+    
+    <!-- 공연관 대관 예매시 중복 데이터 확인 -->
+    <select id="checkHallOrderDupli" resultType="com.example.demo.hall.HallOrderDTO">
+    	  <![CDATA[
+        SELECT * FROM aas.tb_hallOrder
+        WHERE hall_id = #{hallId} AND (
+            (start_date <= #{startDate} AND end_date >= #{startDate}) OR
+            (start_date <= #{endDate} AND end_date >= #{endDate}) OR
+            (start_date >= #{startDate} AND end_date <= #{endDate})
+        )
+        ]]>
+    </select> 
+    
     
 	</mapper>
