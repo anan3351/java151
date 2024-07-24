@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Seller Page</title>
+    <title>Show Detail</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/css/swiper.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -15,7 +15,6 @@
     <link rel="stylesheet" href="/css/template.css">
     <link rel="stylesheet" href="/css/seller.css">
     <script src="/js/seller.js"></script>
-    <title>Show Detail</title>
 </head>
 <body>
     <%@ include file="../header.jsp" %>
@@ -25,8 +24,12 @@
             <br>
             <div style="font-size: 20px; font-weight: bold; text-align: center;">
                 공연 상세정보
-            </div><br><br>
+            </div><br>
+            <!-- 삭제 버튼을 클릭하면 showDelete 함수 호출 -->
+            <input type="button" class="btn btn-danger" value="삭제" onclick="showDelete('${show.show_id}')" style="float: right;">
+            <br><hr>
 
+            <!-- 공연 상세정보 표시 -->
             <div class="show-details">
                 <div class="show-poster">
                     <c:if test="${not empty show.poster}">
@@ -67,11 +70,12 @@
                     <input type="button" class="btn btn-default" value="캐스트 관리" onclick="window.location.href='./${show.show_id}/castList'">
                     <input type="button" class="btn btn-default" value="좌석금액" onclick="window.location.href='./${show.show_id}/priList'">
                     <input type="button" class="btn btn-default" value="할인율" onclick="window.location.href='./${show.show_id}/disList'">
-                    <input type="button" class="btn btn-default" value="목록" onclick="window.location.href='javascript:history.back()'">
+                    <input type="button" class="btn btn-default" value="목록" onclick="window.location.href='../list'">
                 </div>
             </div>
             <br><hr><br><br>
 
+            <!-- 공연 이미지 표시 -->
             <div class="show-images">
                 <c:forEach items="${imgMap}" var="entry">
                     <c:if test="${not empty entry.value}">
@@ -95,5 +99,22 @@
         </main>
     </div>
     <%@ include file="../footer.jsp" %>
+    <script>
+        function showDelete(show_id) {
+            if (confirm("정말로 삭제하시겠습니까?\n삭제 후에는 복구할 수 없습니다.")) {
+                $.ajax({
+                    type: "POST",
+                    url: "/seller/detail/" + show_id + "/showDelete",
+                    data: {},
+                    success: function(response) {
+                        location.reload(); // 페이지를 새로 고쳐서 삭제된 내용을 반영
+                    },
+                    error: function() {
+                        alert('삭제 실패');
+                    }
+                });
+            }
+        }
+    </script>
 </body>
 </html>
