@@ -4,23 +4,23 @@
 <link rel="stylesheet" href="/css/template.css">
 <h1>배우 상세 정보</h1>
 <style>
-    .header {
-        margin-bottom: 0;
-        position: fixed;
-        top: 0;
-        width: 100%;
-        z-index: 1000;
-        background: #333;
-        color: #fff;
-        padding: 10px 0;
-    }
+        .header {
+            margin-bottom: 0;
+            position: fixed;
+            top: 50;
+            width: 100%;
+            z-index: 1000;
+            background: #333;
+            color: #fff;
+            padding: 10px 0;
+        }
 
-    body {
-        padding-top: 80px;
-        font-family: Arial, sans-serif;
-        background-color: #f9f9f9;
-        color: #333;
-    }
+        body {
+            padding-top: 150px;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+        }
 
     .container {
         display: flex;
@@ -30,6 +30,26 @@
         border-radius: 8px;
         margin: 20px auto;
         max-width: 800px;
+    }
+    
+    .container h3 {
+        font-size: 24px;
+        font-weight: bold;
+        color: #4CAF50;
+        margin-bottom: 10px;
+      
+        padding-bottom: 10px;
+    }
+
+    .container p {
+        font-size: 16px;
+        line-height: 1.6;
+        color: #555;
+        margin-top: 10px;
+        background-color: #f9f9f9;
+        padding: 15px;
+        border-radius: 4px;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
     }
 
     .actor_photo img {
@@ -136,7 +156,10 @@
     </div>
 </div>
 
-<h1>공연 정보 추가 예정</h1>
+<div class="container">
+    <h3>최근 작품 정보</h3>
+    <p>${actor.recent_work}</p>
+</div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>

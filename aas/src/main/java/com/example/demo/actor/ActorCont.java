@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.example.demo.favorites.FavoritesDAO;
+
 import org.springframework.ui.Model;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,7 +24,10 @@ public class ActorCont {
 
     @Autowired
     private ActorDAO actorDao;
-
+    @Autowired
+    private FavoritesDAO favoritesDAO;
+    
+    
     @RequestMapping("/actor")
     public ModelAndView actorlist(HttpServletRequest req) {
         ModelAndView mav = new ModelAndView();
@@ -69,6 +75,10 @@ public class ActorCont {
         mav.addObject("pageNum", currentPage); // 추가
         mav.addObject("count", totalRowCount); // 추가
 
+        // 인기 배우 TOP 5를 가져와 추가합니다
+        List<ActorDTO> topFavoriteActors = favoritesDAO.getTopFavoriteActors();
+        mav.addObject("topFavoriteActors", topFavoriteActors);
+        
         return mav;
     }// list end
 
@@ -143,6 +153,11 @@ public class ActorCont {
         return "actor/alllist";
     }
     
-    
+    @GetMapping("/actor/top")
+    public String getTopFavoriteActors(Model model) {
+        List<ActorDTO> topFavoriteActors = favoritesDAO.getTopFavoriteActors();
+        model.addAttribute("topFavoriteActors", topFavoriteActors);
+        return "actor/list"; // view 이름 반환
+    }
     
 }//class end

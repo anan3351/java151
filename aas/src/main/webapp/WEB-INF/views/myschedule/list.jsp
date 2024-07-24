@@ -4,7 +4,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>My Schedule</title>
+    <title>나의 스케줄</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -29,7 +29,7 @@
 <body>
     <%@ include file="../header.jsp" %>
     <div class="main-container">
-        <h1>My Schedule</h1>
+        <h1>나의 스케줄</h1>
         <a href="${pageContext.request.contextPath}/myschedule/new" class="btn btn-primary">스케줄 작성</a>
         <table class="table table-bordered">
             <thead>

@@ -15,15 +15,13 @@
         SELECT COUNT(*) FROM aas.tb_review
     </select>
     
-  <select id="list" parameterType="map" resultType="map">
+    <select id="list" parameterType="map" resultType="map">
         SELECT r.rev_id, r.show_id, s.title AS title, r.retitle, r.viewcnt, r.empcnt, r.user_id, r.r_date
         FROM tb_review r
         JOIN tb_show s ON r.show_id = s.show_id
         ORDER BY r.rev_id DESC
         LIMIT #{startRow}, #{endRow}
     </select>
-    
-
     
     <update id="incrementEmpcnt" parameterType="int">
         UPDATE aas.tb_review
@@ -63,12 +61,30 @@
   		  DELETE FROM aas.tb_review WHERE rev_id = #{rev_id}
 	</delete>
     
-    <select id="getReviewsByUserId" parameterType="string" resultType="com.example.demo.showreview.ShowreviewDTO">
-        SELECT r.rev_id, r.show_id, r.retitle, r.content, r.viewcnt, r.empcnt, r.user_id, r.r_date
+    <select id="getReviewsByUserId" parameterType="string" resultType="map">
+        SELECT r.rev_id, r.show_id, s.title AS show_title, r.retitle, r.viewcnt, r.empcnt, r.user_id, r.r_date
         FROM tb_review r
+        JOIN tb_show s ON r.show_id = s.show_id
         WHERE r.user_id = #{user_id}
         ORDER BY r.rev_id DESC
     </select>
     
-    
+    <select id="searchReviewsByKeyword" parameterType="string" resultMap="ReviewResultMap">
+        SELECT r.rev_id, r.show_id, s.title AS title, r.retitle, r.viewcnt, r.empcnt, r.user_id, r.r_date
+        FROM tb_review r
+        JOIN tb_show s ON r.show_id = s.show_id
+        WHERE s.title LIKE CONCAT('%', #{keyword}, '%')
+        ORDER BY r.rev_id DESC
+    </select>
+
+    <resultMap id="ReviewResultMap" type="map">
+        <result property="rev_id" column="rev_id" />
+        <result property="show_id" column="show_id" />
+        <result property="title" column="title" />
+        <result property="retitle" column="retitle" />
+        <result property="viewcnt" column="viewcnt" />
+        <result property="empcnt" column="empcnt" />
+        <result property="user_id" column="user_id" />
+        <result property="r_date" column="r_date" />
+    </resultMap>
 </mapper>

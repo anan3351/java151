@@ -77,11 +77,32 @@ public class ShowreviewCont {
 	}*/
 	
 	@PostMapping("/showreview/insert")
-	public ModelAndView insert(@ModelAttribute ShowreviewDTO showreviewDto) {
+	public ModelAndView insert(@ModelAttribute ShowreviewDTO showreviewDto, HttpSession session) {
 	    ModelAndView mav = new ModelAndView();
 
-	    // showreviewDto에 필요한 데이터가 모두 있는지 확인합니다.
-	    if (showreviewDto.getUser_id() == null || showreviewDto.getShow_id() == null) {
+	    // 세션에서 로그인된 사용자 정보 가져오기
+	    UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+
+	    if (loggedInUser == null) {
+	        // 사용자가 로그인되어 있지 않은 경우, 로그인 페이지로 리디렉션
+	        mav.setViewName("redirect:/user/login");
+	        return mav;
+	    }
+
+	    // showreviewDto에 사용자 ID 설정
+	    showreviewDto.setUser_id(loggedInUser.getUser_id());
+
+	    // 필수 데이터가 모두 있는지 확인
+	    if (showreviewDto.getUser_id() == null || showreviewDto.getShow_id() == null ||
+	        showreviewDto.getRetitle() == null || showreviewDto.getContent() == null) {
+	        
+	        // 어떤 데이터가 없는지 출력
+	        System.out.println("Missing Data:");
+	        if (showreviewDto.getUser_id() == null) System.out.println("User ID is null");
+	        if (showreviewDto.getShow_id() == null) System.out.println("Show ID is null");
+	        if (showreviewDto.getRetitle() == null) System.out.println("Retitle is null");
+	        if (showreviewDto.getContent() == null) System.out.println("Content is null");
+
 	        // 필요한 데이터가 없는 경우, 다시 입력 폼으로 리디렉션
 	        mav.setViewName("redirect:/showreview/showreviewForm");
 	        return mav;
@@ -92,6 +113,10 @@ public class ShowreviewCont {
 	    mav.setViewName("redirect:/showreview");
 	    return mav;
 	}
+
+	
+
+	
 	 
 	 @GetMapping("/showreview")
 	 public ModelAndView list(@RequestParam(value = "pageNum", required = false) String pageNum) {
@@ -145,10 +170,32 @@ public class ShowreviewCont {
 	        List<ReplyDTO> replies = replyDao.getRepliesByReviewId(rev_Id);
 	        mav.addObject("review", review);
 	        mav.addObject("replies", replies);
-	        showreviewDao.incrementViewCount(rev_Id);
 	        mav.setViewName("showreview/showrvdetail");
 	        return mav;
 	    }
+	    
+	    @PostMapping("/showreview/increaseViewCount")
+	    @ResponseBody
+	    public String increaseViewCount(@RequestParam("rev_id") int rev_id) {
+	        try {
+	            showreviewDao.incrementViewCount(rev_id);
+	            return "success";
+	        } catch (Exception e) {
+	            return "error";
+	        }
+	    }
+
+	    @PostMapping("/showreview/increaseEmpcnt")
+	    @ResponseBody
+	    public String increaseEmpcnt(@RequestParam("rev_id") int rev_id) {
+	        try {
+	            showreviewDao.incrementEmpcnt(rev_id);
+	            return "success";
+	        } catch (Exception e) {
+	            return "error";
+	        }
+	    }
+
 
 	    @PostMapping("/showreview/addReply")
 	    public String addReply(@ModelAttribute ReplyDTO replyDto) {
@@ -227,11 +274,19 @@ public class ShowreviewCont {
 	        if (loggedInUser == null) {
 	            return new ModelAndView("redirect:/user/login");
 	        }
-	        List<ShowreviewDTO> myReviews = showreviewDao.getReviewsByUserId(loggedInUser.getUser_id());
+	        List<Map<String, Object>> myReviews = showreviewDao.getReviewsByUserId(loggedInUser.getUser_id());
 	        ModelAndView mav = new ModelAndView("showreview/showrvmy");
 	        mav.addObject("myReviews", myReviews);
 	        return mav;
 	    }
 
+	    @GetMapping("/showreview/search")
+	    public ModelAndView searchReviews(@RequestParam("keyword") String keyword) {
+	        List<Map<String, Object>> reviewList = showreviewDao.searchReviewsByKeyword(keyword);
+	        ModelAndView mav = new ModelAndView("showreview/showrvList");
+	        mav.addObject("reviewList", reviewList);
+	        mav.addObject("keyword", keyword);
+	        return mav;
+	    }
 
 }//class end

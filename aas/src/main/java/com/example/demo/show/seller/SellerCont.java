@@ -861,7 +861,7 @@ public class SellerCont {
     // 배역 등록
     @PostMapping("/detail/{show_id}/roleInsert")
     public String roleInsert(ShowCastingDTO scDto, @PathVariable String show_id, HttpSession session) {
-    	scDto.setShowId(show_id);
+    	scDto.setShow_id(show_id);
         showDao.roleInsert(scDto);
         return "redirect:/seller/detail/" + show_id + "/roleList";
     }
@@ -912,7 +912,7 @@ public class SellerCont {
         
         if (loggedInUser != null) {
         	ShowCastingDTO scDto = showDao.roleSelect(casting_id);
-            String show_id = scDto.getShowId();
+            String show_id = scDto.getShow_id();
             String user_id = loggedInUser.getUser_id();
             
             Map<String, Object> roles2 = showDao.sellerDetail(show_id, user_id);
@@ -944,7 +944,7 @@ public class SellerCont {
             HttpSession session) {
         
         ShowCastingDTO scDto = showDao.roleSelect(castingId);
-        String showId = scDto.getShowId();
+        String showId = scDto.getShow_id();
         
         showDao.roleUpdate(actorId, casting, castingId);
         return "redirect:/seller/detail/" + showId + "/roleList";

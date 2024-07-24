@@ -18,5 +18,38 @@
     <delete id="deleteFavorite" parameterType="int">
         DELETE FROM tb_favorites WHERE favorites_id = #{favorites_id}
     </delete>
-</mapper>
     
+<select id="getFavoriteSchedule" resultType="map">
+    SELECT a.actor_id, a.a_name as actor_name, sc.casting as role, s.title as show_title, t.ticket_date as show_time
+    FROM tb_favorites f
+    JOIN tb_actor a ON f.actor_id = a.actor_id
+    JOIN tb_showcasting sc ON a.actor_id = sc.actor_id
+    JOIN tb_acsch ac ON sc.casting_id = ac.casting_id
+    JOIN tb_ticket t ON ac.ticket_id = t.ticket_id
+    JOIN tb_show s ON t.show_id = s.show_id
+    WHERE f.user_id = #{user_id}
+    ORDER BY t.ticket_date
+</select>
+
+    <select id="countFavoritesByUserId" resultType="int">
+        SELECT COUNT(*) FROM tb_favorites WHERE user_id = #{user_id}
+    </select>
+
+    <select id="getFavoriteActors" resultType="map">
+        SELECT a.a_name, f.actor_id
+        FROM tb_favorites f
+        JOIN tb_actor a ON f.actor_id = a.actor_id
+        WHERE f.user_id = #{user_id}
+    </select>
+    
+    <select id="getTopFavoriteActors" resultType="com.example.demo.actor.ActorDTO">
+        SELECT a.actor_id, a.a_name, a.photo, a.job, a.recent_work, COUNT(f.favorites_id) AS favorite_count
+        FROM tb_actor a
+        JOIN tb_favorites f ON a.actor_id = f.actor_id
+        GROUP BY a.actor_id, a.a_name, a.photo, a.job, a.recent_work
+        ORDER BY favorite_count DESC, a.a_name ASC
+        LIMIT 5
+    </select>
+
+    
+</mapper>
