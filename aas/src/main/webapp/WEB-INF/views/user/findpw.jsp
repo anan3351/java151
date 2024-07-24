@@ -65,26 +65,30 @@
 
     <div >
         <div id="idTab" >
-            <form action="#" method="post">
-                
-                <div class="form-group">
-                    <input type="text" class="form-control" id="user_id" placeholder="아이디" required>
-                </div>
-                <div class="form-group">
-                    <input type="text" class="form-control" id="name" placeholder="이름" required>
-                </div>
-                <div class="form-group">
-                    <input type="email" class="form-control" id="email" placeholder="이메일 주소" required>
-                </div>
-                <button type="submit" class="btn btn-primary btn-block">이메일로 비밀번호 받기</button>
-            </form>
+            <form action="/user/findPassword" method="post">
+    <div class="form-group">
+        <input type="text" class="form-control" id="user_id" name="user_id" placeholder="아이디" required>
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" id="user_name" name="user_name" placeholder="이름" required>
+    </div>
+    <div class="form-group">
+        <input type="email" class="form-control" id="email" name="email" placeholder="이메일 주소" required>
+    </div>
+    <button type="submit" class="btn btn-primary btn-block">이메일로 비밀번호 받기</button>
+</form>
         </div>
         <div id="pwTab" class="tab-pane fade">
             <!-- 비밀번호 찾기 폼 내용 (필요시 추가) -->
         </div>
     </div>
 </div>
-				
+				<c:if test="${not empty message}">
+    <div class="alert alert-success">${message}</div>
+</c:if>
+<c:if test="${not empty error}">
+    <div class="alert alert-danger">${error}</div>
+</c:if>
 				
 				
 				<!-- 본문 끝 -->

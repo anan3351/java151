@@ -49,7 +49,7 @@
 <body>
     <%@ include file="../header.jsp" %>
     <div class="main-container">
-        <h1>${schedule.mysch_id == 0 ? 'New Schedule' : 'Edit Schedule'}</h1>
+        <h1>${schedule.mysch_id == 0 ? '스케줄 작성' : 'Edit Schedule'}</h1>
         <c:set var="formAction" value="${schedule.mysch_id == 0 ? '/myschedule/save' : '/myschedule/update'}" />
         <form action="${pageContext.request.contextPath}${formAction}" method="post" enctype="multipart/form-data">
             <input type="hidden" name="mysch_id" value="${schedule.mysch_id}">
@@ -88,7 +88,7 @@
                 <label for="sale">할인:</label>
                 <input type="text" class="form-control" id="sale" name="sale" value="${schedule.sale}" required>
             </div>
-            <button type="submit" class="btn btn-success">${schedule.mysch_id == 0 ? 'Create' : 'Update'}</button>
+            <button type="submit" class="btn btn-success">${schedule.mysch_id == 0 ? '완료' : 'Update'}</button>
         </form>
     </div>
     <%@ include file="../footer.jsp" %>

@@ -8,9 +8,9 @@ import lombok.ToString;
 @Data
 @ToString
 public class PriceDTO {
-    private String price_id;
+    private int price_id;
 	private String show_id;
 	private String seat_level;
-	private String price;
-	private String add_p;
+	private int price;
+	private Integer add_p;
 }

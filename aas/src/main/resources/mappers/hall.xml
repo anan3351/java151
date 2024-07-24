@@ -10,7 +10,7 @@
         ORDER BY h_name
 	</select>
 	
-	 <select id="detail" resultType="java.util.Map"  parameterType="string">
+	 <select id="detail" resultType="java.util.Map"  parameterType="String">
         SELECT  hall_id, h_name, miniHall, addr, url, seat
         FROM aas.tb_hall
         WHERE hall_id = #{hall_id}    
@@ -22,22 +22,82 @@
 	    WHERE hall_id LIKE CONCAT(#{hall_id}, '-%') OR hall_id = #{hall_id}
     </select> 
 	
-	<select id="hallDetailMini" parameterType="string" resultType="java.util.Map">
-    SELECT a.hall_id, a.h_name, a.miniHall, a.seat, b.h_day
-	FROM aas.tb_hall a
-	INNER JOIN aas.tb_hallpay b ON a.hall_id = b.hall_id
-	WHERE a.hall_id LIKE CONCAT(#{hall_id}, '-%')
+	<select id="hallDetailMini" parameterType="String" resultType="java.util.Map">
+	    SELECT a.hall_id, a.h_name, a.miniHall, a.seat, b.h_day, b.hallPay_id
+	    FROM aas.tb_hall a
+	    INNER JOIN aas.tb_hallpay b ON a.hall_id = b.hall_id
+	    WHERE a.hall_id LIKE CONCAT(SUBSTRING(#{hall_id}, 1, CHAR_LENGTH(#{hall_id}) - 3), '-%')
 	</select>
 	
 	
-   <!--<select id="selectBoard" resultType="java.utility.Map" parameterType="String">
-   SELECT AA.* 
-	FROM (  SELECT @RNO := @RNO + 1 AS r, CC.*  FROM 
-				( SELECT hall_id, h_name, addr, url, seat  FROM local.tb_hall ) CC, 
-				( SELECT @RNO := 0 ) BB 
-	ORDER BY hall_id  ) AA 
-	WHERE r  BETWEEN #{start} AND #{end}
-   
-   </select>-->
+	<insert id="insertOrder"  parameterType="com.example.demo.hall.HallOrderDTO">
+        INSERT INTO aas.tb_hallOrder (
+            hall_id, user_id, start_date, end_date, pay_date, hallPay_id,
+            pay_status, price
+        ) VALUES (
+            #{hall_id}, #{user_id}, 
+            #{start_date}, #{end_date}, NOW(), 
+            #{hallPay_id}, '승인대기', #{price}
+        )
+    </insert>
+
+    <select id="getLatestOrder" resultType="com.example.demo.hall.HallOrderDTO" parameterType="String">
+            SELECT o.hall_id, o.user_id, o.start_date, o.end_date, o.price, o.pay_date, h.miniHall, o.pay_status, o.hallOrder_id
+		    FROM aas.tb_hallOrder o
+		    JOIN aas.tb_hall h ON o.hall_id = h.hall_id
+		    ORDER BY o.pay_date DESC 
+    </select>
     
-</mapper>
+     <select id="getLatestOrderCart" resultType="com.example.demo.hall.HallOrderDTO" parameterType="String">
+            SELECT o.hall_id, o.user_id, o.start_date, o.end_date, o.price, o.pay_date, h.miniHall, o.pay_status, o.hallOrder_id
+		    FROM aas.tb_hallOrder o
+		    JOIN aas.tb_hall h ON o.hall_id = h.hall_id
+		    WHERE o.pay_status = '승인대기' 
+    </select>
+    
+   	<select id="gethallIdOrder" resultType="com.example.demo.hall.HallOrderDTO">
+		   	SELECT a.user_id 
+		    FROM aas.tb_hall a
+		    INNER JOIN aas.tb_hallOrder b ON a.hall_id = b.hall_id
+		    WHERE a.hall_id = b.hall_id
+   	</select>
+   	
+   	<update id="updatePayStatus" parameterType="String">
+        UPDATE aas.tb_hallOrder SET pay_status = #{payStatus} WHERE hallOrder_id = #{hallOrderId}
+    </update>
+    
+    
+    <select id="getPendingOrdersBySellerId" resultType="com.example.demo.hall.HallOrderDTO" parameterType="String">
+        SELECT b.hallOrder_id, b.pay_status, b.user_id, a.miniHall, b.price, b.start_date, b.end_date, b.pay_date
+        FROM aas.tb_hall a
+		INNER JOIN aas.tb_hallOrder b ON a.hall_id = b.hall_id 
+		WHERE a.user_id = #{sellerId} AND b.pay_status = '승인대기진행중' or b.pay_status = '승인완료'
+    </select>
+    
+    <delete id="hallOrderDel"  parameterType="String">
+    	UPDATE aas.tb_hallOrder SET pay_status = '승인취소' WHERE hallOrder_id = #{hallOrder_id}
+    </delete>
+    
+    <delete id="hallDeleteOrder"  parameterType="String">
+    	DELETE FROM aas.tb_hallOrder WHERE hallOrder_id = #{hallOrder_id}
+    </delete>
+        
+    <select id="countDuplication">
+    	SELECT COUNT(*) 
+    	FROM aas.tb_hallOrder
+    	WHERE hall_id = #{hallId} AND 
+    </select>
+    
+    <select id="countHallOrder" parameterType="String" resultType="int" >
+    	SELECT COUNT(*)
+    	FROM aas.tb_hallOrder
+    	WHERE user_id =#{userId} AND pay_status ='승인대기' 
+    </select>
+   
+   	<update id="updateOrderStatus" parameterType="map">
+        UPDATE tb_hallOrder
+        SET pay_date = #{pay_date}, pay_status = #{pay_status}
+        WHERE hallOrder_id = #{hallOrderId}
+    </update>
+    
+	</mapper>

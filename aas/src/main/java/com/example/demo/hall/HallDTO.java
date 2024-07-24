@@ -1,13 +1,13 @@
 package com.example.demo.hall;
 
 public class HallDTO {
+
 	
 	public HallDTO() {
-		System.out.println("-----------HallDTO 객채 생성");
 	}
 	
 	private String hall_id;
-	private String hname;
+	private String h_name;
 	private String miniHall;
 	private String addr;
 	private String h_call;
@@ -16,8 +16,8 @@ public class HallDTO {
 	private String user_id;
 	private String prfplcnm;
 	private String mt13id;
-    private String seatscale;
-    private String h_code;
+  private String seatscale;
+  private String h_code;
     
 
 	public String getHall_id() {
@@ -26,11 +26,11 @@ public class HallDTO {
 	public void setHall_id(String hall_id) {
 		this.hall_id = hall_id;
 	}
-	public String getHname() {
-		return hname;
+	public String getH_name() {
+		return h_name;
 	}
-	public void setHname(String hname) {
-		this.hname = hname;
+	public void setHname(String h_name) {
+		this.h_name = h_name;
 	}
 	public String getMiniHall() {
 		return miniHall;
@@ -95,7 +95,7 @@ public class HallDTO {
 
 	
 	public String toString() {
-		return "HallDTO [hall_id=" + hall_id + ", hname=" + hname + ", miniHall=" + miniHall + ", addr=" + addr
+		return "HallDTO [hall_id=" + hall_id + ", h_name=" + h_name + ", miniHall=" + miniHall + ", addr=" + addr
 				+ ", h_call=" + h_call + ", url=" + url + ", seat=" + seat + ", user_id=" + user_id + ", prfplcnm="
 				+ prfplcnm + ", mt13id=" + mt13id + ", seatscale=" + seatscale + ", h_code=" + h_code + "]";
 	}
@@ -108,3 +108,4 @@ public class HallDTO {
 	
 	
 }//END hallDTO
+

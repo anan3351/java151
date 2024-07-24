@@ -100,6 +100,7 @@
     </div>
     <div class="write-button">
          <button type="button" onclick="location.href='${pageContext.request.contextPath}/showreview/showreviewForm?user_id=<%= userId %>'">글쓰기</button>
+    	 <button type="button" onclick="location.href='${pageContext.request.contextPath}/showreview/showrvmy?user_id=<%= userId %>'">나의 후기</button>
     </div>
     <div class="review-list">
         <table>

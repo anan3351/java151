@@ -35,14 +35,39 @@
         .review-list th {
             background-color: #f2f2f2; /* Add background color to headers for better visibility */
         }
+                .write-button {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .write-button button {
+            padding: 10px 20px;
+            border: none;
+            background: #007bff;
+            color: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .write-button button:hover {
+            background: #0056b3;
+        }
     </style>
 </head>
 <body>
+<%
+    // 세션에서 로그인된 사용자 정보를 가져옵니다.
+    com.example.demo.user.UserDTO loggedInUser = (com.example.demo.user.UserDTO) session.getAttribute("loggedInUser");
+    String userId = loggedInUser != null ? loggedInUser.getUser_id() : "";
+%>
 <div class="container">
     <h2>나의 후기</h2>
     <c:if test="${empty myReviews}">
         <p>작성한 후기가 없습니다.</p>
     </c:if>
+    <div class="write-button">
+    	 <button type="button" onclick="location.href='${pageContext.request.contextPath}/showreview/showreviewForm?user_id=<%= userId %>'">글쓰기</button>
+    	 <button type="button" onclick="location.href='${pageContext.request.contextPath}/showreview?user_id=<%= userId %>'">후기 목록</button>
+    </div>
+    
     <div class="review-list">
         <table>
             <thead>
@@ -55,18 +80,19 @@
                     <th>날짜</th>
                 </tr>
             </thead>
-            <tbody>
-                <c:forEach var="review" items="${myReviews}">
-                    <tr>
-                        <td><a href="${pageContext.request.contextPath}/showreview/showreviewdetail?rev_id=${review.rev_id}">${review.show_id}</a></td>
-                        <td>${review.retitle}</td>
-                        <td>${review.viewcnt}</td>
-                        <td>${review.empcnt}</td>
-                        <td>${review.user_id}</td>
-                        <td><fmt:formatDate value="${review.r_date}" pattern="yyyy-MM-dd" /></td>
-                    </tr>
-                </c:forEach>
-            </tbody>
+<tbody>
+    <c:forEach var="review" items="${myReviews}">
+        <tr>
+            <td><a href="${pageContext.request.contextPath}/showreview/showreviewdetail?rev_id=${review.rev_id}">${review.show_title}</a></td>
+            <td>${review.retitle}</td>
+            <td>${review.viewcnt}</td>
+            <td>${review.empcnt}</td>
+            <td>${review.user_id}</td>
+            <td><fmt:formatDate value="${review.r_date}" pattern="yyyy-MM-dd" /></td>
+        </tr>
+    </c:forEach>
+</tbody>
+
         </table>
     </div>
 </div>

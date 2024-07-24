@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="membership">
+
+	<insert id="insertMembership" parameterType="java.util.Map">
+		INSERT INTO aas.tb_member (user_id, mb_name, admin_date)
+		VALUES (#{userId}, #{mbName}, #{adminDate})
+	</insert>
+
+	<insert id="insertCouponDetail" parameterType="java.util.Map">
+		INSERT INTO aas.tb_couponDetail (user_id, coupon_id, left_count, cp_date)
+		VALUES (#{userId}, #{couponId}, #{leftCount}, NOW())
+	</insert>
+
+	<update id="updateUserPoints" parameterType="java.util.Map">
+		UPDATE aas.tb_user
+		SET u_point = u_point + #{points}
+		WHERE user_id = #{userId}
+	</update>
+	
+	<select id="isAlreadyMember" parameterType="java.util.Map" resultType="int">
+		SELECT count(*)
+		FROM aas.tb_member 
+		Where mb_name = #{mbName} AND user_id = #{userId}
+	</select>
+	
+	<select id="selectMbname" parameterType="java.util.Map" resultType="com.example.demo.membership.MembershipDTO">
+		SELECT mb_name, user_id, admin_date
+		FROM aas.tb_member
+		WHERE user_id = #{userId}
+	</select>
+
+</mapper>

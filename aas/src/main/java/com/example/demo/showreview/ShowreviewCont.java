@@ -227,11 +227,12 @@ public class ShowreviewCont {
 	        if (loggedInUser == null) {
 	            return new ModelAndView("redirect:/user/login");
 	        }
-	        List<ShowreviewDTO> myReviews = showreviewDao.getReviewsByUserId(loggedInUser.getUser_id());
+	        List<Map<String, Object>> myReviews = showreviewDao.getReviewsByUserId(loggedInUser.getUser_id());
 	        ModelAndView mav = new ModelAndView("showreview/showrvmy");
 	        mav.addObject("myReviews", myReviews);
 	        return mav;
 	    }
+
 
 
 }//class end

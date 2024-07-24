@@ -854,6 +854,9 @@
                     </c:choose>
                   </ul>
                 </div>
+                 <div class="menu-section">
+                  <div class="menu-title"><a href="${pageContext.request.contextPath}/user/mypage/hallMypage?user_id=${sessionScope.loggedInUser.user_id}">공연장 대관</a></div>
+                </div>
                 <div class="menu-section">
                   <div class="menu-title"><a
                       href="${pageContext.request.contextPath}/user/mypage/membership?user_id=${sessionScope.loggedInUser.user_id}">멤버십</a>
@@ -880,6 +883,7 @@
                   <button class="rank-btn">등급별 혜택보기</button>
                 </div>
                 <div class="coupon">
+
 
                   <c:forEach items="${coupons}" var="cp" varStatus="status">
                   <div class="container">

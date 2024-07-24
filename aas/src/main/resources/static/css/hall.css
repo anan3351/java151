@@ -463,10 +463,22 @@ footer {
 
 .btn-area {
   display: flex;
-  gap: 10px;
+  gap: 20px;
   margin-top: 40px;
   width: 100%;
   justify-content: center;
+  position: relative;
+}
+
+.btn-area .cartCount {
+    position: absolute;
+    top: -5px; /* Adjust as needed */
+    left: -5px; /* Adjust as needed */
+    background-color: #fff; /* Optional: background color for better visibility */
+    border-radius: 50%; /* Optional: make it a circle */
+    padding: 2px 5px; /* Optional: padding to make the count more prominent */
+    font-size: 12px; /* Optional: adjust the font size */
+    color: #ff0000; /* Optional: text color */
 }
 
 .btn-area .btn {
@@ -510,7 +522,7 @@ footer {
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  background-color: #8e43e7;
+  background-color: #c9c511;
   color: white;
 }
 
@@ -543,7 +555,7 @@ footer {
 #select-date-btn {
   width: 100%;
   padding: 15px 0;
-  background-color: #8e43e7;
+  background-color: #c9c511;
   color: white;
   border: none;
   font-size: 16px;
@@ -611,7 +623,7 @@ footer {
 
 }
 
-.btn-search {
+.btn-search2 {
   background-color: #464242;
   padding: 5px 30px;
   color: #FFFFFF;

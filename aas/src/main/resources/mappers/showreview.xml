@@ -63,12 +63,13 @@
   		  DELETE FROM aas.tb_review WHERE rev_id = #{rev_id}
 	</delete>
     
-    <select id="getReviewsByUserId" parameterType="string" resultType="com.example.demo.showreview.ShowreviewDTO">
-        SELECT r.rev_id, r.show_id, r.retitle, r.content, r.viewcnt, r.empcnt, r.user_id, r.r_date
-        FROM tb_review r
-        WHERE r.user_id = #{user_id}
-        ORDER BY r.rev_id DESC
-    </select>
+<select id="getReviewsByUserId" parameterType="string" resultType="map">
+    SELECT r.rev_id, r.show_id, s.title AS show_title, r.retitle, r.viewcnt, r.empcnt, r.user_id, r.r_date
+    FROM tb_review r
+    JOIN tb_show s ON r.show_id = s.show_id
+    WHERE r.user_id = #{user_id}
+    ORDER BY r.rev_id DESC
+</select>
     
     
 </mapper>

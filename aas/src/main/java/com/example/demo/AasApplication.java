@@ -39,20 +39,8 @@ public class AasApplication {
       return new SqlSessionTemplate(factory);
    }
 
-   @Bean
-   public JavaMailSender javaMailSender() {
-       JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-       mailSender.setHost("smtp.gmail.com");
-       mailSender.setPort(587);
-       mailSender.setUsername("your-email@gmail.com");
-       mailSender.setPassword("your-app-password");
-       Properties props = mailSender.getJavaMailProperties();
-       props.put("mail.transport.protocol", "smtp");
-       props.put("mail.smtp.auth", "true");
-       props.put("mail.smtp.starttls.enable", "true");
-       props.put("mail.debug", "true");
-       return mailSender;
-   }
+
+
   
    /* 인터파크 배우데이터 크롤링
    @Bean
@@ -69,4 +57,18 @@ public class AasApplication {
            ticketLinkCrawler.crawl();
        };
        */
-   }
+   
+
+   /* 크롤링할때 주석풀기
+   @Bean
+   public CommandLineRunner run() {
+       return args -> {
+           PlayDbCrawler.main(new String[]{});
+       };
+   } 
+   */
+}
+   
+
+
+

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="qna">
+
+ <!-- 새로운 resultMap 추가 -->
+    <resultMap id="qnaResultMap" type="map">
+        <result property="question_id" column="question_id" jdbcType="INTEGER"/>
+        <result property="user_id" column="user_id" jdbcType="VARCHAR"/>
+        <result property="category" column="category" jdbcType="VARCHAR"/>
+        <result property="q_title" column="q_title" jdbcType="VARCHAR"/>
+        <result property="q_text" column="q_text" jdbcType="VARCHAR"/>
+        <result property="q_open" column="q_open" jdbcType="INTEGER"/>
+        <result property="q_date" column="q_date" jdbcType="TIMESTAMP"/>
+        <!-- 답변 관련 필드 -->
+        <result property="answer_id" column="answer_id" jdbcType="INTEGER"/>
+        <result property="answer_title" column="answer_title" jdbcType="VARCHAR"/>
+        <result property="answer_text" column="answer_text" jdbcType="VARCHAR"/>
+        <result property="answer_date" column="answer_date" jdbcType="TIMESTAMP"/>
+        <result property="answer_user_id" column="answer_user_id" jdbcType="VARCHAR"/>
+    </resultMap>
+
+	<select id="getQnaList" parameterType="map" resultType="map">
+    SELECT * FROM aas.tb_question
+    <where>
+        <if test="field != null and field == 'q_title' and word != null and word != ''">
+            AND q_title LIKE CONCAT('%', #{word}, '%')
+        </if>
+        <if test="field != null and field == 'q_text' and word != null and word != ''">
+            AND (q_title LIKE CONCAT('%', #{word}, '%') OR q_text LIKE CONCAT('%', #{word}, '%'))
+        </if>
+    </where>
+    ORDER BY question_id DESC
+    LIMIT #{offset}, #{size}
+</select>
+
+    <select id="getTotalQnaCount" parameterType="map" resultType="int">
+    SELECT COUNT(*) FROM aas.tb_question
+    <where>
+        <if test="field != null and field == 'q_title' and word != null and word != ''">
+            AND q_title LIKE CONCAT('%', #{word}, '%')
+        </if>
+        <if test="field != null and field == 'q_text' and word != null and word != ''">
+            AND (q_title LIKE CONCAT('%', #{word}, '%') OR q_text LIKE CONCAT('%', #{word}, '%'))
+        </if>
+    </where>
+</select>
+
+    <select id="getQna" parameterType="long" resultType="map">
+        SELECT question_id, user_id, category, q_title, q_text, q_open, q_date
+        FROM tb_question
+        WHERE question_id = #{question_id}
+    </select>
+    
+    <select id="getQnaById" parameterType="int" resultType="map">
+    SELECT question_id, user_id, category, q_title, q_text, q_open, q_date
+    FROM aas.tb_question
+    WHERE question_id = #{question_id}
+</select>
+	
+	<insert id="insertQna" parameterType="map">
+    INSERT INTO aas.tb_question (user_id, category, q_title, q_text, q_open, q_date)
+    VALUES (#{user_id}, #{category}, #{q_title}, #{q_text}, #{q_open}, NOW())
+</insert>
+
+<select id="getAllQnaList" parameterType="map" resultType="map">
+    SELECT * FROM aas.tb_question
+    <where>
+        <if test="field != null and field == 'q_title' and word != null and word != ''">
+            AND q_title LIKE CONCAT('%', #{word}, '%')
+        </if>
+        <if test="field != null and field == 'q_text' and word != null and word != ''">
+            AND (q_title LIKE CONCAT('%', #{word}, '%') OR q_text LIKE CONCAT('%', #{word}, '%'))
+        </if>
+    </where>
+    ORDER BY question_id DESC
+    LIMIT #{offset}, #{size}
+</select>
+
+<select id="getFilteredQnaList" parameterType="map" resultType="map">
+    SELECT * FROM aas.tb_question
+    <where>
+        (q_open = 1 OR (q_open = 0 AND user_id = #{userId}))
+        <if test="field != null and field == 'q_title' and word != null and word != ''">
+            AND q_title LIKE CONCAT('%', #{word}, '%')
+        </if>
+        <if test="field != null and field == 'q_text' and word != null and word != ''">
+            AND (q_title LIKE CONCAT('%', #{word}, '%') OR q_text LIKE CONCAT('%', #{word}, '%'))
+        </if>
+    </where>
+    ORDER BY question_id DESC
+    LIMIT #{offset}, #{size}
+</select>
+
+<select id="getFilteredTotalQnaCount" parameterType="map" resultType="int">
+    SELECT COUNT(*) FROM aas.tb_question
+    <where>
+        (q_open = 1 OR (q_open = 0 AND user_id = #{userId}))
+        <if test="field != null and field == 'q_title' and word != null and word != ''">
+            AND q_title LIKE CONCAT('%', #{word}, '%')
+        </if>
+        <if test="field != null and field == 'q_text' and word != null and word != ''">
+            AND (q_title LIKE CONCAT('%', #{word}, '%') OR q_text LIKE CONCAT('%', #{word}, '%'))
+        </if>
+    </where>
+</select>
+
+<insert id="insertAnswer" parameterType="map">
+    <selectKey keyProperty="question_id" resultType="int" order="AFTER">
+        SELECT LAST_INSERT_ID()
+    </selectKey>
+    INSERT INTO aas.tb_question (user_id, category, q_title, q_text, q_open, q_date, parent_id)
+    VALUES (#{user_id}, #{category}, #{q_title}, #{q_text}, #{q_open}, NOW(), #{parent_id})
+</insert>
+
+<select id="getQnaListWithAnswers" parameterType="map" resultType="map">
+    SELECT q.*, a.question_id as answer_id, a.q_title as answer_title, a.q_text as answer_text, a.q_date as answer_date, a.user_id as answer_user_id
+    FROM aas.tb_question q
+    LEFT JOIN aas.tb_question a ON q.question_id = a.parent_id
+    WHERE q.parent_id IS NULL
+    ORDER BY q.question_id DESC, a.q_date ASC
+    LIMIT #{offset}, #{size}
+</select>
+
+<select id="getAllQnaListWithAnswers" parameterType="map" resultType="map">
+    SELECT q.*, a.question_id as answer_id, a.q_title as answer_title, 
+           a.q_text as answer_text, a.q_date as answer_date, a.user_id as answer_user_id,
+           a.q_open as answer_q_open
+    FROM aas.tb_question q
+    LEFT JOIN aas.tb_question a ON q.question_id = a.parent_id
+    WHERE q.parent_id IS NULL
+    <if test="field != null and field == 'q_title' and word != null and word != ''">
+        AND q.q_title LIKE CONCAT('%', #{word}, '%')
+    </if>
+    <if test="field != null and field == 'q_text' and word != null and word != ''">
+        AND (q.q_title LIKE CONCAT('%', #{word}, '%') OR q.q_text LIKE CONCAT('%', #{word}, '%'))
+    </if>
+    ORDER BY q.question_id DESC, a.q_date ASC
+    LIMIT #{offset}, #{size}
+</select>
+
+<select id="getFilteredQnaListWithAnswers" parameterType="map" resultType="map">
+    SELECT q.*, a.question_id as answer_id, a.q_title as answer_title, 
+           a.q_text as answer_text, a.q_date as answer_date, a.user_id as answer_user_id,
+           a.q_open as answer_q_open
+    FROM aas.tb_question q
+    LEFT JOIN aas.tb_question a ON q.question_id = a.parent_id
+    WHERE q.parent_id IS NULL
+    <if test="field != null and field == 'q_title' and word != null and word != ''">
+        AND q.q_title LIKE CONCAT('%', #{word}, '%')
+    </if>
+    <if test="field != null and field == 'q_text' and word != null and word != ''">
+        AND (q.q_title LIKE CONCAT('%', #{word}, '%') OR q.q_text LIKE CONCAT('%', #{word}, '%'))
+    </if>
+     ORDER BY q.question_id DESC, a.q_date ASC
+    LIMIT #{offset}, #{size}
+</select>
+
+<update id="updateQna" parameterType="map">
+    UPDATE aas.tb_question 
+    SET q_title = #{q_title}, q_text = #{q_text}, q_open = #{q_open}
+    WHERE question_id = #{question_id} AND user_id = #{user_id}
+</update>
+
+<delete id="deleteQna" parameterType="int">
+    DELETE FROM aas.tb_question WHERE question_id = #{questionId}
+</delete>
+    
+    <select id="getLastInsertId" resultType="int">
+    SELECT LAST_INSERT_ID()
+</select>
+    
+</mapper>
