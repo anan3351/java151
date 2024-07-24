@@ -22,13 +22,23 @@ public class ShowDAO {
 	SqlSession sqlSession;
 	
 	// Show
+	
+	// 뮤지컬 목록
 	public List<Map<String, Object>> musicalList() {
 	    return sqlSession.selectList("show.musicalList");
 	}
-
 	
-
+	// 연극 목록
+	public List<Map<String, Object>> playList() {
+	    return sqlSession.selectList("show.playList");
+	}
 	
+	// 공연 상세정보 조회
+	public Map<String, Object> showDetail(String show_id) {
+		return sqlSession.selectOne("show.showDetail", show_id);
+	}
+		
+
 	// ----------------------------------------------------------------------------------------------------------------------------------
 	// Seller
 	
@@ -160,19 +170,13 @@ public class ShowDAO {
 	}
 	
 	// 공연 상세정보 조회2 (좌석금액)
-	public List<Map<String, Object>> sellerDetail2(String show_id, String user_id) {
-	    Map<String, Object> params = new HashMap<>();
-	    params.put("show_id", show_id);
-	    params.put("user_id", user_id);
-	    return sqlSession.selectList("show.sellerDetail2", params);
+	public List<Map<String, Object>> sellerDetail2(String show_id) {
+	    return sqlSession.selectList("show.sellerDetail2", show_id);
 	}
 	
 	// 공연 상세정보 조회3 (전체금액(할인 적용))
-	public List<Map<String, Object>> allPrice(String show_id, String user_id) {
-	    Map<String, Object> params = new HashMap<>();
-	    params.put("show_id", show_id);
-	    params.put("user_id", user_id);
-	    return sqlSession.selectList("show.allPrice", params);
+	public List<Map<String, Object>> allPrice(String show_id) {
+	    return sqlSession.selectList("show.allPrice", show_id);
 	}
 	
 
