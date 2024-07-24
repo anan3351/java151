@@ -16,7 +16,7 @@
         }
 
         body {
-            padding-top: 80px;
+            padding-top: 150px;
             font-family: Arial, sans-serif;
             background-color: #f9f9f9;
             color: #333;
@@ -148,22 +148,47 @@
             background-color: red;
             color: white;
         }
+        
+        .search-form {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .search-form input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+            width: 200px;
+        }
+
+        .search-form button {
+            padding: 10px 20px;
+            border: none;
+            background: #28a745;
+            color: #fff;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .search-form button:hover {
+            background: #218838;
+        }
     </style>
 
     <div class="filters">
         <div class="filters-left">
-            <button class="filter-button">주간조회수</button>
-            <button class="filter-button">누적조회수</button>
-        </div>
-        <div class="filters-right">
-            <button class="filter-button1">전체</button>
+			<button class="filter-button1">전체</button>
         </div>
     </div>
     <!-- 검색 폼 추가 -->
+    <div class="search-form">
     <form action="${pageContext.request.contextPath}/actor/search" method="get">
         <input type="text" name="search" placeholder="배우 이름 검색">
-        <button type="submit" class="filter-button">검색</button>
+        <button type="submit">검색</button>
     </form>
+    </div>
     <div class="actor-list">
         <table>
             <thead>

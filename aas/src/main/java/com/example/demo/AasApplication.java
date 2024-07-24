@@ -1,16 +1,11 @@
 package com.example.demo;
 
 import java.util.Properties;
-
 import javax.sql.DataSource;
-
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -18,16 +13,14 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-
-import com.example.demo.actor.PlayDbCrawler;
+import com.example.demo.acsch.InterparkCrawler;
+import com.example.demo.acsch.TicketLinkCrawler;
 
 @SpringBootApplication
 public class AasApplication {
-
    public static void main(String[] args) {
       SpringApplication.run(AasApplication.class, args);
    }
-
 
    // MyBatis Framework 관련 환경 설정 // Mapper 객체 생성
    @Bean
@@ -39,12 +32,32 @@ public class AasApplication {
        sessionFactory.setMapperLocations(res);
        
        return sessionFactory.getObject();
-   } // sqlSessionFactory() end
+   }
    
    @Bean
-   public SqlSessionTemplate sqlSession(SqlSessionFactory factory) { // SqlSessionTemplate : MyBatis 쿼리문을 수행. 내부에 있는 SqlSessionFactory를 이용하여 SqlSession을 관리
+   public SqlSessionTemplate sqlSession(SqlSessionFactory factory) {
       return new SqlSessionTemplate(factory);
-   } // sqlSession() end
+   }
+
+
+
+  
+   /* 인터파크 배우데이터 크롤링
+   @Bean
+   public CommandLineRunner run(InterparkCrawler interparkCrawler) {
+       return args -> {
+           interparkCrawler.crawl();
+       };
+   }
+    */
+   /* YES24 배우데이터 크롤링
+   @Bean
+   public CommandLineRunner run(TicketLinkCrawler ticketLinkCrawler) {
+       return args -> {
+           ticketLinkCrawler.crawl();
+       };
+       */
+   
 
    /* 크롤링할때 주석풀기
    @Bean
@@ -54,7 +67,8 @@ public class AasApplication {
        };
    } 
    */
-   
+}
    
 
-}
+
+

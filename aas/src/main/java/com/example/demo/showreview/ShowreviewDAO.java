@@ -115,9 +115,13 @@ public class ShowreviewDAO {
     }
     
 
-    public List<ShowreviewDTO> getReviewsByUserId(String user_id) {
+    public List<Map<String, Object>> getReviewsByUserId(String user_id) {
         return sqlSession.selectList("showreview.getReviewsByUserId", user_id);
     }
-    
+
+    public List<Map<String, Object>> searchReviewsByKeyword(String keyword) {
+        return sqlSession.selectList("showreview.searchReviewsByKeyword", keyword);
+    }
+
     
 }//class end

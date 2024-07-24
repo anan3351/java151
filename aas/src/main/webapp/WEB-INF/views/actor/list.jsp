@@ -1,7 +1,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ include file="../header.jsp" %>
 <link rel="stylesheet" href="/css/template.css">
+
 <div class="container">
     <div class="left-aligned-title">
         <h3>인기배우 TOP5</h3>
@@ -197,19 +198,17 @@
             color: white;
         }
     </style>
-    <div class="top-actors">
-        <c:forEach var="actor" items="${list}" varStatus="status">
-            <c:if test="${status.index < 5}">
-                <div class="actor-card">
-                    <div class="rank-number">${status.index + 1}</div>
-                    <img src="${actor.photo}" alt="${actor.a_name}" />
-                    <p>${actor.a_name}</p>
-                </div>
-            </c:if>
-        </c:forEach>
-    </div>
+<div class="top-actors">
+    <c:forEach var="actor" items="${topFavoriteActors}" varStatus="status">
+        <div class="actor-card">
+            <div class="rank-number">${status.index + 1}</div>
+            <img src="${actor.photo}" alt="${actor.a_name}" onclick="location.href='${pageContext.request.contextPath}/actordetail?id=${actor.actor_id}'">
+            <p>${actor.a_name}</p>
+        </div>
+    </c:forEach>
+</div>
+</div>
     <div class="filters">
-
         <div class="filters-right">
             <button class="filter-button" onclick="location.href='${pageContext.request.contextPath}/actor/list'">전체</button>
         </div>

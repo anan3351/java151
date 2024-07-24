@@ -662,14 +662,13 @@
                 <div class="menu-section">
                   <div class="menu-title">내 스케줄</div>
                   <ul class="menu-items">
-                    <li><a href="#">스케줄 작성</a></li>
-                    <li><a href="#">스케줄 수정/삭제</a></li>
+                    <li><a href="${pageContext.request.contextPath}/myschedule/list">스케줄 작성</a></li>
                   </ul>
                 </div>
                 <div class="menu-section">
                   <div class="menu-title">즐겨찾기</div>
                   <ul class="menu-items">
-                    <li><a href="#">관심배우</a></li>
+                    <li><a href="${pageContext.request.contextPath}/favorite/schedule">관심배우</a></li>
                     <li><a href="#">관심공연</a></li>
                   </ul>
                 </div>

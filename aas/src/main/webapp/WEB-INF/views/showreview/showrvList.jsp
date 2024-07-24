@@ -95,11 +95,14 @@
 <div class="container">
     <h2>공연 리뷰 목록</h2>
     <div class="search-box">
-        <input type="text" placeholder="공연명 검색">
-        <button type="button">검색</button>
+        <form action="${pageContext.request.contextPath}/showreview/search" method="get">
+            <input type="text" name="keyword" placeholder="공연명 검색" value="${keyword}">
+            <button type="submit">검색</button>
+        </form>
     </div>
     <div class="write-button">
          <button type="button" onclick="location.href='${pageContext.request.contextPath}/showreview/showreviewForm?user_id=<%= userId %>'">글쓰기</button>
+    	 <button type="button" onclick="location.href='${pageContext.request.contextPath}/showreview/showrvmy?user_id=<%= userId %>'">나의 후기</button>
     </div>
     <div class="review-list">
         <table>
@@ -113,18 +116,18 @@
                     <th>날짜</th>
                 </tr>
             </thead>
-            <tbody>
-                <c:forEach var="review" items="${reviewList}">
-                    <tr>
-                        <td><a href="${pageContext.request.contextPath}/showreview/showreviewdetail?rev_id=${review.rev_id}">${review['title']}</a></td>
-                        <td>${review.retitle}</td>
-                        <td>${review.viewcnt}</td>
-                        <td>${review.empcnt}</td>
-                        <td>${review.user_id}</td>
-                        <td>${review.r_date}</td>
-                    </tr>
-                </c:forEach>
-            </tbody>
+			<tbody>
+			    <c:forEach var="review" items="${reviewList}">
+			        <tr>
+			            <td><a href="${pageContext.request.contextPath}/showreview/showreviewdetail?rev_id=${review.rev_id}">${review['title']}</a></td>
+			            <td>${review.retitle}</td>
+			            <td>${review.viewcnt}</td>
+			            <td>${review.empcnt}</td>
+			            <td>${review.user_id}</td>
+			            <td>${review.r_date}</td>
+			        </tr>
+			    </c:forEach>
+			</tbody>
         </table>
     </div>
     <div class="pagination">

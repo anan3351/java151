@@ -10,7 +10,12 @@ import java.util.Date;
 @Setter
 @ToString
 public class TicketDTO {
-    private int ticketId;
-    private String showId;
-    private Date ticketDate;
+    private int ticket_id;
+    private String show_id;
+    private Date ticket_Date;
+
+    // 필요한 getter 메서드 추가
+    public Date getTicket_date() {
+        return ticket_Date;
+    }
 }

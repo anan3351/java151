@@ -64,20 +64,20 @@ public class SellerCont {
         @RequestParam Map<String, Object> map,
         @RequestParam Map<String, MultipartFile> files,
         HttpServletRequest req, HttpSession session) {
-    	
-    	UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
-    	String show_id = showDao.showid_make();
-    	map.put("show_id", show_id);
-    	
-    	// 이미지 저장 경로
+
+        UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+        String show_id = showDao.showid_make();
+        map.put("show_id", show_id);
+
+        // 이미지 저장 경로
         ServletContext application = req.getServletContext();
         String basePath = application.getRealPath("/storage");
         Map<String, String> fileNames = new HashMap<>();
 
         files.forEach((key, value) -> {
-        	if (value != null && !value.isEmpty()) {
-        		try {
-                	String o_name = value.getOriginalFilename();
+            if (value != null && !value.isEmpty()) {
+                try {
+                    String o_name = value.getOriginalFilename();
                     int lastDot = o_name.lastIndexOf(".");
                     
                     String show_name = (String) map.get("title");
@@ -86,7 +86,7 @@ public class SellerCont {
 
                     int count = 1;
                     while (saveFile.exists()) {
-                    	lastDot = filename.lastIndexOf(".");
+                        lastDot = filename.lastIndexOf(".");
                         filename = "all_about_show_" + show_name + "_" + count + filename.substring(lastDot);
                         saveFile = new File(basePath, filename);
                         count++;
@@ -95,12 +95,12 @@ public class SellerCont {
                     value.transferTo(saveFile);
                     fileNames.put(key, filename);
 
-        		} catch (Exception e) {
-                	System.out.println("이미지 저장 실패: " + e.getMessage());
-        		}
-        	} else {
-            	fileNames.put(key, null);
-        	}
+                } catch (Exception e) {
+                    System.out.println("이미지 저장 실패: " + e.getMessage());
+                }
+            } else {
+                fileNames.put(key, null);
+            }
         });
 
         map.putAll(fileNames);
@@ -108,6 +108,7 @@ public class SellerCont {
         showDao.insert(map);
         return "redirect:/seller/list";
     }
+
 
     // 공연 등록 - 공연장 검색
     @GetMapping("/hallSearch")
@@ -225,6 +226,17 @@ public class SellerCont {
     	showDao.disDelete(dis_id);
         return "redirect:/seller/detail/" + show_id + "/disList";
     }*/
+    
+    
+    // 공연 삭제
+	/*
+	 * @PostMapping("/detail/{dis_id}/disDelete") public String
+	 * disDelete(@PathVariable int dis_id, HttpSession session) { String show_id =
+	 * showDao.findByDisShowID(dis_id); showDao.disDelete(dis_id); return
+	 * "redirect:/seller/detail/" + show_id + "/disList"; }
+	 */
+    
+    
     
     // ---------------------
     
@@ -366,7 +378,7 @@ public class SellerCont {
                 return mav;
             }
 
-            List<Map<String, Object>> priceList = showDao.sellerDetail2(show_id, user_id);
+            List<Map<String, Object>> priceList = showDao.sellerDetail2(show_id);
             
             mav.addObject("show", show);
             mav.addObject("priceList", priceList);
@@ -418,7 +430,7 @@ public class SellerCont {
         if (loggedInUser != null) {
         	String user_id = loggedInUser.getUser_id();
         	mav.addObject("userInfo", loggedInUser);
-            List<Map<String, Object>> priceList = showDao.allPrice(show_id, user_id);
+            List<Map<String, Object>> priceList = showDao.allPrice(show_id);
             mav.addObject("priceList", priceList);
             mav.setViewName("seller/allPrice");
         } else {
@@ -861,7 +873,7 @@ public class SellerCont {
     // 배역 등록
     @PostMapping("/detail/{show_id}/roleInsert")
     public String roleInsert(ShowCastingDTO scDto, @PathVariable String show_id, HttpSession session) {
-    	scDto.setShowId(show_id);
+    	scDto.setShow_id(show_id);
         showDao.roleInsert(scDto);
         return "redirect:/seller/detail/" + show_id + "/roleList";
     }
@@ -912,7 +924,7 @@ public class SellerCont {
         
         if (loggedInUser != null) {
         	ShowCastingDTO scDto = showDao.roleSelect(casting_id);
-            String show_id = scDto.getShowId();
+            String show_id = scDto.getShow_id();
             String user_id = loggedInUser.getUser_id();
             
             Map<String, Object> roles2 = showDao.sellerDetail(show_id, user_id);
@@ -944,7 +956,7 @@ public class SellerCont {
             HttpSession session) {
         
         ShowCastingDTO scDto = showDao.roleSelect(castingId);
-        String showId = scDto.getShowId();
+        String showId = scDto.getShow_id();
         
         showDao.roleUpdate(actorId, casting, castingId);
         return "redirect:/seller/detail/" + showId + "/roleList";

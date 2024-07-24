@@ -18,97 +18,119 @@
         <script src="../js/show.js"></script>
         <link rel="stylesheet" href="../css/show.css">
         <style>
-            .musical-img {
-                width: 150px;
-                height: 200px;
-                object-fit: cover;
-            }
-            .musical-card {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                width: 150px;
-                margin: 10px;
-            }
-            .musical-title {
-                font-weight: bold;
-                text-align: left;
-                font-size: 14px; /* 기본 글씨 크기보다 5px 줄임 */
-                margin-top: 5px;
-                width: 100%;
-                margin-left: 0; /* 왼쪽 여백 제거 */
-            }
-            .musical-info {
-                text-align: left;
-                color: gray;
-                font-size: 12px; /* 기본 글씨 크기보다 5px 줄임 */
-                width: 100%;
-                margin-left: 0; /* 왼쪽 여백 제거 */
-            }
-            .musical-row {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: space-around;
+            /* 링크 기본 스타일 제거 */
+            a {
+                text-decoration: none;
+                color: inherit;
             }
         </style>
     </head>
 
     <body>
-        <%@ include file="../header.jsp" %>
-        <div class="main-container"><br>
-            <div style="font-size: 30px; font-weight: bold; text-align: center;">
-                HOT&#128293;
-            </div>
-            <div class="container">
-                <div class="swiper-container slider1">
-                    <div class="swiper-wrapper">
-                        <!-- 반복문을 사용하여 상위 10개의 이미지를 슬라이드로 표시 -->
-                        <c:forEach var="musical" items="${musicals}" varStatus="status">
-                            <c:if test="${status.index < 10}">
-                                <div class="swiper-slide">
-                                    <img class="musical-img" src="${musical.poster != null ? musical.poster : '../images/non.png'}" alt="${musical.title}">
-                                </div>
-                            </c:if>
-                        </c:forEach>
-                    </div>
-                    <div class="swiper-button-next swiper-button-next1"></div>
-                    <div class="swiper-button-prev swiper-button-prev1"></div>
-                </div>
-
-                <div>
-                    <div style="font-size: 27px; font-weight: bold; text-align: center;">
-                        전체 공연
-                    </div><br>
-
-                    <div class="container">
-                        <div class="showall">
-                            <div class="musical-row">
-                                <!-- 공연 정보를 카드 형식으로 표시 -->
-                                <c:forEach var="musical" items="${musicals}">
-                                    <div class="musical-card">
-                                        <img class="musical-img" src="${musical.poster != null ? musical.poster : '../images/non.png'}" alt="${musical.title}">
-                                        <div class="musical-title">뮤지컬 ${musical.title}</div>
-                                        <div class="musical-info">
+    <%@ include file="../header.jsp" %>
+    <div class="main-container"><br>
+        <div class="hot-section" style="font-size: 30px; font-weight: bold; text-align: center;">
+            HOT&#128293;
+        </div>
+        <div class="container">
+            <div class="swiper-container slider1">
+                <div class="swiper-wrapper">
+                    <c:forEach var="musical" items="${musicals}" varStatus="status">
+                        <c:if test="${status.index < 10}">
+                            <div class="swiper-slide">
+                                <a href="/${musical.show_id}">
+                                    <c:choose>
+                                        <c:when test="${musical.poster != null}">
                                             <c:choose>
-                                                <c:when test="${musical.minihall != null}">
-                                                    ${musical.h_name} - ${musical.minihall}
+                                                <c:when test="${musical.show_id.startsWith('SHOW')}">
+                                                    <img class="show-img" src="../../storage/${musical.poster}" onerror="this.src='../images/non.png';" alt="포스터">
                                                 </c:when>
                                                 <c:otherwise>
-                                                    ${musical.h_name}
+                                                    <img class="show-img" src="${musical.poster}" onerror="this.src='../images/non.png';" alt="포스터">
                                                 </c:otherwise>
                                             </c:choose>
-                                            <br>
-                                            ${fn:replace(musical.start_day, "-", "/")}~${fn:replace(musical.end_day, "-", "/")}
-                                        </div>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <img class="show-img" src="../images/non.png" onerror="this.src='../images/non.png';" alt="포스터">
+                                        </c:otherwise>
+                                    </c:choose>
+                                </a>
+                                <div class="text-container">
+                                    <div class="item-name">${musical.title}</div><div class="half-br"></div>
+                                    <div class="item-hall">
+                                        <c:choose>
+                                            <c:when test="${musical.minihall != null}">
+                                                ${musical.h_name} ${musical.minihall}
+                                            </c:when>
+                                            <c:otherwise>
+                                                ${musical.h_name}
+                                            </c:otherwise>
+                                        </c:choose>
                                     </div>
-                                </c:forEach>
+                                    <div class="item-date">
+                                        ${fn:replace(musical.start_day, "-", "/")}~${fn:replace(musical.end_day, "-", "/")}
+                                    </div>
+                                </div>
                             </div>
+                        </c:if>
+                    </c:forEach>
+                </div>
+                <div class="swiper-button-next swiper-button-next1"></div>
+                <div class="swiper-button-prev swiper-button-prev1"></div>
+            </div>
+
+            <div class="all-shows-section">
+                <div style="font-size: 27px; font-weight: bold; text-align: center;">
+                    전체 공연
+                </div>
+
+                <div class="container">
+                    <div class="showall">
+                        <div class="show-row">
+                            <c:forEach var="musical" items="${musicals}">
+                                <div class="show-card">
+                                    <a href="/${musical.show_id}">
+                                        <c:choose>
+                                            <c:when test="${not empty musical.poster}">
+                                                <c:choose>
+                                                    <c:when test="${musical.show_id.startsWith('SHOW')}">
+                                                        <img class="show-img" src="../../storage/${musical.poster}" onerror="this.src='../images/non.png';" style="width: 140px; height: 193px">
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <img class="show-img" src="${musical.poster}" onerror="this.src='../images/non.png';" style="width: 140px; height: 193px">
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <img class="show-img" src="../images/non.png" onerror="this.src='../images/non.png';" style="width: 140px; height: 193px">
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </a>
+                                    <a href="/${musical.show_id}">
+                                        <div class="show-title">뮤지컬 &#60;${musical.title}></div>
+                                    </a>
+                                    <div class="half-br"></div>
+                                    <div class="show-info">
+                                        <c:choose>
+                                            <c:when test="${musical.minihall != null}">
+                                                ${musical.h_name} ${musical.minihall}
+                                            </c:when>
+                                            <c:otherwise>
+                                                ${musical.h_name}
+                                            </c:otherwise>
+                                        </c:choose>
+                                        <br>
+                                        ${fn:replace(musical.start_day, "-", "/")}~${fn:replace(musical.end_day, "-", "/")}
+                                    </div>
+                                </div>
+                            </c:forEach>
                         </div>
                     </div>
-                    <br><br><br>
                 </div>
+                <br><br><br>
             </div>
         </div>
-        <%@ include file="../footer.jsp" %>
-    </body>
+    </div>
+    <%@ include file="../footer.jsp" %>
+</body>
 </html>
