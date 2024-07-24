@@ -102,9 +102,9 @@
 <h1>애정 배우</h1>
 
 <div class="favorite-header">
-    <c:forEach var="actorName" items="${actorNames}">
-        <span>
-            <img src="/images/kheart.png" alt="Heart"> ${actorName}
+    <c:forEach var="actor" items="${actorList}">
+        <span style="cursor:pointer;" onclick="location.href='${pageContext.request.contextPath}/actordetail?id=${actor.actor_id}'">
+            <img src="/images/kheart.png" alt="Heart"> ${actor.a_name}
         </span>
     </c:forEach>
 </div>

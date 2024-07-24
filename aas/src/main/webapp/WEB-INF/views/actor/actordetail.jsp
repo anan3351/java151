@@ -7,7 +7,7 @@
         .header {
             margin-bottom: 0;
             position: fixed;
-            top: 0;
+            top: 50;
             width: 100%;
             z-index: 1000;
             background: #333;
@@ -16,7 +16,7 @@
         }
 
         body {
-            padding-top: 100px;
+            padding-top: 150px;
             font-family: Arial, sans-serif;
             background-color: #f9f9f9;
             color: #333;

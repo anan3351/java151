@@ -202,7 +202,7 @@
     <c:forEach var="actor" items="${topFavoriteActors}" varStatus="status">
         <div class="actor-card">
             <div class="rank-number">${status.index + 1}</div>
-            <img src="${actor.photo}" alt="${actor.a_name}" />
+            <img src="${actor.photo}" alt="${actor.a_name}" onclick="location.href='${pageContext.request.contextPath}/actordetail?id=${actor.actor_id}'">
             <p>${actor.a_name}</p>
         </div>
     </c:forEach>

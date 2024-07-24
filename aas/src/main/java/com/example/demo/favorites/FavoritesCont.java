@@ -81,6 +81,7 @@ public class FavoritesCont {
 
         String user_id = loggedInUser.getUser_id();
         List<Map<String, Object>> favoriteSchedule = favoritesDAO.getFavoriteSchedule(user_id);
+        List<Map<String, Object>> favoriteActors = favoritesDAO.getFavoriteActors(user_id);
 
         // 날짜별로 데이터를 그룹화하여 새로운 구조로 변환
         Map<String, Map<String, String>> scheduleMap = new LinkedHashMap<>();
@@ -104,6 +105,7 @@ public class FavoritesCont {
 
         model.addAttribute("scheduleMap", scheduleMap);
         model.addAttribute("actorNames", actorNames);
+        model.addAttribute("actorList", favoriteActors); // 배우 목록 추가
         return "favorites/list"; // view 이름 반환
     }
 
