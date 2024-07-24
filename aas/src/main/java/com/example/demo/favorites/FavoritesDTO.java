@@ -7,8 +7,22 @@ public class FavoritesDTO {
     private String show_id;
     private int favor;
 
+    // 기본 생성자
     public FavoritesDTO() {}
 
+    // user_id와 actor_id를 받는 생성자
+    public FavoritesDTO(String user_id, Integer actor_id) {
+        this.user_id = user_id;
+        this.actor_id = actor_id;
+    }
+
+    // user_id와 show_id를 받는 생성자
+    public FavoritesDTO(String user_id, String show_id) {
+        this.user_id = user_id;
+        this.show_id = show_id;
+    }
+
+    // Getters and setters
     public int getFavorites_id() {
         return favorites_id;
     }
@@ -47,10 +61,5 @@ public class FavoritesDTO {
 
     public void setFavor(int favor) {
         this.favor = favor;
-    }
-
-    @Override
-    public String toString() {
-        return "FavoritesDTO [favorites_id=" + favorites_id + ", user_id=" + user_id + ", actor_id=" + actor_id + ", show_id=" + show_id + ", favor=" + favor + "]";
     }
 }

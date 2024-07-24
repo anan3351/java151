@@ -669,7 +669,7 @@
                   <div class="menu-title">즐겨찾기</div>
                   <ul class="menu-items">
                     <li><a href="${pageContext.request.contextPath}/favorite/schedule">관심배우</a></li>
-                    <li><a href="#">관심공연</a></li>
+                    <li><a href="${pageContext.request.contextPath}/favorite/shows">관심공연</a></li>
                   </ul>
                 </div>
                 <div class="menu-section">

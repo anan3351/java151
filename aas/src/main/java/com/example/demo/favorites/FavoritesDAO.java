@@ -42,4 +42,21 @@ public class FavoritesDAO {
     public List<ActorDTO> getTopFavoriteActors() {
         return sqlSession.selectList("favorites.getTopFavoriteActors");
     }
+    
+    public boolean isShowFavorite(String user_id, String show_id) {
+        int count = sqlSession.selectOne("favorites.isShowFavorite", new FavoritesDTO(user_id, show_id));
+        return count > 0;
+    }
+
+    public void addShowFavorite(FavoritesDTO favoritesDTO) {
+        sqlSession.insert("favorites.addShowFavorite", favoritesDTO);
+    }
+    
+    public List<Map<String, Object>> getFavoriteShowList(String user_id) {
+        return sqlSession.selectList("favorites.getFavoriteShowList", user_id);
+    }
+
+    public void removeShowFavorite(FavoritesDTO favoritesDTO) {
+        sqlSession.delete("favorites.removeShowFavorite", favoritesDTO);
+    }
 }

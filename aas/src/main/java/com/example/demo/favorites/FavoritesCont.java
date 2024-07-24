@@ -55,6 +55,29 @@ public class FavoritesCont {
         }
     }
 
+    @PostMapping("/favorite/toggleShow")
+    @ResponseBody
+    public String toggleShowFavorite(@RequestParam("show_id") String showId, HttpSession session) {
+        UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return "not_logged_in";
+        }
+
+        String user_id = loggedInUser.getUser_id();
+        FavoritesDTO favoritesDTO = new FavoritesDTO();
+        favoritesDTO.setUser_id(user_id);
+        favoritesDTO.setShow_id(showId);
+
+        boolean isFavorite = favoritesDAO.isShowFavorite(user_id, showId);
+        if (isFavorite) {
+            favoritesDAO.removeShowFavorite(favoritesDTO);
+            return "removed";
+        } else {
+            favoritesDAO.addShowFavorite(favoritesDTO);
+            return "added";
+        }
+    }
+    
     @GetMapping("/favorite/check")
     @ResponseBody
     public String checkFavorite(@RequestParam("actor_id") int actorId, HttpSession session) {
@@ -70,6 +93,19 @@ public class FavoritesCont {
 
         FavoritesDTO existingFavorite = favoritesDAO.findFavorite(favoritesDTO);
         return (existingFavorite == null) ? "not_added" : "added";
+    }
+    
+    @GetMapping("/favorite/checkShow")
+    @ResponseBody
+    public String checkShowFavorite(@RequestParam("show_id") String showId, HttpSession session) {
+        UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return "not_logged_in";
+        }
+
+        String user_id = loggedInUser.getUser_id();
+        boolean isFavorite = favoritesDAO.isShowFavorite(user_id, showId);
+        return isFavorite ? "added" : "not_added";
     }
 
     @GetMapping("/favorite/schedule")
@@ -107,6 +143,33 @@ public class FavoritesCont {
         model.addAttribute("actorNames", actorNames);
         model.addAttribute("actorList", favoriteActors); // 배우 목록 추가
         return "favorites/list"; // view 이름 반환
+    }
+
+    @GetMapping("/favorite/shows")
+    public String getFavoriteShows(HttpSession session, Model model) {
+        UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return "redirect:/user/login"; // 로그인 페이지로 리디렉션
+        }
+
+        String user_id = loggedInUser.getUser_id();
+        List<Map<String, Object>> favoriteShowList = favoritesDAO.getFavoriteShowList(user_id);
+        model.addAttribute("favoriteShowList", favoriteShowList);
+        return "favorites/showlist"; // view 이름 반환
+    }
+
+    @GetMapping("/favorite/showlist")
+    public String getFavoriteShowList(HttpSession session, Model model) {
+        UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return "redirect:/user/login"; // 로그인 페이지로 리디렉션
+        }
+
+        String user_id = loggedInUser.getUser_id();
+        List<Map<String, Object>> favoriteShowList = favoritesDAO.getFavoriteShowList(user_id);
+
+        model.addAttribute("favoriteShowList", favoriteShowList);
+        return "favorites/showlist"; // view 이름 반환
     }
 
     @GetMapping("/favorite/top")

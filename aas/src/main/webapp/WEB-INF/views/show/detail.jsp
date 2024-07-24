@@ -35,6 +35,16 @@
         width: 100%; /* 전체 너비 사용 */
         max-width: 1200px; /* 최대 너비 설정 */
     }
+        .favorite-button {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        cursor: pointer;
+        border: none;
+        margin-top: 10px;
+    }
     
 </style>
 </head>
@@ -113,6 +123,8 @@
                             <li class="list"><strong></strong>${price.seat_level} <fmt:formatNumber value="${price.price}" pattern="#,###" />원</li>
                         </c:forEach>
                     </ul>
+                     <!-- 즐겨찾기 추가/삭제 버튼 -->
+                    <button class="favorite-button" id="favorite-button" style="background-image: url('/images/bheart.png');"></button>
                 </div>
             </div>
             <hr><br>
@@ -132,5 +144,52 @@
         </main>
     </div>
     <%@ include file="../footer.jsp" %>
+       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        var showId = "${show.show_id}";
+        // 페이지 로드 시 즐겨찾기 상태 확인
+        $.ajax({
+            url: '${pageContext.request.contextPath}/favorite/checkShow',
+            type: 'GET',
+            data: {
+                show_id: showId
+            },
+            success: function(response) {
+                if (response === 'added') {
+                    $('#favorite-button').css('background-image', 'url(/images/kheart.png)');
+                } else {
+                    $('#favorite-button').css('background-image', 'url(/images/bheart.png)');
+                }
+            }
+        });
+
+        $('#favorite-button').click(function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: '${pageContext.request.contextPath}/favorite/toggleShow',
+                type: 'POST',
+                data: {
+                    show_id: showId
+                },
+                success: function(response) {
+                    if (response === 'added') {
+                        $('#favorite-button').css('background-image', 'url(/images/kheart.png)');
+                        alert('즐겨찾기에 추가되었습니다.');
+                    } else if (response === 'removed') {
+                        $('#favorite-button').css('background-image', 'url(/images/bheart.png)');
+                        alert('즐겨찾기에서 삭제되었습니다.');
+                    } else if (response === 'not_logged_in') {
+                        alert('로그인이 필요합니다.');
+                        window.location.href = '${pageContext.request.contextPath}/user/login';
+                    }
+                },
+                error: function() {
+                    alert('오류가 발생했습니다.');
+                }
+            });
+        });
+    });
+    </script>
 </body>
 </html>
