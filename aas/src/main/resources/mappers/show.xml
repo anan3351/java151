@@ -15,9 +15,10 @@
 	<!-- Seller ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 	<!-- 공연 등록 -->
     <insert id="insert" parameterType="java.util.Map">
- 		insert into tb_show(show_id, user_id, hall_id, title, c_role, genre, start_day, end_day, runningtime, viewing_age, notice_img, dis_img, event_img, detail_img, poster)
- 		values(#{show_id}, #{user_id}, #{hall_id}, #{title}, #{c_role}, #{genre}, #{start_day}, #{end_day}, #{runningtime}, #{viewing_age}, #{notice_img}, #{dis_img}, #{event_img}, #{detail_img}, #{poster})
- 	</insert>
+	    insert into tb_show(show_id, user_id, hall_id, title, c_role, genre, start_day, end_day, runningtime, viewing_age, notice_img, dis_img, event_img, detail_img, poster)
+	    values(#{show_id}, #{user_id}, #{hall_id}, #{title}, #{c_role}, #{genre}, #{start_day}, #{end_day}, #{runningtime}, #{viewing_age}, #{notice_img}, #{dis_img}, #{event_img}, #{detail_img}, #{poster})
+	</insert>
+
  	
  	<select id="id_list" resultType="java.lang.String">
 	    SELECT show_id from tb_show where show_id like '%SHOW%'
@@ -102,13 +103,13 @@
 	    WHERE s.show_id = #{show_id} and s.user_id = #{user_id}
 	</select>
 	
-	<select id="sellerDetail2" resultType="java.util.HashMap" parameterType="java.util.Map">
+	<select id="sellerDetail2" resultType="java.util.HashMap" parameterType="String">
 		SELECT sc.*, s.c_role, t.*, ac.*, act.* FROM tb_showcasting sc inner join tb_show s ON s.show_id = sc.show_id
 		inner join tb_ticket t ON t.show_id = sc.show_id inner join tb_acsch ac ON ac.casting_id = sc.show_id
 		inner join tb_actor act ON act.actor_id = sc.actor_id WHERE s.show_id = #{show_id} and ac.ticket_id = t.ticket_id;
 	</select>
 	
-	<select id="allPrice" resultType="java.util.HashMap" parameterType="java.util.Map">
+	<select id="allPrice" resultType="java.util.HashMap" parameterType="String">
 		SELECT p.seat_level, d.dis_name, d.dis_rate, p.price
 		FROM tb_show s
 		INNER JOIN tb_price p ON p.show_id = s.show_id
@@ -278,15 +279,32 @@
 	
 	
 	<!-- //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	
+	<!-- show -->
+	
 	<!-- 뮤지컬 페이지 -->
 	<select id="musicalList" resultType="java.util.HashMap">
-	    SELECT s.*, h.h_name, h.minihall FROM tb_show s
-	    LEFT JOIN tb_favorites f ON s.show_id = f.show_id inner join tb_hall h ON h.hall_id = s.hall_id
-		WHERE s.end_day >= now() GROUP BY s.show_id ORDER BY COUNT(f.show_id) DESC, title
+	    SELECT s.*, h.* FROM tb_show s LEFT JOIN tb_favorites f ON s.show_id = f.show_id 
+		INNER JOIN tb_hall h ON h.hall_id = s.hall_id WHERE s.end_day >= NOW() 
+		AND genre = '뮤지컬' GROUP BY s.show_id ORDER BY 
+		CASE WHEN h.addr LIKE '%서울%' THEN 1 ELSE 2 END, 
+		COUNT(f.show_id) DESC, title
 	</select>
 	
+	<!-- 연극 페이지 -->
+	<select id="playList" resultType="java.util.HashMap">
+	    SELECT s.*, h.* FROM tb_show s LEFT JOIN tb_favorites f ON s.show_id = f.show_id 
+		INNER JOIN tb_hall h ON h.hall_id = s.hall_id WHERE s.end_day >= NOW() 
+		AND genre = '연극' GROUP BY s.show_id ORDER BY 
+		CASE WHEN h.addr LIKE '%서울%' THEN 1 ELSE 2 END, 
+		COUNT(f.show_id) DESC, title
+	</select>
 	
-	
+	<!-- 공연 상세보기 -->
+	<select id="showDetail" resultType="java.util.HashMap" parameterType="String">
+		SELECT s.*, h.h_name, h.miniHall FROM tb_show s INNER JOIN tb_hall h ON s.hall_id = h.hall_id
+	    WHERE s.show_id = #{show_id}
+	</select>
 	
 	
 </mapper>

@@ -67,7 +67,7 @@
 	                        </tr>
 	                        <tr>
 	                            <td><span class="sp">* </span>배역</td>
-	                            <td><input type="text" name="role" class="form-control" placeholder="지킬, 하이드, 엠마, ..."></td>
+	                            <td><input type="text" name="c_role" class="form-control" placeholder="지킬, 하이드, 엠마, ..."></td>
 	                        </tr>
 	                        <tr>
 	                            <td>공지</td>

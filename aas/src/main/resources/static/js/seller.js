@@ -126,6 +126,39 @@ function priceList(show_id) {
 }
 
 
+function priceList2(show_id) {
+    let modal = document.getElementById('priceListModal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'priceListModal';
+        modal.className = 'modal';
+        document.body.appendChild(modal);
+    }
+
+    let modalContent = document.createElement('div');
+    modalContent.className = 'modal-content';
+    modal.innerHTML = '';
+    modal.appendChild(modalContent);
+
+    // 초기 검색 폼 로드
+    fetch(`/allPrice?show_id=${show_id}`)
+        .then(response => response.text())
+        .then(data => {
+            modalContent.innerHTML = data;
+            modal.style.display = 'block';
+
+            // 모달 내부에서 페이징 링크 초기화
+            setupPagination();
+        })
+        .catch(error => {
+            console.error('오류 발생:', error);
+            modalContent.innerHTML = '<p>오류가 발생했습니다: ' + error.message + '</p>';
+            modal.style.display = 'block';
+        });
+}
+
+
+
 function closePrice() {
     let modal = document.getElementById('priceListModal');
     if (modal) {
@@ -305,7 +338,7 @@ window.onclick = function(event) {
 // 공연정보 입력 검증
 function validateShow() {
 	const form = document.forms['showfrm'];
-	const requiredFields = ['title', 'hall_id', 'start_day', 'end_day', 'runningtime', 'viewing_age', 'role'];
+	const requiredFields = ['title', 'hall_id', 'start_day', 'end_day', 'runningtime', 'viewing_age', 'c_role'];
 	for (let field of requiredFields) {
 		if (form[field].value.trim() === '') {
 			alert('필수 입력 항목을 모두 작성해 주세요.');
@@ -482,7 +515,7 @@ function deletePrice(price_id) {
 
 // 배역-배우 삭제
 function deleteRole(actor_id, show_id) {
-    if (confirm("정말로 삭제하시겠습니까?")) {
+    if (confirm("정말로 삭제하시겠습니까?\n삭제 후에는 복구할 수 없습니다.")) {
         $.ajax({
             type: "POST",
             url: "/seller/detail/" + show_id + "/roleDelete",
@@ -497,4 +530,20 @@ function deleteRole(actor_id, show_id) {
     }
 }
 
-
+// 공연 삭제
+function showDelete(show_id) {
+    if (confirm("정말로 삭제하시겠습니까?\n삭제 후에는 복구할 수 없습니다.")) {
+        $.ajax({
+            type: "POST",
+            url: "/seller/detail/" + show_id + "/showDelete",
+            data: {},
+            success: function(response) {
+                // 서버 응답에 따라 적절히 처리
+                location.reload(); // 페이지를 새로 고쳐서 삭제된 내용을 반영
+            },
+            error: function() {
+                alert('삭제 실패');
+            }
+        });
+    }
+}

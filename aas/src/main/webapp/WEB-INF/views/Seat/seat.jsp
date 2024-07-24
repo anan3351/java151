@@ -1,143 +1,110 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<link rel="stylesheet" href="/css/template.css">
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Seats</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/css/swiper.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/js/swiper.min.js"></script>
-  <link rel="stylesheet" href="<c:url value='/css/template.css' />">
-  <style>
-    .seat-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .stage {
-      width: 100%;
-      text-align: center;
-      margin: 20px 0;
-      font-weight: bold;
-    }
-    .floor {
-      width: 80%;
-      margin-bottom: 30px;
-    }
-    .section {
-      display: flex;
-      justify-content: center;
-      flex-direction: column;
-    }
-    .seats-row {
-      display: flex;
-      justify-content: center;
-      gap: 5px;
-      margin-bottom: 10px;
-    }
-    .seat {
-      width: 30px;
-      height: 30px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-radius: 5px;
-      color: white;
-      cursor: pointer;
-    }
-    .seat-info {
-      display: none;
-    }
-    .seat-number {
-      display: inline;
-    }
-    .vip {
-      background-color: gold;
-    }
-    .s {
-      background-color: silver;
-    }
-    .r {
-      background-color: red;
-    }
-    .a {
-      background-color: blue;
-    }
-    .wheelchair {
-      background-color: purple;
-    }
-    .aisle {
-      background-color: orange;
-    }
-    .section-label {
-      text-align: center;
-      font-weight: bold;
-      margin: 10px 0;
-    }
-  </style>
-  <script>
-    function goToReviews(seat_id, seat_floor) {
-      location.href = 'seatReview?seat_id=' + seat_id + '&seat_floor=' + seat_floor;
-    }
-  </script>
+    <meta charset="UTF-8">
+    <title>Seat</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/css/swiper.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/js/swiper.min.js"></script>
+    <link rel="stylesheet" href="../view/template.css">
+    <link rel="stylesheet" href="/css/template.css">
+    <style>
+        .seat-info {
+            text-align: center;
+            margin: 20px auto;
+        }
+        .seat-map {
+            display: grid;
+            grid-template-columns: repeat(20, 40px); /* 좌석 20칸 */
+            gap: 10px; /* 여백 설정 */
+            justify-content: center;
+        }
+        .seat {
+            width: 40px;
+            height: 40px;
+            background-color: #D8D8D8;
+            border: 1px solid #A9A9A9;
+            border-radius: 5px;
+            line-height: 40px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .seat.vip {
+            background-color: #FFD700;
+        }
+        .seat.standard {
+            background-color: #ADD8E6;
+        }
+        .seat.empty {
+            background-color: transparent;
+            border: none;
+        }
+        .stage {
+            grid-column: span 20;
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .floor-links {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        .floor-links a {
+            margin-right: 10px;
+            text-decoration: none;
+            color: black; /* 글자색을 검은색으로 변경 */
+            font-size: 1.5em; /* 글자 크기를 2단계 키움 */
+        }
+        .floor-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <script>
+        function goToSeatReview(seatId) {
+            window.location.href = '/seatReview?seat_id=' + seatId;
+        }
+    </script>
 </head>
 <body>
-  <%@ include file="../header.jsp" %>
-  <div class="seat-container">
-    <h1>좌석 배치도</h1>
-    <div class="stage">STAGE</div>
-
-    <div class="floor">
-      <div class="section-label">객석 1층</div>
-      <div class="section">
-        <c:set var="previousRow" value="" />
-        <c:forEach var="seat" items="${seats}">
-          <c:if test="${seat.s_floor == 1 && seat.s_row != previousRow}">
-            <div class="seats-row">
-              <c:forEach var="rowSeat" items="${seats}">
-                <c:if test="${rowSeat.s_floor == 1 && rowSeat.s_row == seat.s_row}">
-                  <div class="seat ${rowSeat.seat_level.toLowerCase()}" onclick="goToReviews(${rowSeat.seat_id}, ${rowSeat.s_floor})">
-                    <span class="seat-info">${rowSeat.s_floor}층 ${rowSeat.s_section}구역 ${rowSeat.s_row}열 ${rowSeat.s_number}</span>
-                    <span class="seat-number">${rowSeat.s_number}</span>
-                  </div>
-                </c:if>
-              </c:forEach>
-            </div>
-            <c:set var="previousRow" value="${seat.s_row}" />
-          </c:if>
-        </c:forEach>
-      </div>
+    <%@ include file="../header.jsp" %>
+    <div class="main-container">
+        <!-- 층 링크 -->
+        <div class="floor-links">
+            <c:forEach items="${floors}" var="floor">
+                <a href="/seat?hall_id=${param.hall_id}&floor=${floor}">${floor}</a>
+            </c:forEach>
+        </div>
+        <!-- 본문 시작 -->
+        <div class="seat-info">
+            <h2>${currentFloor} 좌석 정보</h2>
+            <c:if test="${not empty seatInfo}">
+                <div class="seat-map">
+                    <div class="stage">Stage</div>
+                    <c:forEach items="${seatInfo}" var="seat">
+                        <div class="seat ${seat.seat_level.toLowerCase()}" onclick="goToSeatReview('${seat.seat_id}')">
+                            ${seat.s_number}
+                        </div>
+                    </c:forEach>
+                </div>
+            </c:if>
+            <c:if test="${empty seatInfo}">
+                <p>좌석 정보가 없습니다.</p>
+            </c:if>
+        </div>
+        <!-- 본문 끝 -->
     </div>
-
-    <div class="floor">
-      <div class="section-label">객석 2층</div>
-      <div class="section">
-        <c:set var="previousRow" value="" />
-        <c:forEach var="seat" items="${seats}">
-          <c:if test="${seat.s_floor == 2 && seat.s_row != previousRow}">
-            <div class="seats-row">
-              <c:forEach var="rowSeat" items="${seats}">
-                <c:if test="${rowSeat.s_floor == 2 && rowSeat.s_row == seat.s_row}">
-                  <div class="seat ${rowSeat.seat_level.toLowerCase()}" onclick="goToReviews(${rowSeat.seat_id}, ${rowSeat.s_floor})">
-                    <span class="seat-info">${rowSeat.s_floor}층 ${rowSeat.s_section}구역 ${rowSeat.s_row}열 ${rowSeat.s_number}</span>
-                    <span class="seat-number">${rowSeat.s_number}</span>
-                  </div>
-                </c:if>
-              </c:forEach>
-            </div>
-            <c:set var="previousRow" value="${seat.s_row}" />
-          </c:if>
-        </c:forEach>
-      </div>
-    </div>
-  </div>
-
-  <%@ include file="../footer.jsp" %>
+    <%@ include file="../footer.jsp" %>
 </body>
 </html>
