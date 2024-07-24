@@ -4,6 +4,7 @@
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
       <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
         <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+        
           <!DOCTYPE html>
           <html>
 
@@ -52,21 +53,35 @@
                 transform: translate(-48%, -53%);
               }
 
-              .cartCount {
+              @keyframes moveToCart {
+                0% {
+                  transform: translate(200, 50);
+                  opacity: 1;
+                }
+
+                100% {
+                  transform: translate(200px 50px);
+                  opacity: 0;
+                }
+              }
+
+              .moving-to-cart {
                 position: absolute;
-                font-size: 16px;
-                font-weight: bold;
+                z-index: 1000;
+                background-color: #03ffc0;
                 color: black;
-                background-color: #b61962;
                 border-radius: 50%;
-                width: 24px;
-                height: 24px;
+                width: 35px;
+                height: 35px;
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                top: -10px;
-                right: -10px;
-                z-index: 1;
+                font-size: 16px;
+                font-weight: bold;
+                animation: forwards;
+                animation-name: moveToCart;
+                animation-duration: 5s;
+                
               }
             </style>
           </head>
@@ -158,7 +173,7 @@
                         z-index: 1;
                         text-align: center;
                         line-height: 1.6;
-                        padding: 0;">0</span>
+                        padding: 0;"></span>
                       </div>
                     </div>
                   </div>
@@ -213,7 +228,7 @@
                 ? loggedInUser.getUser_id() : "" ; %>
 
                 <script type="text/javascript">
-                  var userId = "<%= userId %>";
+                  var userId = "<%= userId %>";  //로그인 되어있는 전역 아이디 변수
                 </script>
                 <script>
 
@@ -391,7 +406,8 @@
                       } else if (totalDays >= 7) {
                         discountRate = 2;
                       }
-                      return hDay * (1 - discountRate / 100) * totalDays;
+                      return Math.round(hDay * (1 - discountRate / 100) * totalDays);
+                      //return hDay * (1 - discountRate / 100) * totalDays;
                     }
 
                     var clickableItems = document.querySelectorAll('.clickable');
@@ -479,7 +495,26 @@
                       return;
                     }
 
-                    alert('대관 내역 담아두기에 성공했습니다.');
+                    const cartCountElement = document.getElementById('cartCount');
+                    const cartIcon = document.querySelector('.cart-icon');
+                    const btnBookmark = document.querySelector('.btn-bookmark');
+
+                    // 현재 담아두기 수를 증가시킵니다
+                    let cartCount = parseInt(cartCountElement.textContent) || 0;
+                    cartCount++;
+                    cartCountElement.textContent = cartCount;
+
+                    // 새로운 카운트 요소를 만들어서 애니메이션을 적용합니다
+                    const animatedCount = document.createElement('div');
+                    animatedCount.textContent = '+1';
+                    animatedCount.classList.add('moving-to-cart');
+                    btnBookmark.appendChild(animatedCount);
+
+                    // 애니메이션이 끝난 후 요소를 제거합니다
+                    animatedCount.addEventListener('animationend', () => {
+                      animatedCount.remove();
+                    });
+
                     updateCartCount();
 
                     var data = {
@@ -529,16 +564,11 @@
                     });
                   }
 
-
                   function listCartOrder() {
                     window.location.href = '/hall/hallOrder';
                   }
 
                 </script>
-
-
-
-
 
                 <!-- 본문 끝 -->
                 <%@ include file="../footer.jsp" %>

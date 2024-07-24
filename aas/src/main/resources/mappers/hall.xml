@@ -48,6 +48,13 @@
 		    ORDER BY o.pay_date DESC 
     </select>
     
+     <select id="getLatestOrderCart" resultType="com.example.demo.hall.HallOrderDTO" parameterType="String">
+            SELECT o.hall_id, o.user_id, o.start_date, o.end_date, o.price, o.pay_date, h.miniHall, o.pay_status, o.hallOrder_id
+		    FROM aas.tb_hallOrder o
+		    JOIN aas.tb_hall h ON o.hall_id = h.hall_id
+		    WHERE o.pay_status = '승인대기' 
+    </select>
+    
    	<select id="gethallIdOrder" resultType="com.example.demo.hall.HallOrderDTO">
 		   	SELECT a.user_id 
 		    FROM aas.tb_hall a
@@ -84,7 +91,13 @@
     <select id="countHallOrder" parameterType="String" resultType="int" >
     	SELECT COUNT(*)
     	FROM aas.tb_hallOrder
-    	WHERE user_id =#{userId}
+    	WHERE user_id =#{userId} AND pay_status ='승인대기' 
     </select>
    
+   	<update id="updateOrderStatus" parameterType="map">
+        UPDATE tb_hallOrder
+        SET pay_date = #{pay_date}, pay_status = #{pay_status}
+        WHERE hallOrder_id = #{hallOrderId}
+    </update>
+    
 	</mapper>

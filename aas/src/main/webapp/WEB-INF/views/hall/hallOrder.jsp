@@ -190,10 +190,10 @@
                 },
               });
 
-
             });
 
             function confirmApproval(hallOrderId, sellerId) {
+              
               if (confirm("승인요청 하시겠습니까?")) {
                 $.ajax({
                   url: "/hall/requestApproval",
@@ -203,7 +203,7 @@
                     seller_id: sellerId
                   },
                   success: function (response) {
-                    alert("판매자에게 승인요청을 완료하였습니다.");
+                    alert("판매자에게 승인요청을 완료하였습니다. 마이페이지에서 확인 가능합니다.");
                     location.reload();
                   },
                   error: function (xhr, status, error) {
@@ -223,7 +223,7 @@
                   },
                   success: function (response) {
                     alert("대관요청을 취소 완료하였습니다.");
-                    window.location.href = "http://localhost:9095/hall/list";
+                    location.reload();
                   },
                   error: function (xhr, status, error) {
                     alert("대관요청을 취소 중 오류가 발생했습니다.");
@@ -260,19 +260,20 @@
           <%@ include file="../header.jsp" %>
             <div class="main-container">
               <h1>공연장 승인 요청</h1>
-              
+
               <div class="swiper-container">
-                <button type="button" class="btn btn-info"
-                style="background-color: #be9ed8; border-color: #be9ed8;"
-                onclick="location.href='<c:url value=" /hall/list?filter=available" />'">목록으로</button>
+                <div style="width: 100%; display: flex; justify-content: center;">
+                  <button type="button" class="btn btn-info" style=" background-color: #be9ed8; border-color: #be9ed8; text-align: center;"
+                    onclick="location.href='<c:url value=" /hall/list?filter=available" />'">목록으로</button>
+                </div>
                 <div class="swiper-wrapper">
-                  <c:forEach items="${orders}" var="order" varStatus="status">
+                  <c:forEach items="${Carts}" var="order" varStatus="status">
                     <div class="swiper-slide">
                       <button class="custom-button"
                         style="background-color: #2ba1c5; border-color: #2ba1c5; height: 35px;"
                         onclick="deleteOrder('${order.hallOrder_id}')">요청 삭제</button>
                       <form id="approvalForm-${status.index}" method="post">
-                        <table class="info-table">
+                        <table class="info-table" id="table-${status.index}">
                           <tr>
                             <th>시작 날짜</th>
                             <td>${order.start_date} 일</td>

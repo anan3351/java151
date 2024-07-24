@@ -1,18 +1,19 @@
 package com.example.demo.show;
 
 import java.util.List;
-
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class ShowCont {
+
+	@Autowired
+    private ShowDAO showDao;
 	
 	@GetMapping("/")
 	public String main() {
@@ -21,9 +22,19 @@ public class ShowCont {
 	
 	// 뮤지컬 목록
 	@GetMapping("/musical")
-	public String musical() {
-		return "show/musical";
+	public ModelAndView musical() {
+	    ModelAndView mav = new ModelAndView();
+	    mav.setViewName("show/musical");
+	    
+	    // DAO 객체를 사용하여 데이터 조회
+	    List<Map<String, Object>> musicalList = showDao.musicalList();
+	    
+	    // ModelAndView에 데이터를 추가
+	    mav.addObject("musicals", musicalList);
+	    mav.setViewName("show/musical");
+	    return mav;
 	}
+
 	
 	
 	// 뮤지컬 상세페이지

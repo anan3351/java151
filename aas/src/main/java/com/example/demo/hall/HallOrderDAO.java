@@ -39,6 +39,10 @@ public class HallOrderDAO {
         return sqlSession.selectList("hall.getLatestOrder");
     }
     
+    public List<HallOrderDTO> getLatestOrderCart() {
+        return sqlSession.selectList("hall.getLatestOrderCart");
+    }
+    
     public List<HallOrderDTO> gethallIdOrder() {  //판매자에게 승인요청 보낼 판매자 user_id가져오기위한 조인
         return sqlSession.selectList("hall.gethallIdOrder");
     }
@@ -68,7 +72,14 @@ public class HallOrderDAO {
         return sqlSession.selectOne("hall.countHallOrder", userId);
     }
     
-    
+    public int updateOrderStatus(String hallOrderId, String payDate, String payStatus) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("hallOrderId", hallOrderId);
+        params.put("pay_date", payDate);
+        params.put("pay_status", payStatus);
+
+        return sqlSession.update("hall.updateOrderStatus", params);
+    }
     
     
 }// End hallDAO

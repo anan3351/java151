@@ -97,7 +97,7 @@ function checkLogin() {
     <option value="n_text" ${field == 'n_text' ? 'selected' : ''}>제목+내용</option>
 </select>
     <input type="text" id="word" name="word" class="inp-search" value="${word}"> 
-    <input type="submit" class="btn btn-search" value="검색">
+    <input type="submit" class="btn-search2" value="검색">
 </form>
 	<!-- 검색 영역 끝 -->
 	<c:if test="${not empty userAuth and (userAuth eq 'M' or userAuth eq 'm')}">

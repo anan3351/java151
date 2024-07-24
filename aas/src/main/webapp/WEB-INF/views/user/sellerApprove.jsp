@@ -600,19 +600,20 @@
             }
 
             function approveCancel(hallOrder_id){
-              if (confirm("승인 취소 하시겠습니까?")) {
+              if (confirm("내역 삭제 하시겠습니까?")) {
+                console.log("홀오더 " + hallOrder_id );
                 $.ajax({
-                  url: "/hall/requestDel",
+                  url: "/hall/deleteOrder",
                   type: "POST",
                   data: {
-                    hallOrderId: hallOrder_id
+                    hallOrder_id: hallOrder_id
                   },
                   success: function (response) {
-                    alert("승인 취소 완료되었습니다.");
+                    alert("내역 삭제 완료되었습니다.");
                     location.reload();
                   },
                   error: function (xhr, status, error) {
-                    alert("승인 취소 중 오류가 발생했습니다.");
+                    alert("내역 삭제 중 오류가 발생했습니다.");
                   }
                 });
               }
@@ -644,8 +645,6 @@
                   <div class="menu-title">공연장</div>
                   <ul class="menu-items">
                     <li><a href="/user/sellerHallInsert">공연장 등록</a></li>
-                    <li><a href="#">공연장 수정</a></li>
-                    <li><a href="#">대관비 관리</a></li>
                   </ul>
                 </div>
                 <div class="menu-section">
@@ -679,7 +678,7 @@
                         <td>${approve.miniHall}</td>
                         <td>${approve.user_id}</td>
                         <td>${approve.pay_status}<div class="btn-container">
-                          <button type="button" class="btn btn-back" onclick="approveCancel(${approve.hallOrder_id})">요청취소</button>
+                          <button type="button" class="btn btn-back" onclick="approveCancel('${approve.hallOrder_id}')">내역삭제</button>
                           <c:choose>
                             <c:when test="${approve.pay_status eq '승인대기진행중'}">
                               <button type="button" id="approveButton" onclick="confirmSeller(${approve.hallOrder_id})"

@@ -57,9 +57,9 @@ public class UserCont {
 	private CouponDAO couponDao;
 
 	@Autowired
-
 	private JavaMailSender mailSender;
 
+	@Autowired
 	private HallOrderDAO hallOrderDao;
 
 	
@@ -144,7 +144,6 @@ public class UserCont {
 	// 공연장 대관 내역 페이지 연결
 	@GetMapping("/mypage/hallMypage")
 	public ModelAndView hallMypage(@RequestParam("user_id") String user_id, HttpSession session, Model model) {
-		System.out.println("Received user_id: " + user_id);
 		UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
 		ModelAndView mav = new ModelAndView();
 
