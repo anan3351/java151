@@ -20,16 +20,28 @@
     </delete>
     
 <select id="getFavoriteSchedule" resultType="map">
-    SELECT a.actor_id, a.a_name as actor_name, sc.casting as role, s.title as show_title, t.ticket_date as show_time
-    FROM tb_favorites f
+    SELECT 
+        a.actor_id, 
+        a.a_name as actor_name, 
+        sc.casting as role, 
+        s.title as show_title, 
+        t.ticket_date as show_time
+    FROM 
+        tb_favorites f
     JOIN tb_actor a ON f.actor_id = a.actor_id
     JOIN tb_showcasting sc ON a.actor_id = sc.actor_id
     JOIN tb_acsch ac ON sc.casting_id = ac.casting_id
     JOIN tb_ticket t ON ac.ticket_id = t.ticket_id
     JOIN tb_show s ON t.show_id = s.show_id
-    WHERE f.user_id = #{user_id}
-    ORDER BY t.ticket_date
+    WHERE 
+        f.user_id = #{user_id}
+        AND sc.actor_id = a.actor_id
+        AND sc.show_id = t.show_id
+        AND t.ticket_date = t.ticket_date
+    ORDER BY 
+        t.ticket_date
 </select>
+
 
     <select id="countFavoritesByUserId" resultType="int">
         SELECT COUNT(*) FROM tb_favorites WHERE user_id = #{user_id}
