@@ -119,6 +119,9 @@ public class ShowreviewDAO {
         return sqlSession.selectList("showreview.getReviewsByUserId", user_id);
     }
 
-    
+    public List<Map<String, Object>> searchReviewsByKeyword(String keyword) {
+        return sqlSession.selectList("showreview.searchReviewsByKeyword", keyword);
+    }
+
     
 }//class end

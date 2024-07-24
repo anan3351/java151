@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="/css/template.css">
 <%@ include file="../header.jsp" %>
 <head>
-    <title>공연 관람 후기 작성 </title>
+    <title>공연 관람 후기 작성</title>
     <meta charset="UTF-8">
     <style>
         .header {
@@ -102,13 +102,6 @@
                 </td>
             </tr>
             <tr>
-                <th>관람일시</th>
-                <td>
-                    <input type="text" id="viewingDate" name="viewingDate" readonly />
-                    <button type="button" class="button" onclick="openOrderModal()">검색</button>
-                </td>
-            </tr>
-            <tr>
                 <th>제목</th>
                 <td><input type="text" id="retitle" name="retitle" /></td>
             </tr>
@@ -151,27 +144,6 @@
         </table>
     </div>
 </div>
-
-<div id="orderModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeOrderModal()">&times;</span>
-        <h2>관람일시 검색</h2>
-        <table id="orderResults" class="table-container">
-            <thead>
-                <tr>
-                    <th>주문번호</th>
-                    <th>공연명</th>
-                    <th>관람일시</th>
-                    <th>선택</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- 주문 내역이 여기 표시됨 -->
-            </tbody>
-        </table>
-    </div>
-</div>
-
 
 <div class="centered-link">
     <a href="/showreview/showrvmy">나의 후기</a>
@@ -249,53 +221,13 @@ function closeModal() {
     document.getElementById("myModal").style.display = "none";
 }
 
-function openOrderModal() {
-    var userId = '${user_id}'; // 사용자 ID를 여기에 설정
-    var url = '${pageContext.request.contextPath}/orderDetails?user_id=' + encodeURIComponent(userId);
-    fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            var tbody = document.getElementById("orderResults").getElementsByTagName('tbody')[0];
-            tbody.innerHTML = "";
-            data.forEach(order => {
-                var row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${order.order_id}</td>
-                    <td>${order.showTitle}</td>
-                    <td>${order.order_date}</td>
-                    <td><button class="button" onclick="selectOrder('${order.order_date}')">선택</button></td>
-                `;
-                tbody.appendChild(row);
-            });
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    document.getElementById("orderModal").style.display = "block";
-}
-
-function selectOrder(order_date) {
-    document.getElementById("viewingDate").value = order_date;
-    closeOrderModal();
-}
-
-function closeOrderModal() {
-    document.getElementById("orderModal").style.display = "none";
-}
-
 function validateForm() {
     var show_id = document.getElementById("show_id").value;
-    var viewingDate = document.getElementById("viewingDate").value;
     var retitle = document.getElementById("retitle").value;
     var content = document.getElementById("content").value;
 
     if (!show_id) {
         alert("공연명을 입력해주세요.");
-        return false;
-    }
-
-    if (!viewingDate) {
-        alert("관람일시를 입력해주세요.");
         return false;
     }
 
@@ -313,4 +245,5 @@ function validateForm() {
 }
 </script>
 </body>
+<%@ include file="../footer.jsp" %>
 </html>
