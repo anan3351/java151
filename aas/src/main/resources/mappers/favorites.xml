@@ -42,6 +42,31 @@
         t.ticket_date
 </select>
 
+<select id="getFavoriteShowList" resultType="map">
+    SELECT DISTINCT 
+        s.title, 
+        t.ticket_date, 
+        GROUP_CONCAT(DISTINCT a.a_name ORDER BY a.a_name ASC SEPARATOR ', ') AS casting
+    FROM 
+        tb_favorites f
+    JOIN 
+        tb_show s ON f.show_id = s.show_id
+    JOIN 
+        tb_ticket t ON s.show_id = t.show_id
+    JOIN 
+        tb_acsch ac ON t.ticket_id = ac.ticket_id
+    JOIN 
+        tb_showcasting sc ON ac.casting_id = sc.casting_id
+    JOIN 
+        tb_actor a ON sc.actor_id = a.actor_id
+    WHERE 
+        f.user_id = #{user_id}
+    GROUP BY 
+        s.title, t.ticket_date
+    ORDER BY 
+        t.ticket_date;
+</select>
+
 
     <select id="countFavoritesByUserId" resultType="int">
         SELECT COUNT(*) FROM tb_favorites WHERE user_id = #{user_id}
@@ -63,5 +88,19 @@
         LIMIT 5
     </select>
 
+<select id="isShowFavorite" parameterType="com.example.demo.favorites.FavoritesDTO" resultType="int">
+    SELECT COUNT(*) FROM tb_favorites WHERE user_id = #{user_id} AND show_id = #{show_id}
+</select>
+
+
+    <insert id="addShowFavorite" parameterType="com.example.demo.favorites.FavoritesDTO">
+        INSERT INTO tb_favorites (user_id, show_id)
+        VALUES (#{user_id}, #{show_id})
+    </insert>
+
+    <delete id="removeShowFavorite" parameterType="com.example.demo.favorites.FavoritesDTO">
+        DELETE FROM tb_favorites 
+        WHERE user_id = #{user_id} AND show_id = #{show_id}
+    </delete>
     
 </mapper>
