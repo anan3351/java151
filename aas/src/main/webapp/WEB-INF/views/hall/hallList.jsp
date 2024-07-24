@@ -123,7 +123,7 @@
                         } else {
                           alert("로그인이 필요한 서비스입니다.");
                           // 현재 페이지 URL을 저장
-                          sessionStorage.setItem('redirectAfterLogin', '/hall/list');
+                          sessionStorage.setItem('redirectAfterLogin', window.location.href);
                           window.location.href = '/user/login';  // 로그인 페이지로 리다이렉트
                           resolve(false);  // 로그인 되어 있지 않음
                         }
