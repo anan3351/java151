@@ -247,24 +247,24 @@
 	<!-- //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
  	
  	<select id="findByCast" resultType="java.util.HashMap" parameterType="java.util.Map">
-        SELECT s.*, a.*, t.*, ac.a_name 
-        FROM tb_showcasting s 
-        INNER JOIN tb_acsch a ON s.casting_id = a.casting_id
-        INNER JOIN tb_ticket t ON s.show_id = t.show_id 
-        INNER JOIN tb_actor ac ON s.actor_id = ac.actor_id
-        WHERE s.show_id = #{show_id} and a.ticket_id = t.ticket_id
-        ORDER BY t.ticket_date, s.casting
-        LIMIT #{limit} OFFSET #{offset}
-    </select>
+    SELECT s.*, a.*, t.*, ac.a_name 
+    FROM tb_showcasting s 
+    INNER JOIN tb_acsch a ON s.casting_id = a.casting_id
+    INNER JOIN tb_ticket t ON s.show_id = t.show_id 
+    INNER JOIN tb_actor ac ON s.actor_id = ac.actor_id
+    WHERE s.show_id = #{show_id} and a.ticket_id = t.ticket_id
+    ORDER BY t.ticket_date, s.casting
+    LIMIT #{limit} OFFSET #{offset}
+</select>
 
-    <select id="countByCast" resultType="int" parameterType="String">
-        SELECT COUNT(*) 
-        FROM tb_showcasting s 
-        INNER JOIN tb_acsch a ON s.casting_id = a.casting_id
-        INNER JOIN tb_ticket t ON s.show_id = t.show_id 
-        INNER JOIN tb_actor ac ON s.actor_id = ac.actor_id
-        WHERE s.show_id = #{show_id} and a.ticket_id = t.ticket_id
-    </select>
+<select id="countByCast" resultType="int" parameterType="String">
+    SELECT COUNT(*) 
+    FROM tb_showcasting s 
+    INNER JOIN tb_acsch a ON s.casting_id = a.casting_id
+    INNER JOIN tb_ticket t ON s.show_id = t.show_id 
+    INNER JOIN tb_actor ac ON s.actor_id = ac.actor_id
+    WHERE s.show_id = #{show_id} and a.ticket_id = t.ticket_id
+</select>
 
 	<!-- 배우 조회 -->
 	<select id="findByActor" resultType="com.example.demo.actor.ActorDTO" parameterType="map">
