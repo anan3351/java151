@@ -99,22 +99,6 @@
         </main>
     </div>
     <%@ include file="../footer.jsp" %>
-    <script>
-        function showDelete(show_id) {
-            if (confirm("정말로 삭제하시겠습니까?\n삭제 후에는 복구할 수 없습니다.")) {
-                $.ajax({
-                    type: "POST",
-                    url: "/seller/detail/" + show_id + "/showDelete",
-                    data: {},
-                    success: function(response) {
-                        location.reload(); // 페이지를 새로 고쳐서 삭제된 내용을 반영
-                    },
-                    error: function() {
-                        alert('삭제 실패');
-                    }
-                });
-            }
-        }
-    </script>
+
 </body>
 </html>

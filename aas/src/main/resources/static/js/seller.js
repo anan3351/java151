@@ -356,11 +356,6 @@ function validateShow() {
 
 	const endDate = new Date(form['end_day'].value);
 	endDate.setHours(0, 0, 0, 0); // 공연 종료일을 자정으로 설정
-	if (startDate <= today) {
-		alert('공연 시작일은 내일 이후여야 합니다.');
-		form['start_day'].focus();
-		return false;
-	}
 
 	if (endDate < startDate) {
 		alert('공연 종료일은 공연 시작일 이후여야 합니다.');
@@ -530,20 +525,26 @@ function deleteRole(actor_id, show_id) {
     }
 }
 
-// 공연 삭제
 function showDelete(show_id) {
     if (confirm("정말로 삭제하시겠습니까?\n삭제 후에는 복구할 수 없습니다.")) {
         $.ajax({
             type: "POST",
             url: "/seller/detail/" + show_id + "/showDelete",
-            data: {},
-            success: function(response) {
-                // 서버 응답에 따라 적절히 처리
-                location.reload(); // 페이지를 새로 고쳐서 삭제된 내용을 반영
+            success: function(data, textStatus, xhr) {
+                // 요청이 성공적이라면 페이지를 새로고침
+                if (xhr.status === 200) {
+					alert('삭제 완료!');
+                    history.back();
+                } else {
+                    alert('삭제 실패: 예상치 못한 응답입니다.');
+                }
             },
-            error: function() {
-                alert('삭제 실패');
+            error: function(xhr, textStatus, errorThrown) {
+                // 오류가 발생한 경우 상태 코드와 오류 메시지 출력
+                alert('삭제 실패: ' + xhr.status + ' ' + errorThrown);
             }
         });
     }
 }
+
+
