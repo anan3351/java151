@@ -818,7 +818,6 @@ public class SellerCont {
 
         if (loggedInUser != null) {
             List<HashMap<String, Object>> castList = showDao.findByCast(show_id, offset, pageSize);
-            System.out.println("Cast list size: " + castList.size());
 
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd(E)");
             SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
@@ -837,8 +836,6 @@ public class SellerCont {
                            .put(casting, a_name);
             }
 
-            System.out.println("Casting list size: " + castingList.size());
-
             int totalElements = showDao.countByCast(show_id);
             int totalPages = (int) Math.ceil((double) totalElements / pageSize);
             int startBlockPage = Math.max(0, currentPage - 2);
@@ -852,6 +849,7 @@ public class SellerCont {
             mav.addObject("endBlockPage", endBlockPage);
             mav.addObject("totalElements", totalElements);
 
+            // 모든 고유한 캐스팅 역할을 얻습니다.
             Set<String> distinctCastings = new LinkedHashSet<>();
             for (Map<String, String> castings : castingList.values()) {
                 distinctCastings.addAll(castings.keySet());
@@ -950,7 +948,7 @@ public class SellerCont {
     // 배역 등록
     @PostMapping("/detail/{show_id}/roleInsert")
     public String roleInsert(ShowCastingDTO scDto, @PathVariable String show_id, HttpSession session) {
-    	scDto.setShow_id(show_id);
+    	scDto.setShowId(show_id);
         showDao.roleInsert(scDto);
         return "redirect:/seller/detail/" + show_id + "/roleList";
     }
@@ -1001,7 +999,7 @@ public class SellerCont {
         
         if (loggedInUser != null) {
         	ShowCastingDTO scDto = showDao.roleSelect(casting_id);
-            String show_id = scDto.getShow_id();
+            String show_id = scDto.getShowId();
             String user_id = loggedInUser.getUser_id();
             
             Map<String, Object> roles2 = showDao.sellerDetail(show_id, user_id);
@@ -1033,7 +1031,7 @@ public class SellerCont {
             HttpSession session) {
         
         ShowCastingDTO scDto = showDao.roleSelect(castingId);
-        String showId = scDto.getShow_id();
+        String showId = scDto.getShowId();
         
         showDao.roleUpdate(actorId, casting, castingId);
         return "redirect:/seller/detail/" + showId + "/roleList";
