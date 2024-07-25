@@ -44,29 +44,27 @@
                     </thead>
                     <tbody>
                         <c:forEach var="entry" items="${dateCastingMap}">
-                            <tr>
-                                <td>${fn:substringBefore(entry.key, ' ')}</td>
-                                <td>${fn:substringAfter(entry.key, ' ')}</td>
-                                <c:forEach var="casting" items="${distinctCastingList}">
-                                    <td>
-                                        <c:choose>
-                                            <c:when test="${entry.value[casting] != null}">
-                                                <c:forEach var="name" items="${entry.value[casting]}">
-                                                    ${name}<br>
-                                                </c:forEach>
-                                            </c:when>
-                                            <c:otherwise>
-                                                -
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </td>
-                                </c:forEach>
-                                <td>
-                                    <input type="button" class="btn btn-default" value="수정" onclick="window.location.href='../${entry.key}/castUpdate'">
-                                    <input type="button" class="btn btn-default" value="삭제" onclick="deleteCast('${entry.key}')">
-                                </td>
-                            </tr>
-                        </c:forEach>
+						    <tr>
+						        <td>${fn:substringBefore(entry.key, ' ')}</td>
+						        <td>${fn:substringAfter(entry.key, ' ')}</td>
+						        <c:forEach var="casting" items="${distinctCastingList}">
+						            <td>
+						                <c:choose>
+						                    <c:when test="${not empty entry.value[casting]}">
+						                        ${entry.value[casting]}
+						                    </c:when>
+						                    <c:otherwise>
+						                        -
+						                    </c:otherwise>
+						                </c:choose>
+						            </td>
+						        </c:forEach>
+						        <td>
+						            <input type="button" class="btn btn-default" value="수정" onclick="window.location.href='../${entry.key}/castUpdate'">
+						            <input type="button" class="btn btn-default" value="삭제" onclick="deleteCast('${entry.key}')">
+						        </td>
+						    </tr>
+						</c:forEach>
                     </tbody>
                 </table>
             </div>
