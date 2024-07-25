@@ -7,11 +7,17 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.example.demo.actor.ActorDTO;
 
 
 @Controller
@@ -103,5 +109,42 @@ public class ShowCont {
 	    mav.setViewName("show/allPrice");
 	    return mav;
 	}
+	
+	
+	// 공연 검색
+	// Controller Method
+	@GetMapping("/search")
+	public ModelAndView search(@RequestParam("title") String title,
+	                           @RequestParam(defaultValue = "0") int page,
+	                           @PageableDefault(size = 5) Pageable pageable) {
+	    
+	    int pageSize = pageable.getPageSize();
+	    int currentPage = page;
+	    int offset = currentPage * pageSize;
+
+	    List<ShowDTO> shows = showDao.allShow(title, pageSize, offset);
+	    int totalElements = showDao.countByAllShow(title);
+
+	    Page<ShowDTO> ulist = new PageImpl<>(shows, pageable, totalElements);
+
+	    int totalPages = ulist.getTotalPages();
+	    int pageBlock = 5;
+	    int startBlockPage = (currentPage / pageBlock) * pageBlock + 1;
+	    int endBlockPage = Math.min(startBlockPage + pageBlock - 1, totalPages - 1);
+
+	    ModelAndView mav = new ModelAndView("show/search");
+	    mav.addObject("startBlockPage", startBlockPage);
+	    mav.addObject("endBlockPage", endBlockPage);
+	    mav.addObject("ulist", ulist);
+	    mav.addObject("title", title);
+	    mav.addObject("totalElements", totalElements);
+	    mav.addObject("currentPage", currentPage);
+	    mav.addObject("totalPages", totalPages);
+
+	    return mav;
+	}
+
+
+
 
 }

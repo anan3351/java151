@@ -9,7 +9,14 @@ import java.util.Map;
 import com.example.demo.actor.ActorDTO;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.hall.HallDTO;
 import com.example.demo.show.discount.DiscountDTO;
@@ -37,7 +44,23 @@ public class ShowDAO {
 	public Map<String, Object> showDetail(String show_id) {
 		return sqlSession.selectOne("show.showDetail", show_id);
 	}
-		
+	
+	// 공연 삭제
+	public int showDelete(String show_id) {
+	    int result = sqlSession.delete("show.showDelete", show_id);
+	    return result; // 삭제된 행의 수 반환
+	}
+
+	// 공연 수정 페이지
+	public ShowDTO showSelect(String show_id) {
+		return sqlSession.selectOne("show.showSelect", show_id);
+	}
+
+	public int showUpdate(Map<String, Object> map) {
+		int result = sqlSession.update("show.showUpdate", map);
+		return result;
+	}
+	
 
 	// ----------------------------------------------------------------------------------------------------------------------------------
 	// Seller
@@ -99,26 +122,6 @@ public class ShowDAO {
 	public int countByHname(String h_name) {
 		return sqlSession.selectOne("show.countByHname", h_name);
 	}
-	
-	
-	// 공연 수정 페이지
-	public ShowDTO showSelect(String show_id) {
-		return sqlSession.selectOne("show.showSelect", show_id);
-	}
-	
-	public void showUpdate(ShowDTO showDto) {
-		sqlSession.update("show.showUpdate", showDto);
-	}
-	
-	/*// 이미지 수정
-	public void fileDelete(String show_id, String file) {
-		Map<String, Object> params = new HashMap<>();
-		params.put("show_id", show_id);
-		params.put("file", file);
-		sqlSession.update("show.fileDelete", params);
-	}*/
-	
-	// -----
 
 	
 	
@@ -333,8 +336,11 @@ public class ShowDAO {
 	}
 
 	// 배역 - 배우 삭제
-	public void actorDelete(int actor_id) {
-		sqlSession.delete("show.actorDelete", actor_id);
+	public void actorDelete(int actor_id, String show_id) {
+		Map<String, Object> params = new HashMap<>();
+	    params.put("actor_id", actor_id);
+	    params.put("show_id", show_id);
+		sqlSession.delete("show.actorDelete", params);
 	}
 	
 	// 배역 수정 페이지
@@ -351,6 +357,20 @@ public class ShowDAO {
 	    sqlSession.update("show.roleUpdate", params);
 	}
 	
+	
+	
+	// 전체 공연 검색
+	public List<ShowDTO> allShow(String title, int pageSize, int offset) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("title", title);
+		params.put("limit", pageSize);
+		params.put("offset", offset);
+		return sqlSession.selectList("show.allShow", params);
+	}
+
+	public int countByAllShow(String title) {
+		return sqlSession.selectOne("show.countByAllShow", title);
+	}
 
 
 

@@ -22,7 +22,7 @@
     function deleteFile(inputId, fileName, showId, fileType) {
         var input = document.getElementById(inputId);
         var fileNameElement = document.getElementById(fileName);
-        
+
         // 파일 입력 필드를 초기화
         input.value = '';
 
@@ -67,7 +67,7 @@
             <div style="font-size: 20px; font-weight: bold; text-align: center;">
                 공연 수정
             </div><br><br>
-            <form name="showfrm" id="showfrm" method="post" action="update" enctype="multipart/form-data" onsubmit="return validateShow();">
+            <form name="showfrm" id="showfrm" method="post" action="showUpdate" enctype="multipart/form-data" onsubmit="return validateShow();">
                 <div style="text-align: left; color: red; font-size:13px">
                     &nbsp;&nbsp;* 은 필수 입력 항목입니다<br>
                     &nbsp;&nbsp;&nbsp;&nbsp;공연 등록 후, 목록에서 상세정보를 추가하세요. (배역, 할인율, 좌석별 금액..)
@@ -90,14 +90,14 @@
                         <tr>
                             <td><span class="sp">* </span>공연 시작일</td>
                             <td>
-                                <input type="date" name="start_day" class="form-control" 
+                                <input type="date" name="start_day" class="form-control"
                                        value="${empty data.start_day ? now : fn:substring(data.start_day, 0, 10)}">
                             </td>
                         </tr>
                         <tr>
                             <td><span class="sp">* </span>공연 종료일</td>
                             <td>
-                                <input type="date" name="end_day" class="form-control" 
+                                <input type="date" name="end_day" class="form-control"
                                        value="${empty data.end_day ? now : fn:substring(data.end_day, 0, 10)}">
                             </td>
                         </tr>
@@ -120,20 +120,28 @@
                                 <td>${fn:replace(entry.key, "_", " ")}</td>
                                 <td>
                                     <input type="file" id="${entry.key}" name="${entry.key}" class="form-control">
-                                    <c:forEach var="fileName" items="${entry.value}">
-                                        <p id="${entry.key}">현재 파일: ${fileName} 
-                                            <span style="color: red; cursor: pointer;" 
-                                                  onclick="deleteFile('${entry.key}', '${fileName}', '${data.show_id}', '${entry.key}')">x</span>
-                                        </p>
-                                    </c:forEach>
+                                    <c:choose>
+                                        <c:when test="${not empty entry.value}">
+                                            <c:forEach var="fileName" items="${entry.value}">
+                                                <p id="${entry.key}">현재 파일: ${fileName}
+                                                    <span style="color: red; cursor: pointer;"
+                                                          onclick="deleteFile('${entry.key}', '${fileName}', '${data.show_id}', '${entry.key}')">x</span>
+                                                </p>
+                                            </c:forEach>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <p id="${entry.key}">현재 파일 없음</p>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </td>
                             </tr>
                         </c:forEach>
 
+
                     </tbody>
                 </table>
                 <hr>
-                <input type="submit" value="공연 등록" class="btn btn-default">
+                <input type="submit" value="공연 수정" class="btn btn-default">
             </form>
             <br>
         </main>

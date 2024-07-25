@@ -40,18 +40,41 @@
 		SELECT * FROM tb_show WHERE show_id = #{show_id}
 	</select>
 	
-	<update id="showUpdate" parameterType="com.example.demo.show.ShowDTO">
+	<update id="showUpdate" parameterType="java.util.Map">
  		UPDATE tb_show SET hall_id = #{hall_id}, title = #{title}, c_role = #{c_role}, genre = #{genre},
 		start_day = #{start_day}, end_day = #{end_day}, runningtime = #{runningtime}, viewing_age = #{viewing_age},
 		notice_img = #{notice_img}, dis_img = #{dis_img}, event_img = #{event_img}, detail_img = #{detail_img},
 		poster = #{poster} WHERE show_id = #{show_id}
  	</update>
  	
+ 	<!-- 전체 공연 조회 -->
+ 	<select id="allShow" resultType="java.util.HashMap" parameterType="java.util.Map">
+	    SELECT s.*, h.h_name, h.miniHall
+	    FROM tb_show s
+	    INNER JOIN tb_hall h ON s.hall_id = h.hall_id
+	    WHERE s.title LIKE CONCAT('%', #{title}, '%')
+	    ORDER BY s.end_day desc
+	    LIMIT #{offset}, #{limit}
+	</select>
  	
+ 	<select id="countByAllShow" resultType="int" parameterType="java.util.Map">
+		SELECT count(*) FROM tb_show s
+	    INNER JOIN tb_hall h ON s.hall_id = h.hall_id
+	    WHERE s.title LIKE CONCAT('%', #{title}, '%')
+	</select>
+	
+	
+	
  	<!-- 이미지 파일 수정 
  	<update id="fileDelete" parameterType="com.example.demo.show.ShowDTO">
  		UPDATE tb_show SET #{file} = null WHERE show_id = #{show_id}
  	</update> -->
+ 	
+ 	
+ 	<!-- 공연삭제 -->
+ 	<delete id="showDelete" parameterType="String">
+ 		DELETE FROM tb_show WHERE show_id = #{show_id}
+ 	</delete>
  	
 	<!-- //////////// -->
 
@@ -260,8 +283,8 @@
 	</select>
 	
 	<!-- 배역 - 배우 삭제 -->
-	<delete id="actorDelete" parameterType="Integer">
- 		DELETE FROM tb_showcasting WHERE actor_id = #{actor_id}
+	<delete id="actorDelete" parameterType="java.util.Map">
+ 		DELETE FROM tb_showcasting WHERE actor_id = #{actor_id} and show_id = #{show_id}
  	</delete>
  	
  	<!-- 배역 - 배우 수정 페이지 -->
