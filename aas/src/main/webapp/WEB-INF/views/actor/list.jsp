@@ -1,27 +1,21 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ include file="../header.jsp" %>
+
+<head>
 <link rel="stylesheet" href="/css/template.css">
 
+</head>
 <div class="container">
     <div class="left-aligned-title">
         <h3>인기배우 TOP5</h3>
     </div>
     <style>
-        .header {
-            margin-bottom: 0;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            background: #333;
-            color: #fff;
-            padding: 10px 0;
-        }
+        
 
         body {
             padding-top: 150px;
-            font-family: Arial, sans-serif;
+            font-family: 'Pretendard';
             background-color: #f9f9f9;
             color: #333;
         }
@@ -197,6 +191,8 @@
             background-color: red;
             color: white;
         }
+
+
     </style>
 <div class="top-actors">
     <c:forEach var="actor" items="${topFavoriteActors}" varStatus="status">

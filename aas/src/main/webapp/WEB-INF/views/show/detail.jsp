@@ -102,7 +102,7 @@
                         <c:choose>
                             <c:when test="${show.user_id != null}">
                                 <li class="list"><strong>예매</strong>
-                                    <input type="button" class="btn btn-default" value="예매하기" onclick="window.location.href='${show.store}'">
+                                    <input type="button" class="btn btn-default" value="예매하기"  onclick="window.location.href='http://localhost:9095/order'">
                                 </li>
                                 <li class="list"><strong>가격 </strong>
                                     <span class="lPointer" onclick="priceList2('${show.show_id}')" style="margin-left: 0">전체가격보기▶</span>
