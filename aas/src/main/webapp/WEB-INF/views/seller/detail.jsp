@@ -1,74 +1,52 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn"  uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>detail</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/css/swiper.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/js/swiper.min.js"></script>
-<link rel="stylesheet" href="/css/template.css"> 
-<link rel="stylesheet" href="/css/seller.css">
-<script src="/js/seller.js"></script>
-<style>
-    .main-container {
-        max-width: 50%;  /* 원하는 너비로 설정 */
-        margin: 0 auto; /* 중앙 정렬을 위한 자동 좌우 여백 */
-        display: flex;
-        flex-direction: column;
-        align-items: center; /* 수평 중앙 정렬 */
-        padding: 20px;
-        margin-top: 20px; /* 상단 여백 추가 */
-        background-color: white; /* 배경색 추가 */
-        border-radius: 10px; /* 모서리 둥글게 추가 */
-        box-shadow: 0 0 10px rgba(0,0,0,0.1); /* 그림자 추가 */
-    }
-
-    main {
-        width: 100%; /* 전체 너비 사용 */
-        max-width: 1200px; /* 최대 너비 설정 */
-    }
-    
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Show Detail</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/css/swiper.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/js/swiper.min.js"></script>
+    <link rel="stylesheet" href="/css/template.css">
+    <link rel="stylesheet" href="/css/seller.css">
+    <script src="/js/seller.js"></script>
 </head>
 <body>
     <%@ include file="../header.jsp" %>
     <div class="main-container">
+        <%@ include file="./sidebar.jsp" %>
         <main>
             <br>
             <div style="font-size: 20px; font-weight: bold; text-align: center;">
                 공연 상세정보
             </div><br>
-            <input type="button" class="btn btn-default" value="목록" onclick="window.location.href='javascript:history.back()'" style="float: right;">
+            <!-- 삭제 버튼을 클릭하면 showDelete 함수 호출 -->
+            <input type="button" class="btn btn-danger" value="삭제" onclick="showDelete('${show.show_id}')" style="float: right;">
+            <br><hr>
 
+            <!-- 공연 상세정보 표시 -->
             <div class="show-details">
                 <div class="show-poster">
-                    <c:choose>
-                        <c:when test="${empty show.poster}">
-                            <img class="show-img" src="../images/non.png" alt="포스터 없음">
-                        </c:when>
-                        <c:otherwise>
-                            <c:choose>
-                                <c:when test="${show.show_id.startsWith('SHOW')}">
-                                    <img class="show-img" src="../../storage/${show.poster}" onerror="this.src='../images/non.png';" alt="포스터">
-                                </c:when>
-                                <c:otherwise>
-                                    <img class="show-img" src="${show.poster}" onerror="this.src='../images/non.png';" alt="포스터">
-                                </c:otherwise>
-                            </c:choose>
-                        </c:otherwise>
-                    </c:choose>
+                    <c:if test="${not empty show.poster}">
+                        <c:choose>
+                            <c:when test="${show.show_id.startsWith('SHOW')}">
+                                <img src="../../storage/${show.poster}" alt="포스터">
+                            </c:when>
+                            <c:otherwise>
+                                <img src="${show.poster}" alt="포스터">
+                            </c:otherwise>
+                        </c:choose>
+                    </c:if>
                 </div>
                 <div class="show-info">
                     <div style="font-size: 20px; font-weight: bold;">${show.genre} <${show.title}></div><br>
                     <ul>
+                        <li class="list"><strong>공연코드</strong>${show.show_id}</li>
                         <c:choose>
                             <c:when test="${not empty show.miniHall}">
                                 <li class="list"><strong>공연장</strong>${show.h_name} - ${show.miniHall}</li>
@@ -77,54 +55,43 @@
                                 <li class="list"><strong>공연장</strong>${show.h_name}</li>
                             </c:otherwise>
                         </c:choose>
-                        <c:choose>
-                            <c:when test="${not empty show.s_cast.trim()}">
-                                <li class="list"><strong>캐스팅</strong>${show.s_cast}</li>
-                            </c:when>
-                            <c:otherwise>
-                                <li class="list"><strong>캐스팅</strong>-</li>
-                            </c:otherwise>
-                        </c:choose>
+                        <li class="list"><strong>캐스팅</strong>${show.s_cast}</li>
                         <li class="list"><strong>시작일</strong><fmt:formatDate value="${show.start_day}" pattern="yyyy-MM-dd"/></li>
                         <li class="list"><strong>종료일</strong><fmt:formatDate value="${show.end_day}" pattern="yyyy-MM-dd"/></li>
                         <li class="list"><strong>러닝타임</strong>${show.runningtime}</li>
                         <li class="list"><strong>관람가</strong>${show.viewing_age}</li>
-                        <c:choose>
-                            <c:when test="${show.user_id != null}">
-                                <li class="list"><strong>예매</strong>
-                                    <input type="button" class="btn btn-default" value="예매하기" onclick="window.location.href='${show.store}'">
-                                </li>
-                                <li class="list"><strong>가격 </strong>
-                                    <span class="lPointer" onclick="priceList2('${show.show_id}')" style="margin-left: 0">전체가격보기▶</span>
-                                </li>
-                            </c:when>
-                            <c:otherwise>
-                                <c:choose>
-                                    <c:when test="${not empty show.store.trim()}">
-                                        <li class="list"><strong>예매처</strong>${show.store}</li>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <li class="list"><strong>예매처</strong>-</li>
-                                    </c:otherwise>
-                                </c:choose>
-                            </c:otherwise>
-                        </c:choose>
+                        <li class="list"><strong>예매처</strong><a href="http://localhost:9095/seller/detail/PF239896">http://localhost:9095/seller/detail/PF239896</a></li>
+                        <li class="list"><strong>가격 </strong><span class="lPointer" onclick="priceList('${show.show_id}')" style="margin-left: 0">전체가격보기▶</span></li>
                         <c:forEach items="${priceList}" var="price">
                             <li class="list"><strong></strong>${price.seat_level} <fmt:formatNumber value="${price.price}" pattern="#,###" />원</li>
                         </c:forEach>
-                    </ul>
+                    </ul><br>
+                    <input type="button" class="btn btn-default" value="공연정보 수정" onclick="window.location.href='./${show.show_id}/showUpdate'">
+                    <input type="button" class="btn btn-default" value="캐스트 관리" onclick="window.location.href='./${show.show_id}/castList'">
+                    <input type="button" class="btn btn-default" value="좌석금액" onclick="window.location.href='./${show.show_id}/priList'">
+                    <input type="button" class="btn btn-default" value="할인율" onclick="window.location.href='./${show.show_id}/disList'">
+                    <input type="button" class="btn btn-default" value="목록" onclick="window.location.href='../list'">
                 </div>
             </div>
-            <hr><br>
+            <br><hr><br><br>
 
+            <!-- 공연 이미지 표시 -->
             <div class="show-images">
                 <c:forEach items="${imgMap}" var="entry">
                     <c:if test="${not empty entry.value}">
-                        <c:forEach items="${entry.value}" var="imgSrc" varStatus="status">
-                            <c:if test="${status.first}">
-                                <div style="font-size: 20px; font-weight: bold; text-align: center;">${entry.key}</div><br>
+                        <c:forEach items="${entry.value}" var="imgSrc">
+                            <c:if test="${not empty imgSrc}">
+                            	<c:choose>
+		                            <c:when test="${show.show_id.startsWith('SHOW')}">
+		                                <div style="font-size: 20px; font-weight: bold; text-align: center;">${entry.key}</div><br>
+                                		<img src="../../storage/${imgSrc}">
+		                            </c:when>
+		                            <c:otherwise>
+		                                <div style="font-size: 20px; font-weight: bold; text-align: center;">${entry.key}</div><br>
+                                		<img src="${imgSrc}">
+		                            </c:otherwise>
+		                        </c:choose>
                             </c:if>
-                            <img src="${imgSrc}"><br>
                         </c:forEach><br><br><br>
                     </c:if>
                 </c:forEach>
@@ -132,5 +99,6 @@
         </main>
     </div>
     <%@ include file="../footer.jsp" %>
+
 </body>
 </html>
