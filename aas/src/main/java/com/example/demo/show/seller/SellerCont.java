@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,6 +39,7 @@ import com.example.demo.user.UserDTO;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import net.utility.Utility;
 
 @Controller
 @RequestMapping("/seller")
@@ -201,42 +203,110 @@ public class SellerCont {
     }
     
     // 공연 수정 - 업데이트
-    /*
-    	1. x 버튼을 클릭하면 이미지 파일 삭제 -> 저장 경로에서도 삭제
-    	2. 해당 공연 데이터 불러와서 이미지가 비어있다면 리네임된 파일을 그대로 저장, 아니라면 \n을 붙여서 저장
-    */
     @PostMapping("/detail/{show_id}/showUpdate")
-    public String showUpdate2(@PathVariable String show_id, HttpSession session, ShowDTO showDto) {
-        showDao.showUpdate(showDto);
+    public String showUpdate2(@PathVariable String show_id,
+                              @RequestParam Map<String, Object> map,
+                              @RequestParam Map<String, MultipartFile> files,
+                              HttpSession session, HttpServletRequest req) {
+
+    	ShowDTO showDto = showDao.showSelect(show_id);
+    	ServletContext application = req.getServletContext();
+		String basePath = application.getRealPath("/storage");
+
+        // 수정 전 데이터 저장
+		String notice_img = showDto.getNotice_img();
+		String dis_img = showDto.getDis_img();
+		String casting_img = showDto.getCasting_img();
+		String event_img = showDto.getEvent_img();
+		String detail_img = showDto.getDetail_img();
+		String poster = showDto.getPoster();
+
+        Map<String, String> fileNames = new HashMap<>();
+
+        files.forEach((key, value) -> {
+            if (value != null && !value.isEmpty()) {
+                try {
+                    String o_name = value.getOriginalFilename();
+                    int lastDot = o_name.lastIndexOf(".");
+
+                    String show_name = (String) map.get("title");
+                    String filename = "all_about_show_" + show_name + o_name.substring(lastDot);
+                    File saveFile = new File(basePath, filename);
+
+                    int count = 1;
+                    while (saveFile.exists()) {
+                        lastDot = filename.lastIndexOf(".");
+                        filename = "all_about_show_" + show_name + "_" + count + filename.substring(lastDot);
+                        saveFile = new File(basePath, filename);
+                        count++;
+                    }
+
+                    value.transferTo(saveFile);
+                    fileNames.put(key, filename);
+
+                } catch (Exception e) {
+                    System.out.println("이미지 저장 실패: " + e.getMessage());
+                }
+            } else {
+                fileNames.put(key, null);
+            }
+        });
+
+        map.put("show_id", show_id);
+        map.putAll(fileNames);
+		
+        int cnt = showDao.showUpdate(map);
+        if(cnt==1) {
+            // 수정 후 데이터
+        	ShowDTO updateDto = showDao.showSelect(show_id);
+        	
+        	if (notice_img != updateDto.getNotice_img()) {
+        		Utility.deleteFile(basePath, notice_img);
+        	}
+
+    		if (dis_img != updateDto.getDis_img()) {
+    			Utility.deleteFile(basePath, dis_img);
+    		}
+    		
+    		if (casting_img != updateDto.getCasting_img()) {
+    			Utility.deleteFile(basePath, casting_img);
+    		}
+    		
+    		if (event_img != updateDto.getEvent_img()) {
+    			Utility.deleteFile(basePath, event_img);
+    		}
+    		
+    		if (detail_img != updateDto.getDetail_img()) {
+    			Utility.deleteFile(basePath, detail_img);
+    		}
+    		
+    		if (poster != updateDto.getPoster()) {
+    			Utility.deleteFile(basePath, poster);
+    		}
+
+		}
         return "redirect:/seller/detail/" + show_id;
     }
-    
-    /*// 공연 - 파일 삭제
-    @PostMapping("/detail/{show_id}/fileDelete")
-    public String fileDelete(@PathVariable String show_id, 
-                             @RequestParam("file") String file) {
-        showDao.fileDelete(show_id, file);
-        return "redirect:/seller/detail/" + show_id + "/showUpdate";
-    }*/
-    
-    /*
-    @PostMapping("/detail/{show_id}/fileDelete")
-    public String disDelete(@PathVariable int dis_id, HttpSession session) {
-    	String show_id = showDao.findByDisShowID(dis_id);
-    	showDao.disDelete(dis_id);
-        return "redirect:/seller/detail/" + show_id + "/disList";
-    }*/
-    
-    
+
     // 공연 삭제
-	/*
-	 * @PostMapping("/detail/{dis_id}/disDelete") public String
-	 * disDelete(@PathVariable int dis_id, HttpSession session) { String show_id =
-	 * showDao.findByDisShowID(dis_id); showDao.disDelete(dis_id); return
-	 * "redirect:/seller/detail/" + show_id + "/disList"; }
-	 */
-    
-    
+    @PostMapping("/detail/{show_id}/showDelete")
+    public ResponseEntity<?> showDelete(@PathVariable String show_id, HttpServletRequest req) {
+    	ShowDTO showDto = showDao.showSelect(show_id);
+    	ServletContext application = req.getServletContext();
+		String basePath = application.getRealPath("/storage");
+		
+        int cnt = showDao.showDelete(show_id);
+        if(cnt==1) {
+			Utility.deleteFile(basePath, showDto.getNotice_img());
+			Utility.deleteFile(basePath, showDto.getDis_img());
+			Utility.deleteFile(basePath, showDto.getCasting_img());
+			Utility.deleteFile(basePath, showDto.getEvent_img());
+			Utility.deleteFile(basePath, showDto.getDetail_img());
+			Utility.deleteFile(basePath, showDto.getPoster());
+		}
+        return ResponseEntity.ok().build(); // 200 상태 코드 반환
+    }
+
     
     // ---------------------
     
@@ -966,12 +1036,9 @@ public class SellerCont {
     // 배역 - 배우 삭제
     @PostMapping("/detail/{show_id}/roleDelete")
     public String roleDelete(@RequestParam int actor_id, @PathVariable String show_id, HttpSession session) {
-        showDao.actorDelete(actor_id);
+        showDao.actorDelete(actor_id, show_id);
         return "redirect:/seller/detail/" + show_id + "/roleList";
     }
-
-
-
 
 
 
